@@ -1,0 +1,41 @@
+{
+  "pipeline": "parser_only",
+  "endpoint_kind": "parser_only_benchmark",
+  "llm_called": false,
+  "database_written": false,
+  "classifier_llm_calls": 0,
+  "classifier_token_usage": 0,
+  "extraction": null,
+  "extraction_note": "第二阶段 LLM 输出使用 extraction 命名空间；本工作台不产出该字段",
+  "status": "FROZEN",
+  "gate6a_status": "NOT_STARTED",
+  "frozen": true,
+  "classification": null,
+  "classifier_called": false,
+  "parser": {
+    "called": false,
+    "status": "SKIPPED",
+    "reason": "冻结期内不启动 parse_worker，也不启动 classify_worker",
+    "run_id": null,
+    "run_dir": null,
+    "worker_started": false,
+    "worker_start_failed": false,
+    "parser_call_entered": false,
+    "parser_call_returned": false,
+    "parser_call_count": 0,
+    "stages_seen": []
+  },
+  "parser_output": {},
+  "artifact_inventory": [],
+  "contract_gaps": [],
+  "code_version": null,
+  "diagnostics": {
+    "reason": "Reviewer 冻结期：ICEX_WORKBENCH_ALLOW_PARSE 未设为 1；分类与解析均不执行",
+    "parse_worker_started": false,
+    "classifier_worker_started": false,
+    "parse_pdf_calls": 0,
+    "parser_call_count": 0,
+    "action_required": "等待 Reviewer 解除 Gate 6A 冻结并确认样本 / Gold / 运行边界"
+  },
+  "document": null
+}

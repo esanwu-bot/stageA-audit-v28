@@ -1,0 +1,23 @@
+* Uses proxy env variable http_proxy == 'http://127.0.0.1:59540'
+*   Trying 127.0.0.1:59540...
+* Connected to 127.0.0.1 (127.0.0.1) port 59540
+* using HTTP/1.x
+> POST http://127.0.0.1:8765/api/process HTTP/1.1
+> Host: 127.0.0.1:8765
+> User-Agent: curl/8.13.0
+> Accept: */*
+> Proxy-Connection: Keep-Alive
+> Content-Type: application/octet-stream
+> x-filename: probe.txt
+> Content-Length: 12
+> 
+} [12 bytes data]
+* upload completely sent off: 12 bytes
+< HTTP/1.1 200 OK
+< date: Tue, 10 Nov 2026 23:37:11 GMT
+< server: uvicorn
+< content-length: 1109
+< content-type: application/json
+< 
+{ [1109 bytes data]
+* Connection #0 to host 127.0.0.1 left intact

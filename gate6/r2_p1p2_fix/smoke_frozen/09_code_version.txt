@@ -1,0 +1,11 @@
+=== 运行代码版本核验 07:38:23 ===
+--- 工作区文件 SHA-256 ---
+32d066727d5f775a6be588a88add3bfb7330fca6b3a756256d6c7f6f12c18f83 *workbench/serve_parser.py
+6f9336d5aa434b1a75a5907c321e4ce29436639949624ce62053bc9a09e58c20 *workbench/classify_worker.py
+4fb0e1e57f8f9d3a9fd2d063cae0b38e33ff24985532b9505f75315b7c75d380 *workbench/parse_worker.py
+--- 审计仓库 commit e6de9fd 对应 blob SHA-256 ---
+serve_parser.py        32d066727d5f775a6be588a88add3bfb7330fca6b3a756256d6c7f6f12c18f83 *-
+classify_worker.py     6f9336d5aa434b1a75a5907c321e4ce29436639949624ce62053bc9a09e58c20 *-
+parse_worker.py        4fb0e1e57f8f9d3a9fd2d063cae0b38e33ff24985532b9505f75315b7c75d380 *-
+--- 主项目 HEAD ---
+3ed22a4a83564b36ca238792af4b2328fd966469

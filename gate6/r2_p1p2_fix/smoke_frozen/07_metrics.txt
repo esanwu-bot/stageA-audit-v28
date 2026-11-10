@@ -1,0 +1,24 @@
+=== FROZEN Smoke 核心指标（全部取自真实响应 JSON）===
+1  /api/parse HTTP 状态                    200
+2  /api/process HTTP 状态                  200
+3  /api/parse status                     FROZEN
+4  /api/process status                   FROZEN
+5  /api/parse frozen                     True
+6  /api/process frozen                   True
+7  parse_pdf_calls (parse)               0
+8  parse_pdf_calls (process)             0
+9  parser.called (parse)                 False
+10 parser.called (process)               False
+11 classifier_called (process)           False
+12 classifier_worker_started (parse)     False
+13 classifier_worker_started (process)   False
+14 stages_seen (parse)                   []
+15 stages_seen (process)                 []
+16 classification (process)              None
+17 parser.status (parse)                 SKIPPED
+18 parser.status (process)               SKIPPED
+19 pipeline (parse)                      parser_only
+20 pipeline (process)                    preparse_gate_v1
+
+=== 判定 ===
+FROZEN_SMOKE: PASS
