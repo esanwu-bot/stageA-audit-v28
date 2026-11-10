@@ -1,0 +1,44 @@
+--- a/_v28_baseline_test.py (v2.8 C)
++++ b/test_verify_reviewer.py (v2.8_r4)
+@@ -218,8 +218,8 @@
+     try:
+         make_symlink_dir(DATA, link)
+     except OSError as e:
+-        check("T2", "无法创建目录符号链接（权限不足），该组未覆盖", False,
+-              "%s: %s" % (type(e).__name__, e))
++        skip("T2", "当前环境无法创建目录符号链接，测试未覆盖",
++             "%s: %s" % (type(e).__name__, e))
+         return
+     print("       realpath = %s" % os.path.realpath(link))
+     print("       abspath  = %s" % os.path.abspath(link))
+@@ -268,8 +268,8 @@
+     try:
+         make_symlink_dir(DATA, link)
+     except OSError as e:
+-        check("T4", "无法创建目录符号链接（权限不足），该组未覆盖", False,
+-              "%s: %s" % (type(e).__name__, e))
++        skip("T4", "当前环境无法创建目录符号链接，测试未覆盖",
++             "%s: %s" % (type(e).__name__, e))
+         return
+     ctx = vr.Ctx(SANDBOX)
+     rel = "parentlink/linkdir/sample_350.csv"
+@@ -387,8 +387,8 @@
+     print("       长名 = %s" % longdir)
+     print("       短名 = %s" % sp)
+     if not sp or os.path.abspath(sp) == longdir:
+-        check("T6a", "卷未启用 8.3 短名，本机无法构造该场景", True,
+-              "GetShortPathNameW -> %r（记为未覆盖，不是通过）" % (sp,))
++        skip("T6a", "卷未启用 8.3 短名，当前环境无法覆盖该场景",
++             "GetShortPathNameW -> %r" % (sp,))
+         return
+     print("       realpath != abspath ? %s" % (os.path.realpath(sp) != os.path.abspath(sp)))
+     try:
+@@ -419,7 +419,7 @@
+     j = os.path.join(base, "delivery_junc")
+     try:
+         make_junction(DATA, j)
+-    except Exception as e:
++    except (OSError, subprocess.CalledProcessError) as e:
+         reason = ("当前环境无法创建 junction（需 NTFS 且沙箱与数据同卷；"
+                   "跨卷、FAT/exFAT、非管理员受限场景均会失败）")
+         skip("T7a", "junction 根拒绝：本环境不具备测试条件", reason)
