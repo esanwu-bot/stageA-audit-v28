@@ -1,0 +1,47 @@
+row_no,legacy_field,domain_target,one_to_one,unit_rule,min_typ_max,package_dimension,evidence_isolation,default_or_implicit_conversion,needs_reviewer_approval,reviewer_focus
+1,metadata.pdf_hash,Document.sha256,1:1_VERBATIM,N/A,N/A,N/A,MUST_RECOMPUTE_SHA,NONE,NO,哈希必须由 source.pdf 重算，清单字符串不得直接采信
+2,metadata.requested_mpn,Product.requested_mpn,1:1_VERBATIM,N/A,N/A,N/A,N/A,EXPLICIT_DEFAULT_PENDING_APPROVAL,YES,requested_mpn 是调用方事实；默认值来源需在验收前指定
+3,basic_info.mpn,identity_candidate (观察区) + 条件性 Product.normalized_mpn,1:1_CONDITIONAL,N/A,N/A,N/A,IDENTITY_EVIDENCE_REQUIRED,EXPLICIT_DEFAULT_PENDING_APPROVAL,YES,normalized_mpn 默认等于 requested_mpn 属显式默认，待批
+4,basic_info.manufacturer,Product.manufacturer (可选 str),1:1_CONDITIONAL,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,NONE,NO,厂商名须页码+原文证据，否则留观察区
+5,basic_info.category,unmapped_legacy,QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NONE,NO,自由分类文本无 Domain 字段，不进 formal 容器
+6,basic_info.subcategory,unmapped_legacy,QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NONE,NO,同上
+7,basic_info.description,unmapped_legacy,QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NONE,NO,描述文案不得当参数或证据
+8,basic_info.datasheet_url,run_config.provenance (只读),QUARANTINE,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,NONE,NO,空 URL 是 P1 溯源缺陷，禁止补猜测值
+9,basic_info.identity / identity_state,Product.identity_scope,N:1_ENUM,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,EXPLICIT_ENUM_PENDING_APPROVAL,YES,device/board/onboard_device/unknown 枚举映射规则待批
+10,basic_info.identity_confidence,不映射,NONE_NO_MAP,N/A,N/A,N/A,N/A,NONE,NO,置信度分数完全不映射
+11,basic_info.identity_evidence,Product.identity_evidence (条件性),1:1_CONDITIONAL,N/A,N/A,N/A,MUST_BIND_PAGE_AND_RAW_TEXT,NONE,NO,缺 kind/page_number/raw_text 不得构造 IdentityEvidence
+12,specs.electrical[].name,Parameter.name,1:1_VERBATIM,N/A,N/A,N/A,MUST_BIND_CELL,NONE,NO,原文参数名保留，同义归一只是提示不是 canonical id
+13,specs.electrical[].value,Parameter.value (str|None),1:1_VERBATIM,PRESERVE_VERBATIM,NOT_SPLIT_KEEP_VALUE,PRESERVE_IN_CONDITIONS,MUST_BIND_CELL,NO_IMPLICIT_COERCION,NO,禁止 5V→5、±2000→2000、范围折叠
+14,specs.electrical[].unit,Parameter.unit (str|None),1:1_VERBATIM,PRESERVE_VERBATIM,N/A,N/A,MUST_BIND_CELL,NO_IMPLICIT_COERCION,NO,单位分列保留，禁止合并后丢单位
+15,specs.electrical[].condition,Parameter.conditions,1:1_VERBATIM,PRESERVE_VERBATIM,N/A,PRESERVE_IN_CONDITIONS,MUST_BIND_CELL,NONE,NO,条件须与数值同源同行
+16,specs.electrical[] MIN/TYP/MAX 塌缩,Parameter.min / typ / max,GAP_FROM_CANDIDATES,FROM_CANDIDATE_CELL_ONLY,FROM_BOUND_CELLS_ONLY,PRESERVE_IN_CONDITIONS,MUST_BIND_CELL,NO_BACK_PARSE,NO,不得从塌缩 value 反推 MIN/TYP/MAX
+17,specs.electrical[].table_id,Parameter.table_id (NonEmptyStr 必填),GAP_FROM_CANDIDATES,N/A,N/A,N/A,MUST_BIND_CELL,NO_FABRICATION,NO,table_id 必填；反查不到即 UNRESOLVED
+18,specs.electrical[].evidence_ids,Parameter.evidence_ids,GAP_FROM_CANDIDATES,N/A,N/A,N/A,MUST_BIND_CELL,NO_FABRICATION,NO,evidence_ids 不得用选页列表冒充
+19,specs.electrical[].verification.status,Parameter.verification_status,1:1_ENUM,N/A,N/A,N/A,FORMAL_GATE,EXPLICIT_DEFAULT_PENDING_APPROVAL,YES,旧行一律 UNRESOLVED 是显式默认，待批
+20,specs.electrical[].verification.reason,Parameter.unresolved_reason,1:1_VERBATIM,N/A,N/A,N/A,FORMAL_GATE,NONE,NO,unresolved_reason 不得为空
+21,specs.electrical[] 多封装列,多个 Parameter + Parameter.package,1:N_EXPAND,PRESERVE_VERBATIM,NOT_SPLIT_KEEP_VALUE,EXPAND_PER_VARIANT,MUST_BIND_CELL,NONE,NO,多封装列逐列展开，禁止只抽第一列
+22,specs.electrical[].applicable_mpn,Parameter.applicable_mpn (必填非空),GAP_FROM_CANDIDATES,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,NO_FABRICATION,NO,requested_mpn 不得冒充已证明的适用型号
+23,specs.electrical[],FormalParameterSet,GATED_CONTAINER,N/A,N/A,N/A,FORMAL_GATE,NONE,NO,"formal 容器接收范围 {verified,audited}，需评审确认"
+24,specs.absolute_max[],Parameter(category=ABSOLUTE_MAXIMUM),1:1_ENUM,PRESERVE_VERBATIM,NOT_SPLIT_KEEP_VALUE,PRESERVE_IN_CONDITIONS,MUST_BIND_CELL,EXPLICIT_ENUM_PENDING_APPROVAL,YES,ABSOLUTE_MAXIMUM 分类规则待批
+25,specs.thermal[],Parameter(category=THERMAL),1:1_ENUM,PRESERVE_VERBATIM,NOT_SPLIT_KEEP_VALUE,PRESERVE_IN_CONDITIONS,MUST_BIND_CELL,EXPLICIT_ENUM_PENDING_APPROVAL,YES,THERMAL 分类与 Rθ 同义归并待批
+26,specs.esd[],unmapped_legacy,QUARANTINE,PRESERVE_VERBATIM,N/A,N/A,QUARANTINE_ONLY,EXPLICIT_ENUM_PENDING_APPROVAL,YES,ParameterCategory 无 ESD，是否扩枚举需契约升级评审
+27,specs.package.type,Product.package / Parameter.package,1:1_VERBATIM,PRESERVE_VERBATIM,N/A,PRESERVE_STRING,MUST_BIND_CELL,NONE,NO,封装名保留字符串，不转代码
+28,specs.package.pins,(无 Domain 字段),QUARANTINE,N/A,N/A,NO_PACKAGE_MODEL,QUARANTINE_ONLY,NONE,NO,Domain 无 Pin 模型
+29,specs.package.dimensions,unmapped_legacy,QUARANTINE,PRESERVE_VERBATIM,N/A,N/A,QUARANTINE_ONLY,NONE,NO,尺寸文本不进参数容器
+30,specs.temperature.operating,Parameter(category=OTHER 或 THERMAL 需评审),QUARANTINE,PRESERVE_VERBATIM,NOT_SPLIT_KEEP_VALUE,N/A,QUARANTINE_ONLY,EXPLICIT_ENUM_PENDING_APPROVAL,YES,温度范围分类 OTHER/THERMAL 未定
+31,specs.temperature.storage,unmapped_legacy / 同上,QUARANTINE,PRESERVE_VERBATIM,N/A,N/A,QUARANTINE_ONLY,NONE,NO,与 operating 不得混用
+32,specs.scope / pin_scope,Product.identity_scope,N:1_ENUM,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,EXPLICIT_ENUM_PENDING_APPROVAL,YES,与第 9 行须同一套确定性规则，避免双规则
+33,pin_configuration[],unmapped_legacy,QUARANTINE,N/A,N/A,NO_PACKAGE_MODEL,QUARANTINE_ONLY,NONE,NO,Domain 无 Pin/Pinout 模型；pin 号不得写进参数值或伪造模型
+34,ordering_info[],applicable_mpn 的候选来源 (条件性),1:N_CONDITIONAL,N/A,N/A,EXPAND_PER_VARIANT,MUST_BIND_CELL,NONE,NO,多型号逐型号展开，仅在有证据时作 applicable_mpn 来源
+35,alternatives[],unmapped_legacy,QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NONE,NO,替代料号不属于新契约
+36,features / applications / seo / multi_language,unmapped_legacy,QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NONE,NO,文案数值不得当参数来源
+37,metadata.selected_pages,run_config.json 选页预算留痕,NONE_NO_MAP,N/A,N/A,N/A,NO_FABRICATION,NONE,NO,选页集合不是来源页码
+38,候选清单 evidence_page_no,不映射,NONE_NO_MAP,N/A,N/A,N/A,NO_FABRICATION,NONE,NO,NONE 是分类器证据页状态
+39,metadata.confidence,不映射,NONE_NO_MAP,N/A,N/A,N/A,N/A,NONE,NO,置信度不映射、不参与判定
+40,metadata.model_version,run_config.llm.model,GAP_FILL,N/A,N/A,N/A,N/A,NO_FABRICATION,NO,须记录真实模型名，不得硬编码
+41,metadata.prompt_version,run_manifest.prompt_version,GAP_FILL,N/A,N/A,N/A,N/A,NO_FABRICATION,NO,新链须有自己的 prompt_version
+42,metadata.parse_timestamp,run_config.legacy_parse_timestamp,QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NO_IMPLICIT_COERCION,NO,旧时间戳不得覆盖 Document.created_at
+43,metadata.core_validation / accept_status / core_sha256 / deterministic_extract,qc_report.json (只读),QUARANTINE,N/A,N/A,N/A,QUARANTINE_ONLY,NONE,NO,QC 留痕不等于 Schema 校验通过
+44,legacy 空字符串,Parameter.value=None 且 UNRESOLVED,1:1_ENUM,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,EXPLICIT_DEFAULT_PENDING_APPROVAL,YES,空串→None + UNRESOLVED 是显式判定，待批
+45,legacy 占位符字符串,UNRESOLVED + unresolved_reason=source_cell_placeholder,1:1_ENUM,PRESERVE_VERBATIM,N/A,N/A,UNRESOLVED_IF_MISSING,EXPLICIT_DEFAULT_PENDING_APPROVAL,YES,占位符→UNRESOLVED 是显式判定，待批
+46,legacy null 或缺失 key,UNRESOLVED + unresolved_reason=legacy_key_missing,1:1_ENUM,N/A,N/A,N/A,UNRESOLVED_IF_MISSING,EXPLICIT_DEFAULT_PENDING_APPROVAL,YES,缺 key 与空串/占位符必须区分，待批
