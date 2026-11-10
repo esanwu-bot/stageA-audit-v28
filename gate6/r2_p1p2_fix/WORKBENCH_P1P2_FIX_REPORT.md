@@ -162,9 +162,12 @@ LLM / qwen-flash 调用        0
 主项目 git add/commit/push   0
 ```
 
-本轮实际做过的「非纯文本」动作只有三项，均不构成解析：
+本轮实际做过的「非纯文本」动作只有五项，均不构成解析：
 `py_compile` 生成 `.pyc`、静态验证脚本 import 了 `serve_parser` 模块
-（仅注册路由，未启动 uvicorn）、在临时目录用 `git apply` 验证 diff 可重建。
+（仅注册路由，未启动 uvicorn）、在临时目录用 `git apply` 验证 diff 可重建、
+把传输包 clone / commit / push 到 GitHub 审计仓库、在全新克隆上复跑
+`sha256sum -c` 与 `git apply`。全程未打开任何 PDF、未启动服务、未调用
+`parse_pdf()` / `classify_one()`。
 
 **遗留服务如实披露**：上一轮 localhost UI 冒烟阶段启动的
 `python.exe serve_parser.py`（`PID 184116`）仍在 `127.0.0.1:8765` 监听，
@@ -192,7 +195,8 @@ LLM / qwen-flash 调用        0
 
 ## 8. 仍未解决 / 等待授权
 
-- Reviewer 代码审查（本轮只提交 diff，未推送 GitHub 传输仓库，除非另行要求）。
+- Reviewer 代码审查（传输包已推送 GitHub `esanwu-bot/stageA-audit-v28` 的
+  `gate6/r2_p1p2_fix/` 目录；主项目 CodeUp 仓库零 add / commit / push）。
 - 服务器部署仍 `NOT_APPROVED`；服务器必须保持 `ALLOW_PARSE=0` 并补访问控制。
 - Gate 6A Benchmark 仍 `NOT_STARTED`；Gold Set 未创建；V002/V022 单件探针未执行。
 - Gate 6B / 6C / 6D、剩余 320 件、LLM 接入全部 `NOT_APPROVED`。
