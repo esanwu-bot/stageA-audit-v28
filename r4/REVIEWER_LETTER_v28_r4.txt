@@ -1,0 +1,279 @@
+致 Reviewer：
+
+主题：v2.8_r4 最小补丁交付、源码证据与可复核的实物材料
+
+本轮回信只陈述代码事实与我方实际执行结果。所有执行记录均为提交方证据，
+不替代贵方独立复核；当前裁定按贵方口径仍为 SCRIPT_AUDIT_PARTIAL_PASS，
+最终审计 OPEN。
+
+----------------------------------------------------------------------
+一、本轮范围
+----------------------------------------------------------------------
+
+1. 被测主程序 verify_reviewer.py 未改动，字节与 r3 完全一致：
+   91ebc00be062924a30ed7beb9b3f97f1957fda666e6cbc12548c9eba69f9fbc6
+
+2. test_verify_reviewer.py 只改 1 行（第 422 行）：T7 的异常捕获由
+   `except Exception as e:` 收窄为
+   `except (OSError, subprocess.CalledProcessError) as e:`。
+   `import subprocess` 位于该文件第 60 行，r4 之前即已存在，本次未新增
+   import 语句。
+
+3. 外层验证脚本增加 S4 固定 cid 分布断言与 S5 TypeError 注入测试。
+
+4. 数据侧 7 个数据文件与 seq_sha256 派生值共 8 个冻结哈希未改动；
+   未做真实分类，未补 generation_python，未对主项目仓库做 git 提交。
+
+5. 一处命名需主动说明：外层脚本文件名与 docstring 标题仍沿用
+   `test_three_state_v28r3.py` / 「v2.8_r3」，但内容已是 r4 增强版。
+   本次未改文件名与标题，是为了不再引入同名覆盖；内容身份一律以
+   SHA-256 为准，其 r4 值为
+   cb6c44d67ba7d5956549848160cb254a15e1fcc72df5331347dc6a71edf2c7c5
+
+----------------------------------------------------------------------
+二、T7 异常捕获收窄（test_verify_reviewer.py 第 419-428 行）
+----------------------------------------------------------------------
+
+```python
+    j = os.path.join(base, "delivery_junc")
+    try:
+        make_junction(DATA, j)
+    except (OSError, subprocess.CalledProcessError) as e:
+        reason = ("当前环境无法创建 junction（需 NTFS 且沙箱与数据同卷；"
+                  "跨卷、FAT/exFAT、非管理员受限场景均会失败）")
+        skip("T7a", "junction 根拒绝：本环境不具备测试条件", reason)
+        skip("T7b", "main(--dir <junction>) 拒绝：同上未执行",
+             "%s: %s" % (type(e).__name__, e))
+        return
+```
+
+意图：只有「环境不具备 junction 创建条件」这一类预期失败才降级为 SKIP。
+OSError 覆盖文件系统与权限失败，subprocess.CalledProcessError 覆盖
+mklink 子进程失败；非预期的接口错误不再被吞掉。junction 创建成功后的
+真实功能断言（T7a/T7b 的 PASS 分支）代码未改动，仍会按 check() 结果
+登记，失败即为 FAIL。
+
+需要一并说明的代码事实：本轮只收窄 T7 这一处。该文件目前仍有 6 处
+`except Exception as e:`，分别位于第 258 行（t3）、第 290 行（t4）、
+第 399 行（t6）、第 498 行（t8）、第 516 行（t9）、第 567 行（t10）。
+它们均在 r4 范围内保持原状，本回信不宣称文件中已不存在宽泛捕获；
+可复核的命令见第八节。
+
+----------------------------------------------------------------------
+三、S4 防漂移：固定 46 个 cid 的分布
+----------------------------------------------------------------------
+
+外层脚本第 41-54 行用 collections.Counter 固定基线：
+
+```python
+EXPECTED_CID_COUNTS = {"T1": 28, "T3": 5, "T5g": 5}
+EXPECTED_CID_COUNTS.update(
+    (cid, 1) for cid in (
+        "T2a T2b T2c T2d T2e "
+        "T4a T4b "
+        "T5a T5b T5c T5d T5e T5f "
+        "T6a T6b T6c "
+        "T7a T7b "
+        "T8a T8b T8c T8d T8e T8f "
+        "T9a T9b T9c "
+        "T10a T10b T10c T10d T10e T10f T10g T10h T10i T10j T10k "
+        "T11a T11b T11c T11d T11e"
+    ).split()
+)
+```
+
+第 271-281 行的断言：
+
+```python
+    expected = Counter(EXPECTED_CID_COUNTS)
+    missing = sorted(set(expected) - set(counter))
+    extra = sorted(set(counter) - set(expected))
+    drift = {k: (counter.get(k), expected.get(k))
+             for k in set(expected) | set(counter)
+             if counter.get(k) != expected.get(k)}
+    check("S4 唯一 cid 数固定为 46", len(counter) == 46,
+          "unique=%d baseline=%d" % (len(counter), len(expected)))
+    check("S4 46 个 cid 分布与固定基线逐项一致",
+          counter == expected,
+          "缺失=%r 多出=%r 计数差异=%r" % (missing, extra, drift))
+```
+
+口径沿用贵方上一轮的区分：81 是环境 A 的断言记录数，74 是环境 B 的
+断言记录数，46 是唯一 cid 数；cid 是分组标签而非唯一断言编号。复用 ID
+为 T1（28 次）、T3（5 次）、T5g（5 次），其余 43 个 cid 各 1，合计 81。
+本次没有为凑唯一 ID 而改动 ID 体系。
+
+----------------------------------------------------------------------
+四、S5 TypeError 注入的实际表现（如实说明）
+----------------------------------------------------------------------
+
+外层脚本第 290-342 行把 `tv.make_junction` 替换为抛 TypeError 的桩。
+收窄 except 后实测：
+
+- TypeError 向上抛出，未被 except 捕获；
+- SKIPPED = []，RESULTS = []，未打印 [SKIP] T7a；
+- 进程级完整 main() 退出码 rc=1，输出含未捕获的 TypeError，未走到
+  汇总统计行。
+
+需要如实区分的一点：这一表现是「未捕获异常导致进程非零退出」，并不是
+以 check() 形式在 RESULTS 中登记一条 FAIL 记录。收窄 except 的作用是
+保证非预期异常不被降级为 SKIP，并没有把它改写成框架内的 FAIL 断言。
+外层脚本第 342 行也按此口径打印了 INFO 说明，未把它写成 PASS 或 FAIL。
+
+----------------------------------------------------------------------
+五、统计公式回顾（回应上一轮第二节）
+----------------------------------------------------------------------
+
+以下源码与 r3 回信 4.1 节一致，r4 未改动统计逻辑。
+
+test_verify_reviewer.py 第 100-115 行：
+
+```python
+def check(cid, desc, cond, detail=""):
+    RESULTS.append((cid, desc, bool(cond), detail))
+    print("  [%s] %-4s %s" % ("PASS" if cond else "FAIL", cid, desc))
+    if detail:
+        for line in str(detail).splitlines():
+            print("            %s" % line)
+
+
+def skip(cid, desc, reason=""):
+    """记录"环境不具备测试条件"。与 FAIL 区分：不计入 PASS，也不影响退出码。"""
+    SKIPPED.append(cid)
+    RESULTS.append((cid, desc, True, reason))
+    print("  [SKIP] %-4s %s" % (cid, desc))
+    if reason:
+        for line in str(reason).splitlines():
+            print("            %s" % line)
+```
+
+第 724-739 行：
+
+```python
+    n = len(RESULTS)
+    bad = [r for r in RESULTS if not r[2]]
+    n_skip = len(SKIPPED)
+    n_pass = n - n_skip - len(bad)
+    print("\n" + "=" * 78)
+    print("统计：共 %d 项，PASS=%d SKIP=%d FAIL=%d"
+          % (n, n_pass, n_skip, len(bad)))
+    if SKIPPED:
+        print("  SKIP 明细（环境不具备条件，不代表被测代码有问题，也不计 PASS）：%s"
+              % ", ".join(SKIPPED))
+    if bad:
+        for cid, desc, _, detail in bad:
+            print("  FAIL [%s] %s" % (cid, desc))
+    print("结论：%s" % ("ALL PASS（无 FAIL）" if not bad else "存在失败"))
+    print("=" * 78)
+    return 0 if not bad else 1
+```
+
+因为 skip() 同时写 SKIPPED 与 RESULTS，且 SKIPPED 是 RESULTS 的 cid 子集，
+所以 `N = len(RESULTS)` 成立；`N = |RESULTS| + |SKIPPED|` 会重复计数。
+受限环境实测 len(RESULTS)=74、len(SKIPPED)=5，两者相加为 79，而汇总行
+取的是 74，且 `PASS=69 SKIP=5 FAIL=0` 满足 `69 + 5 + 0 = 74`。退出码
+严格由 bad（FAIL 记录）决定，SKIP 不触发非零。
+
+----------------------------------------------------------------------
+六、我方实际执行记录（供复核，不作为独立结论）
+----------------------------------------------------------------------
+
+环境：Windows，Python 3.13.14，脚本一律以 `-W error` 运行。
+
+| 项 | 结果 | 退出码 |
+| --- | --- | --- |
+| 外层 --selfcheck | 定向断言 31 项，PASS=31 FAIL=0 | 0 |
+| 定向回归 real | 共 81 项，PASS=81 SKIP=0 FAIL=0 | 0 |
+| 定向回归 limited | RESULTS=74，PASS=69 SKIP=5 FAIL=0，SKIPPED=T2,T4,T6a,T7a,T7b | 0 |
+| 定向回归 mixed | RESULTS=74，PASS=45 SKIP=5 FAIL=24 | 1 |
+| S5 TypeError 注入 | rc=1，SKIPPED=[]，RESULTS=[] | 1 |
+| 主验证器 V1–V10 | PASS=10 FAIL=0 SKIP=0，OVERALL_PASS=true | 0 |
+
+主验证器汇总行仍为
+`PYTHON_REPRODUCIBILITY = UNVERIFIED (config 无 generation_python 记录)`，
+未声明跨 Python 版本 VERIFIED。
+
+----------------------------------------------------------------------
+七、内容身份（完整 64 位 SHA-256，无缩写、无占位符）
+----------------------------------------------------------------------
+
+SHA256SUMS.txt 的 7 行：
+
+```
+91ebc00be062924a30ed7beb9b3f97f1957fda666e6cbc12548c9eba69f9fbc6  verify_reviewer.py
+643b8aa0c002470e03c04f3ee991151e2a772019c135c1bd83e6ff4b1cbe4bac  test_verify_reviewer.py
+cb6c44d67ba7d5956549848160cb254a15e1fcc72df5331347dc6a71edf2c7c5  test_three_state_v28r3.py
+3142f503677b9e9dab5f48972827555051a210b5f9614db48a800b536aab0b7a  verify_reviewer_v2.8_to_r4.diff
+674de7b0551aacd68e86657dc32041fc648cda4aea6072ae84ecb568c56d2a54  test_verify_reviewer_v2.8_to_r4.diff
+c2d29b613e7451e6bcf590583cd8926122b3a8e04b66a4b28057d3429304a7f8  test_verify_reviewer_r3_to_r4.diff
+188cae6088e8ee2ef9894f4391d69ae0f9272b5146dcbdde93182aa742ec1443  test_three_state_r3_to_r4.diff
+```
+
+最小实物包（38,641 字节，8 条目，固定条目顺序与时间戳）：
+
+```
+bac3368991171941b7bf74fc62f0e006e0a063c78477b823438349cd6f01e0eb  audit_minimal_v28_r4.zip
+```
+
+diff 套回基线（均以基线字节实际套用，非纸面说明）：
+
+```
+905606217dd8c93bbc114a9ee4f69b13ea419b2c0284e81d21cc893ab9bb09b6  verify_reviewer.py (v2.8 C)
+93a3f7dcd0991c1cc887477dd6952a8b958b0771a65105fb81814ada5e4d524b  test_verify_reviewer.py (v2.8 C)
+558b12269468fd5500465b93dfcf399aff9ed05949786181ace5d17ced0cdd4d  test_verify_reviewer.py (v2.8_r3)
+2abe9e655136ca42a980bb83764cca4291b8783730f9937d3e1702bc2b3984a4  test_three_state_v28r3.py (v2.8_r3)
+```
+
+四份 diff 的套回结果分别为：
+
+- verify_reviewer_v2.8_to_r4.diff（2 hunks）→
+  91ebc00be062924a30ed7beb9b3f97f1957fda666e6cbc12548c9eba69f9fbc6
+- test_verify_reviewer_v2.8_to_r4.diff（4 hunks）→
+  643b8aa0c002470e03c04f3ee991151e2a772019c135c1bd83e6ff4b1cbe4bac
+- test_verify_reviewer_r3_to_r4.diff（1 hunk）→
+  643b8aa0c002470e03c04f3ee991151e2a772019c135c1bd83e6ff4b1cbe4bac
+- test_three_state_r3_to_r4.diff（4 hunks）→
+  cb6c44d67ba7d5956549848160cb254a15e1fcc72df5331347dc6a71edf2c7c5
+
+主程序 diff 与 r3 版的 hunk 正文逐行一致（33 行），仅
+`+++ b/verify_reviewer.py` 头部括号内的版本标签由 v2.8_r3 改为
+v2.8_r4，与「r4 未改主程序」一致。
+
+----------------------------------------------------------------------
+八、取件与复跑
+----------------------------------------------------------------------
+
+```sh
+BASE=https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/r4
+curl -fL -O "$BASE/audit_minimal_v28_r4.zip"
+curl -fL -O "$BASE/CHECKSUM_r4.txt"
+sha256sum -c CHECKSUM_r4.txt
+unzip -l audit_minimal_v28_r4.zip                     # 8 个条目
+unzip -o audit_minimal_v28_r4.zip -d r4
+cd r4
+sha256sum -c SHA256SUMS.txt                           # 7 行 OK
+grep -n 'except (OSError, subprocess.CalledProcessError)' test_verify_reviewer.py   # 第 422 行
+grep -n 'except Exception as e:' test_verify_reviewer.py | grep '^422:'             # 无输出
+grep -n 'except Exception as e:' test_verify_reviewer.py                           # 6 行：258/290/399/498/516/567
+grep -n '^import subprocess' test_verify_reviewer.py                               # 第 60 行
+wc -l test_verify_reviewer.py                         # 743
+python -W error test_three_state_v28r3.py --selfcheck
+python -W error test_verify_reviewer.py --data <DATA> --verifier verify_reviewer.py
+python -W error verify_reviewer.py --dir <DATA>
+```
+
+散文件同样位于 `r4/`：7 个核验对象、SHA256SUMS.txt、CHECKSUM_r4.txt、
+R4_CHANGES.txt、本回信。仓库只作文件传输，不含 Stage A 数据文件与凭据。
+
+----------------------------------------------------------------------
+九、边界
+----------------------------------------------------------------------
+
+- 本轮只提交实物材料与源码证据，不请求以提交方报告替代独立执行结果。
+- T11b 会改动 sampling_config.json 使 V10 必然 FAIL，仍只用于证明独立
+  状态行未被削弱，不作为整套 OVERALL_PASS=true 的证据。
+- 跨 Python 版本复现性保持 UNVERIFIED，未补 generation_python。
+- 数据侧 8 个哈希保持冻结；未做真实分类，未改数据文件，未对主项目
+  仓库做 git 提交。
+
+请按贵方独立流程复核 r4 实物文件；如仍需补证，请直接指出具体文件与行号。
