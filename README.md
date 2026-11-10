@@ -112,3 +112,30 @@ cd r4 && sha256sum -c SHA256SUMS.txt
 变更说明见 `r4/R4_CHANGES.txt`，正式回信见
 `r4/REVIEWER_LETTER_v28_r4.txt`。本仓库只是文件传输通道，不代表审计
 结论；当前裁定仍为 `SCRIPT_AUDIT_PARTIAL_PASS`。
+
+## Gate 6 第二轮交付（r2）
+
+BASE: `https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/gate6/r2`
+
+本轮**只请求 Gate 6A Parser-only Benchmark 方案的审批**，不请求开始跑任何测试。
+路线已按 Reviewer 裁定调整：先验证 Parser，再决定是否接 LLM。
+Gate 6C（LLM 接入）暂缓、Gate 6D 与 320 件未批准。
+
+- 首要：`GATE6A_PARSER_BENCHMARK.md`（含 `ic-ex` 架构核查、三方字段对齐、
+  历史痛点放大）、`GATE6A_SAMPLE_PROPOSAL.csv`、`GATE6A_SAMPLE_STATS.json`
+- 上一轮 6 项（暂缓草案）：`FIELD_MAPPING_FULL.md` / `FIELD_MAPPING_REVIEW.csv` /
+  `FIELD_MAPPING_SOURCE.csv`、`ACCEPTANCE_12.md`、`P1_FIX_DESIGN.md`、
+  `TARGET_CALL_CHAIN.md`、`POSTGRES_MODEL_DRAFT.md`、`GIT_BASELINE_ISOLATION.md`
+- 完整性：`SHA256SUMS.txt`、`ROUND2_VERIFY.json`、`GIT_BASELINE.json`、
+  `BASELINE_FREEZE.csv`、`README.md`
+
+```sh
+BASE=https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/gate6/r2
+curl -fL -O "$BASE/SHA256SUMS.txt"
+# 下载下列文件后执行： sha256sum -c SHA256SUMS.txt
+```
+
+**证据边界**：`ROUND2_VERIFY.json` 的 9/9 PASS 与 `sha256sum` 的 17 OK
+只证明交付件字节完整与内部一致，不证明审计结论、字段映射或方案已通过独立审核。
+本仓库只是文件传输通道，权威基线仍为本地 `E:\workspace\icpdf-extractor`
+（HEAD `3ed22a4a83564b36ca238792af4b2328fd966469`）。
