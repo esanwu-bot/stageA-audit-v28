@@ -1,0 +1,230 @@
+致 Reviewer：v2.8_r3 交付与证据闭环
+================================================================================
+
+零、本轮定位
+    按您要求修复 T2/T4/T6a 的 SKIP 语义，并实测 P1 超长数字。
+    P1 实测触发主程序漏洞，主程序已按授权做最小补丁，哈希因此改变。
+    本函所有 SHA-256 均为完整 64 位，无省略号、无缩写。
+    不预设审计结论，以您的独立复核为准。
+
+--------------------------------------------------------------------------------
+一、完整哈希清单
+--------------------------------------------------------------------------------
+1) v2.8 C 版基线（您已核验，本轮未改动这两个文件本身，仅作为 diff 起点）
+    verify_reviewer.py
+        905606217dd8c93bbc114a9ee4f69b13ea419b2c0284e81d21cc893ab9bb09b6
+    test_verify_reviewer.py
+        93a3f7dcd0991c1cc887477dd6952a8b958b0771a65105fb81814ada5e4d524b
+
+2) v2.8_r3 本版 5 个核验对象（SHA256SUMS.txt 全部 5 行）
+    verify_reviewer.py
+        91ebc00be062924a30ed7beb9b3f97f1957fda666e6cbc12548c9eba69f9fbc6
+    test_verify_reviewer.py
+        558b12269468fd5500465b93dfcf399aff9ed05949786181ace5d17ced0cdd4d
+    test_three_state_v28r3.py
+        2abe9e655136ca42a980bb83764cca4291b8783730f9937d3e1702bc2b3984a4
+    verify_reviewer_v2.8_to_r3.diff
+        db1670e855ae27efd84f9ab52204a923e8938ac8d61b351cc547c00e1edc5aa0
+    test_verify_reviewer_v2.8_to_r3.diff
+        f30a405a636eafb88bfe60ca9244d9c11136fb741da3ae2dfb38d1438ebe8807
+
+3) 数据侧 8 个冻结值（本轮未改任何数据文件）
+    sample_350.csv
+        39c55826d6cdf98f7da18d61500005b9de8bf297af5775f92ed254ad94f680cc
+    human_label_template.csv
+        afef29e353790be0de1a5bf88f616f51136da91d893b2d2d764878fa14c06450
+    population_manifest.csv
+        8f8ed27d952a516eb84ec3ac39a929ca6b4972404edfbe918a82ceae5d3777ae
+    sampling_config.json
+        126153f3794b11fbd3a7fbc9aff222cb581bcea5abfe4ea3d468c998379b52b9
+    sampling_report.md
+        c49156be76038724c9a5c05a1029669bb3a192ad6f9b3bc92946f759c400d950
+    ANNOTATION_GUIDE.md
+        bd78b959f863efe8f01bea810622c55412db09fcfaa01036bc8024582dbebec8
+    manifest.sha256
+        1d556c65c9a44dcd02806d4590dec98571907c1d871c4836c2e3cb44d74449d2
+    seq_sha256（派生值，非文件哈希）
+        a08a909a5930863709e65813e06c2c209b7c8ae2d09234cf9e897775c7f0aba8
+
+4) 可复算的校验方式
+        sha256sum -c SHA256SUMS.txt        # 5 行全部 OK
+        sha256sum -c <数据包内 SHA256SUMS.txt>   # 7 行全部 OK
+    两份 diff 从 1) 的 C 版基线套回，用 Python 复算所得哈希与 2) 逐字节一致：
+        verify_reviewer.py        -> 91ebc00be062924a30ed7beb9b3f97f1957fda666e6cbc12548c9eba69f9fbc6
+        test_verify_reviewer.py   -> 558b12269468fd5500465b93dfcf399aff9ed05949786181ace5d17ced0cdd4d
+    本函与 R3_CHANGES.txt 中所有哈希均为完整 64 位，无 8 位缩写、无省略号。
+    三点式缩写可自检（应无输出）：
+        grep -nE '[0-9a-f]{8}[.]{3}' *.txt
+    短哈希字面量可用下式扫描（应输出空列表）：
+        python -c "import re,glob;p=re.compile(r'(?<![0-9a-f])[0-9a-f]{8,63}(?![0-9a-f])');print([(f,i,h) for f in glob.glob('*.txt') for i,l in enumerate(open(f,encoding='utf-8'),1) for h in p.findall(l)])"
+
+--------------------------------------------------------------------------------
+二、主程序为何改动（主程序 SHA-256 由第一节基线值改为第一节本版值）
+--------------------------------------------------------------------------------
+在 C 版主程序上实跑（Python 3.13.14，sys.get_int_max_str_digits() = 4300）：
+    parse_version_tuple("1" * 5000 + ".0")
+    RAISED = ValueError: Exceeds the limit (4300 digits) for integer string
+             conversion: value has 5000 digits
+VERSION_RE 的 \d+ 不限制位数，fullmatch 通过后在 int(m.group("major")) 处触发
+Python 3.11+ 转换上限；C 版无异常保护，函数对外抛异常而非按契约返回 None。
+
+修改仅在 parse_version_tuple：docstring 增 1 行说明；把三处 int() 转换包进
+try / except ValueError -> return None，只捕获 ValueError，不吞其他异常。
+VERSION 常量仍为 "2.8"；V1–V10、check_v8、check_python_env、
+_is_absolute_like、Ctx.p 等模块未改。
+
+改动后主验证器复跑：
+    PASS=10 FAIL=0 SKIP=0，OVERALL_PASS=true，退出码 0
+    PYTHON_REPRODUCIBILITY = UNVERIFIED (config 无 generation_python 记录)
+
+--------------------------------------------------------------------------------
+三、测试脚本 SKIP 语义与 skip() 实现
+--------------------------------------------------------------------------------
+    第 221 行  skip("T2", "当前环境无法创建目录符号链接，测试未覆盖", ...) ; return
+    第 271 行  skip("T4", "当前环境无法创建目录符号链接，测试未覆盖", ...) ; return
+    第 390 行  skip("T6a", "卷未启用 8.3 短名，当前环境无法覆盖该场景",
+                   "GetShortPathNameW -> %r" % (sp,)) ; return
+    C 版这三处原为 check(..., False) 与 check(..., True)；旧描述已无残留。
+
+skip() 位于 test_verify_reviewer.py 第 108–115 行（主程序内无该函数），
+核查结论为实现正确、无需修改：
+    check()  RESULTS.append((cid, desc, bool(cond), detail))
+    skip()   SKIPPED.append(cid) ; RESULTS.append((cid, desc, True, reason))
+    汇总第 724–727 行：n = len(RESULTS)、bad = [r for r in RESULTS if not r[2]]、
+                     n_skip = len(SKIPPED)、n_pass = n - n_skip - len(bad)
+    第 739 行：return 0 if not bad else 1
+SKIP 项以 True 登记（不进 bad），又被 n_skip 从 n_pass 扣除，因此不计 PASS、
+不算被测代码失败、不导致退出码非零。
+
+--------------------------------------------------------------------------------
+四、实测结果
+--------------------------------------------------------------------------------
+外层定向验证 test_three_state_v28r3.py --selfcheck：22 项断言，PASS=22 FAIL=0。
+    P1  11 例：major/minor/patch 各 5000 位、4301 位边界均返回 None；
+        正常白名单（"3.13.15"、"3.10"、"Python 3.12 (64-bit)" 等）不回归；
+        非字符串仍返回 None。全部无异常、无错值。
+    S1  真机不打桩：T2a–T2e / T4a–T4b / T6a–T6c 共 10 条全非 FAIL，
+        SKIPPED=[]，本机 8.3 短名可用故 T6a 记 PASS。
+    S2  make_symlink_dir 抛 OSError、short_path 返回 None：
+        SKIPPED 恰为 ['T2','T4','T6a']，三组各只登记 1 条、均非 FAIL、
+        SKIP 后不再产生该组后续断言。
+    S3  受限 + 篡改 parse_version_tuple 制造真实 FAIL：
+        共 74 项，PASS=45 SKIP=5 FAIL=24，退出码 1；
+        FAIL ids 与 SKIPPED 交集为空，FAIL 未被降级为 SKIP；三态守恒。
+
+两轮全量回归（均 -W error，无 SyntaxWarning / ResourceWarning）：
+    a) 本机真机，直接跑测试脚本
+       共 81 项，PASS=81 SKIP=0 FAIL=0，退出码 0
+    b) 受限环境，外层脚本 mock OSError
+       共 74 项，PASS=69 SKIP=5 FAIL=0，退出码 0
+       SKIP 明细：T2, T4, T6a, T7a, T7b
+    附加 mixed：共 74 项，PASS=45 SKIP=5 FAIL=24，退出码 1
+
+4.1 统计口径的代码事实（回应您第二节关于 N 的定义）
+    您提出 N = |RESULTS| + |SKIPPED|，并担心 SKIPPED 重复计入 RESULTS。
+    按 r3 源码，这两个容器不是互斥集合：skip() 同时写入两处，SKIPPED 是
+    RESULTS 的 cid 子集。直接贴源码（test_verify_reviewer.py）：
+
+    100 | def check(cid, desc, cond, detail=""):
+    101 |     RESULTS.append((cid, desc, bool(cond), detail))
+    102 |     print("  [%s] %-4s %s" % ("PASS" if cond else "FAIL", cid, desc))
+    103 |     if detail:
+    104 |         for line in str(detail).splitlines():
+    105 |             print("            %s" % line)
+    106 |
+    107 |
+    108 | def skip(cid, desc, reason=""):
+    109 |     """记录"环境不具备测试条件"。与 FAIL 区分：不计入 PASS，也不影响退出码。"""
+    110 |     SKIPPED.append(cid)
+    111 |     RESULTS.append((cid, desc, True, reason))     # <-- 同时进 RESULTS
+    112 |     print("  [SKIP] %-4s %s" % (cid, desc))
+    113 |     if reason:
+    114 |         for line in str(reason).splitlines():
+    115 |             print("            %s" % line)
+
+    724 |     n = len(RESULTS)
+    725 |     bad = [r for r in RESULTS if not r[2]]
+    726 |     n_skip = len(SKIPPED)
+    727 |     n_pass = n - n_skip - len(bad)
+    728 |     print("\n" + "=" * 78)
+    729 |     print("统计：共 %d 项，PASS=%d SKIP=%d FAIL=%d"
+    730 |           % (n, n_pass, n_skip, len(bad)))
+    731 |     if SKIPPED:
+    732 |         print("  SKIP 明细（环境不具备条件，不代表被测代码有问题，也不计 PASS）：%s"
+    733 |               % ", ".join(SKIPPED))
+    734 |     if bad:
+    735 |         for cid, desc, _, detail in bad:
+    736 |             print("  FAIL [%s] %s" % (cid, desc))
+    737 |     print("结论：%s" % ("ALL PASS（无 FAIL）" if not bad else "存在失败"))
+    738 |     print("=" * 78)
+    739 |     return 0 if not bad else 1
+
+    全文件只有两处写 RESULTS（第 101、111 行）、一处写 SKIPPED（第 110 行）。
+    因此 N = len(RESULTS) 已包含 PASS / FAIL / SKIP 三类记录；SKIPPED 只是
+    「其中哪些是 SKIP」的索引列表，不能再与 RESULTS 相加，否则重复计数。
+
+    受限环境本次实测（非引用报告）：
+        len(RESULTS)                = 74
+        len(SKIPPED)                = 5
+        RESULTS 中属于 SKIP 的记录  = 5
+        SKIPPED 是 RESULTS 的 cid 子集 = True
+        PASS = 69   SKIP = 5   FAIL = 0
+        PASS + SKIP + FAIL          = 74 = len(RESULTS)
+        |RESULTS| + |SKIPPED|       = 79（与 74 不等，若作总数会重复计数）
+        SKIPPED 元素无重复           = True
+        SKIP 记录均以 True 登记      = True
+        退出码                       = 0
+
+    结论：74 项 / PASS=69 / SKIP=5 / FAIL=0 在当前实现下自洽。您指出的重叠
+    登记确实存在，但汇总只以 len(RESULTS) 作分母，未把两个容器相加，因此
+    没有重复统计。退出码由第 739 行严格只由 bad（FAIL）决定，SKIP 不参与。
+
+4.2 对应您第三节六项待核的代码索引
+    1) parse_version_tuple 只捕获 ValueError：verify_reviewer.py 第 302-320 行
+       （对应主程序 diff 第 2 hunk）；正常白名单行为由 P1 11 例与 S1 覆盖。
+    2) T2/T4/T6a 的 SKIP 只在 except OSError 与 short_path 返回 None 分支：
+       测试脚本第 218-223、268-273、389-392 行。建链成功后的真实功能断言在
+       第 226-240、276-292、394-412 行，仍由 check() 登记，失败即 FAIL。
+       S3 以篡改 parse_version_tuple 制造 24 条真实 FAIL、退出码 1，证明前置
+       条件 SKIP 不会把功能断言失败一并吸收。
+    3) RESULTS 与 SKIPPED 的处理：见 4.1。
+    4) 退出码：第 739 行 return 0 if not bad else 1。
+    5) 五个文件哈希与 SHA256SUMS.txt 一致：sha256sum -c 五行 OK；两份 diff
+       从 C 版基线套回，复算哈希与本版逐字节一致。
+    6) 主程序变更范围：verify_reviewer_v2.8_to_r3.diff 仅 2 hunk，第 1 hunk
+       为 docstring 加 1 行，第 2 hunk 仅 parse_version_tuple 函数体；其余
+       已审查逻辑零改动，VERSION 仍为 "2.8"。
+
+--------------------------------------------------------------------------------
+五、唯一性核对结果（如实记录）
+--------------------------------------------------------------------------------
+任务要求「81 个测试 ID 的并集必须等于 81，无重复」。按 r3 源码实测：
+    len(RESULTS) = 81（真实环境）
+    唯一 cid 数  = 46
+    复用 ID      = T1×28、T3×5、T5g×5
+即 81 是断言条数口径，不是唯一 ID 数；「并集 = 81」在当前分组 ID 设计下
+不成立，r3 未改动 ID 体系。
+
+实际验证的「无重复」为以下四条，S4 全部 PASS、退出码 0：
+    SKIPPED 无重复元素；
+    每个 SKIP cid 在 RESULTS 中恰好登记 1 次；
+    SKIP 分支 return，不产生同一组后续 PASS/FAIL 记录；
+    PASS + SKIP + FAIL == len(RESULTS)。
+
+受限环境 len(RESULTS) = 74，不是 81：
+    T2 正常 5 条 -> SKIP 1 条（-4）
+    T4 正常 2 条 -> SKIP 1 条（-1）
+    T6 正常 3 条 -> SKIP 1 条（-2），合计 -7；T7 正常与 SKIP 均为 2 条。
+C 版曾记录的「项数恒 81」只在 T7 单独受限时成立，不适用于 T2/T4/T6
+同时受限的场景。
+
+--------------------------------------------------------------------------------
+六、口径边界
+--------------------------------------------------------------------------------
+    - r3 是交付批次号；主程序 VERSION 仍为 "2.8"。
+    - 数据侧 8 个冻结值见第一节，未改任何数据文件。
+    - PYTHON_REPRODUCIBILITY 保持 UNVERIFIED；未补 generation_python，
+      不声明跨 Python 版本 VERIFIED。
+    - 未做真实分类，未执行 git 提交。
+    - 本函不预设审计状态，以您的独立执行结果为准。
+================================================================================

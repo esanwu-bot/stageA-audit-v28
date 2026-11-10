@@ -58,3 +58,30 @@ python -W error test_verify_reviewer.py --data <DATA> --verifier verify_reviewer
 - 数据侧 8 个哈希保持冻结；未做真实分类，未做 git 提交。
 - 本仓库只是文件传输通道，不代表审计结论。当前裁定仍为
   `SCRIPT_AUDIT_PARTIAL_PASS`，以 Reviewer 的独立执行结果为准。
+
+## r3（v2.8_r3，本轮交付）
+
+r2 包仍保留在根目录，仅作为 C 版历史基线；本轮核验对象是 `r3/` 目录。
+
+| 项 | 值 |
+| --- | --- |
+| 最小实物包 | `r3/audit_minimal_v28_r3.zip` |
+| 字节 | 34,049 |
+| SHA-256 | `866cc36f6dc263e3efa89869a251957a77b2fd30f72ce916aa0b3df8faf65f9e` |
+| ZIP 条目 | 6 个（要求的 5 个文件 + 外层验证脚本，因 SHA256SUMS.txt 第 3 行列了它） |
+
+```sh
+BASE=https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/r3
+curl -fL -O "$BASE/audit_minimal_v28_r3.zip"
+curl -fL -O "$BASE/CHECKSUM_r3.txt"      # 包体校验清单在 r3/ 目录内
+sha256sum -c CHECKSUM_r3.txt
+unzip -o audit_minimal_v28_r3.zip -d r3 && cd r3
+sha256sum -c SHA256SUMS.txt               # 5 行 OK
+```
+
+逐项直链：`$BASE/verify_reviewer.py`、`$BASE/test_verify_reviewer.py`、
+`$BASE/verify_reviewer_v2.8_to_r3.diff`、
+`$BASE/test_verify_reviewer_v2.8_to_r3.diff`、`$BASE/SHA256SUMS.txt`。
+
+说明文件：`r3/REVIEWER_LETTER_v28_r3.txt`、`r3/R3_CHANGES.txt`、
+`r3/test_three_state_v28r3.py`（外层三态定向验证）。
