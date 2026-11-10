@@ -1,0 +1,11 @@
+=== 样本核验 2026-11-11 07:46:03 ===
+[EXISTS] /e/workspace/IcPdfParser/data/pdfs/CD4098BE-NG__cd4098b.pdf
+  size=803726 bytes
+699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483 */e/workspace/IcPdfParser/data/pdfs/CD4098BE-NG__cd4098b.pdf
+[EXISTS] /e/workspace/IcPdfParser/data/pdfs/CC2500EMK__cc2500.pdf
+  size=2509323 bytes
+27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4 */e/workspace/IcPdfParser/data/pdfs/CC2500EMK__cc2500.pdf
+
+=== CSV 记录（期望值） ===
+V002,699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483,E:\workspace\IcPdfParser\data\pdfs\CD4098BE-NG__cd4098b.pdf,DS_STRONG,IC_PARSE,17
+V022,27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4,E:\workspace\IcPdfParser\data\pdfs\CC2500EMK__cc2500.pdf,DS_STRONG,IC_PARSE,99

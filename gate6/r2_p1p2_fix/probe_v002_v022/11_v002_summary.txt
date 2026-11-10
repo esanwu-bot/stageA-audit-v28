@@ -1,0 +1,68 @@
+=== V002 探针证据摘要 ===
+[样本]
+  filename      = CD4098BE-NG__cd4098b.pdf
+  evidence_name = CD4098BE-NG__cd4098b.pdf
+  physical_name = 0c011cace66e4e31ac7f7e9061ea28f3.pdf
+  sha256(upload)= 699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483
+  bytes         = 803726
+  page_count    = 17
+[请求]
+  request_id    = WB-20261111-074636-56ea
+  http          = 200
+  status        = PARSE_COMPLETED
+[分类]
+  decision              = DATASHEET
+  doc_type              = DS_STRONG
+  route                 = IC_PARSE
+  confidence            = high
+  document_type         = IC_DATASHEET
+  assigned_type         = DS_STRONG
+  classification_status = SUCCESS
+  read_status           = OK
+  source_hash_status    = success
+  evidence_conflict     = False
+  ic_datasheet_extraction= True
+  sha256_matches_upload = True
+  classifier_version    = docclassifier-2.2.1
+  rule_version          = doc-classifier-v2
+  failure_kind          = NONE
+  review_status         = pending
+  evidence_pages        = []
+  gate_failed           = []
+  classifier_called     = True
+[Parser]
+  called        = True
+  status        = PARSE_COMPLETED
+  run_id        = G6A-20261111-074646-32d1
+  stages_seen   = ['WORKER_STARTED', 'DEPS_VERIFIED', 'PARSER_MODULE_IMPORTED', 'PARSER_CALL_ENTERED', 'PARSER_CALL_RETURNED']
+  entered/ret   = True / True
+  parse_pdf_calls = 1
+  missing/partial = [] / []
+[run_manifest.json]
+  run_id                = G6A-20261111-074646-32d1
+  project_version       = 0.1.0
+  parser_version        = 0.1.0-phase1
+  contract_version      = data-contract/v0.2
+  parser_config_sha256  = ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c
+  document_sha256       = 699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483
+  page_count            = 17
+  python_version        = 3.13.15
+  platform              = Windows-10-10.0.19045-SP0
+  keys                  = ['artifacts', 'boundary_decisions', 'candidate_count', 'contract_version', 'detection_methods', 'document_id', 'document_sha256', 'dpi', 'model', 'page_count', 'parser_config', 'parser_config_sha256', 'parser_version', 'platform', 'project_version', 'prompt_version', 'python_version', 'rendered_pages', 'requested_mpn', 'run_id', 'table_count', 'table_params', 'table_params_sha256']
+[artifacts] 共 16 个文件
+  7adf3efc6a094fa759d671a3c750567d76e7d42e01d812a351304bbf6d250619      95101  boundary_decisions.json
+  533f0ee722bd3391e55cf1a2a9386afcc229c1fb5004e545e89e55886b9f6bb9     254471  candidates.json
+  269bd4a905a47c219551715edf2fcd4087323f93be31bd725eb06ef5f4530348       1387  document.json
+  4eaeed1789231bccc4b45c11ad4c2c31bf97abb392826932a614378908f7c718       6508  pages/geometry.json
+  d191c19e238aba912f3f2b87ceb19e15c4d99335574a5de71b1c684457c32a68     318593  pages/page-0006.png
+  c5b85e7cb372fb5c1ac8b98ac3c7e87eb27814b96954247cf9886700f9494476     152323  pages/page-0008.png
+  c125d6b9ad611cb876adf509ff4cb3354ebe38be8734e6da2be5ac4096170e6c     105342  pages/page-0009.png
+  70ca7477cbf76993889ec70bc7b88ec1e8b36b0a3f9ec9056ade333d343c18b0      74298  pages/page-0010.png
+  eb4695cb0cff6bfdd83a32ef6c2d03cb335383d20eea92bdcf58e29ef414befa     117964  pages/page-0014.png
+  023b5b6ddf08bee98a346f73c87c7edd9ba3bc14abbad068be3de2e39dab06ea      93044  pages/page-0015.png
+  5dd610ac87ce12e7f6b7487d7c41f7e4ce595e6b4b0df7366cddec5331f2e166        298  product.json
+  47c0a412ec29552da134a275f419a405ab63b368fa141d1318b69c778fd50c92       2578  run_config.json
+  797537181d223bb7c94f59be686e4f8a83d2a91d1a58fc4c5270f2a247bc7665       4328  run_manifest.json
+  699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483     803726  source.pdf
+  26a6aa0ce3b1552ed36175c4555fae9b56ad5f2c816f12e2559bee4219efb9c4     260515  tables.json
+  b01696e227e20a1ef5e46d2c6754c0b0dfe0bad86035457f5e621b8afd09c2ef     559001  text_blocks.json

@@ -1,0 +1,533 @@
+{
+  "pipeline": "preparse_gate_v1",
+  "endpoint_kind": "production_gate",
+  "llm_called": false,
+  "database_written": false,
+  "classifier_llm_calls": 0,
+  "classifier_token_usage": 0,
+  "extraction": null,
+  "extraction_note": "第二阶段 LLM 输出使用 extraction 命名空间；本工作台不产出该字段",
+  "status": "PARSE_COMPLETED",
+  "gate6a_status": "NOT_STARTED",
+  "frozen": false,
+  "classification": {
+    "called": true,
+    "status": "SUCCESS",
+    "decision": "DATASHEET",
+    "is_datasheet": true,
+    "is_confirmed_datasheet": true,
+    "admit_to_parser": true,
+    "document_type": "IC_DATASHEET",
+    "doc_type": "DS_STRONG",
+    "assigned_type": "DS_STRONG",
+    "route": "IC_PARSE",
+    "confidence": "high",
+    "classifier_version": "docclassifier-2.2.1",
+    "rule_version": "doc-classifier-v2",
+    "classification_status": "SUCCESS",
+    "failure_kind": "NONE",
+    "read_status": "OK",
+    "review_status": "pending",
+    "source_sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+    "source_hash_status": "success",
+    "sha256_matches_upload": true,
+    "evidence_conflict": false,
+    "ic_datasheet_extraction": true,
+    "evidence_pages": [
+      1,
+      2
+    ],
+    "matched_rules": [
+      {
+        "rule_id": "EVM_FILENAME_SUFFIX",
+        "matched_text": "EMK",
+        "source": "mpn",
+        "page": null,
+        "confidence": "medium",
+        "strength": "medium",
+        "extractor": "regex_filename",
+        "extract_status": "success"
+      },
+      {
+        "rule_id": "DS_DOCUMENT_TITLE",
+        "matched_text": "datasheet",
+        "source": "metadata",
+        "page": null,
+        "confidence": "high",
+        "strength": "strong",
+        "extractor": "pymupdf",
+        "extract_status": "success"
+      },
+      {
+        "rule_id": "DS_PRODUCT_MODEL_TITLE",
+        "matched_text": "Low-Cost Low-Power 2.4 GHz RF Transceiver datasheet (Rev. C) Data Sheet CC2500 SWRS040C Page 1 of 89 CC2500 Low-Cost Low-Power 2.4 GHz RF Transceiver Applicatio",
+        "source": "metadata",
+        "page": null,
+        "confidence": "high",
+        "strength": "strong",
+        "extractor": "pymupdf",
+        "extract_status": "success"
+      },
+      {
+        "rule_id": "DS_ELECTRICAL_SECTIONS",
+        "matched_text": "Features",
+        "source": "first_page",
+        "page": 1,
+        "confidence": "medium",
+        "strength": "medium",
+        "extractor": "pymupdf",
+        "extract_status": "success"
+      },
+      {
+        "rule_id": "DS_ELECTRICAL_SECTIONS",
+        "matched_text": "Features",
+        "source": "first_page",
+        "page": 2,
+        "confidence": "medium",
+        "strength": "medium",
+        "extractor": "pymupdf",
+        "extract_status": "success"
+      }
+    ],
+    "rejected_rules": [],
+    "unmatched_rules": [
+      {
+        "rule_id": "EVM_FILENAME_WEAK",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "DOCNUMBER_DS",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "DOCNUMBER_UG",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "EVM_BOARD_TITLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_BOARD_SCHEMATIC",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_BOARD_TERMS",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_BODY_MENTION",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "OTHER_TITLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_NVM_GUARD",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "PAGE_TEXT_UNAVAILABLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVIDENCE_CONFLICT",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      }
+    ],
+    "page_evidence": [
+      {
+        "page": 1,
+        "chars": 2189,
+        "extractor": "pymupdf",
+        "extract_status": "success",
+        "board_groups": [],
+        "ds_groups": [
+          "SECTION_FEATURES"
+        ]
+      },
+      {
+        "page": 2,
+        "chars": 1147,
+        "extractor": "pymupdf",
+        "extract_status": "success",
+        "board_groups": [],
+        "ds_groups": [
+          "SECTION_FEATURES"
+        ]
+      },
+      {
+        "page": 3,
+        "chars": 1840,
+        "extractor": "pymupdf",
+        "extract_status": "success",
+        "board_groups": [],
+        "ds_groups": []
+      }
+    ],
+    "provenance": {
+      "source_product_mpn": "CC2500EMK",
+      "document_subject_mpn": "cc2500",
+      "source_context": "EVM_BUNDLE",
+      "association_status": "inferred_from_filename",
+      "provenance_evidence": [
+        "filename_separator:'__'",
+        "inference=inferred_from_filename",
+        "source_product_mpn='CC2500EMK'（带 EVM/EVAL 家族后缀）",
+        "document_subject_mpn='cc2500'"
+      ],
+      "original_filename": "CC2500EMK__cc2500.pdf",
+      "parse_status": "parsed"
+    },
+    "evidence_text": "EVM_FILENAME_SUFFIX@mpn:EMK | DS_DOCUMENT_TITLE@metadata:datasheet | DS_PRODUCT_MODEL_TITLE@metadata:Low-Cost Low-Power 2.4 GHz RF Transceiver datasheet (Rev. C) | DS_ELECTRICAL_SECTIONS@p1:Features | DS_ELECTRICAL_SECTIONS@p2:Features",
+    "document_id": "doc_27364e9593879ec0",
+    "mpn": "CC2500EMK",
+    "file_path_classified": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\icpdf-cls-kvt9b7jw\\CC2500EMK__cc2500.pdf",
+    "gate_rule": "DATASHEET 当且仅当：分类子进程成功返回，且 route=IC_PARSE、doc_type=DS_STRONG、classification_status=SUCCESS、read_status=OK、source_hash_status=success、ic_datasheet_extraction=true、evidence_conflict=false、source_sha256 与上传字节 SHA-256 逐字节一致。其余情况一律 NON_DATASHEET 或 AMBIGUOUS，不进入 parse_pdf()。",
+    "gate_checks": {
+      "classifier_returned_ok": {
+        "ok": true,
+        "actual": "SUCCESS",
+        "expected": "SUCCESS"
+      },
+      "route": {
+        "ok": true,
+        "actual": "IC_PARSE",
+        "expected": "IC_PARSE"
+      },
+      "doc_type": {
+        "ok": true,
+        "actual": "DS_STRONG",
+        "expected": "DS_STRONG"
+      },
+      "classification_status": {
+        "ok": true,
+        "actual": "SUCCESS",
+        "expected": "SUCCESS"
+      },
+      "read_status": {
+        "ok": true,
+        "actual": "OK",
+        "expected": "OK"
+      },
+      "source_hash_status": {
+        "ok": true,
+        "actual": "success",
+        "expected": "success"
+      },
+      "ic_datasheet_extraction": {
+        "ok": true,
+        "actual": true,
+        "expected": true
+      },
+      "evidence_conflict": {
+        "ok": true,
+        "actual": false,
+        "expected": false
+      },
+      "source_sha256_matches_upload": {
+        "ok": true,
+        "actual": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+        "expected": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4"
+      }
+    },
+    "gate_reasons": [
+      "全部准入条件成立：route=IC_PARSE / doc_type=DS_STRONG / 证据无冲突 / 源 SHA-256 与上传字节一致"
+    ],
+    "entry_point": "icpdf.classification.classifier.classify_one",
+    "classifier_is_pure_rule": true,
+    "classifier_llm_calls": 0,
+    "classifier_token_usage": 0,
+    "classifier_stages": [
+      "WORKER_STARTED",
+      "EVIDENCE_LINK_READY",
+      "CLASSIFIER_CALL_ENTERED",
+      "CLASSIFIER_CALL_RETURNED",
+      "EVIDENCE_LINK_REMOVED"
+    ],
+    "classifier_worker_timed_out": false,
+    "classifier_worker_returncode": 0
+  },
+  "classifier_called": true,
+  "parser": {
+    "called": true,
+    "status": "PARSE_COMPLETED",
+    "reason": null,
+    "run_id": "G6A-20261111-074715-f8db",
+    "run_dir": "E:\\workspace\\icpdf-extractor\\workbench\\runs\\G6A-20261111-074715-f8db",
+    "worker_started": true,
+    "worker_start_failed": false,
+    "parser_call_entered": true,
+    "parser_call_returned": true,
+    "parser_call_count": 1,
+    "stages_seen": [
+      "WORKER_STARTED",
+      "DEPS_VERIFIED",
+      "PARSER_MODULE_IMPORTED",
+      "PARSER_CALL_ENTERED",
+      "PARSER_CALL_RETURNED"
+    ]
+  },
+  "artifact_inventory": [
+    {
+      "artifact": "run_manifest",
+      "actual_file": "run_manifest.json",
+      "status": "REAL_GENERATED",
+      "sha256": "bbcf5f06155135ba8bf09d0dcd769bfedc242883b062fffe37aeb0a74a0e0224",
+      "bytes": 4885,
+      "note": ""
+    },
+    {
+      "artifact": "document",
+      "actual_file": "document.json",
+      "status": "REAL_GENERATED",
+      "sha256": "ebd3d854f412172bfd73bf62f03ac0fbe334c9d165880b70bcf8fb55d969ab2f",
+      "bytes": 5105,
+      "note": ""
+    },
+    {
+      "artifact": "text_blocks",
+      "actual_file": "text_blocks.json",
+      "status": "REAL_GENERATED",
+      "sha256": "8d7293f2b1619dd1088c133b2c68fdb507ef02f397e2aa13bbf67fe2d414332a",
+      "bytes": 17723256,
+      "note": ""
+    },
+    {
+      "artifact": "tables",
+      "actual_file": "tables.json",
+      "status": "REAL_GENERATED",
+      "sha256": "37ff2b57dcc99b6d739b6e97592a42310ce0c3684381b4c0cbbd24eebca079a2",
+      "bytes": 3094778,
+      "note": ""
+    },
+    {
+      "artifact": "candidates",
+      "actual_file": "candidates.json",
+      "status": "REAL_GENERATED",
+      "sha256": "074bc35974de6b968f0028d8559b85c75f65dc6945791816538c3403763ec785",
+      "bytes": 2340044,
+      "note": ""
+    },
+    {
+      "artifact": "boundary_decisions",
+      "actual_file": "boundary_decisions.json",
+      "status": "REAL_GENERATED",
+      "sha256": "6924371ea7175ae11d83a3d2503cc6f7f8b24642b527984693d0ac34ac93cbb0",
+      "bytes": 1445848,
+      "note": ""
+    },
+    {
+      "artifact": "product",
+      "actual_file": "product.json",
+      "status": "REAL_GENERATED",
+      "sha256": "c9e09ac0e0904158ed567a27d17d29f183dbc05004d0fc7ce560a07c76f556cb",
+      "bytes": 292,
+      "note": ""
+    },
+    {
+      "artifact": "run_config",
+      "actual_file": "run_config.json",
+      "status": "REAL_GENERATED",
+      "sha256": "97369eb08d710f01c5dfe849773bc684d12040feb1c5e7dce345b8367806601c",
+      "bytes": 2575,
+      "note": ""
+    },
+    {
+      "artifact": "geometry",
+      "actual_file": "pages/geometry.json",
+      "status": "REAL_GENERATED",
+      "sha256": "07c9ec1d81d2a5f139e93536e2971562c0f6115e2804b7443761e900db150164",
+      "bytes": 36192,
+      "note": ""
+    }
+  ],
+  "contract_gaps": [
+    "当前 Parser 不产出 evidence.json，无法做证据页码回溯，Gate 6A 质量评估会因此受限",
+    "当前 Parser 不产出 qc_report.json，不得把外部 validate_evidence.py 当作每次 Run 的 QC 产物",
+    "raw_extraction.json 在契约中的实际文件名为 text_blocks.json，属于改名而非缺失",
+    "parser_output 是 Parser-only 原始产物，不是标准器件参数抽取结果；不做单位归一化、不做参数语义归类、不处理多型号歧义"
+  ],
+  "code_version": {
+    "git_head": "3ed22a4a83564b36ca238792af4b2328fd966469",
+    "project_version": "0.1.0",
+    "parser_version": "0.1.0-phase1",
+    "contract_version": "data-contract/v0.2",
+    "parser_config_sha256": "ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c",
+    "python_version": "3.13.15",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "manifest_sha256": "bbcf5f06155135ba8bf09d0dcd769bfedc242883b062fffe37aeb0a74a0e0224"
+  },
+  "diagnostics": {
+    "parse_worker_started": true,
+    "classifier_worker_started": false,
+    "worker_kind": "parse",
+    "worker_start_failed": false,
+    "worker_start_error": null,
+    "parse_pdf_calls": 1,
+    "parser_call_count": 1,
+    "parser_call_entered": true,
+    "parser_call_returned": true,
+    "worker_started_marker": true,
+    "stages_seen": [
+      "WORKER_STARTED",
+      "DEPS_VERIFIED",
+      "PARSER_MODULE_IMPORTED",
+      "PARSER_CALL_ENTERED",
+      "PARSER_CALL_RETURNED"
+    ],
+    "worker_returncode": 0,
+    "worker_timeout_seconds": 180.0,
+    "elapsed_seconds": 29.389,
+    "worker_stderr_tail": "",
+    "worker_stdout_noise": "[WORKER] WORKER_STARTED\r\n[WORKER] DEPS_VERIFIED\r\n[WORKER] PARSER_MODULE_IMPORTED\r\n[WORKER] PARSER_CALL_ENTERED\r\n[WORKER] PARSER_CALL_RETURNED\r\n",
+    "parser_error": null,
+    "parse_summary": {
+      "run_id": "G6A-20261111-074715-f8db",
+      "run_dir": "E:\\workspace\\icpdf-extractor\\workbench\\runs\\G6A-20261111-074715-f8db",
+      "document_id": "doc-27364e959387",
+      "document_sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+      "page_count": 99,
+      "tables": 128,
+      "candidates": 3127,
+      "manifest_sha256": "bbcf5f06155135ba8bf09d0dcd769bfedc242883b062fffe37aeb0a74a0e0224"
+    },
+    "missing_artifacts": [],
+    "missing_artifact_count": 0,
+    "partial_artifacts": [],
+    "partial_artifact_count": 0,
+    "required_artifact_failure_count": 0,
+    "required_artifact_complete": true,
+    "artifact_accounting_note": "MISSING=文件不存在；PARTIAL=文件存在但不可解析；两者均计入 required_artifact_failure_count，PARTIAL 绝不算完整产物",
+    "sha256_cross_check": {
+      "upload_sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+      "manifest_document_sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+      "match": true,
+      "note": "不一致说明源 PDF 与 run 产物之间发生了路径或字节漂移"
+    },
+    "boundary_totals": {
+      "completed_tables": 128,
+      "decision_count": 795,
+      "decisions": {
+        "demote": 136,
+        "keep": 658,
+        "unresolved": 1
+      },
+      "failed_tables": 0,
+      "no_decision_tables": 0,
+      "skipped_groups": {
+        "outer_group_deferred": 23
+      },
+      "table_count": 128
+    },
+    "table_count_from_artifact": 128,
+    "candidate_count_from_artifact": 3127,
+    "note": "所有数值均由真实 artifacts 读取；取不到的字段保持 null，不做推断",
+    "classifier_gate": {
+      "classifier_worker_started": true,
+      "classifier_worker_start_failed": false,
+      "classifier_worker_start_error": null,
+      "classifier_worker_timed_out": false,
+      "classifier_worker_returncode": 0,
+      "classifier_stages_seen": [
+        "WORKER_STARTED",
+        "EVIDENCE_LINK_READY",
+        "CLASSIFIER_CALL_ENTERED",
+        "CLASSIFIER_CALL_RETURNED",
+        "EVIDENCE_LINK_REMOVED"
+      ],
+      "classifier_timeout_seconds": 45.0,
+      "parse_worker_started": false,
+      "parse_pdf_calls": 0,
+      "parser_call_count": 0,
+      "elapsed_seconds": 4.255,
+      "classifier_stderr_tail": ""
+    },
+    "gate_decision": "DATASHEET",
+    "evidence_isolation_note": "classification.* 是分类器证据；parser_output / artifact_inventory 是 Parser 证据；两者独立，不得用后者反填分类依据"
+  },
+  "request_id": "WB-20261111-074711-97c3",
+  "document": {
+    "filename": "CC2500EMK__cc2500.pdf",
+    "submitted_filename": "CC2500EMK__cc2500.pdf",
+    "sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+    "bytes": 2509323,
+    "page_count": 99,
+    "run_id": "G6A-20261111-074715-f8db",
+    "requested_mpn": "CC2500EMK__cc2500",
+    "requested_mpn_source": "filename_stem_fallback",
+    "requested_mpn_note": "这是调用 parse_pdf 的输入参数，不是 Parser 识别出的型号",
+    "document_id": "doc-27364e959387",
+    "run_dir": "E:\\workspace\\icpdf-extractor\\workbench\\runs\\G6A-20261111-074715-f8db"
+  },
+  "validation": {
+    "evidence_filename": "CC2500EMK__cc2500.pdf",
+    "submitted_filename": "CC2500EMK__cc2500.pdf",
+    "physical_filename": "408f6dce24964b7a9bce259d29314d8f.pdf",
+    "physical_path": "E:\\workspace\\icpdf-extractor\\workbench\\uploads\\WB-20261111-074711-97c3\\408f6dce24964b7a9bce259d29314d8f.pdf",
+    "filename_rewritten": false,
+    "bytes": 2509323,
+    "sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+    "pdf_magic_ok": true,
+    "path_safety_note": "物理名=<uuid4>.pdf，目录名=<WB 时间戳+随机>；用户提交名只作元数据，从不参与路径拼接。分类子进程在私有临时目录内以清洗后的证据名建立硬链接后再分类，分类结束即删除临时目录。"
+  },
+  "run_id": "G6A-20261111-074715-f8db",
+  "_trimmed": {
+    "is_full_response": false,
+    "removed_keys": {
+      "parser_output": 15003742
+    },
+    "removed_reason": "parser_output 为全量解析文本（9 个 JSON 产物内联），体积占响应 99% 以上；本包只保留头部/classification/parser 状态/diagnostics",
+    "full_response_file": "20_v022_response.json",
+    "full_response_bytes": 13962549,
+    "full_response_sha256": "829f5503129689fba7e11a51bbdd34d7ccaf5ef1666606003370ace0751d3278",
+    "full_response_location": "本地 workbench/_probe_v002_v022/20_v022_response.json（未推送）",
+    "kept_keys": [
+      "artifact_inventory",
+      "classification",
+      "classifier_called",
+      "classifier_llm_calls",
+      "classifier_token_usage",
+      "code_version",
+      "contract_gaps",
+      "database_written",
+      "diagnostics",
+      "document",
+      "endpoint_kind",
+      "extraction",
+      "extraction_note",
+      "frozen",
+      "gate6a_status",
+      "llm_called",
+      "parser",
+      "pipeline",
+      "request_id",
+      "run_id",
+      "status",
+      "validation"
+    ]
+  }
+}

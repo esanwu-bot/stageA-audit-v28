@@ -1,0 +1,502 @@
+{
+  "pipeline": "preparse_gate_v1",
+  "endpoint_kind": "production_gate",
+  "llm_called": false,
+  "database_written": false,
+  "classifier_llm_calls": 0,
+  "classifier_token_usage": 0,
+  "extraction": null,
+  "extraction_note": "第二阶段 LLM 输出使用 extraction 命名空间；本工作台不产出该字段",
+  "status": "PARSE_COMPLETED",
+  "gate6a_status": "NOT_STARTED",
+  "frozen": false,
+  "classification": {
+    "called": true,
+    "status": "SUCCESS",
+    "decision": "DATASHEET",
+    "is_datasheet": true,
+    "is_confirmed_datasheet": true,
+    "admit_to_parser": true,
+    "document_type": "IC_DATASHEET",
+    "doc_type": "DS_STRONG",
+    "assigned_type": "DS_STRONG",
+    "route": "IC_PARSE",
+    "confidence": "high",
+    "classifier_version": "docclassifier-2.2.1",
+    "rule_version": "doc-classifier-v2",
+    "classification_status": "SUCCESS",
+    "failure_kind": "NONE",
+    "read_status": "OK",
+    "review_status": "pending",
+    "source_sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+    "source_hash_status": "success",
+    "sha256_matches_upload": true,
+    "evidence_conflict": false,
+    "ic_datasheet_extraction": true,
+    "evidence_pages": [],
+    "matched_rules": [
+      {
+        "rule_id": "DS_DOCUMENT_TITLE",
+        "matched_text": "datasheet",
+        "source": "metadata",
+        "page": null,
+        "confidence": "high",
+        "strength": "strong",
+        "extractor": "pymupdf",
+        "extract_status": "success"
+      }
+    ],
+    "rejected_rules": [],
+    "unmatched_rules": [
+      {
+        "rule_id": "EVM_FILENAME_SUFFIX",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "EVM_FILENAME_WEAK",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "DOCNUMBER_DS",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "DOCNUMBER_UG",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "EVM_BOARD_TITLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_BOARD_SCHEMATIC",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_BOARD_TERMS",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_BODY_MENTION",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "DS_PRODUCT_MODEL_TITLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "DS_ELECTRICAL_SECTIONS",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "OTHER_TITLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVM_NVM_GUARD",
+        "extractor": "regex_filename",
+        "extract_status": "not_found",
+        "note": "文件名层已检查，未命中"
+      },
+      {
+        "rule_id": "PAGE_TEXT_UNAVAILABLE",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      },
+      {
+        "rule_id": "EVIDENCE_CONFLICT",
+        "extractor": "pymupdf",
+        "extract_status": "not_found",
+        "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+      }
+    ],
+    "page_evidence": [
+      {
+        "page": 1,
+        "chars": 436,
+        "extractor": "pymupdf",
+        "extract_status": "success",
+        "board_groups": [],
+        "ds_groups": []
+      },
+      {
+        "page": 2,
+        "chars": 49,
+        "extractor": "pymupdf",
+        "extract_status": "success",
+        "board_groups": [],
+        "ds_groups": []
+      },
+      {
+        "page": 3,
+        "chars": 49,
+        "extractor": "pymupdf",
+        "extract_status": "success",
+        "board_groups": [],
+        "ds_groups": []
+      }
+    ],
+    "provenance": {
+      "source_product_mpn": null,
+      "document_subject_mpn": "cd4098b",
+      "source_context": "UNKNOWN",
+      "association_status": "inferred_from_filename",
+      "provenance_evidence": [
+        "filename_separator:'__'",
+        "inference=inferred_from_filename",
+        "prefix='CD4098BE-NG' 是本文档自身的型号，非来源产品",
+        "document_subject_mpn='cd4098b'"
+      ],
+      "original_filename": "CD4098BE-NG__cd4098b.pdf",
+      "parse_status": "partial"
+    },
+    "evidence_text": "DS_DOCUMENT_TITLE@metadata:datasheet",
+    "document_id": "doc_699241f92bb31789",
+    "mpn": "CD4098BE-NG",
+    "file_path_classified": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\icpdf-cls-xeiump8v\\CD4098BE-NG__cd4098b.pdf",
+    "gate_rule": "DATASHEET 当且仅当：分类子进程成功返回，且 route=IC_PARSE、doc_type=DS_STRONG、classification_status=SUCCESS、read_status=OK、source_hash_status=success、ic_datasheet_extraction=true、evidence_conflict=false、source_sha256 与上传字节 SHA-256 逐字节一致。其余情况一律 NON_DATASHEET 或 AMBIGUOUS，不进入 parse_pdf()。",
+    "gate_checks": {
+      "classifier_returned_ok": {
+        "ok": true,
+        "actual": "SUCCESS",
+        "expected": "SUCCESS"
+      },
+      "route": {
+        "ok": true,
+        "actual": "IC_PARSE",
+        "expected": "IC_PARSE"
+      },
+      "doc_type": {
+        "ok": true,
+        "actual": "DS_STRONG",
+        "expected": "DS_STRONG"
+      },
+      "classification_status": {
+        "ok": true,
+        "actual": "SUCCESS",
+        "expected": "SUCCESS"
+      },
+      "read_status": {
+        "ok": true,
+        "actual": "OK",
+        "expected": "OK"
+      },
+      "source_hash_status": {
+        "ok": true,
+        "actual": "success",
+        "expected": "success"
+      },
+      "ic_datasheet_extraction": {
+        "ok": true,
+        "actual": true,
+        "expected": true
+      },
+      "evidence_conflict": {
+        "ok": true,
+        "actual": false,
+        "expected": false
+      },
+      "source_sha256_matches_upload": {
+        "ok": true,
+        "actual": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+        "expected": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483"
+      }
+    },
+    "gate_reasons": [
+      "全部准入条件成立：route=IC_PARSE / doc_type=DS_STRONG / 证据无冲突 / 源 SHA-256 与上传字节一致"
+    ],
+    "entry_point": "icpdf.classification.classifier.classify_one",
+    "classifier_is_pure_rule": true,
+    "classifier_llm_calls": 0,
+    "classifier_token_usage": 0,
+    "classifier_stages": [
+      "WORKER_STARTED",
+      "EVIDENCE_LINK_READY",
+      "CLASSIFIER_CALL_ENTERED",
+      "CLASSIFIER_CALL_RETURNED",
+      "EVIDENCE_LINK_REMOVED"
+    ],
+    "classifier_worker_timed_out": false,
+    "classifier_worker_returncode": 0
+  },
+  "classifier_called": true,
+  "parser": {
+    "called": true,
+    "status": "PARSE_COMPLETED",
+    "reason": null,
+    "run_id": "G6A-20261111-074646-32d1",
+    "run_dir": "E:\\workspace\\icpdf-extractor\\workbench\\runs\\G6A-20261111-074646-32d1",
+    "worker_started": true,
+    "worker_start_failed": false,
+    "parser_call_entered": true,
+    "parser_call_returned": true,
+    "parser_call_count": 1,
+    "stages_seen": [
+      "WORKER_STARTED",
+      "DEPS_VERIFIED",
+      "PARSER_MODULE_IMPORTED",
+      "PARSER_CALL_ENTERED",
+      "PARSER_CALL_RETURNED"
+    ]
+  },
+  "artifact_inventory": [
+    {
+      "artifact": "run_manifest",
+      "actual_file": "run_manifest.json",
+      "status": "REAL_GENERATED",
+      "sha256": "797537181d223bb7c94f59be686e4f8a83d2a91d1a58fc4c5270f2a247bc7665",
+      "bytes": 4328,
+      "note": ""
+    },
+    {
+      "artifact": "document",
+      "actual_file": "document.json",
+      "status": "REAL_GENERATED",
+      "sha256": "269bd4a905a47c219551715edf2fcd4087323f93be31bd725eb06ef5f4530348",
+      "bytes": 1387,
+      "note": ""
+    },
+    {
+      "artifact": "text_blocks",
+      "actual_file": "text_blocks.json",
+      "status": "REAL_GENERATED",
+      "sha256": "b01696e227e20a1ef5e46d2c6754c0b0dfe0bad86035457f5e621b8afd09c2ef",
+      "bytes": 559001,
+      "note": ""
+    },
+    {
+      "artifact": "tables",
+      "actual_file": "tables.json",
+      "status": "REAL_GENERATED",
+      "sha256": "26a6aa0ce3b1552ed36175c4555fae9b56ad5f2c816f12e2559bee4219efb9c4",
+      "bytes": 260515,
+      "note": ""
+    },
+    {
+      "artifact": "candidates",
+      "actual_file": "candidates.json",
+      "status": "REAL_GENERATED",
+      "sha256": "533f0ee722bd3391e55cf1a2a9386afcc229c1fb5004e545e89e55886b9f6bb9",
+      "bytes": 254471,
+      "note": ""
+    },
+    {
+      "artifact": "boundary_decisions",
+      "actual_file": "boundary_decisions.json",
+      "status": "REAL_GENERATED",
+      "sha256": "7adf3efc6a094fa759d671a3c750567d76e7d42e01d812a351304bbf6d250619",
+      "bytes": 95101,
+      "note": ""
+    },
+    {
+      "artifact": "product",
+      "actual_file": "product.json",
+      "status": "REAL_GENERATED",
+      "sha256": "5dd610ac87ce12e7f6b7487d7c41f7e4ce595e6b4b0df7366cddec5331f2e166",
+      "bytes": 298,
+      "note": ""
+    },
+    {
+      "artifact": "run_config",
+      "actual_file": "run_config.json",
+      "status": "REAL_GENERATED",
+      "sha256": "47c0a412ec29552da134a275f419a405ab63b368fa141d1318b69c778fd50c92",
+      "bytes": 2578,
+      "note": ""
+    },
+    {
+      "artifact": "geometry",
+      "actual_file": "pages/geometry.json",
+      "status": "REAL_GENERATED",
+      "sha256": "4eaeed1789231bccc4b45c11ad4c2c31bf97abb392826932a614378908f7c718",
+      "bytes": 6508,
+      "note": ""
+    }
+  ],
+  "contract_gaps": [
+    "当前 Parser 不产出 evidence.json，无法做证据页码回溯，Gate 6A 质量评估会因此受限",
+    "当前 Parser 不产出 qc_report.json，不得把外部 validate_evidence.py 当作每次 Run 的 QC 产物",
+    "raw_extraction.json 在契约中的实际文件名为 text_blocks.json，属于改名而非缺失",
+    "parser_output 是 Parser-only 原始产物，不是标准器件参数抽取结果；不做单位归一化、不做参数语义归类、不处理多型号歧义"
+  ],
+  "code_version": {
+    "git_head": "3ed22a4a83564b36ca238792af4b2328fd966469",
+    "project_version": "0.1.0",
+    "parser_version": "0.1.0-phase1",
+    "contract_version": "data-contract/v0.2",
+    "parser_config_sha256": "ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c",
+    "python_version": "3.13.15",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "manifest_sha256": "797537181d223bb7c94f59be686e4f8a83d2a91d1a58fc4c5270f2a247bc7665"
+  },
+  "diagnostics": {
+    "parse_worker_started": true,
+    "classifier_worker_started": false,
+    "worker_kind": "parse",
+    "worker_start_failed": false,
+    "worker_start_error": null,
+    "parse_pdf_calls": 1,
+    "parser_call_count": 1,
+    "parser_call_entered": true,
+    "parser_call_returned": true,
+    "worker_started_marker": true,
+    "stages_seen": [
+      "WORKER_STARTED",
+      "DEPS_VERIFIED",
+      "PARSER_MODULE_IMPORTED",
+      "PARSER_CALL_ENTERED",
+      "PARSER_CALL_RETURNED"
+    ],
+    "worker_returncode": 0,
+    "worker_timeout_seconds": 180.0,
+    "elapsed_seconds": 19.59,
+    "worker_stderr_tail": "",
+    "worker_stdout_noise": "[WORKER] WORKER_STARTED\r\n[WORKER] DEPS_VERIFIED\r\n[WORKER] PARSER_MODULE_IMPORTED\r\n[WORKER] PARSER_CALL_ENTERED\r\n[WORKER] PARSER_CALL_RETURNED\r\n",
+    "parser_error": null,
+    "parse_summary": {
+      "run_id": "G6A-20261111-074646-32d1",
+      "run_dir": "E:\\workspace\\icpdf-extractor\\workbench\\runs\\G6A-20261111-074646-32d1",
+      "document_id": "doc-699241f92bb3",
+      "document_sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+      "page_count": 17,
+      "tables": 7,
+      "candidates": 345,
+      "manifest_sha256": "797537181d223bb7c94f59be686e4f8a83d2a91d1a58fc4c5270f2a247bc7665"
+    },
+    "missing_artifacts": [],
+    "missing_artifact_count": 0,
+    "partial_artifacts": [],
+    "partial_artifact_count": 0,
+    "required_artifact_failure_count": 0,
+    "required_artifact_complete": true,
+    "artifact_accounting_note": "MISSING=文件不存在；PARTIAL=文件存在但不可解析；两者均计入 required_artifact_failure_count，PARTIAL 绝不算完整产物",
+    "sha256_cross_check": {
+      "upload_sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+      "manifest_document_sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+      "match": true,
+      "note": "不一致说明源 PDF 与 run 产物之间发生了路径或字节漂移"
+    },
+    "boundary_totals": {
+      "completed_tables": 7,
+      "decision_count": 54,
+      "decisions": {
+        "demote": 12,
+        "keep": 42,
+        "unresolved": 0
+      },
+      "failed_tables": 0,
+      "no_decision_tables": 0,
+      "skipped_groups": {},
+      "table_count": 7
+    },
+    "table_count_from_artifact": 7,
+    "candidate_count_from_artifact": 345,
+    "note": "所有数值均由真实 artifacts 读取；取不到的字段保持 null，不做推断",
+    "classifier_gate": {
+      "classifier_worker_started": true,
+      "classifier_worker_start_failed": false,
+      "classifier_worker_start_error": null,
+      "classifier_worker_timed_out": false,
+      "classifier_worker_returncode": 0,
+      "classifier_stages_seen": [
+        "WORKER_STARTED",
+        "EVIDENCE_LINK_READY",
+        "CLASSIFIER_CALL_ENTERED",
+        "CLASSIFIER_CALL_RETURNED",
+        "EVIDENCE_LINK_REMOVED"
+      ],
+      "classifier_timeout_seconds": 45.0,
+      "parse_worker_started": false,
+      "parse_pdf_calls": 0,
+      "parser_call_count": 0,
+      "elapsed_seconds": 10.117,
+      "classifier_stderr_tail": ""
+    },
+    "gate_decision": "DATASHEET",
+    "evidence_isolation_note": "classification.* 是分类器证据；parser_output / artifact_inventory 是 Parser 证据；两者独立，不得用后者反填分类依据"
+  },
+  "request_id": "WB-20261111-074636-56ea",
+  "document": {
+    "filename": "CD4098BE-NG__cd4098b.pdf",
+    "submitted_filename": "CD4098BE-NG__cd4098b.pdf",
+    "sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+    "bytes": 803726,
+    "page_count": 17,
+    "run_id": "G6A-20261111-074646-32d1",
+    "requested_mpn": "CD4098BE-NG__cd4098b",
+    "requested_mpn_source": "filename_stem_fallback",
+    "requested_mpn_note": "这是调用 parse_pdf 的输入参数，不是 Parser 识别出的型号",
+    "document_id": "doc-699241f92bb3",
+    "run_dir": "E:\\workspace\\icpdf-extractor\\workbench\\runs\\G6A-20261111-074646-32d1"
+  },
+  "validation": {
+    "evidence_filename": "CD4098BE-NG__cd4098b.pdf",
+    "submitted_filename": "CD4098BE-NG__cd4098b.pdf",
+    "physical_filename": "0c011cace66e4e31ac7f7e9061ea28f3.pdf",
+    "physical_path": "E:\\workspace\\icpdf-extractor\\workbench\\uploads\\WB-20261111-074636-56ea\\0c011cace66e4e31ac7f7e9061ea28f3.pdf",
+    "filename_rewritten": false,
+    "bytes": 803726,
+    "sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483",
+    "pdf_magic_ok": true,
+    "path_safety_note": "物理名=<uuid4>.pdf，目录名=<WB 时间戳+随机>；用户提交名只作元数据，从不参与路径拼接。分类子进程在私有临时目录内以清洗后的证据名建立硬链接后再分类，分类结束即删除临时目录。"
+  },
+  "run_id": "G6A-20261111-074646-32d1",
+  "_trimmed": {
+    "is_full_response": false,
+    "removed_keys": {
+      "parser_output": 753024
+    },
+    "removed_reason": "parser_output 为全量解析文本（9 个 JSON 产物内联），体积占响应 99% 以上；本包只保留头部/classification/parser 状态/diagnostics",
+    "full_response_file": "10_v002_response.json",
+    "full_response_bytes": 714585,
+    "full_response_sha256": "86f7e846f577909b09b36cf429fba479d696bec0c8a1e3f73181bc16023b7a83",
+    "full_response_location": "本地 workbench/_probe_v002_v022/10_v002_response.json（未推送）",
+    "kept_keys": [
+      "artifact_inventory",
+      "classification",
+      "classifier_called",
+      "classifier_llm_calls",
+      "classifier_token_usage",
+      "code_version",
+      "contract_gaps",
+      "database_written",
+      "diagnostics",
+      "document",
+      "endpoint_kind",
+      "extraction",
+      "extraction_note",
+      "frozen",
+      "gate6a_status",
+      "llm_called",
+      "parser",
+      "pipeline",
+      "request_id",
+      "run_id",
+      "status",
+      "validation"
+    ]
+  }
+}
