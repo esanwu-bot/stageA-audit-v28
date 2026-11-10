@@ -11,6 +11,7 @@ from __future__ import annotations
 import base64
 import json
 import subprocess
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -41,7 +42,7 @@ def get_token() -> str:
     return token
 
 
-def request(token: str, method: str, url: str, body=None):
+def request(token: str, method: str, url: str, body=None, retries: int = 5):
     data = None
     headers = {
         "Authorization": "Bearer " + token,
@@ -51,28 +52,47 @@ def request(token: str, method: str, url: str, body=None):
     if body is not None:
         data = json.dumps(body).encode("utf-8")
         headers["Content-Type"] = "application/json"
-    req = urllib.request.Request(url, data=data, headers=headers, method=method)
-    try:
-        with urllib.request.urlopen(req, timeout=90) as resp:
-            raw = resp.read()
-            return resp.status, json.loads(raw.decode("utf-8")) if raw else {}
-    except urllib.error.HTTPError as e:
-        return e.code, {"error": e.read().decode("utf-8", "replace")[:300]}
+    last_exc = None
+    for attempt in range(retries):
+        req = urllib.request.Request(url, data=data, headers=headers, method=method)
+        try:
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                raw = resp.read()
+                return resp.status, json.loads(raw.decode("utf-8")) if raw else {}
+        except urllib.error.HTTPError as e:
+            return e.code, {"error": e.read().decode("utf-8", "replace")[:300]}
+        except (urllib.error.URLError, OSError, ConnectionError) as e:
+            last_exc = e
+            if attempt < retries - 1:
+                time.sleep(1.5 * (2 ** attempt))
+    raise RuntimeError("网络请求连续失败 %d 次: %r" % (retries, last_exc))
 
 
 def content_url(path: str) -> str:
     return "%s/contents/%s" % (API, path)
 
 
-def get_sha(token: str, path: str):
+def get_state(token: str, path: str):
+    """返回 (blob_sha, remote_bytes)。断点续传用：内容相同就不产生空提交。"""
     status, obj = request(token, "GET", content_url(path) + "?ref=" + BRANCH)
-    return obj.get("sha") if status == 200 else None
+    if status != 200 or not isinstance(obj, dict):
+        return None, None
+    raw = None
+    if obj.get("content") and obj.get("encoding") == "base64":
+        try:
+            raw = base64.b64decode(obj["content"])
+        except Exception:
+            raw = None
+    return obj.get("sha"), raw
 
 
 def upload(token: str, remote: str, data: bytes, message: str):
+    old, remote_bytes = get_state(token, remote)
+    if old and remote_bytes == data:
+        print("  SKIP (same) %-43s %8d B" % (remote, len(data)))
+        return None
     body = {"message": message, "content": base64.b64encode(data).decode("ascii"),
             "branch": BRANCH}
-    old = get_sha(token, remote)
     if old:
         body["sha"] = old
     status, obj = request(token, "PUT", content_url(remote), body)
