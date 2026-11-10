@@ -258,9 +258,9 @@ UUID 后不能直接把 uuid 路径交给它。处理方式：
 - 即使分类器返回 `IC_PARSE`，只要白名单缺一项，`decision` 只能是
   `AMBIGUOUS`，`_execute_parse` 不会被调用，不建 Run 目录。
 
-### 9.4 红线三：子进程彻底清理（防僵尸）
+### 9.4 红线三：子进程清理（防僵尸）
 
-**结论：PASS。**
+**结论：直接子进程回收已实现；进程树清理未验证/待整改。**
 
 - 超时路径：`asyncio.wait(timeout)` → `proc.kill()`（`serve_parser.py:498`）
   → `await asyncio.wait_for(comm, timeout=10)` 回收管道 → 无论成败
@@ -270,6 +270,11 @@ UUID 后不能直接把 uuid 路径交给它。处理方式：
   `_run_child` 整体包在 `async with` 内（`serve_parser.py:471`），
   `/api/parse` 与 `/api/process` 都经由 `_run_child`，因此全局生效；
   默认 `MAX_CONCURRENT_WORKERS=2`，可用环境变量调整。
+- **未闭合的部分**：`proc.kill()` 在 Windows 上等价 `TerminateProcess`，
+  只作用于 `create_subprocess_exec` 的**直接子进程**。当前两个 worker 均为单进程
+  纯 Python，暂无孙进程；但一旦 Parser 引入 `multiprocessing` 或外部工具，
+  孙进程会在父进程被 kill 后残留。该风险**未验证**，整改方案（`psutil` 进程树
+  递归 kill，先子后父）见 `gate6/r2_p1p2_fix/smoke_frozen/README.md` §3.2。
 
 ### 9.5 红线四：审计标记可靠性
 

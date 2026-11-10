@@ -21,7 +21,7 @@
 | --- | --- | --- |
 | 1 路径穿越 / 文件名安全 | **PASS** | `serve_parser.py:_physical_filename()` 生成 UUID 物理名；`_materialize_upload()` 用 `is_relative_to()` 做越界断言；`UPLOAD_DIR / ...` 全仓只有 `UPLOAD_DIR / request_id` 一处拼接 |
 | 2 分类器 × Workbench 双重校验 | **PASS** | 模型层 `check_route_invariant`（`route == IC_PARSE ⟺ doc_type == DS_STRONG`）+ Workbench 8 项白名单，缺一项即 `AMBIGUOUS` |
-| 3 子进程彻底清理 | **PASS** | 超时 `proc.kill()` → `await proc.wait()`；`Semaphore` 为模块级单例，`/api/parse` 与 `/api/process` 共用 |
+| 3 子进程清理 | **直接子进程回收已实现；进程树清理未验证/待整改** | 超时 `proc.kill()` → `await proc.wait()` 已实现，但只覆盖 `create_subprocess_exec` 的**直接子进程**；Windows 下孙进程残留风险未验证，整改方案见 `smoke_frozen/README.md` §3.2。`Semaphore` 为模块级单例，`/api/parse` 与 `/api/process` 共用 |
 | 4 审计标记可靠性 | **PASS** | `_stage()` 写完即 `sys.stdout.flush()`；`PARSER_CALL_ENTERED` 在 `parse_pdf()` 之前；父进程布尔判定，重复标记只计 1 次 |
 
 残余风险（未在冻结期处理，已写入报告 §9.6）：Windows 设备名未拦截（影响面已缩到 worker 临时目录，fail-closed）、硬链接跨卷退化为复制、上传目录无 TTL 回收、信号量不覆盖上传阶段。
