@@ -139,3 +139,32 @@ curl -fL -O "$BASE/SHA256SUMS.txt"
 只证明交付件字节完整与内部一致，不证明审计结论、字段映射或方案已通过独立审核。
 本仓库只是文件传输通道，权威基线仍为本地 `E:\workspace\icpdf-extractor`
 （HEAD `3ed22a4a83564b36ca238792af4b2328fd966469`）。
+
+## Workbench localhost 冒烟测试（第一阶段证据）
+
+BASE: `https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/workbench/localhost_smoke`
+
+本轮**只做 localhost 启动与 UI 冒烟**，`ICEX_WORKBENCH_ALLOW_PARSE=0`。
+状态：`UI_SMOKE_PASSED` / `PARSER_NOT_EXECUTED` / `GATE6A_BENCHMARK=NOT_STARTED`。
+
+- 首要：`LOCALHOST_SMOKE_REPORT.md`（启动/关闭记录、截图、FROZEN 响应、
+  Console/Network、日志与产物目录、Git diff、SHA-256、零调用声明、证据边界）
+- 代码与上下文：`WORKBENCH_CODE_CHANGES.md`、`PARSER_CALL_CHAIN.md`、
+  `GATE6A_STATUS_CLARIFICATION.md`、`GATE6A_TODO.md`
+- 截图：`01_landing_frozen.png`、`02_results_frozen.png`
+- 原始证据：`cdp_report.json`、`frozen_response.json`、`health.json`、`copied.json`
+- 完整性：`SHA256SUMS.txt`、`README.md`
+
+```sh
+BASE=https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/workbench/localhost_smoke
+curl -fL -O "$BASE/SHA256SUMS.txt"
+# 下载下列文件后执行： sha256sum -c SHA256SUMS.txt
+```
+
+**证据边界**：`UI_SMOKE_PASSED` 只证明调试台能启动、能呈现真实接口状态、
+不会越过冻结开关；不证明 PDF 解析能力、输出质量或 Gate 6A 质量指标。
+V002 / V022 真实解析探针未执行。零调用：`parse_pdf()` 0、worker 子进程 0、
+LLM 0、数据库 0、主项目 git 提交 0。服务器部署仍须保持 `ALLOW_PARSE=0`。
+
+本仓库只是文件传输通道，权威基线仍为本地 `E:\workspace\icpdf-extractor`
+（HEAD `3ed22a4a83564b36ca238792af4b2328fd966469`）。
