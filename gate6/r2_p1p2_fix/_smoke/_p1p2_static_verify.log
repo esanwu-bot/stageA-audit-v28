@@ -1,0 +1,54 @@
+P1P2_STATIC_VERIFY: 53/53 PASS, 0 FAIL
+  OK   C-serve serve_parser.py 存在
+  OK   P-serve serve_parser.py 通过 py_compile
+  OK   C-parse_worker parse_worker.py 存在
+  OK   P-parse_worker parse_worker.py 通过 py_compile
+  OK   C-classify_worker classify_worker.py 存在
+  OK   P-classify_worker classify_worker.py 通过 py_compile
+  OK   F-01 AST 中不存在任何 request.body() 调用
+  OK   F-02 AST 中无 request.body() 的 await 调用
+  OK   F-03 使用 request.stream() 分块异步读取
+  OK   F-04 预检 Content-Length
+  OK   F-05 超限返回 HTTP 413
+  OK   F-06 AST 中无 subprocess.Popen 调用
+  OK   F-07 AST 中无 communicate(timeout=...) 同步等待
+  OK   F-08 使用 asyncio.create_subprocess_exec
+  OK   F-09 使用 asyncio.to_thread 处理文件 IO / git
+  OK   F-10 有最大并发 worker 闸门
+  OK   F-11 parse_pdf_calls 由 parser_call_entered 推导
+  OK   F-12 不再按成功状态错记调用次数
+  OK   F-13 worker 启动失败单独归类 WORKER_START_FAILED
+  OK   F-14 parse_worker 在 parse_pdf() 前打印 PARSER_CALL_ENTERED
+  OK   F-15 parse_worker 有 PARSER_CALL_RETURNED
+  OK   F-16 missing_artifact_count 已单独统计
+  OK   F-17 partial_artifact_count 已单独统计
+  OK   F-18 required_artifact_failure_count 已单独统计
+  OK   F-19 required_artifact_complete 已单独统计
+  OK   F-20 PARTIAL 计入失败总数
+  OK   G-01 /api/parse 存在
+  OK   G-02 /api/process 存在
+  OK   G-03 /api/parse 处理器不引用分类器
+  OK   G-04 /api/parse 仍调用 Parser 执行路径
+  OK   G-05 /api/process 先分类再按 DATASHEET 决定是否解析
+  OK   G-06 /api/process 三出口齐全
+  OK   G-07 分类器字段来自真实入口
+  OK   G-08 分类器 worker AST 中无 parser / LLM / 网络 import
+  OK   G-08b 分类器 worker 只引用官方分类入口
+  OK   G-09 Gate 6A Parser-only 不启动分类 worker
+  OK   G-10 冻结开关默认关闭且两入口共用
+  OK   S-01 物理落盘名由 uuid4 生成（与用户输入零耦合）
+  OK   S-02 落盘路径用 physical_filename 拼接
+  OK   S-03 UPLOAD_DIR 只与服务端生成的 request_id 拼接
+  OK   S-04 落盘前有 is_relative_to 越界断言
+  OK   S-05 证据名清洗会剥掉首尾点号与空格
+  OK   S-06 分类 worker 用 os.link 建立证据名硬链接
+  OK   S-07 硬链接失败时退回复制（字节不变）
+  OK   S-08 分类 worker 只把临时链接路径交给 classify_one
+  OK   S-09 分类结束删除临时目录
+  OK   S-10 分类 worker 也做证据名越界断言
+  OK   R-01 路由可注册（含 /api/process）
+  OK   R-02 导入后冻结开关仍为关闭
+  OK   R-03 导入后 classify worker 文件存在
+  OK   B-serve_parser.py 基线副本 serve_parser.py 与冒烟轮记录一致
+  OK   B-parse_worker.py 基线副本 parse_worker.py 与冒烟轮记录一致
+  OK   B-index index.html 未被本轮改动（UI 冒烟证据保持有效）
