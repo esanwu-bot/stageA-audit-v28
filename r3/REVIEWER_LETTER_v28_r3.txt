@@ -227,4 +227,41 @@ C 版曾记录的「项数恒 81」只在 T7 单独受限时成立，不适用�
       不声明跨 Python 版本 VERIFIED。
     - 未做真实分类，未执行 git 提交。
     - 本函不预设审计状态，以您的独立执行结果为准。
+
+--------------------------------------------------------------------------------
+七、实物包取件（对应您第四节）
+--------------------------------------------------------------------------------
+    仓库    https://github.com/esanwu-bot/stageA-audit-v28
+    目录    r3/
+    提交    b55e6c8
+
+    最小实物包（6 个条目）
+        https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/r3/audit_minimal_v28_r3.zip
+    包体完整 SHA-256 见同目录 CHECKSUM_r3.txt，本函不手工转述，以文件为准。
+
+    6 个条目 = 您第四节要求的 5 个文件 + test_three_state_v28r3.py。
+    补入该文件的原因：SHA256SUMS.txt 第 3 行列了它；若不同包提供，解压后
+    sha256sum -c 会报 FAILED open or read，清单无法闭环。
+
+    逐项直链与校验：
+        BASE=https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/r3
+        $BASE/verify_reviewer.py
+        $BASE/test_verify_reviewer.py
+        $BASE/verify_reviewer_v2.8_to_r3.diff
+        $BASE/test_verify_reviewer_v2.8_to_r3.diff
+        $BASE/SHA256SUMS.txt
+
+        curl -fL -O "$BASE/audit_minimal_v28_r3.zip"
+        curl -fL -O "$BASE/CHECKSUM_r3.txt"
+        sha256sum -c CHECKSUM_r3.txt
+        unzip -o audit_minimal_v28_r3.zip -d r3 && cd r3
+        sha256sum -c SHA256SUMS.txt
+
+    提交方实测（供对照，不代替您的独立执行）：
+        五个散文件逐项下载后 sha256sum -c 五行全 OK；
+        ZIP 直链 HTTP 200 / 34,049 B，包体哈希与本地原件一致；
+        ZIP 解压后 sha256sum -c 五行全 OK。
+
+    备用通道：part1_3.txt / part2_3.txt / part3_3.txt（200 / 199 / 199 行）
+    已生成并验证拼回字节一致。本轮直链实测可用，故未启用该备用通道。
 ================================================================================
