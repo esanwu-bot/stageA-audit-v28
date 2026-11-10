@@ -85,3 +85,30 @@ sha256sum -c SHA256SUMS.txt               # 5 行 OK
 
 说明文件：`r3/REVIEWER_LETTER_v28_r3.txt`、`r3/R3_CHANGES.txt`、
 `r3/test_three_state_v28r3.py`（外层三态定向验证）。
+
+## v2.8 r4 最小核验包
+
+BASE: `https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/r4`
+
+| 项 | 值 |
+| --- | --- |
+| 包体 | `audit_minimal_v28_r4.zip` |
+| 字节 | 38,641 |
+| SHA-256 | `bac3368991171941b7bf74fc62f0e006e0a063c78477b823438349cd6f01e0eb` |
+| ZIP 条目 | 8 个（SHA256SUMS.txt 列出的 7 个文件 + 清单自身） |
+
+r4 只收窄了 `test_verify_reviewer.py` 第 422 行 T7 的异常捕获，主程序
+`verify_reviewer.py` 未改动，字节与 r3 一致。
+
+```sh
+BASE=https://raw.githubusercontent.com/esanwu-bot/stageA-audit-v28/main/r4
+curl -fL -O "$BASE/audit_minimal_v28_r4.zip"
+curl -fL -O "$BASE/CHECKSUM_r4.txt"
+sha256sum -c CHECKSUM_r4.txt
+unzip -o audit_minimal_v28_r4.zip -d r4
+cd r4 && sha256sum -c SHA256SUMS.txt
+```
+
+变更说明见 `r4/R4_CHANGES.txt`，正式回信见
+`r4/REVIEWER_LETTER_v28_r4.txt`。本仓库只是文件传输通道，不代表审计
+结论；当前裁定仍为 `SCRIPT_AUDIT_PARTIAL_PASS`。
