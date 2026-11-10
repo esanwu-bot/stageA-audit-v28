@@ -1,0 +1,108 @@
+{
+  "url": "http://127.0.0.1:8765/",
+  "pdfSelectedButNotParsed": "E:/workspace/IcPdfParser/data/pdfs/CD4098BE-NG__cd4098b.pdf",
+  "landing": {
+    "statusBar": "[WAITING] 后端已连接，但处于 Reviewer 冻结期。上传 PDF 只会收到 FROZEN 状态，不会执行解析。",
+    "statusClass": "status-bar warn",
+    "backendLine": "后端: 冻结期（/api/parse 不执行解析） | Gate 6A: NOT_STARTED | uvicorn: 可用 | yaml: 隔离目录 | HEAD: 3ed22a4a83564b36ca238792af4b2328fd966469",
+    "title": "Ds Bit - Parser Lab (Parser-only)",
+    "hasMockVar": false,
+    "hasShowResultsFake": false,
+    "hasLM358": false,
+    "uploadText": "点击或拖入单个 Datasheet PDF",
+    "resultsVisible": "none"
+  },
+  "afterUpload": {
+    "uploadText": "CD4098BE-NG__cd4098b.pdf",
+    "resultStatus": "[FROZEN] 冻结期：后端已响应，但未执行解析（parse_pdf 调用 0 次） | Reviewer 冻结期：ICEX_WORKBENCH_ALLOW_PARSE 未设为 1",
+    "resultClass": "status-bar warn",
+    "headerTag": "FROZEN | no-run",
+    "jsonHasFrozen": true,
+    "jsonHasLM358": false,
+    "responseStatus": "FROZEN",
+    "responseFrozen": true,
+    "parsePdfCalls": 0,
+    "workerStarted": false,
+    "parserOutputEmpty": true,
+    "cardTitles": [
+      "Diagnostics"
+    ],
+    "resultsVisible": "flex"
+  },
+  "copyCheck": {
+    "buttonText": "Copied!",
+    "copiedLength": 845,
+    "copiedEqualsLastResponse": true,
+    "copiedStatus": "FROZEN",
+    "copyTextBytes": 1149,
+    "backendResponseBytes": 1046,
+    "copyMatchesBackendObject": true
+  },
+  "dragCheck": {
+    "ok": true,
+    "fileName": "CD4098BE-NG__cd4098b.pdf",
+    "dragoverClass": "upload-box dragover",
+    "dragleaveClass": "upload-box",
+    "uploadText": "CD4098BE-NG__cd4098b.pdf",
+    "status": "FROZEN",
+    "parsePdfCalls": 0
+  },
+  "consoleEvents": [],
+  "exceptions": [],
+  "logEntries": [],
+  "network": [
+    {
+      "phase": "request",
+      "id": "EFF3DC26D1675B0E1E4B3824A827308C",
+      "method": "GET",
+      "url": "http://127.0.0.1:8765/"
+    },
+    {
+      "phase": "response",
+      "id": "EFF3DC26D1675B0E1E4B3824A827308C",
+      "status": 200,
+      "mime": "text/html",
+      "url": "http://127.0.0.1:8765/"
+    },
+    {
+      "phase": "request",
+      "id": "184292.2",
+      "method": "GET",
+      "url": "http://127.0.0.1:8765/api/health"
+    },
+    {
+      "phase": "response",
+      "id": "184292.2",
+      "status": 200,
+      "mime": "application/json",
+      "url": "http://127.0.0.1:8765/api/health"
+    },
+    {
+      "phase": "request",
+      "id": "184292.3",
+      "method": "POST",
+      "url": "http://127.0.0.1:8765/api/parse"
+    },
+    {
+      "phase": "response",
+      "id": "184292.3",
+      "status": 200,
+      "mime": "application/json",
+      "url": "http://127.0.0.1:8765/api/parse"
+    },
+    {
+      "phase": "request",
+      "id": "184292.4",
+      "method": "POST",
+      "url": "http://127.0.0.1:8765/api/parse"
+    },
+    {
+      "phase": "response",
+      "id": "184292.4",
+      "status": 200,
+      "mime": "application/json",
+      "url": "http://127.0.0.1:8765/api/parse"
+    }
+  ],
+  "generatedAt": "2026-11-10T12:26:58.755Z"
+}
