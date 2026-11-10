@@ -1,0 +1,37 @@
+{
+  "branch": "feat/s2b-schema-d4-d6",
+  "head": "3ed22a4a83564b36ca238792af4b2328fd966469",
+  "remote": "[REDACTED-INTERNAL-REPO]",
+  "tracked_file_count": 491,
+  "status_entry_count": 17,
+  "status_short": [
+    " M src/icpdf/cli.py",
+    "?? .workbuddy-ai/",
+    "?? .workbuddy/",
+    "?? backstage/",
+    "?? docs/Document_Classifier_V2_Design.md",
+    "?? docs/archive/",
+    "?? docs/v2_2_1_review/",
+    "?? \"docs/\\346\\226\\271\\346\\241\\210\\350\\256\\250\\350\\256\\272.txt\"",
+    "?? \"docs/\\346\\243\\200\\346\\237\\245\\351\\224\\231\\350\\257\\257\\346\\270\\205\\345\\215\\225.txt\"",
+    "?? icpdf_c6_verify.bundle",
+    "?? \"review \\346\\211\\247\\350\\241\\214\\346\\270\\205\\345\\215\\225.md\"",
+    "?? src/icpdf/classification/",
+    "?? tests/unit/test_classification_processpool_sim.py",
+    "?? tests/unit/test_classification_v2.py",
+    "?? tools/stage_a/",
+    "?? tools/stage_b/",
+    "?? workbench.html"
+  ],
+  "tracked_modified": [
+    "src/icpdf/cli.py"
+  ],
+  "untracked_file_count": 71,
+  "runs_ignored_rule": ".gitignore:18 runs/",
+  "runs_file_count": 13014,
+  "untracked_plain_count": 71,
+  "git_add_performed": false,
+  "git_commit_performed": false,
+  "main_repo_push_performed": false,
+  "note": "冻结 = 只读写哈希清单，不是 git 操作；主项目 CodeUp 仓库零提交。"
+}
