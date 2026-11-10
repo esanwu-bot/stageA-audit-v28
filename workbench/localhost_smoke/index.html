@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:,">
+<title>Ds Bit - Parser Lab (Parser-only)</title>
+<style>
+    :root {
+        --google-blue: #4285F4;
+        --google-red: #EA4335;
+        --google-yellow: #FBBC05;
+        --google-green: #34A853;
+        --bg-color: #ffffff;
+        --text-color: #202124;
+        --text-muted: #5f6368;
+        --border-color: #dfe1e5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
+
+    /* 1. Landing */
+    #landing-view { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 30px 16px; }
+    .logo { font-size: 64px; font-weight: bold; letter-spacing: -2px; margin-bottom: 12px; user-select: none; }
+    .logo span:nth-child(1) { color: var(--google-blue); }
+    .logo span:nth-child(2) { color: var(--google-red); }
+    .logo span:nth-child(3) { color: var(--google-yellow); }
+    .logo span:nth-child(4) { color: var(--google-blue); }
+    .logo span:nth-child(5) { color: var(--google-green); }
+    .logo span:nth-child(6) { color: var(--google-red); }
+    .subtitle { font-size: 15px; color: var(--text-muted); margin-bottom: 6px; }
+    .pills { margin-bottom: 24px; font-size: 12px; color: var(--text-muted); }
+    .pill { display: inline-block; border: 1px solid var(--border-color); border-radius: 12px; padding: 3px 10px; margin: 0 4px; }
+    .boundary-note { max-width: 640px; text-align: center; font-size: 12px; color: var(--text-muted); line-height: 1.7; margin-bottom: 20px; }
+    .upload-box { width: 620px; max-width: 92%; padding: 18px 26px; border: 1px solid var(--border-color); border-radius: 26px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; background: #fff; }
+    .upload-box:hover, .upload-box.dragover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+    .upload-icon { font-size: 13px; font-weight: 600; color: var(--google-blue); margin-right: 14px; border: 1px solid var(--google-blue); border-radius: 4px; padding: 2px 5px; }
+    .upload-text { flex: 1; font-size: 15px; color: var(--text-muted); }
+    .mpn-row { width: 620px; max-width: 92%; margin-top: 12px; display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-muted); }
+    .mpn-row input { flex: 1; border: 1px solid var(--border-color); border-radius: 4px; padding: 7px 10px; font-size: 13px; outline: none; }
+    .mpn-row span { white-space: nowrap; }
+    .status-bar { width: 620px; max-width: 92%; margin-top: 18px; padding: 10px 14px; border-radius: 6px; font-size: 13px; line-height: 1.6; border: 1px solid var(--border-color); background: #f8f9fa; color: var(--text-muted); }
+    .status-bar.ok { background: #e6f4ea; border-color: #b7e1c1; color: #137333; }
+    .status-bar.warn { background: #fef7e0; border-color: #f7dc8a; color: #a05a00; }
+    .status-bar.error { background: #fce8e6; border-color: #f3b8b3; color: #c5221f; font-weight: 600; }
+    .backend-line { width: 620px; max-width: 92%; margin-top: 10px; font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+
+    /* 2. Results */
+    #results-view { display: none; height: 100vh; flex-direction: column; }
+    #results-view.active { display: flex; }
+    .header { padding: 12px 24px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 16px; background: #fff; }
+    .header .logo { font-size: 26px; margin-bottom: 0; cursor: pointer; }
+    .header-tag { font-size: 11px; color: var(--text-muted); border: 1px solid var(--border-color); border-radius: 10px; padding: 2px 8px; white-space: nowrap; }
+    .search-bar { flex: 1; max-width: 520px; display: flex; align-items: center; border: 1px solid var(--border-color); border-radius: 18px; padding: 4px 12px; }
+    .search-bar input { width: 100%; border: none; outline: none; font-size: 13px; padding: 5px; }
+    .btn { padding: 7px 14px; border-radius: 4px; border: none; cursor: pointer; font-weight: 500; font-size: 13px; }
+    .btn-primary { background: var(--google-blue); color: white; }
+    .btn-ghost { background: #fff; color: var(--text-muted); border: 1px solid var(--border-color); }
+    .main-content { display: flex; flex: 1; overflow: hidden; background: #f8f9fa; }
+    .left-panel { flex: 6; padding: 16px; display: flex; flex-direction: column; overflow: hidden; border-right: 1px solid var(--border-color); }
+    .right-panel { flex: 4; padding: 16px; overflow-y: auto; background: #fff; }
+    .tabs { margin-bottom: 10px; }
+    .tab { padding: 6px 12px; margin-right: 6px; border: 1px solid var(--border-color); background: #fff; border-radius: 4px; cursor: pointer; font-size: 12px; color: var(--text-muted); }
+    .tab.active { background: var(--google-blue); color: #fff; border-color: var(--google-blue); }
+    .json-container { flex: 1; background: #1e1e1e; border-radius: 8px; padding: 16px; overflow: auto; }
+    pre { color: #d4d4d4; font-family: Consolas, 'Courier New', monospace; font-size: 12px; line-height: 1.55; margin: 0; white-space: pre-wrap; word-break: break-all; }
+    .key { color: #9cdcfe; }
+    .string { color: #ce9178; }
+    .number { color: #b5cea8; }
+    .boolean { color: #569cd6; }
+    .view-meta { font-size: 11px; color: var(--text-muted); margin-top: 8px; line-height: 1.6; }
+    .card { background: #fff; border: 1px solid var(--border-color); border-radius: 8px; padding: 13px; margin-bottom: 12px; }
+    .card h3 { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 6px; }
+    .kv-pair { display: flex; justify-content: space-between; gap: 10px; padding: 5px 0; border-bottom: 1px dashed #eee; font-size: 12px; }
+    .kv-pair:last-child { border-bottom: none; }
+    .kv-key { color: var(--text-muted); white-space: nowrap; }
+    .kv-val { font-weight: 500; text-align: right; word-break: break-all; }
+    .kv-val.missing { color: var(--text-muted); font-weight: 400; }
+    .kv-val.clickable { color: var(--google-blue); cursor: pointer; text-decoration: underline; }
+    .card-note { font-size: 11px; color: var(--text-muted); line-height: 1.6; margin-top: 8px; }
+    .card-error { font-size: 12px; color: #c5221f; background: #fce8e6; border: 1px solid #f3b8b3; border-radius: 4px; padding: 8px; line-height: 1.6; }
+    .preview-box { margin-top: 8px; border: 1px dashed var(--border-color); border-radius: 6px; padding: 10px; font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+    .preview-box img { max-width: 100%; border: 1px solid var(--border-color); margin-top: 8px; display: block; }
+</style>
+</head>
+<body>
+
+<!-- 1. Landing -->
+<div id="landing-view">
+    <div class="logo"><span>D</span><span>s</span> <span>B</span><span>i</span><span>t</span><span>.</span></div>
+    <div class="subtitle">Parser Lab &middot; Parser-only 观察工具</div>
+    <div class="pills">
+        <span class="pill">单文件测试</span>
+        <span class="pill">不调用 LLM</span>
+        <span class="pill">不写数据库</span>
+        <span class="pill">Gate 6A 冻结期</span>
+    </div>
+    <div class="boundary-note">
+        第一阶段只展示 <b>parser_output</b> 命名空间下的纯代码 Parser 原始产物：文本块、表格、单元格候选、边界决策。<br>
+        不做单位归一化、不做参数语义归类、不处理多型号歧义，<b>不产出标准器件参数</b>。<br>
+        第二阶段 LLM/Domain 结果使用 <b>extraction</b> 命名空间，本页不产出该字段。<br>
+        当前 Parser 不产出 evidence.json 与 qc_report.json，无法做证据页码回溯。
+    </div>
+    <div class="upload-box" id="drop-zone">
+        <span class="upload-icon">PDF</span>
+        <div class="upload-text" id="upload-text">点击或拖入单个 Datasheet PDF</div>
+        <input type="file" id="file-input" accept=".pdf,application/pdf" style="display:none;">
+    </div>
+    <div class="mpn-row">
+        <span>requested_mpn（可选）</span>
+        <input type="text" id="mpn-input" placeholder="留空则使用文件名，仅作为 parse_pdf 输入参数，不是识别结果">
+    </div>
+    <div class="status-bar" id="status-bar">[WAITING] 等待后端状态查询</div>
+    <div class="backend-line" id="backend-line">正在查询 /api/health ...</div>
+</div>
+
+<!-- 2. Results -->
+<div id="results-view">
+    <div class="header">
+        <div class="logo" onclick="goHome()"><span>D</span><span>s</span> <span>B</span><span>i</span><span>t</span><span>.</span></div>
+        <span class="header-tag" id="header-tag">Parser-only</span>
+        <div class="search-bar"><input type="text" id="search-input" placeholder="搜索 JSON 行与右侧字段..." onkeyup="filterData()"></div>
+        <button class="btn btn-ghost" onclick="goHome()">New PDF</button>
+        <button class="btn btn-primary" onclick="copyJSON()">Copy JSON</button>
+    </div>
+    <div class="main-content">
+        <div class="left-panel">
+            <div class="tabs">
+                <button class="tab active" id="tab-json" onclick="switchTab('json')">JSON (完整响应)</button>
+                <button class="tab" id="tab-tables" onclick="switchTab('tables')">Tables</button>
+                <button class="tab" id="tab-candidates" onclick="switchTab('candidates')">Candidates</button>
+                <button class="tab" id="tab-diagnostics" onclick="switchTab('diagnostics')">Diagnostics</button>
+            </div>
+            <div class="json-container"><pre id="json-display"></pre></div>
+            <div class="view-meta" id="view-meta"></div>
+        </div>
+        <div class="right-panel">
+            <div class="status-bar" id="result-status"></div>
+            <div id="data-cards" style="margin-top:12px;"></div>
+            <div class="preview-box" id="pdf-preview">
+                PDF 原文预览联动：点击下方 Tables / Candidates 中带页码的条目，加载 Parser 真实渲染的页面 PNG。<br>
+                仅检测到表格的页才会被渲染；未渲染的页会明确提示，不提供替代图。
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+"use strict";
+
+// 唯一数据源：后端真实响应。没有任何 mock 常量、没有模拟成功流程。
+var lastResponse = null;
+var backend = null;
+var currentTab = 'json';
+
+var landingView = document.getElementById('landing-view');
+var resultsView = document.getElementById('results-view');
+var dropZone = document.getElementById('drop-zone');
+var fileInput = document.getElementById('file-input');
+var uploadText = document.getElementById('upload-text');
+var mpnInput = document.getElementById('mpn-input');
+var statusBar = document.getElementById('status-bar');
+var backendLine = document.getElementById('backend-line');
+var resultStatus = document.getElementById('result-status');
+var headerTag = document.getElementById('header-tag');
+var jsonDisplay = document.getElementById('json-display');
+var viewMeta = document.getElementById('view-meta');
+var dataCards = document.getElementById('data-cards');
+var searchInput = document.getElementById('search-input');
+var pdfPreview = document.getElementById('pdf-preview');
+
+var STATUS_TEXT = {
+    'FROZEN': '冻结期：后端已响应，但未执行解析（parse_pdf 调用 0 次）',
+    'INVALID_FILE': '文件校验失败',
+    'PARSE_TIMEOUT': '解析超时，已强制终止子进程',
+    'PARSE_CRASH': '解析崩溃：子进程未返回有效结果（可能为原生崩溃）',
+    'PARSE_ERROR': 'Parser 抛出异常',
+    'PARSE_COMPLETED': '解析完成：以下为真实 Parser 产物',
+    'HTTP_ERROR': '后端返回异常',
+    'DISCONNECTED': '未连接后端'
+};
+var ERROR_STATES = {'INVALID_FILE':1,'PARSE_TIMEOUT':1,'PARSE_CRASH':1,
+                    'PARSE_ERROR':1,'HTTP_ERROR':1,'DISCONNECTED':1};
+
+function setState(code, text, kind, target) {
+    var el = target || statusBar;
+    el.className = 'status-bar ' + (kind || 'warn');
+    el.textContent = '[' + code + '] ' + (text || STATUS_TEXT[code] || '');
+}
+
+function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function dash(v) {
+    if (v === null || v === undefined || v === '') return '<span class="kv-val missing">未提供</span>';
+    return '<span class="kv-val">' + esc(v) + '</span>';
+}
+
+function kv(key, val) {
+    return '<div class="kv-pair"><span class="kv-key">' + esc(key) + '</span>' + dash(val) + '</div>';
+}
+
+function card(title, body, note) {
+    return '<div class="card"><h3>' + esc(title) + '</h3>' + body +
+           (note ? '<div class="card-note">' + esc(note) + '</div>' : '') + '</div>';
+}
+
+// 后端状态：只读查询，不触发解析。
+function fetchHealth() {
+    fetch('/api/health').then(function (resp) {
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        return resp.json();
+    }).then(function (h) {
+        backend = h;
+        var bits = [];
+        bits.push('后端: ' + (h.frozen ? '冻结期（/api/parse 不执行解析）' : '已解除冻结'));
+        bits.push('Gate 6A: ' + h.gate6a_status);
+        bits.push('uvicorn: ' + (h.modules.uvicorn ? '可用' : '缺失（冻结期不安装）'));
+        bits.push('yaml: ' + (h.modules.yaml_in_isolated_deps ? '隔离目录' : '不可用'));
+        bits.push('HEAD: ' + (h.git_head || '不可读'));
+        backendLine.textContent = bits.join(' | ');
+        setState('WAITING', h.frozen
+            ? '后端已连接，但处于 Reviewer 冻结期。上传 PDF 只会收到 FROZEN 状态，不会执行解析。'
+            : '后端已连接。可上传单个 PDF 进行 Parser-only 观察。', h.frozen ? 'warn' : 'ok');
+    }).catch(function (err) {
+        backendLine.textContent = '/api/health 不可用：' + err.message;
+        setState('DISCONNECTED', '未连接后端（服务未启动）。页面不会显示任何解析结果。', 'error');
+    });
+}
+
+// 上传：直接把 File 作为原始二进制请求体，文件名走请求头，不需要 multipart。
+function handleFile(file) {
+    if (!file) return;
+    document.querySelector('.btn-primary').textContent = 'Copy JSON';
+    if (!/\.pdf$/i.test(file.name) && file.type !== 'application/pdf') {
+        setState('INVALID_FILE', '不是 PDF 文件：' + file.name, 'error');
+        return;
+    }
+    uploadText.textContent = file.name;
+    setState('UPLOADING', '正在上传 ' + file.name + ' 并等待后端真实响应...', 'warn');
+
+    var headers = {
+        'Content-Type': 'application/pdf',
+        'X-Filename': encodeURIComponent(file.name),
+        'X-Requested-Mpn': encodeURIComponent(mpnInput.value || '')
+    };
+    fetch('/api/parse', { method: 'POST', headers: headers, body: file })
+        .then(function (resp) {
+            if (!resp.ok) return resp.json().then(function (j) {
+                throw new Error('HTTP ' + resp.status + ' ' + (j.detail || resp.statusText));
+            });
+            return resp.json();
+        })
+        .then(function (data) {
+            lastResponse = data;
+            var kind = ERROR_STATES[data.status] ? 'error' : (data.status === 'PARSE_COMPLETED' ? 'ok' : 'warn');
+            var detail = STATUS_TEXT[data.status] || data.status;
+            if (data.diagnostics && data.diagnostics.parser_error) {
+                detail += ' | ' + data.diagnostics.parser_error;
+            }
+            if (data.diagnostics && data.diagnostics.reason) {
+                detail += ' | ' + data.diagnostics.reason;
+            }
+            setState(data.status, detail, kind);
+            setState(data.status, detail, kind, resultStatus);
+            headerTag.textContent = data.status + ' | ' + (data.run_id || 'no-run');
+            renderAll();
+            landingView.style.display = 'none';
+            resultsView.style.display = 'flex';
+            resultsView.className = 'active';
+        })
+        .catch(function (err) {
+            setState('HTTP_ERROR', '未连接后端或请求失败：' + err.message, 'error');
+        });
+}
+
+dropZone.addEventListener('click', function () { fileInput.click(); });
+dropZone.addEventListener('dragover', function (e) { e.preventDefault(); dropZone.className = 'upload-box dragover'; });
+dropZone.addEventListener('dragleave', function () { dropZone.className = 'upload-box'; });
+dropZone.addEventListener('drop', function (e) {
+    e.preventDefault(); dropZone.className = 'upload-box';
+    if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', function (e) {
+    if (e.target.files.length) handleFile(e.target.files[0]);
+});
+
+// JSON 视图：语法高亮 + 按行过滤。复制按钮始终输出完整 lastResponse。
+function renderJSON(obj, term) {
+    var str = JSON.stringify(obj, null, 2);
+    if (term) {
+        var lines = str.split('\n');
+        var kept = [];
+        for (var i = 0; i < lines.length; i++) {
+            if (lines[i].toLowerCase().indexOf(term) >= 0) kept.push(lines[i]);
+        }
+        str = kept.length ? kept.join('\n') : '（无匹配行；此处仅过滤显示，Copy JSON 仍输出完整后端响应）';
+    }
+    str = str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    str = str.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'number';
+        if (/^"/.test(match)) { cls = /:$/.test(match) ? 'key' : 'string'; }
+        else if (/true|false/.test(match)) { cls = 'boolean'; }
+        return '<span class="' + cls + '">' + match + '</span>';
+    });
+    jsonDisplay.innerHTML = str;
+}
+
+function tabObject(tab) {
+    if (!lastResponse) return {};
+    if (tab === 'json') return lastResponse;
+    var po = lastResponse.parser_output || {};
+    if (tab === 'tables') return { status: lastResponse.status, run_id: lastResponse.run_id, parser_output: { tables: po.tables || null }, note: '原始 tables.json，未做归一化' };
+    if (tab === 'candidates') return { status: lastResponse.status, run_id: lastResponse.run_id, parser_output: { candidates: po.candidates || null }, note: '单元格级原始候选，不是器件参数' };
+    return { status: lastResponse.status, run_id: lastResponse.run_id,
+             artifact_inventory: lastResponse.artifact_inventory || [],
+             contract_gaps: lastResponse.contract_gaps || [],
+             diagnostics: lastResponse.diagnostics || {} };
+}
+
+function renderAll() {
+    if (!lastResponse) return;
+    var term = searchInput.value.toLowerCase();
+    renderJSON(tabObject(currentTab), term);
+    viewMeta.textContent = '当前视图：' + currentTab + ' | 数据来源：POST /api/parse 的真实响应 | llm_called=' +
+        String(lastResponse.llm_called) + ' | database_written=' + String(lastResponse.database_written) +
+        ' | Copy JSON 输出完整响应，与本视图过滤条件无关';
+    renderCards();
+    filterPairs(term);
+}
+
+function switchTab(tab) {
+    currentTab = tab;
+    var ids = ['json', 'tables', 'candidates', 'diagnostics'];
+    for (var i = 0; i < ids.length; i++) {
+        document.getElementById('tab-' + ids[i]).className = (ids[i] === tab) ? 'tab active' : 'tab';
+    }
+    renderAll();
+}
+
+function filterPairs(term) {
+    var pairs = document.querySelectorAll('.kv-pair');
+    for (var i = 0; i < pairs.length; i++) {
+        var text = pairs[i].textContent.toLowerCase();
+        if (!term) { pairs[i].style.display = 'flex'; pairs[i].style.backgroundColor = 'transparent'; }
+        else if (text.indexOf(term) >= 0) { pairs[i].style.display = 'flex'; pairs[i].style.backgroundColor = 'rgba(251,188,5,0.2)'; }
+        else { pairs[i].style.display = 'none'; }
+    }
+}
+
+function filterData() { renderAll(); }
+
+// 右侧卡片：只使用解析器真实字段，字段名来自 PARSER_CALL_CHAIN.md 的静态定位。
+function renderCards() {
+    var d = lastResponse;
+    var po = d.parser_output || {};
+    var doc = d.document || {};
+    var cv = d.code_version || {};
+    var dg = d.diagnostics || {};
+    var html = '';
+
+    if (d.status !== 'PARSE_COMPLETED') {
+        html += card('Diagnostics', '<div class="card-error">' +
+            esc(STATUS_TEXT[d.status] || d.status) + '<br>' +
+            esc((dg.parser_error || dg.reason || '后端未产出解析结果')) +
+            '</div>', 'parser_output 为空时不补造任何字段；右侧卡片不展示模拟数据。');
+        dataCards.innerHTML = html;
+        return;
+    }
+
+    // Document
+    html += card('Document',
+        kv('filename', doc.filename) + kv('sha256', doc.sha256) + kv('bytes', doc.bytes) +
+        kv('page_count', doc.page_count) + kv('document_id', doc.document_id) +
+        kv('run_id', d.run_id) + kv('requested_mpn', doc.requested_mpn) +
+        kv('requested_mpn_source', doc.requested_mpn_source),
+        'requested_mpn 是调用 parse_pdf 的输入参数，不是 Parser 识别出的型号。');
+
+    // Code version
+    html += card('Code Version',
+        kv('git_head', cv.git_head) + kv('project_version', cv.project_version) +
+        kv('parser_version', cv.parser_version) + kv('contract_version', cv.contract_version) +
+        kv('parser_config_sha256', cv.parser_config_sha256) + kv('python_version', cv.python_version) +
+        kv('manifest_sha256', cv.manifest_sha256),
+        '版本与哈希取自真实 run_manifest.json，不补造。');
+
+    // Tables
+    var tables = po.tables;
+    if (!tables || !tables.length) {
+        html += card('Tables', kv('table_count', 0), '本次未产出表格产物或表格数为 0；不做推断。');
+    } else {
+        var tbody = kv('table_count', tables.length);
+        var pages = {};
+        for (var i = 0; i < tables.length; i++) {
+            var t = tables[i];
+            var rows = (t.rows && t.rows.length) || 0;
+            var cols = (t.rows && t.rows[0] && t.rows[0].cells && t.rows[0].cells.length) || 0;
+            var headers = (t.headers && t.headers.length) || 0;
+            pages[t.page_number] = 1;
+            tbody += '<div class="kv-pair"><span class="kv-key">' + esc(t.table_id || ('table-' + (i + 1))) + '</span>' +
+                '<span class="kv-val clickable" onclick="loadPage(' + Number(t.page_number) + ', \'table\')">' +
+                'p.' + esc(t.page_number) + ' | ' + rows + ' 行 x ' + cols + ' 列 | headers ' + headers +
+                ' | ' + esc(t.reconstruction_status || '未提供') + '</span></div>';
+        }
+        tbody += kv('pages', Object.keys(pages).join(', '));
+        html += card('Tables', tbody, '字段来自 tables.json：table_id / page_number / rows / headers / reconstruction_status。点击行查看该页渲染图。');
+    }
+
+    // Candidates
+    var cs = po.candidates;
+    var list = (cs && cs.candidates) ? cs.candidates : null;
+    if (!list) {
+        html += card('Candidates', kv('candidate_count', 0), '本次未产出候选产物或候选数为 0；不做推断。');
+    } else {
+        var byType = {}, byRole = {}, byPage = {};
+        for (var j = 0; j < list.length; j++) {
+            var c = list[j];
+            byType[c.candidate_type || '未提供'] = (byType[c.candidate_type || '未提供'] || 0) + 1;
+            byRole[c.role_source || '未提供'] = (byRole[c.role_source || '未提供'] || 0) + 1;
+            byPage[c.page_number] = (byPage[c.page_number] || 0) + 1;
+        }
+        var cbody = kv('candidate_count', list.length) +
+                    kv('by candidate_type', JSON.stringify(byType)) +
+                    kv('by role_source', JSON.stringify(byRole)) +
+                    kv('by page_number', JSON.stringify(byPage));
+        var limit = Math.min(6, list.length);
+        for (var k = 0; k < limit; k++) {
+            var one = list[k];
+            cbody += '<div class="kv-pair"><span class="kv-key">' + esc(one.raw_text) + '</span>' +
+                '<span class="kv-val clickable" onclick="loadPage(' + Number(one.page_number) + ', \'candidate\')">' +
+                'p.' + esc(one.page_number) + ' | ' + esc(one.candidate_type) + '</span></div>';
+        }
+        html += card('Candidates', cbody,
+            '单元格级原始候选（raw_text / candidate_type / role_source / page_number），不是已归一化的器件参数。');
+    }
+
+    // Structure
+    if (tables && tables.length) {
+        var first = tables[0];
+        var firstRow = (first.rows && first.rows[0]) ? first.rows[0] : null;
+        var cellTexts = [];
+        if (firstRow && firstRow.cells) {
+            for (var m = 0; m < Math.min(8, firstRow.cells.length); m++) cellTexts.push(firstRow.cells[m].text);
+        }
+        html += card('Structure',
+            kv('table_id', first.table_id) + kv('headers', JSON.stringify(first.headers || [])) +
+            kv('header_rows', first.header_rows) + kv('rows', (first.rows || []).length) +
+            kv('first_row_cell_texts', JSON.stringify(cellTexts)) +
+            kv('detection_method', first.detection_method) + kv('confidence', first.confidence) +
+            kv('uncertainty_reason', first.uncertainty_reason),
+            '表头、行列与单元格内容均取自 tables.json 原始字段。');
+    }
+
+    // Diagnostics
+    var totals = (po.boundary_decisions && po.boundary_decisions.totals) ? po.boundary_decisions.totals : null;
+    var cross = dg.sha256_cross_check || {};
+    var inv = d.artifact_inventory || [];
+    var missing = [];
+    for (var n = 0; n < inv.length; n++) if (inv[n].status === 'MISSING' || inv[n].status === 'PARTIAL') missing.push(inv[n].artifact);
+    var dbody = kv('status', d.status) + kv('parse_pdf_calls', dg.parse_pdf_calls) +
+        kv('worker_returncode', dg.worker_returncode) + kv('elapsed_seconds', dg.elapsed_seconds) +
+        kv('timeout_seconds', dg.worker_timeout_seconds) +
+        kv('missing_artifact_count', dg.missing_artifact_count) +
+        kv('missing_or_partial', missing.join(', ') || '无') +
+        kv('sha256_cross_check.match', cross.match === null ? '不可判定' : String(cross.match));
+    if (totals) {
+        dbody += kv('boundary.failed_tables', totals.failed_tables) +
+                 kv('boundary.no_decision_tables', totals.no_decision_tables) +
+                 kv('boundary.decisions', JSON.stringify(totals.decisions || {})) +
+                 kv('boundary.skipped_groups', JSON.stringify(totals.skipped_groups || {}));
+    }
+    html += card('Diagnostics', dbody,
+        '失败 / 未决边界来自 boundary_decisions.json 的 totals（对应 Reviewer 整改 C 的 Failure / Unresolved 口径）。');
+
+    // 产物映射与契约缺口
+    var gbody = '';
+    var gaps = d.contract_gaps || [];
+    for (var g = 0; g < gaps.length; g++) gbody += '<div class="kv-pair"><span class="kv-val">' + esc(gaps[g]) + '</span></div>';
+    html += card('Artifact Mapping / Contract Gaps', gbody || kv('note', '无'),
+        'evidence.json 与 qc_report.json 完全缺失；raw_extraction.json 实际名为 text_blocks.json（改名）。' +
+        'candidates.json 不得充当 evidence.json。完整逐项映射见左侧 Diagnostics 页签。');
+
+    dataCards.innerHTML = html;
+}
+
+// PDF 原文预览联动：只显示 Parser 真实渲染的 PNG。
+function loadPage(page, label) {
+    if (!lastResponse || !lastResponse.run_id) return;
+    var url = '/api/page?run_id=' + encodeURIComponent(lastResponse.run_id) + '&page=' + page;
+    pdfPreview.innerHTML = '正在检查第 ' + page + ' 页的 Parser 渲染图（' + esc(label) + '）...';
+    fetch(url).then(function (resp) {
+        if (resp.ok) {
+            pdfPreview.innerHTML = 'Parser 真实渲染：第 ' + page + ' 页（' + esc(label) +
+                '）。仅检测到表格的页才会渲染。<br><img src="' + url + '" alt="page ' + page + '">';
+        } else {
+            return resp.json().then(function (j) {
+                pdfPreview.innerHTML = '<b>' + esc(j.status) + '</b>：' + esc(j.note || '该页无渲染图');
+            });
+        }
+    }).catch(function (err) {
+        pdfPreview.innerHTML = '未连接后端，无法加载页面预览：' + esc(err.message);
+    });
+}
+
+// 复制的 JSON 必须与实际后端返回结果一致。
+function copyJSON() {
+    if (!lastResponse) { alert('尚未收到后端响应，无可复制内容。'); return; }
+    var text = JSON.stringify(lastResponse, null, 2);
+    function done() {
+        document.querySelector('.btn-primary').textContent = 'Copied!';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+    } else { fallbackCopy(text, done); }
+}
+function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); done(); } catch (e) { alert('复制失败，请手动选中 JSON 文本。'); }
+    document.body.removeChild(ta);
+}
+
+function goHome() {
+    resultsView.className = '';
+    resultsView.style.display = 'none';
+    landingView.style.display = 'flex';
+    fileInput.value = '';
+    uploadText.textContent = '点击或拖入单个 Datasheet PDF';
+    searchInput.value = '';
+    pdfPreview.innerHTML = 'PDF 原文预览联动：点击下方 Tables / Candidates 中带页码的条目，加载 Parser 真实渲染的页面 PNG。<br>仅检测到表格的页才会被渲染；未渲染的页会明确提示，不提供替代图。';
+    setState('WAITING', backend
+        ? (backend.frozen ? '后端已连接，但处于 Reviewer 冻结期。' : '后端已连接，可上传单个 PDF。')
+        : '等待后端', backend && !backend.frozen ? 'ok' : 'warn');
+}
+
+fetchHealth();
+</script>
+</body>
+</html>
