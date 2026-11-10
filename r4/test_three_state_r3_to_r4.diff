@@ -1,0 +1,127 @@
+--- a/test_three_state_v28r3.py (v2.8_r3)
++++ b/test_three_state_v28r3.py (v2.8_r4)
+@@ -24,6 +24,7 @@
+ import io
+ import os
+ import shutil
++import subprocess
+ import sys
+ from collections import Counter
+ 
+@@ -34,6 +35,23 @@
+ 
+ CHECKS = []
+ _SEQ = [0]
++
++# r4 防漂移基线：真实环境（无打桩）全量 81 条断言的 46 个 cid 分布。
++# 任一测试组增删或 cid 改名都会让 S4 的固定断言失败，避免统计口径静默漂移。
++EXPECTED_CID_COUNTS = {"T1": 28, "T3": 5, "T5g": 5}
++EXPECTED_CID_COUNTS.update(
++    (cid, 1) for cid in (
++        "T2a T2b T2c T2d T2e "
++        "T4a T4b "
++        "T5a T5b T5c T5d T5e T5f "
++        "T6a T6b T6c "
++        "T7a T7b "
++        "T8a T8b T8c T8d T8e T8f "
++        "T9a T9b T9c "
++        "T10a T10b T10c T10d T10e T10f T10g T10h T10i T10j T10k "
++        "T11a T11b T11c T11d T11e"
++    ).split()
++)
+ 
+ 
+ def check(name, cond, detail=""):
+@@ -250,15 +268,83 @@
+     check("S4 三态守恒", n_pass + n_skip + len(bad) == n,
+           "PASS=%d SKIP=%d FAIL=%d" % (n_pass, n_skip, len(bad)))
+     check("S4 退出码为 0（SKIP 不导致非零）", rc == 0, "rc=%d" % rc)
++    expected = Counter(EXPECTED_CID_COUNTS)
++    missing = sorted(set(expected) - set(counter))
++    extra = sorted(set(counter) - set(expected))
++    drift = {k: (counter.get(k), expected.get(k))
++             for k in set(expected) | set(counter)
++             if counter.get(k) != expected.get(k)}
++    check("S4 唯一 cid 数固定为 46", len(counter) == 46,
++          "unique=%d baseline=%d" % (len(counter), len(expected)))
++    check("S4 46 个 cid 分布与固定基线逐项一致",
++          counter == expected,
++          "缺失=%r 多出=%r 计数差异=%r" % (missing, extra, drift))
+     print("  [INFO] 81 是断言条数口径，唯一 cid 数 = %d" % len(counter))
+     print("  [INFO] 复用 ID（分组一対多）：%r" % (reused,))
+     print("  [INFO] 统计行：%s"
+           % next((l for l in out.splitlines() if l.startswith("统计：")), ""))
+ 
+ 
++# ------------------------------------------------------------------- S5
++def s5_typeerror():
++    print("\nS5 TypeError 不得被降级为 SKIP（r4 T7 异常捕获收窄）")
++    tv = load_tv()
++    vr = tv.load_target()
++    reset(tv)
++
++    def raise_typeerror(*_a, **_k):
++        raise TypeError("mock: 非预期的接口错误")
++
++    tv.make_junction = raise_typeerror
++    raised = None
++    try:
++        tv.t7(vr)
++    except TypeError as e:
++        raised = e
++    finally:
++        cleanup(tv)
++    check("S5 TypeError 向上抛出，未被 except 捕获",
++          raised is not None,
++          str(raised) if raised is not None else "未抛出")
++    check("S5 SKIPPED 中无 T7a / T7b",
++          not any(c in ("T7a", "T7b") for c in tv.SKIPPED),
++          repr(tv.SKIPPED))
++    check("S5 RESULTS 未登记任何 T7 的 SKIP 记录",
++          len(tv.RESULTS) == 0, "RESULTS=%r" % (tv.RESULTS,))
++
++    # 进程级：完整 main() 同样向上抛出，脚本以非零退出码终止。
++    driver = """
++import importlib.util, sys, os
++spec = importlib.util.spec_from_file_location("tv_ty", r"%s")
++tv = importlib.util.module_from_spec(spec)
++spec.loader.exec_module(tv)
++tv.TARGET = r"%s"
++tv.DATA = r"%s"
++sys.argv = ["test_verify_reviewer.py", "--data", tv.DATA, "--verifier", tv.TARGET]
++def boom(*_a, **_k):
++    raise TypeError("mock: 非预期的接口错误")
++tv.make_junction = boom
++sys.exit(tv.main())
++""" % (os.path.abspath(DEFAULT_TV), os.path.abspath(DEFAULT_VR),
++       os.path.abspath(DEFAULT_DATA))
++    proc = subprocess.run(
++        [sys.executable, "-W", "error", "-c", driver],
++        stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
++        encoding="utf-8", errors="replace")
++    out = proc.stdout or ""
++    check("S5 进程级退出码非 0", proc.returncode != 0,
++          "rc=%d" % proc.returncode)
++    check("S5 输出含未捕获的 TypeError", "TypeError" in out,
++          next((l for l in out.splitlines() if "TypeError" in l), "")[:120])
++    check("S5 未打印 [SKIP] T7a", "[SKIP] T7a" not in out)
++    check("S5 未走到汇总统计行（main 提前终止）",
++          "统计：共" not in out, "main() 在汇总前终止")
++    print("  [INFO] 实际表现为未捕获异常终止（退出码非 0），未在 RESULTS 中登记 FAIL 记录")
++
++
+ def selfcheck():
+     print("=" * 78)
+-    print("v2.8_r3 三态与 P1 定向验证（外层断言测试）")
++    print("v2.8_r4 三态 / P1 / 异常收窄定向验证（外层断言测试）")
+     print("=" * 78)
+     print("test  = %s" % DEFAULT_TV)
+     print("vr    = %s" % DEFAULT_VR)
+@@ -268,6 +354,7 @@
+     s2_limited()
+     s3_mixed()
+     s4_uniqueness()
++    s5_typeerror()
+     bad = [c for c in CHECKS if not c[1]]
+     print("\n" + "=" * 78)
+     print("定向断言：共 %d 项，PASS=%d FAIL=%d"
