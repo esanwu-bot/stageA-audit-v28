@@ -1,0 +1,34 @@
+{
+  "source_csv": "E:\\workspace\\icpdf-extractor\\runs\\stage_a_350\\ds_parse_candidates_350_v2.csv",
+  "source_csv_sha256": "040a0e78322089387f3237c0db2f487d37cd17d9de887ec9d5e647345ae05839",
+  "population": 350,
+  "proposed_n": 30,
+  "quota": {
+    "普通文本型 Datasheet": 6,
+    "复杂参数表": 6,
+    "多级表头 / 合并单元格": 5,
+    "多封装或多型号": 4,
+    "跨页表格": 4,
+    "扫描型或复杂版面（待人工确认）": 3,
+    "边界或异常文档": 2
+  },
+  "quota_note": "第 7 类 2 行 = 1 行 NONE 抽样 + 1 行指定检查点 V022；7 类合计 6+6+5+4+4+3+2 = 30，与建议配额一致",
+  "baseline_5_count": 5,
+  "baseline_5_samples": [
+    "V097",
+    "V003",
+    "V011",
+    "V077",
+    "V022"
+  ],
+  "legacy_overlap_count": 1,
+  "legacy_overlap_samples": [
+    "V003"
+  ],
+  "pdf_opened": false,
+  "parser_invoked": false,
+  "llm_called": false,
+  "gold_labels_created": false,
+  "type_labels_are_proposals_only": true,
+  "addressing_rule": "执行阶段必须严格使用 file_path 原文；SHA 只用于校验，禁止按 SHA 另找路径"
+}
