@@ -1,0 +1,11 @@
+--- a/_r3_baseline_test.py (v2.8_r3)
++++ b/test_verify_reviewer.py (v2.8_r4)
+@@ -419,7 +419,7 @@
+     j = os.path.join(base, "delivery_junc")
+     try:
+         make_junction(DATA, j)
+-    except Exception as e:
++    except (OSError, subprocess.CalledProcessError) as e:
+         reason = ("当前环境无法创建 junction（需 NTFS 且沙箱与数据同卷；"
+                   "跨卷、FAT/exFAT、非管理员受限场景均会失败）")
+         skip("T7a", "junction 根拒绝：本环境不具备测试条件", reason)
