@@ -1,0 +1,68 @@
+{
+  "stage": "GATE6_ROUND2_DELIVERABLES_ONLY",
+  "checks": [
+    {
+      "id": "R1",
+      "desc": "全量表由源 CSV 生成且 46 行齐全",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "R2",
+      "desc": "审查矩阵 46 行且与源 CSV 逐行对齐",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "R3",
+      "desc": "审查矩阵每行 11 列",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "R4",
+      "desc": "待批默认值全部标记 needs_reviewer_approval=YES",
+      "result": "PASS",
+      "detail": "count=12"
+    },
+    {
+      "id": "R5",
+      "desc": "冻结清单覆盖全部未跟踪条目",
+      "result": "PASS",
+      "detail": "entries=16"
+    },
+    {
+      "id": "R6",
+      "desc": "Git HEAD 与 Gate 6 第一轮一致",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "R7",
+      "desc": "主项目无新增提交",
+      "result": "PASS",
+      "detail": ""
+    },
+    {
+      "id": "R8",
+      "desc": "B 类已跟踪修改被登记（cli.py 不得漏记）",
+      "result": "PASS",
+      "detail": "modified=['src/icpdf/cli.py']"
+    },
+    {
+      "id": "R9",
+      "desc": "工作区 cli.py 与 HEAD 版本哈希不同且均已登记",
+      "result": "PASS",
+      "detail": ""
+    }
+  ],
+  "total": 9,
+  "passed": 9,
+  "failed": 0,
+  "all_pass": true,
+  "evidence_boundary": "本文件证明交付件内部一致性与文件完整性，不证明字段映射正确、方案获批或审计结论通过独立审核",
+  "no_code_change": true,
+  "no_db_created": true,
+  "no_trial_started": true,
+  "no_llm_call": true
+}
