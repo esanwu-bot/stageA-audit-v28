@@ -1,0 +1,534 @@
+{
+  "evidence_kind": "pure_function_simulation",
+  "not_an_http_response": "本文件直接调用生产 _decide_matrix 生成，未经 _classify_worker 进程、未经过上传链路与超时控制，不是 /api/parse 或 /api/process 的响应体。",
+  "generated_by": "workbench/_classifier_revision/_trace_case.py",
+  "sample": {
+    "filename": "ADC08060EVM__slau715a.pdf",
+    "pdf_sha256": "09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca",
+    "page_count": 20,
+    "pages_read": 3,
+    "metadata_title": "ADC08xx0 Evaluation Module User's Guide (Rev. A)",
+    "metadata_subject": "User's Guide",
+    "filename_mpn": "ADC08060EVM",
+    "provenance_document_subject_mpn": "slau715a",
+    "provenance_source_product_mpn": "ADC08060EVM",
+    "provenance": {
+      "source_product_mpn": "ADC08060EVM",
+      "document_subject_mpn": "slau715a",
+      "source_context": "EVM_BUNDLE",
+      "association_status": "inferred_from_filename",
+      "provenance_evidence": [
+        "filename_separator:'__'",
+        "inference=inferred_from_filename",
+        "source_product_mpn='ADC08060EVM'（带 EVM/EVAL 家族后缀）",
+        "document_subject_mpn='slau715a'"
+      ],
+      "original_filename": "ADC08060EVM__slau715a.pdf",
+      "parse_status": "parsed"
+    }
+  },
+  "variants": {
+    "A": {
+      "candidate_passed_to_scan_pages": "slau715a",
+      "ds_product_model_title_fired": true,
+      "board_title_present": true,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "group": "SLAU",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "filename",
+          "page": null,
+          "matched_text": "slau7"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "USER_GUIDE",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "User's Guide"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "EVAL_MODULE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "group": "PRODUCT_MODEL_TITLE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "ADC08xx0 Evaluation Module User's Guide (Rev. A) User's Guide 1 SLAU715A–February 2017–Revised July 2017 Submit Documentation Feedback Copyright © 2017, Texas I"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 2,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "group": "SECTION_FEATURES",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "features"
+        }
+      ],
+      "decision": {
+        "doc_type": "UNKNOWN",
+        "route": "REVIEW",
+        "confidence": "low",
+        "semantic": "UNKNOWN",
+        "status": "SUCCESS",
+        "conflict": true,
+        "rejected_rules": []
+      }
+    },
+    "B": {
+      "candidate_passed_to_scan_pages": "ADC08060EVM",
+      "ds_product_model_title_fired": false,
+      "board_title_present": true,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "group": "SLAU",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "filename",
+          "page": null,
+          "matched_text": "slau7"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "USER_GUIDE",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "User's Guide"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "EVAL_MODULE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 2,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "group": "SECTION_FEATURES",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "features"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": [
+          "('DS_ELECTRICAL_SECTIONS', 'features', 'overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板', 'overridden_by_board_evidence')"
+        ]
+      }
+    },
+    "D": {
+      "candidate_passed_to_scan_pages": "slau715a",
+      "ds_product_model_title_fired": false,
+      "board_title_present": true,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "group": "SLAU",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "filename",
+          "page": null,
+          "matched_text": "slau7"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "USER_GUIDE",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "User's Guide"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "EVAL_MODULE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 2,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "group": "SECTION_FEATURES",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "features"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": [
+          "('DS_ELECTRICAL_SECTIONS', 'features', 'overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板', 'overridden_by_board_evidence')"
+        ]
+      }
+    },
+    "E": {
+      "candidate_passed_to_scan_pages": "slau715a",
+      "ds_product_model_title_fired": false,
+      "board_title_present": true,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "group": "SLAU",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "filename",
+          "page": null,
+          "matched_text": "slau7"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "USER_GUIDE",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "User's Guide"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "EVAL_MODULE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 2,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "group": "SECTION_FEATURES",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "features"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": [
+          "('DS_ELECTRICAL_SECTIONS', 'features', 'overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板', 'overridden_by_board_evidence')"
+        ]
+      }
+    },
+    "F": {
+      "candidate_passed_to_scan_pages": "ADC08060EVM",
+      "ds_product_model_title_fired": false,
+      "board_title_present": true,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "group": "SLAU",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "filename",
+          "page": null,
+          "matched_text": "slau7"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "USER_GUIDE",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "User's Guide"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "group": "EVAL_MODULE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 1,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 2,
+          "matched_text": "Evaluation Module"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "group": "SECTION_FEATURES",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 3,
+          "matched_text": "features"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": [
+          "('DS_ELECTRICAL_SECTIONS', 'features', 'overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板', 'overridden_by_board_evidence')"
+        ]
+      }
+    }
+  }
+}

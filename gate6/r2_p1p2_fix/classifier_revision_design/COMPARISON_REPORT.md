@@ -147,6 +147,11 @@ D 的 260 份变化**全部是 `UNKNOWN → EVM`**：没有一份 EVM 掉出隔�
 | `affected_samples.csv` | R1' 全量受影响样本，3,243 行 × 19 列 |
 | `summary.json` | 机器可读汇总（计数、迁移分布、关注事件示例） |
 | `_scan_matrix.py` | 本次扫描脚本（可复现） |
+| `trace_DRV2700EVM__slyu023.json` | 致命案例（1 份漏放）的五方案完整判定轨迹 |
+| `trace_ADC08060EVM__slau715a.json` | 缺陷复现样本（A）的五方案完整判定轨迹 |
+| `_trace_case.py` | 轨迹导出脚本 |
+
+**轨迹文件的性质**：由 `_decide_matrix` 纯函数直接生成，**不是** `/api/parse` 或 `/api/process` 的响应体（未经过 `_classify_worker` 进程、上传链路与超时控制）。文件内 `evidence_kind` 字段已显式标注。致命案例在 B 方案下的证据链可直接复核：唯一 STRONG 证据是 `DS_PRODUCT_MODEL_TITLE`（`source=metadata`，`matched_text` 为整个标题块），板级证据仅 `EVM_FILENAME_SUFFIX`(medium) + `EVM_BOARD_TERMS`×3(medium) + `EVM_BODY_MENTION`×2(weak)，`EVM_BOARD_TITLE` 缺失 → `DS_STRONG/IC_PARSE/high`，且 `conflict=false`、`rejected_rules=[]`。
 
 校验：见同目录 `SHA256SUMS.txt`（`sha256sum -c` 可直接校验）。所有 CSV 为 UTF-8 with BOM（Excel 直接打开不乱码）。
 

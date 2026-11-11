@@ -1,0 +1,400 @@
+{
+  "evidence_kind": "pure_function_simulation",
+  "not_an_http_response": "本文件直接调用生产 _decide_matrix 生成，未经 _classify_worker 进程、未经过上传链路与超时控制，不是 /api/parse 或 /api/process 的响应体。",
+  "generated_by": "workbench/_classifier_revision/_trace_case.py",
+  "sample": {
+    "filename": "DRV2700EVM__slyu023.pdf",
+    "pdf_sha256": "5affb226c8921348842fc2883a71c5addd2dd30f56dfce9ae019c07cb4e25c45",
+    "page_count": 5,
+    "pages_read": 3,
+    "metadata_title": "DRV2700EVM Quick Start Guide",
+    "metadata_subject": "Reference Guide",
+    "filename_mpn": "DRV2700EVM",
+    "provenance_document_subject_mpn": "slyu023",
+    "provenance_source_product_mpn": "DRV2700EVM",
+    "provenance": {
+      "source_product_mpn": "DRV2700EVM",
+      "document_subject_mpn": "slyu023",
+      "source_context": "EVM_BUNDLE",
+      "association_status": "inferred_from_filename",
+      "provenance_evidence": [
+        "filename_separator:'__'",
+        "inference=inferred_from_filename",
+        "source_product_mpn='DRV2700EVM'（带 EVM/EVAL 家族后缀）",
+        "document_subject_mpn='slyu023'"
+      ],
+      "original_filename": "DRV2700EVM__slyu023.pdf",
+      "parse_status": "parsed"
+    }
+  },
+  "variants": {
+    "A": {
+      "candidate_passed_to_scan_pages": "slyu023",
+      "ds_product_model_title_fired": false,
+      "board_title_present": false,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 1,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "HEADER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "header"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 3,
+          "matched_text": "EVM"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "medium",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": []
+      }
+    },
+    "B": {
+      "candidate_passed_to_scan_pages": "DRV2700EVM",
+      "ds_product_model_title_fired": true,
+      "board_title_present": false,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "group": "PRODUCT_MODEL_TITLE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "DRV2700EVM Quick Start Guide Reference Guide 2015 ti.com/drv2700 DRV2700EVM Quick-Start Guide ➔Start Here"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 1,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "HEADER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "header"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 3,
+          "matched_text": "EVM"
+        }
+      ],
+      "decision": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": []
+      }
+    },
+    "D": {
+      "candidate_passed_to_scan_pages": "slyu023",
+      "ds_product_model_title_fired": false,
+      "board_title_present": false,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 1,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "HEADER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "header"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 3,
+          "matched_text": "EVM"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "medium",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": []
+      }
+    },
+    "E": {
+      "candidate_passed_to_scan_pages": "slyu023",
+      "ds_product_model_title_fired": false,
+      "board_title_present": false,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 1,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "HEADER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "header"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 3,
+          "matched_text": "EVM"
+        }
+      ],
+      "decision": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "medium",
+        "semantic": "EVM",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": []
+      }
+    },
+    "F": {
+      "candidate_passed_to_scan_pages": "DRV2700EVM",
+      "ds_product_model_title_fired": true,
+      "board_title_present": false,
+      "hits": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "group": "SUFFIX_EVM",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "mpn",
+          "page": null,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "group": "PRODUCT_MODEL_TITLE",
+          "strength": "strong",
+          "confidence": "high",
+          "source": "metadata",
+          "page": null,
+          "matched_text": "DRV2700EVM Quick Start Guide Reference Guide 2015 ti.com/drv2700 DRV2700EVM Quick-Start Guide ➔Start Here"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 1,
+          "matched_text": "EVM"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "JUMPER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "jumper"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "CONNECTOR",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "connector"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "group": "HEADER",
+          "strength": "medium",
+          "confidence": "medium",
+          "source": "first_page",
+          "page": 2,
+          "matched_text": "header"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "group": "BODY",
+          "strength": "weak",
+          "confidence": "low",
+          "source": "body",
+          "page": 3,
+          "matched_text": "EVM"
+        }
+      ],
+      "decision": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "status": "SUCCESS",
+        "conflict": false,
+        "rejected_rules": []
+      }
+    }
+  }
+}
