@@ -1,0 +1,9 @@
+POST /api/process HTTP/1.1
+Host: 127.0.0.1:8765
+Content-Type: application/pdf
+Accept: application/json
+x-filename: DRV2700EVM__slyu023.pdf
+Content-Length: 809008
+Connection: close
+
+<<<BODY: 809008 bytes, raw PDF bytes sent verbatim, sha256=5affb226c8921348842fc2883a71c5addd2dd30f56dfce9ae019c07cb4e25c45>>>

@@ -1,0 +1,9 @@
+POST /api/process HTTP/1.1
+Host: 127.0.0.1:8765
+Content-Type: application/pdf
+Accept: application/json
+x-filename: BQ25570EVM-206__sluuaa7a.pdf
+Content-Length: 1139868
+Connection: close
+
+<<<BODY: 1139868 bytes, raw PDF bytes sent verbatim, sha256=60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e>>>

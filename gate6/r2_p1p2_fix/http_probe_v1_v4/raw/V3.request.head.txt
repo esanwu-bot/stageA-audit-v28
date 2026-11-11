@@ -1,0 +1,9 @@
+POST /api/process HTTP/1.1
+Host: 127.0.0.1:8765
+Content-Type: application/pdf
+Accept: application/json
+x-filename: DS10CP154TSQX_NOPB__DS10CP154.pdf
+Content-Length: 346705
+Connection: close
+
+<<<BODY: 346705 bytes, raw PDF bytes sent verbatim, sha256=abeef5bb85c3780399c267cea563f7cfe11b9c6d356da1d94cb1bb42e632c2e6>>>

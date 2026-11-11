@@ -1,0 +1,9 @@
+POST /api/process HTTP/1.1
+Host: 127.0.0.1:8765
+Content-Type: application/pdf
+Accept: application/json
+x-filename: ADC08060EVM__slau715a.pdf
+Content-Length: 1260819
+Connection: close
+
+<<<BODY: 1260819 bytes, raw PDF bytes sent verbatim, sha256=09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca>>>

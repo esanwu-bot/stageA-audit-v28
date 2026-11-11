@@ -1,0 +1,1082 @@
+{
+  "probe": "V1-V4 controlled localhost HTTP probe",
+  "generated_at": "2026-11-11T10:53:32+08:00",
+  "endpoint": "POST http://127.0.0.1:8765/api/process",
+  "transport": "raw socket, HTTP/1.1, Connection: close, 串行 4 次，无并发",
+  "phase_a": {
+    "role": "承载 4 次探针的服务进程",
+    "pid": 63240,
+    "pid_evidence": "INFO:     Started server process [63240]",
+    "launch": "python -u workbench/serve_parser.py",
+    "startup_log": "startup.log",
+    "health_requests": 1,
+    "process_requests": 4,
+    "process_request_lines": [
+      "INFO:     127.0.0.1:63454 - \"POST /api/process HTTP/1.1\" 200 OK",
+      "INFO:     127.0.0.1:63459 - \"POST /api/process HTTP/1.1\" 200 OK",
+      "INFO:     127.0.0.1:63467 - \"POST /api/process HTTP/1.1\" 200 OK",
+      "INFO:     127.0.0.1:63472 - \"POST /api/process HTTP/1.1\" 200 OK"
+    ],
+    "python": "3.13.15 (MSC v.1944 64 bit)",
+    "frozen_flag_from_startup": "frozen=False",
+    "process_env_file": "env/process_env.json",
+    "process_env_key_count": 229,
+    "process_env_subset": {
+      "ICEX_WORKBENCH_ALLOW_PARSE": "1",
+      "ICEX_CLASSIFY_ONLY": "1",
+      "ICEX_WORKBENCH_PORT": "8765",
+      "ICEX_WORKBENCH_DEPS": null,
+      "ICEX_PARSE_TIMEOUT": null,
+      "ICEX_CLASSIFY_TIMEOUT": null,
+      "ICEX_WORKBENCH_MAX_CONCURRENCY": null
+    },
+    "process_env_source": "psutil.Process(63240).environ()（PEB 读取，非 shell 回显）"
+  },
+  "phase_a_failure": {
+    "what": "harness 在 finally 中调用 netstat 时崩溃",
+    "cause": "subprocess.run(['netstat','-ano'], text=True) 在中文 Windows 上以 UTF-8 解码 GBK 输出，抛 UnicodeDecodeError → stdout=None → AttributeError，probe_record.json 未落盘",
+    "what_was_lost": [
+      "taskkill 的 stdout 文本",
+      "GET /api/health 的响应体",
+      "首轮内存中的 record 字典"
+    ],
+    "what_was_not_lost": [
+      "4 次 /api/process 的原始请求头与原始响应字节",
+      "进程环境块（崩溃前已写入 process_env.json）",
+      "startup.log（含 PID 与 4 条 POST 记录）",
+      "before 快照"
+    ],
+    "remediation": "未重发任何请求；本文件由原始字节重新计算得出",
+    "disclosed": true
+  },
+  "phase_b": {
+    "role": "停止与端口释放的实测状态（探针结束后采集）",
+    "collected_at": "2026-11-11T10:53:32+08:00",
+    "taskkill_stdout": null,
+    "taskkill_note": "taskkill /PID 63240 /T /F 已在 finally 内执行（该行代码先于崩溃点），但其 stdout 文本随崩溃丢失，未做二次执行以免误杀他人进程",
+    "evidence_process_gone": true,
+    "residual_serve_parser_pids": [],
+    "port_listening": false,
+    "netstat_snapshot": "TCP    127.0.0.1:8765         127.0.0.1:63447        TIME_WAIT       0\nTCP    127.0.0.1:8765         127.0.0.1:63454        TIME_WAIT       0\nTCP    127.0.0.1:8765         127.0.0.1:63459        TIME_WAIT       0\nTCP    127.0.0.1:8765         127.0.0.1:63467        TIME_WAIT       0\nTCP    127.0.0.1:8765         127.0.0.1:63472        TIME_WAIT       0\nTCP    127.0.0.1:63453        127.0.0.1:8765         TIME_WAIT       0",
+    "port_released_conclusion": true
+  },
+  "snapshot_diff": {
+    "runs": {
+      "added": [],
+      "removed": [],
+      "added_count": 0,
+      "removed_count": 0,
+      "before_count": 97,
+      "after_count": 97
+    },
+    "uploads": {
+      "added": [
+        "WB-20261111-105156-7724/8dd72a0bccd94151b2995209c6ec2a26.pdf",
+        "WB-20261111-105201-27be/cfd1badac9744723b6ff5edfb25910f0.pdf",
+        "WB-20261111-105206-3fd5/cc29549f91414f129a6b98a65297cff2.pdf",
+        "WB-20261111-105211-bf8e/43cfdc90f76f4d1daab925df861bc23b.pdf"
+      ],
+      "removed": [],
+      "added_count": 4,
+      "removed_count": 0,
+      "before_count": 4,
+      "after_count": 8
+    }
+  },
+  "code_state": {
+    "repo": "E:\\workspace\\icpdf-extractor",
+    "git_head": "60a503cc8015ef9bfb27ddef1685e41593f3a75f",
+    "classifier_sha256_now": "28b9f0bfc1b23f27f6b170b00c4651a0ba5a9baad35c375d2434e9fd07ee7d5b",
+    "classifier_sha256_expected": "28b9f0bfc1b23f27f6b170b00c4651a0ba5a9baad35c375d2434e9fd07ee7d5b",
+    "classifier_sha256_match": true
+  },
+  "results": [
+    {
+      "id": "V1",
+      "filename": "ADC08060EVM__slau715a.pdf",
+      "http_status": 200,
+      "status_line": "HTTP/1.1 200 OK",
+      "response_bytes": 10544,
+      "raw_response_bytes": 10691,
+      "response_sha256": "5d4368dfba3bbc1768aeab4021bf329a01a75bf0b6832272582c17b348682edf",
+      "request_head_sha256": "d288d4d05b068bef2d6a664b9a62e7ec5306d0a832eb2e7c9ac9809f2faf821d",
+      "service_status": "NON_DATASHEET",
+      "frozen": false,
+      "llm_called": false,
+      "database_written": false,
+      "classifier_llm_calls": 0,
+      "decision": "NON_DATASHEET",
+      "doc_type": "EVM",
+      "route": "QUARANTINE",
+      "confidence": "high",
+      "evidence_conflict": false,
+      "semantic_type": "EVM",
+      "assigned_type": "EVM",
+      "classification_status": "SUCCESS",
+      "read_status": "OK",
+      "source_hash_status": "success",
+      "sha256_matches_upload": true,
+      "source_sha256": "09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca",
+      "ic_datasheet_extraction": false,
+      "is_confirmed_datasheet": false,
+      "admit_to_parser": false,
+      "classifier_version": "docclassifier-2.2.1",
+      "rule_version": "doc-classifier-v2",
+      "matched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "matched_text": "EVM",
+          "source": "mpn",
+          "page": null,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "matched_text": "slau7",
+          "source": "filename",
+          "page": null,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "matched_text": "User's Guide",
+          "source": "metadata",
+          "page": null,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "matched_text": "Evaluation Module",
+          "source": "metadata",
+          "page": null,
+          "confidence": "high",
+          "strength": "strong",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "matched_text": "ADC08xx0 Evaluation Module User's Guide (Rev. A) User's Guide 1 SLAU715A–February 2017–Revised July 2017 Submit Documentation Feedback Copyright © 2017, Texas I",
+          "source": "metadata",
+          "page": null,
+          "confidence": "high",
+          "strength": "strong",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "jumper",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "connector",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "matched_text": "Evaluation Module",
+          "source": "body",
+          "page": 2,
+          "confidence": "low",
+          "strength": "weak",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "connector",
+          "source": "first_page",
+          "page": 3,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "features",
+          "source": "first_page",
+          "page": 3,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        }
+      ],
+      "rejected_rules": [
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "matched_text": "ADC08xx0 Evaluation Module User's Guide (Rev. A) User's Guide 1 SLAU715A–February 2017–Revised July 2017 Submit Documentation Feedback Copyright © 2017, Texas I",
+          "reason": "overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); 评估板标题里的芯片型号不代表本文档是 Datasheet",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "features",
+          "reason": "overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        }
+      ],
+      "unmatched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_WEAK",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_DS",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "EVM_BOARD_SCHEMATIC",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "DS_DOCUMENT_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "OTHER_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_NVM_GUARD",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "PAGE_TEXT_UNAVAILABLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVIDENCE_CONFLICT",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        }
+      ],
+      "evidence_pages": [
+        1,
+        2,
+        3
+      ],
+      "gate_failed_checks": [
+        "route",
+        "doc_type",
+        "ic_datasheet_extraction"
+      ],
+      "gate_reasons": [
+        "分类器明确判定为非 Datasheet 本体（doc_type=EVM，semantic_type=EVM）；立即终止，不进入 Parser",
+        "未满足准入项 route：实际='QUARANTINE'，要求='IC_PARSE'",
+        "未满足准入项 doc_type：实际='EVM'，要求='DS_STRONG'",
+        "未满足准入项 ic_datasheet_extraction：实际=False，要求=True"
+      ],
+      "parser_called": false,
+      "parser_status": "SKIPPED",
+      "parser_reason": "Pre-Parse Gate 判定 NON_DATASHEET；不创建 Parser Run 目录、不调用 parse_pdf()",
+      "parser_call_count": 0,
+      "parse_pdf_calls": 0,
+      "parse_worker_started": false,
+      "parser_stages_seen": [],
+      "classifier_stages": [
+        "WORKER_STARTED",
+        "EVIDENCE_LINK_READY",
+        "CLASSIFIER_CALL_ENTERED",
+        "CLASSIFIER_CALL_RETURNED",
+        "EVIDENCE_LINK_REMOVED"
+      ],
+      "classifier_worker_started": true,
+      "safety_blocked": null,
+      "safety_guard_layer": null,
+      "offline_expect": {
+        "A_before": [
+          "UNKNOWN",
+          "REVIEW",
+          "low",
+          true
+        ],
+        "D_prime": [
+          "EVM",
+          "QUARANTINE",
+          "high",
+          false
+        ],
+        "in_193": true,
+        "note": "A→D' 有变化：EVAL_MODULE 组触发抑制"
+      },
+      "offline_match": true
+    },
+    {
+      "id": "V2",
+      "filename": "BQ25570EVM-206__sluuaa7a.pdf",
+      "http_status": 200,
+      "status_line": "HTTP/1.1 200 OK",
+      "response_bytes": 11327,
+      "raw_response_bytes": 11474,
+      "response_sha256": "b4810d13436efc2a8ed00537973ccef6e419ca4d463cf86fdad5516a25317bc5",
+      "request_head_sha256": "0aace317ddb341e4471c9f6b67acbacc8b5f7a43b39732fdf4189bf871214a14",
+      "service_status": "NON_DATASHEET",
+      "frozen": false,
+      "llm_called": false,
+      "database_written": false,
+      "classifier_llm_calls": 0,
+      "decision": "NON_DATASHEET",
+      "doc_type": "EVM",
+      "route": "QUARANTINE",
+      "confidence": "high",
+      "evidence_conflict": false,
+      "semantic_type": "EVM",
+      "assigned_type": "EVM",
+      "classification_status": "SUCCESS",
+      "read_status": "OK",
+      "source_hash_status": "success",
+      "sha256_matches_upload": true,
+      "source_sha256": "60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e",
+      "ic_datasheet_extraction": false,
+      "is_confirmed_datasheet": false,
+      "admit_to_parser": false,
+      "classifier_version": "docclassifier-2.2.1",
+      "rule_version": "doc-classifier-v2",
+      "matched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "matched_text": "EVM",
+          "source": "mpn",
+          "page": null,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "matched_text": "User's Guide",
+          "source": "metadata",
+          "page": null,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "matched_text": "Evaluation Module",
+          "source": "metadata",
+          "page": null,
+          "confidence": "high",
+          "strength": "strong",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "Bill of Materials",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_SCHEMATIC",
+          "matched_text": "EVM Schematic",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "high",
+          "strength": "strong",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "Features",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "General Description",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "Jumper",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "Test points",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "Features",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "General Description",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "features",
+          "source": "first_page",
+          "page": 3,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "matched_text": "Evaluation Module",
+          "source": "body",
+          "page": 3,
+          "confidence": "low",
+          "strength": "weak",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        }
+      ],
+      "rejected_rules": [
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "Features",
+          "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "General Description",
+          "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "features",
+          "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        }
+      ],
+      "unmatched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_WEAK",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_DS",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DS_DOCUMENT_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "OTHER_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_NVM_GUARD",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "PAGE_TEXT_UNAVAILABLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVIDENCE_CONFLICT",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        }
+      ],
+      "evidence_pages": [
+        1,
+        2,
+        3
+      ],
+      "gate_failed_checks": [
+        "route",
+        "doc_type",
+        "ic_datasheet_extraction"
+      ],
+      "gate_reasons": [
+        "分类器明确判定为非 Datasheet 本体（doc_type=EVM，semantic_type=EVM）；立即终止，不进入 Parser",
+        "未满足准入项 route：实际='QUARANTINE'，要求='IC_PARSE'",
+        "未满足准入项 doc_type：实际='EVM'，要求='DS_STRONG'",
+        "未满足准入项 ic_datasheet_extraction：实际=False，要求=True"
+      ],
+      "parser_called": false,
+      "parser_status": "SKIPPED",
+      "parser_reason": "Pre-Parse Gate 判定 NON_DATASHEET；不创建 Parser Run 目录、不调用 parse_pdf()",
+      "parser_call_count": 0,
+      "parse_pdf_calls": 0,
+      "parse_worker_started": false,
+      "parser_stages_seen": [],
+      "classifier_stages": [
+        "WORKER_STARTED",
+        "EVIDENCE_LINK_READY",
+        "CLASSIFIER_CALL_ENTERED",
+        "CLASSIFIER_CALL_RETURNED",
+        "EVIDENCE_LINK_REMOVED"
+      ],
+      "classifier_worker_started": true,
+      "safety_blocked": null,
+      "safety_guard_layer": null,
+      "offline_expect": {
+        "A_before": null,
+        "D_prime": null,
+        "in_193": false,
+        "note": "不在 193 条变化集，A 与 D' 相同；响应中无 DS_PRODUCT_MODEL_TITLE 抑制"
+      },
+      "offline_match": null
+    },
+    {
+      "id": "V3",
+      "filename": "DS10CP154TSQX_NOPB__DS10CP154.pdf",
+      "http_status": 200,
+      "status_line": "HTTP/1.1 200 OK",
+      "response_bytes": 10639,
+      "raw_response_bytes": 10786,
+      "response_sha256": "0a6c7a0b18e23ded426b15d3f8cd2967b52c5659a997c3b10cdb002d31bb6669",
+      "request_head_sha256": "6c36c60393241e640574b6e1cff5efff29f64660be10b1fa4f7099be71114de0",
+      "service_status": "NON_DATASHEET",
+      "frozen": false,
+      "llm_called": false,
+      "database_written": false,
+      "classifier_llm_calls": 0,
+      "decision": "NON_DATASHEET",
+      "doc_type": "EVM",
+      "route": "QUARANTINE",
+      "confidence": "high",
+      "evidence_conflict": false,
+      "semantic_type": "EVM",
+      "assigned_type": "EVM",
+      "classification_status": "SUCCESS",
+      "read_status": "OK",
+      "source_hash_status": "success",
+      "sha256_matches_upload": true,
+      "source_sha256": "abeef5bb85c3780399c267cea563f7cfe11b9c6d356da1d94cb1bb42e632c2e6",
+      "ic_datasheet_extraction": false,
+      "is_confirmed_datasheet": false,
+      "admit_to_parser": false,
+      "classifier_version": "docclassifier-2.2.1",
+      "rule_version": "doc-classifier-v2",
+      "matched_rules": [
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "matched_text": "DS10CP154 1.5 Gbps 4x4 LVDS Crosspoint Switch DS10CP154 August 19, 2008 DS10CP154 1.5 Gbps 4x4 LVDS Crosspoint Switch General Description The DS10CP154 is a 1.5",
+          "source": "metadata",
+          "page": null,
+          "confidence": "high",
+          "strength": "strong",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_SCHEMATIC",
+          "matched_text": "board layout",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "high",
+          "strength": "strong",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "pinout",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "Features",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "General Description",
+          "source": "first_page",
+          "page": 1,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        }
+      ],
+      "rejected_rules": [
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "matched_text": "DS10CP154 1.5 Gbps 4x4 LVDS Crosspoint Switch DS10CP154 August 19, 2008 DS10CP154 1.5 Gbps 4x4 LVDS Crosspoint Switch General Description The DS10CP154 is a 1.5",
+          "reason": "overridden by board evidence (SCHEMATIC); 评估板标题里的芯片型号不代表本文档是 Datasheet",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "pinout",
+          "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "Features",
+          "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "matched_text": "General Description",
+          "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+          "code": "overridden_by_board_evidence",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        }
+      ],
+      "unmatched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "EVM_FILENAME_WEAK",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_DS",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "DS_DOCUMENT_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "OTHER_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_NVM_GUARD",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "PAGE_TEXT_UNAVAILABLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVIDENCE_CONFLICT",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        }
+      ],
+      "evidence_pages": [
+        1
+      ],
+      "gate_failed_checks": [
+        "route",
+        "doc_type",
+        "ic_datasheet_extraction"
+      ],
+      "gate_reasons": [
+        "分类器明确判定为非 Datasheet 本体（doc_type=EVM，semantic_type=EVM）；立即终止，不进入 Parser",
+        "未满足准入项 route：实际='QUARANTINE'，要求='IC_PARSE'",
+        "未满足准入项 doc_type：实际='EVM'，要求='DS_STRONG'",
+        "未满足准入项 ic_datasheet_extraction：实际=False，要求=True"
+      ],
+      "parser_called": false,
+      "parser_status": "SKIPPED",
+      "parser_reason": "Pre-Parse Gate 判定 NON_DATASHEET；不创建 Parser Run 目录、不调用 parse_pdf()",
+      "parser_call_count": 0,
+      "parse_pdf_calls": 0,
+      "parse_worker_started": false,
+      "parser_stages_seen": [],
+      "classifier_stages": [
+        "WORKER_STARTED",
+        "EVIDENCE_LINK_READY",
+        "CLASSIFIER_CALL_ENTERED",
+        "CLASSIFIER_CALL_RETURNED",
+        "EVIDENCE_LINK_REMOVED"
+      ],
+      "classifier_worker_started": true,
+      "safety_blocked": null,
+      "safety_guard_layer": null,
+      "offline_expect": {
+        "A_before": [
+          "UNKNOWN",
+          "REVIEW",
+          "low",
+          true
+        ],
+        "D_prime": [
+          "EVM",
+          "QUARANTINE",
+          "high",
+          false
+        ],
+        "in_193": true,
+        "note": "A→D' 有变化：SCHEMATIC 单证据即决胜"
+      },
+      "offline_match": true
+    },
+    {
+      "id": "V4",
+      "filename": "DRV2700EVM__slyu023.pdf",
+      "http_status": 200,
+      "status_line": "HTTP/1.1 200 OK",
+      "response_bytes": 9299,
+      "raw_response_bytes": 9445,
+      "response_sha256": "c9b30bbfe30eab35eb84c48292860d677e68b759f58eaf8097f06d576c1cc334",
+      "request_head_sha256": "9ffb941cb363f7ff3672f58828444865cf3b69f9f72068dc7d6d42b03d46e42d",
+      "service_status": "NON_DATASHEET",
+      "frozen": false,
+      "llm_called": false,
+      "database_written": false,
+      "classifier_llm_calls": 0,
+      "decision": "NON_DATASHEET",
+      "doc_type": "EVM",
+      "route": "QUARANTINE",
+      "confidence": "medium",
+      "evidence_conflict": false,
+      "semantic_type": "EVM",
+      "assigned_type": "EVM",
+      "classification_status": "SUCCESS",
+      "read_status": "OK",
+      "source_hash_status": "success",
+      "sha256_matches_upload": true,
+      "source_sha256": "5affb226c8921348842fc2883a71c5addd2dd30f56dfce9ae019c07cb4e25c45",
+      "ic_datasheet_extraction": false,
+      "is_confirmed_datasheet": false,
+      "admit_to_parser": false,
+      "classifier_version": "docclassifier-2.2.1",
+      "rule_version": "doc-classifier-v2",
+      "matched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_SUFFIX",
+          "matched_text": "EVM",
+          "source": "mpn",
+          "page": null,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "regex_filename",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "matched_text": "EVM",
+          "source": "body",
+          "page": 1,
+          "confidence": "low",
+          "strength": "weak",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "jumper",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "connector",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BOARD_TERMS",
+          "matched_text": "header",
+          "source": "first_page",
+          "page": 2,
+          "confidence": "medium",
+          "strength": "medium",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        },
+        {
+          "rule_id": "EVM_BODY_MENTION",
+          "matched_text": "EVM",
+          "source": "body",
+          "page": 3,
+          "confidence": "low",
+          "strength": "weak",
+          "extractor": "pymupdf",
+          "extract_status": "success"
+        }
+      ],
+      "rejected_rules": [],
+      "unmatched_rules": [
+        {
+          "rule_id": "EVM_FILENAME_WEAK",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_DS",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "DOCNUMBER_UG",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "EVM_BOARD_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_BOARD_SCHEMATIC",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "DS_DOCUMENT_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "DS_PRODUCT_MODEL_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "DS_ELECTRICAL_SECTIONS",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "OTHER_TITLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVM_NVM_GUARD",
+          "extractor": "regex_filename",
+          "extract_status": "not_found",
+          "note": "文件名层已检查，未命中"
+        },
+        {
+          "rule_id": "PAGE_TEXT_UNAVAILABLE",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        },
+        {
+          "rule_id": "EVIDENCE_CONFLICT",
+          "extractor": "pymupdf",
+          "extract_status": "not_found",
+          "note": "页内已抽取，规则未命中（未出现，不是反向证据）"
+        }
+      ],
+      "evidence_pages": [
+        1,
+        2,
+        3
+      ],
+      "gate_failed_checks": [
+        "route",
+        "doc_type",
+        "ic_datasheet_extraction"
+      ],
+      "gate_reasons": [
+        "分类器明确判定为非 Datasheet 本体（doc_type=EVM，semantic_type=EVM）；立即终止，不进入 Parser",
+        "未满足准入项 route：实际='QUARANTINE'，要求='IC_PARSE'",
+        "未满足准入项 doc_type：实际='EVM'，要求='DS_STRONG'",
+        "未满足准入项 ic_datasheet_extraction：实际=False，要求=True"
+      ],
+      "parser_called": false,
+      "parser_status": "SKIPPED",
+      "parser_reason": "Pre-Parse Gate 判定 NON_DATASHEET；不创建 Parser Run 目录、不调用 parse_pdf()",
+      "parser_call_count": 0,
+      "parse_pdf_calls": 0,
+      "parse_worker_started": false,
+      "parser_stages_seen": [],
+      "classifier_stages": [
+        "WORKER_STARTED",
+        "EVIDENCE_LINK_READY",
+        "CLASSIFIER_CALL_ENTERED",
+        "CLASSIFIER_CALL_RETURNED",
+        "EVIDENCE_LINK_REMOVED"
+      ],
+      "classifier_worker_started": true,
+      "safety_blocked": null,
+      "safety_guard_layer": null,
+      "offline_expect": {
+        "A_before": null,
+        "D_prime": null,
+        "in_193": false,
+        "note": "不在 193 条变化集；但变体 B/F 会把此件泄漏成 DS_STRONG/IC_PARSE"
+      },
+      "offline_match": null
+    }
+  ]
+}
