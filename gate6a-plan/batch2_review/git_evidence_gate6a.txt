@@ -1,54 +1,139 @@
 # Gate 6A Batch 2 —— Reviewer 指定 4 条 Git 证据命令的终端原始输出
-# 仓库: E:/workspace/icpdf-extractor (origin = [REDACTED-INTERNAL-REPO])
-# 采集时间: 2026-11-11 20:42:15 +0800
-# 采集主机: PC-20260409SKMJ
-# 目标提交: a633bf4088761050295abfd680e1e63ca7342021
-# 分支: feat/gate6a-annotation (远端 origin/feat/gate6a-annotation)
-# 执行方式: git-bash 逐条执行，命令原文 + 原始 stdout/stderr + exit code 一并保留，未做任何编辑
+# 仓库: [REDACTED-INTERNAL-REPO]
+# 采集时间: 2026-11-11 21:03:42 +0800   采集主机: PC-20260409SKMJ
+# 采集目录: 独立 worktree（git worktree add --detach origin/feat/gate6a-annotation）
+# 目标提交: 2725f90d64b7d096a64bf5c5fae671d1258e55f3
+# 说明: 证据文件写在 worktree 之外，因此第 4 条命令的输出是真正的空，不是被忽略掉的
 
 ==================================================================
-$ git show -s --format=fuller a633bf4088761050295abfd680e1e63ca7342021
+$ git show -s --format=fuller 2725f90d64b7d096a64bf5c5fae671d1258e55f3
 ==================================================================
-commit a633bf4088761050295abfd680e1e63ca7342021
+commit 2725f90d64b7d096a64bf5c5fae671d1258e55f3
 Author:     esan <esan.wu@gmail.com>
-AuthorDate: Wed Nov 11 20:30:20 2026 +0800
+AuthorDate: Wed Nov 11 21:03:25 2026 +0800
 Commit:     esan <esan.wu@gmail.com>
-CommitDate: Wed Nov 11 20:33:47 2026 +0800
+CommitDate: Wed Nov 11 21:03:25 2026 +0800
 
-    Gate 6A: Batch 2 精简 Gold（6 件 18 行，机检 18/18 OK）
+    Gate 6A Batch 2 v1.2：样本身份按封面纠正、机检重构、CSV/XLSX 同源
     
-    初稿 82 行（VLM 预标注 + 人工点选）中剔除 64 行：残词断句（Input volta /
-    Short-Circuit Durati）、把条件当参数名（VNEG_IN_x）、数值列塞英文
-    （Continuous / See Thermal Information Table）、表达式而非数值
-    （MIN(2.1, AVDD+0.3)）、同参数重复行（V349 SNR 5 行、V145 Input voltage 8 行）。
+    一、样本身份（Reviewer 指出型号对不上）
+    逐个翻开 PDF 封面核对，README 里有 4 处型号写错，已改正并把核对依据写进文档：
+      V097  DEM-OPA（评估板号）→ OPA2830
+      V162  SN74LVTH18504A → SN74LVTH182504A（订购码 74LVTH182504APMG4）
+      V349  ADC3541 → ADC3544
+      V145  DAC7750 → DAC8775
+    V111 统一写成 DS90C189-Q1，V101 统一写成 CD74HCT574。
+    另修正两处被截断的文件名：DAC8775IRWFR.pdf → DAC8775IRWFR__dac8775.pdf，
+    DS90C189TWRTDTQ1.pdf → DS90C189TWRTDTQ1__ds90c189-q1.pdf；脚本现在会断言文件存在。
+    CSV 新增 device_model 列（填封面型号），由第 1 页原文机检核对。
+    注：ADC3541 确实印在 ADC3544 手册第 1 页的 Device Comparison 表里，所以型号判定以标题行为准，
+    证据见 screenshots/ 下 6 张封面图（红框标注型号原文）。
     
-    保留标准四条：参数名必须在本页原文可原样搜到；min/typ/max 只放纯数字；
-    单位必须出现在该页；同一参数只留一行。18 行全部人工比对页面后签名
-    （row_status=CONFIRMED, reviewer=wuxiaoxian）。
+    二、机检脚本 validate_annotation.py 重构（v2）
+    1. 新增 parameter_name 核验：整串 → 去空白 → 逐词，带字母边界；
+       只用子串判断会让 Input volta 这类截断词混过去，实测已验证。
+    2. 数值先分类再验：NUMBER / ±PM / RANGE / FORMULA / WITH_UNIT / TEXT，
+       ±2.5 要求正负号写法，-0.5 to 7 要求两端点，VCC-0.2 与 MIN(...) 直接判 ERROR。
+    3. 去掉硬编码路径：只认 CSV 的 file_name，PDF 目录依次取 --pdf-dir、ICPDF_PDF_DIR、
+       同目录 pdfs/；都没有则退到随包的 page_text.json，此时不需要 PyMuPDF。
+    4. 新增：单位需独立出现（µA 里的一截 A 不算）、整行重复检测、CONFIRMED 必须有签名。
     
-    已知局限见 Batch2_Gate6A_README.md：V101 的 VIH/VIL/VOH 在手册中按 VCC 分三列，
-    本批每组只取一列；V162 名字保留列后缀以保持与页面一致；confidence_score 未经校准。
+    三、CSV 与 XLSX 同源
+    _freeze_gold.py 从一个 rows 真源同时写两个文件，写完回读逐格比对；
+    XLSX meta 页记录源 CSV 的 SHA-256 与行数，改表不改脚本会被对账发现。
+    本次比对结果：全部一致，24 行。
     
-    附带：圈选台生成器（预载草稿 + CSV 回导 + 禁止点出孤儿数字行）、
-    机检脚本 validate_annotation.py（含 15 行脏数据自测）。
+    四、结果
+    Gold 24 行（V101 按 VCC 拆 9 行 + 其余 15 行）。
+    机检：OK=21 SUSPECT=3 ERROR=0；3 条 SUSPECT 均为 symbol 为空（手册只给名字）。
+    自测 14 例（每例埋一个已知错误）：14/14 判定正确。
+    新增截图脚本 _shots_batch2.py，产出 8 张证据图（6 张封面 + V101 第 3 页 5.9 圈选与放大）。
+    
+    未改动 main，未改动 src/ 下任何代码。
 [exit code: 0]
 
 ==================================================================
-$ git diff-tree --no-commit-id --name-status -r a633bf4088761050295abfd680e1e63ca7342021
+$ git diff-tree --no-commit-id --name-status -r 2725f90d64b7d096a64bf5c5fae671d1258e55f3
 ==================================================================
-A	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
-A	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
-A	workbench/_gate6a_prep/Batch2_Gate6A_README.md
-A	workbench/_gate6a_prep/_b2_app.js
-A	workbench/_gate6a_prep/_build_batch2_interactive.py
-A	workbench/_gate6a_prep/_build_batch2_viewer.py
-A	workbench/_gate6a_prep/_draft_extract.py
-A	workbench/_gate6a_prep/_vl_extract.py
-A	workbench/_gate6a_prep/validate_annotation.py
+A	workbench/_gate6a_prep/.gitignore
+A	workbench/_gate6a_prep/ANNOTATION_SOP.md
+A	workbench/_gate6a_prep/Batch1_Annotation.csv
+A	workbench/_gate6a_prep/Batch1_Annotation_DRAFT.csv
+A	workbench/_gate6a_prep/Batch1_Annotation_DRAFT.xlsx
+A	workbench/_gate6a_prep/Batch1_Annotation_EXAMPLE.csv
+A	workbench/_gate6a_prep/Batch1_README.md
+A	workbench/_gate6a_prep/Batch1_Sample_Status.csv
+A	workbench/_gate6a_prep/Batch1_Samples.csv
+A	workbench/_gate6a_prep/Batch2_ANNOTATED.csv
+A	workbench/_gate6a_prep/Batch2_ANNOTATED_V2.csv
+A	workbench/_gate6a_prep/Batch2_Annotation_DRAFT.csv
+A	workbench/_gate6a_prep/Batch2_Annotation_DRAFT.xlsx
+A	workbench/_gate6a_prep/Batch2_DRAFT.csv
+A	workbench/_gate6a_prep/Batch2_DRAFT_FIXED.csv
+A	workbench/_gate6a_prep/Batch2_DRAFT_FIXED.xlsx
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+A	workbench/_gate6a_prep/Batch2_Viewer_V3.html
+A	workbench/_gate6a_prep/G7B_MERGE_REPORT.md
+A	workbench/_gate6a_prep/GATE6A_SAMPLE_CANDIDATES.csv
+A	workbench/_gate6a_prep/GOLD_SIZE_AUDIT.md
+A	workbench/_gate6a_prep/Gold_Set_Template.README.md
+A	workbench/_gate6a_prep/Gold_Set_Template.candidates.csv
+A	workbench/_gate6a_prep/Gold_Set_Template.column_roles.csv
+A	workbench/_gate6a_prep/Gold_Set_Template.csv
+A	workbench/_gate6a_prep/Gold_Set_v1.1_WORKING.csv
+A	workbench/_gate6a_prep/IMAGE_ONLY_CANDIDATES.csv
+A	workbench/_gate6a_prep/IMAGE_ONLY_SCAN_REPORT.md
+A	workbench/_gate6a_prep/PUSH_REVIEW_45_COMMITS.md
+A	workbench/_gate6a_prep/README.md
+A	workbench/_gate6a_prep/S01_S03_PAGE_DETAIL.csv
+A	workbench/_gate6a_prep/SCAN_SELECTION_EVIDENCE.md
+A	workbench/_gate6a_prep/_build_batch1.py
+A	workbench/_gate6a_prep/_build_evidence_v11.py
+A	workbench/_gate6a_prep/_build_gold_template.py
+A	workbench/_gate6a_prep/_build_merge_report.py
+A	workbench/_gate6a_prep/_build_page_text.py
+A	workbench/_gate6a_prep/_build_viewer.py
+A	workbench/_gate6a_prep/_capture_merge.py
+A	workbench/_gate6a_prep/_capture_push_review.py
+A	workbench/_gate6a_prep/_check_signed.py
+A	workbench/_gate6a_prep/_draft_batch2.py
+A	workbench/_gate6a_prep/_draft_fill.py
+A	workbench/_gate6a_prep/_freeze_gold.py
+A	workbench/_gate6a_prep/_scan_image_only.py
+A	workbench/_gate6a_prep/_select_supplementary.py
+A	workbench/_gate6a_prep/_selfcheck.py
+A	workbench/_gate6a_prep/_selftest_validator_v2.py
+A	workbench/_gate6a_prep/_shots_batch2.py
+A	workbench/_gate6a_prep/_verify_fullpage.py
+A	workbench/_gate6a_prep/_vl_probe.py
+A	workbench/_gate6a_prep/annotate_fill_metadata.py
+A	workbench/_gate6a_prep/annotate_find_tables.py
+A	workbench/_gate6a_prep/annotate_init_gold_skeletons.py
+A	workbench/_gate6a_prep/annotate_pdf_probe.py
+A	workbench/_gate6a_prep/candidates.jsonl
+A	workbench/_gate6a_prep/draft_extract.json
+A	workbench/_gate6a_prep/full_page_textlayer_verify.json
+A	workbench/_gate6a_prep/page_text.json
+A	workbench/_gate6a_prep/scan_summary.json
+A	workbench/_gate6a_prep/screenshots/V097_cover_OPA2830.png
+A	workbench/_gate6a_prep/screenshots/V101_cover_CD74HCT574E.png
+A	workbench/_gate6a_prep/screenshots/V101_p3_VOH_zoom.png
+A	workbench/_gate6a_prep/screenshots/V101_p3_full_5.9.png
+A	workbench/_gate6a_prep/screenshots/V111_cover_DS90C189-Q1.png
+A	workbench/_gate6a_prep/screenshots/V145_cover_DAC8775.png
+A	workbench/_gate6a_prep/screenshots/V162_cover_SN74LVTH182504A.png
+A	workbench/_gate6a_prep/screenshots/V349_cover_ADC3544.png
+A	workbench/_gate6a_prep/selected_supplementary.json
+A	workbench/_gate6a_prep/selfcheck.json
+A	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
 [exit code: 0]
 
 ==================================================================
-$ git merge-base origin/main a633bf4088761050295abfd680e1e63ca7342021
+$ git merge-base origin/main 2725f90d64b7d096a64bf5c5fae671d1258e55f3
 ==================================================================
 853a80dd664c79ef90baaac53eefb9bbc2155dde
 [exit code: 0]
@@ -56,157 +141,16 @@ $ git merge-base origin/main a633bf4088761050295abfd680e1e63ca7342021
 ==================================================================
 $ git status --porcelain=v1
 ==================================================================
- M src/icpdf/cli.py
- M workbench/_classifier_revision/R1_PRIME_SUPPLEMENT.md
- M workbench/_gate6a_prep/Batch2_GOLD_v1.csv
- M workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
-?? .workbuddy-ai/
-?? .workbuddy/
-?? _premerge_backup/
-?? backstage/
-?? docs/Document_Classifier_V2_Design.md
-?? docs/archive/
-?? docs/v2_2_1_review/
-?? "docs/\346\226\271\346\241\210\350\256\250\350\256\272.txt"
-?? "docs/\346\243\200\346\237\245\351\224\231\350\257\257\346\270\205\345\215\225.txt"
-?? gold/extracted/
-?? icpdf_c6_verify.bundle
-?? "review \346\211\247\350\241\214\346\270\205\345\215\225.md"
-?? tests/unit/test_classification_processpool_sim.py
-?? tests/unit/test_classification_v2.py
-?? tests/unit/test_env_redact.py
-?? tools/stage_a/
-?? tools/stage_b/
-?? workbench.html
-?? workbench/LOCALHOST_SMOKE_REPORT.md
-?? workbench/PARSER_CALL_CHAIN.md
-?? workbench/SHA256SUMS.txt
-?? workbench/WORKBENCH_CODE_CHANGES.md
-?? workbench/WORKBENCH_P1P2_FIX.diff
-?? workbench/WORKBENCH_P1P2_FIX_REPORT.md
-?? workbench/_classifier_revision/CALIBER_AND_FINDINGS.md
-?? workbench/_classifier_revision/CALLSITE_AUDIT.md
-?? workbench/_classifier_revision/COMPARISON_REPORT.md
-?? workbench/_classifier_revision/R1_PRIME_OVERTURN.md
-?? workbench/_classifier_revision/R1_prime_harm_76.csv
-?? workbench/_classifier_revision/VARIANT_changes.csv
-?? workbench/_classifier_revision/_ads1299_pack.py
-?? workbench/_classifier_revision/_build_csv.py
-?? workbench/_classifier_revision/_d_prime/
-?? workbench/_classifier_revision/_d_prime_check.py
-?? workbench/_classifier_revision/_git_ancestry_verify/
-?? workbench/_classifier_revision/_http_probe_v1_v4/
-?? workbench/_classifier_revision/_impact_demote/
-?? workbench/_classifier_revision/_impact_full/
-?? workbench/_classifier_revision/_impact_guard/
-?? workbench/_classifier_revision/_impact_guardonly/
-?? workbench/_classifier_revision/_impact_matrix/
-?? workbench/_classifier_revision/_logs/
-?? workbench/_classifier_revision/_scan_demote.py
-?? workbench/_classifier_revision/_scan_dprime.py
-?? workbench/_classifier_revision/_scan_guard.py
-?? workbench/_classifier_revision/_scan_guardonly.py
-?? workbench/_classifier_revision/_scan_impact.py
-?? workbench/_classifier_revision/_scan_matrix.py
-?? workbench/_classifier_revision/_trace_case.py
-?? workbench/_classifier_revision/ads1299/
-?? workbench/_classifier_revision/affected_samples.csv
-?? workbench/_classifier_revision/caliber_stats.json
-?? workbench/_deps/
-?? workbench/_diff/
-?? workbench/_doc_verify/
-?? workbench/_gate6a_prep/.__t.tmp
-?? workbench/_gate6a_prep/ANNOTATION_SOP.md
-?? workbench/_gate6a_prep/Batch1_Annotation.csv
-?? workbench/_gate6a_prep/Batch1_Annotation_DRAFT.csv
-?? workbench/_gate6a_prep/Batch1_Annotation_DRAFT.csv.txt
-?? workbench/_gate6a_prep/Batch1_Annotation_DRAFT.xlsx
-?? workbench/_gate6a_prep/Batch1_Annotation_EXAMPLE.csv
-?? workbench/_gate6a_prep/Batch1_README.md
-?? workbench/_gate6a_prep/Batch1_Sample_Status.csv
-?? workbench/_gate6a_prep/Batch1_Samples.csv
-?? workbench/_gate6a_prep/Batch1_Viewer.html
-?? workbench/_gate6a_prep/Batch2_ANNOTATED.csv
-?? workbench/_gate6a_prep/Batch2_ANNOTATED_V2.csv
-?? workbench/_gate6a_prep/Batch2_Annotation_DRAFT.csv
-?? workbench/_gate6a_prep/Batch2_Annotation_DRAFT.xlsx
-?? workbench/_gate6a_prep/Batch2_DRAFT.csv
-?? workbench/_gate6a_prep/Batch2_DRAFT_FIXED.csv
-?? workbench/_gate6a_prep/Batch2_DRAFT_FIXED.xlsx
-?? workbench/_gate6a_prep/Batch2_Viewer_V2.html
-?? workbench/_gate6a_prep/Batch2_Viewer_V3.html
-?? workbench/_gate6a_prep/Batch2_Viewer_v1_DEPRECATED.html
-?? workbench/_gate6a_prep/G7B_MERGE_REPORT.md
-?? workbench/_gate6a_prep/GATE6A_SAMPLE_CANDIDATES.csv
-?? workbench/_gate6a_prep/GOLD_SIZE_AUDIT.md
-?? workbench/_gate6a_prep/Gold_Set_Template.README.md
-?? workbench/_gate6a_prep/Gold_Set_Template.candidates.csv
-?? workbench/_gate6a_prep/Gold_Set_Template.column_roles.csv
-?? workbench/_gate6a_prep/Gold_Set_Template.csv
-?? workbench/_gate6a_prep/Gold_Set_v1.1_WORKING.csv
-?? workbench/_gate6a_prep/IMAGE_ONLY_CANDIDATES.csv
-?? workbench/_gate6a_prep/IMAGE_ONLY_SCAN_REPORT.md
-?? workbench/_gate6a_prep/PUSH_REVIEW_45_COMMITS.md
-?? workbench/_gate6a_prep/README.md
-?? workbench/_gate6a_prep/S01_S03_PAGE_DETAIL.csv
-?? workbench/_gate6a_prep/SCAN_SELECTION_EVIDENCE.md
-?? workbench/_gate6a_prep/_audit_gold_size.ps1
-?? workbench/_gate6a_prep/_build_batch1.py
-?? workbench/_gate6a_prep/_build_evidence_v11.py
-?? workbench/_gate6a_prep/_build_gold_template.py
-?? workbench/_gate6a_prep/_build_merge_report.py
-?? workbench/_gate6a_prep/_build_viewer.py
-?? workbench/_gate6a_prep/_capture_merge.py
-?? workbench/_gate6a_prep/_capture_push_review.py
-?? workbench/_gate6a_prep/_check_signed.py
-?? workbench/_gate6a_prep/_draft_batch2.py
-?? workbench/_gate6a_prep/_draft_extract_v1.bak
-?? workbench/_gate6a_prep/_draft_extract_v2.bak
-?? workbench/_gate6a_prep/_draft_fill.py
-?? workbench/_gate6a_prep/_scan_image_only.py
-?? workbench/_gate6a_prep/_select_supplementary.py
-?? workbench/_gate6a_prep/_selfcheck.py
-?? workbench/_gate6a_prep/_selftest_validator.log
-?? workbench/_gate6a_prep/_selftest_validator.py
-?? workbench/_gate6a_prep/_verify_fullpage.py
-?? workbench/_gate6a_prep/_vl_probe.py
-?? workbench/_gate6a_prep/annotate_fill_metadata.py
-?? workbench/_gate6a_prep/annotate_find_tables.py
-?? workbench/_gate6a_prep/annotate_init_gold_skeletons.py
-?? workbench/_gate6a_prep/annotate_pdf_probe.py
-?? workbench/_gate6a_prep/annotation_reports/
-?? workbench/_gate6a_prep/candidates.jsonl
-?? workbench/_gate6a_prep/draft_extract.json
-?? workbench/_gate6a_prep/full_page_textlayer_verify.json
-?? workbench/_gate6a_prep/g7b_merge_raw.log
-?? workbench/_gate6a_prep/git_evidence_gate6a.txt
-?? workbench/_gate6a_prep/gold_size_audit.txt
-?? workbench/_gate6a_prep/push_review_raw.log
-?? workbench/_gate6a_prep/scan_all.jsonl
-?? workbench/_gate6a_prep/scan_summary.json
-?? workbench/_gate6a_prep/selected_supplementary.json
-?? workbench/_gate6a_prep/selfcheck.json
-?? workbench/_guard/
-?? workbench/_probe_evm/
-?? workbench/_probe_v002_v022/
-?? workbench/_probe_v002_v022_slim/
-?? workbench/_smoke/
-?? workbench/_smoke_frozen_r2/
-?? workbench/_verify_p1p2_static.py
-?? workbench/classify_worker.py
-?? workbench/index.html
-?? workbench/parse_worker.py
-?? workbench/serve_parser.py
-?? workbench/uploads/
-[exit code: 0]
+[exit code: 0]  （空输出 = 工作区干净）
 
 ==================================================================
-# 附：origin/main 当前 tip（证明 main 未被本次推送影响）
+# 附：分支与 main 的位置关系
 ==================================================================
-$ git rev-parse origin/main
-853a80dd664c79ef90baaac53eefb9bbc2155dde
-[exit code: 0]
-
-$ git rev-parse origin/feat/gate6a-annotation
-a633bf4088761050295abfd680e1e63ca7342021
-[exit code: 0]
+$ git rev-parse --short origin/main
+853a80d
+$ git rev-parse --short 2725f90d64b7d096a64bf5c5fae671d1258e55f3
+2725f90
+$ git log --oneline origin/main..2725f90d64b7d096a64bf5c5fae671d1258e55f3
+2725f90 Gate 6A Batch 2 v1.2：样本身份按封面纠正、机检重构、CSV/XLSX 同源
+a390a5e Gate 6A Batch 2 修正：V101 按 VCC 拆成 3×3，Gold 24 行机检 24/24
+a633bf4 Gate 6A: Batch 2 精简 Gold（6 件 18 行，机检 18/18 OK）
