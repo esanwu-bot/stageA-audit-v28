@@ -1,0 +1,168 @@
+diff --git a/workbench/serve_parser.py b/workbench/serve_parser.py
+--- a/workbench/serve_parser.py
++++ b/workbench/serve_parser.py
+@@ -181,6 +181,29 @@ def _allow_parse() -> bool:
+     return os.getenv("ICEX_WORKBENCH_ALLOW_PARSE", "0") == "1"
+ 
+ 
++def _classify_only() -> bool:
++    """只分类哨兵：置 1 时**物理切断** Parser 调用路径。
++
++    与 ``_allow_parse()`` 正交，两者组合出的状态是显式的：
++
++    | ALLOW_PARSE | CLASSIFY_ONLY | 行为 |
++    | --- | --- | --- |
++    | 0 | 任意 | 全部入口返回 FROZEN，连 PDF 都不打开 |
++    | 1 | 0 | 正常：分类 → 仅 DATASHEET 才解析 |
++    | 1 | 1 | 只分类：分类结果照常返回，**任何进入 Parser 的尝试都被拦截** |
++
++    三层拦截（任一层生效即可，不依赖调用方自觉）：
++    L1 ``api_process`` 在 ``decision == DATASHEET`` 后直接返回 SAFETY_BLOCKED，不调度 worker；
++    L2 ``_execute_parse`` 入口直接抛 ``SafetyBlocked``，覆盖 /api/parse 与未来新增调用方；
++    L3 ``parse_worker.py`` 进程内自查，即使被单独拉起也拒绝执行 ``parse_pdf()``。
++    """
++    return os.getenv("ICEX_CLASSIFY_ONLY", "0") == "1"
++
++
++class SafetyBlocked(RuntimeError):
++    """CLASSIFY_ONLY 模式下试图进入 Parser：硬失败，绝不静默降级为「已解析」。"""
++
++
+ def _worker_semaphore() -> asyncio.Semaphore:
+     """延迟创建信号量，避免模块导入时绑定到非运行中的事件循环。"""
+     global _worker_slots
+@@ -714,6 +737,12 @@ async def _execute_parse(payload: dict, pdf_path: Path, meta: dict,
+ 
+     仅当调用本函数时才会创建 run_id / 上传副本之外的 Run 目录。
+     """
++    # L2 拦截：本函数是 parse_pdf() 的唯一上游，任何入口走到这里都被挡住。
++    # 放在第一行，保证连 run_id 都不会被创建。
++    if _classify_only():
++        raise SafetyBlocked(
++            "ICEX_CLASSIFY_ONLY=1：本进程禁止调用 parse_pdf()；"
++            "拦截点=_execute_parse() 入口（未创建 run_id、未落 Run 目录、未启动 worker）")
+     run_id = _new_id("G6A")
+     payload["run_id"] = run_id
+     payload["contract_gaps"] = list(CONTRACT_GAPS)
+@@ -756,6 +785,10 @@ async def _execute_parse(payload: dict, pdf_path: Path, meta: dict,
+         status = "PARSE_CRASH"
+         error_text = ("解析子进程未返回有效 JSON 载荷，疑似原生崩溃；"
+                       "returncode=%s" % worker["returncode"])
++    elif worker_json.get("safety_blocked"):
++        # L3 生效：worker 自己拒绝了执行，这不是解析失败，是策略性拦截。
++        status = "SAFETY_BLOCKED"
++        error_text = "解析子进程被只分类哨兵拦截：%s" % worker_json.get("error", "")
+     elif worker_json.get("ok") is not True:
+         status = "PARSE_ERROR"
+         error_text = "Parser 抛出异常：%s: %s" % (
+@@ -940,6 +973,26 @@ async def api_parse(request: Request) -> JSONResponse:
+     started = time.time()
+     if not _allow_parse():
+         return JSONResponse(_frozen_payload(PIPELINE_PARSER_ONLY))
++    # /api/parse 是 Parser-only 入口：CLASSIFY_ONLY 下它没有存在意义，直接拒绝。
++    # 不读请求体、不落盘、不启动 worker（否则会先上传再失败，留下无主副本）。
++    if _classify_only():
++        payload = _base_payload(PIPELINE_PARSER_ONLY, "SAFETY_BLOCKED")
++        payload["document"] = None
++        payload["parser"] = _parser_skipped(
++            "SKIPPED",
++            "ICEX_CLASSIFY_ONLY=1：/api/parse 为 Parser-only 入口，本模式下拒绝执行；"
++            "未读取请求体、未落盘、未启动 worker")
++        payload["diagnostics"] = {
++            "reason": "只分类模式禁止任何 Parser 调用，包括 Parser-only 测试入口",
++            "safety_blocked": True,
++            "classify_only": True,
++            "safety_guard_layer": "L1:api_parse",
++            "parse_worker_started": False,
++            "classifier_worker_started": False,
++            "parse_pdf_calls": 0,
++            "parser_call_count": 0,
++        }
++        return JSONResponse(payload)
+     try:
+         body, meta = await _receive_pdf(request, PIPELINE_PARSER_ONLY)
+     except UploadRejected as exc:
+@@ -1084,6 +1137,25 @@ async def api_process(request: Request) -> JSONResponse:
+         return JSONResponse(payload)
+ 
+     # 只有 DATASHEET 才走到这里：classification 对象保留，parser.called 反映真实调用。
++    # L1 拦截：CLASSIFY_ONLY 模式下到这里就返回，不调度 parse_worker、不建 Run 目录。
++    if _classify_only():
++        payload["status"] = "SAFETY_BLOCKED"
++        payload["parser"] = _parser_skipped(
++            "SKIPPED",
++            "ICEX_CLASSIFY_ONLY=1：分类已完成（decision=%s），但 Parser 调用路径被"
++            "哨兵物理切断；不启动 parse_worker、不创建 Run 目录" % decision)
++        payload["diagnostics"] = dict(base_diag, **{
++            "worker_kind": "classify",
++            "gate_decision": decision,
++            "safety_blocked": True,
++            "classify_only": True,
++            "safety_guard_layer": "L1:api_process",
++            "evidence_pages": classification["evidence_pages"],
++            "reason": ("只分类模式：分类结果如实返回，Parser 阶段被拦截。"
++                       "这不是解析失败，是策略性拒绝执行。"),
++        })
++        return JSONResponse(payload)
++
+     parsed = await _execute_parse(payload, pdf_path, meta, started)
+     # 分类阶段的证据与 Parser 阶段的证据分开存放，不互相覆盖。
+     parsed["diagnostics"]["classifier_gate"] = base_diag
+diff --git a/workbench/parse_worker.py b/workbench/parse_worker.py
+--- a/workbench/parse_worker.py
++++ b/workbench/parse_worker.py
+@@ -21,6 +21,7 @@
+ from __future__ import annotations
+ 
+ import json
++import os
+ import sys
+ from pathlib import Path
+ 
+@@ -30,6 +31,15 @@ END = "__ICEX_PARSE_JSON_END__"
+ STAGES: list[str] = []
+ 
+ 
++def _classify_only() -> bool:
++    """只分类哨兵：与 serve_parser.py 中的同名函数保持同一语义与默认值。"""
++    return os.getenv("ICEX_CLASSIFY_ONLY", "0") == "1"
++
++
++class SafetyBlocked(RuntimeError):
++    """只分类模式下的硬拦截：本 worker 绝不允许调用 parse_pdf()。"""
++
++
+ def _stage(name: str) -> None:
+     """阶段标记逐行写出并立即 flush；native 崩溃时已输出的行仍可被父进程读到。"""
+     STAGES.append(name)
+@@ -49,6 +59,13 @@ def _emit(payload: dict) -> None:
+ 
+ def main(argv: list[str]) -> None:
+     _stage("WORKER_STARTED")
++    # L3 拦截：进程内自查。即使本 worker 被单独拉起（绕过 serve_parser.py 的
++    # L1/L2），只要 ICEX_CLASSIFY_ONLY=1 就立刻退出，且**在 import parser 之前**，
++    # 保证 parse_pdf() 连符号都不会被解析到。
++    if _classify_only():
++        _stage("SAFETY_BLOCKED")
++        raise SafetyBlocked(
++            "ICEX_CLASSIFY_ONLY=1：parse_worker 拒绝执行；parse_pdf() 未被调用")
+     spec = json.loads(argv[1])
+     src_dir = Path(spec["src_dir"])
+     deps_raw = spec.get("deps_dir")
+@@ -91,6 +108,16 @@ def main(argv: list[str]) -> None:
+ if __name__ == "__main__":
+     try:
+         main(sys.argv)
++    except SafetyBlocked as exc:
++        # 单独归类：父进程据此判 SAFETY_BLOCKED，而不是 PARSE_ERROR。
++        _emit({
++            "ok": False,
++            "safety_blocked": True,
++            "parser_call_entered": False,
++            "error_type": "SafetyBlocked",
++            "error": str(exc),
++        })
++        sys.exit(3)
+     except Exception as exc:  # noqa: BLE001  需把异常类型与文本回传给父进程分类
+         _stage("WORKER_EXCEPTION")
+         _emit({
