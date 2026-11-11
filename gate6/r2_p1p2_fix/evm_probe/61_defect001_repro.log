@@ -1,0 +1,47 @@
+# DEFECT-001 只读复现日志
+# 生成时刻: 2026-11-11 08:53:44
+# 性质: 只读。不启动服务、不调用 classify_one()、不触碰 Parser、不修改任何文件。
+# 依赖: src/icpdf/classification 的 rules.py / classifier.py（只 import 纯函数）
+
+## 1) 两样本的关键量
+sample                : ADC08060EVM__slau715a.pdf
+  meta_title          : "ADC08xx0 Evaluation Module User's Guide (Rev. A)"
+  document_subject_mpn: slau715a
+  传给 scan_pages 的 mpn: slau715a   <- 注意：是文档号，不是产品型号
+  mpn_root(...)       : SLAU715A
+  root 逐字在标题块中 : True
+  DEVICE_WORD_RE 命中 : 'ADC'
+  => 规则三条件是否全满足: True
+
+sample                : BQ25570EVM-206__sluuaa7a.pdf
+  meta_title          : "User's Guide for bq25570 Battery Charger Evaluation Module for Energy Harvesting (Rev. A)"
+  document_subject_mpn: sluuaa7a
+  传给 scan_pages 的 mpn: sluuaa7a   <- 注意：是文档号，不是产品型号
+  mpn_root(...)       : SLUUAA7A
+  root 逐字在标题块中 : True
+  DEVICE_WORD_RE 命中 : None
+  => 规则三条件是否全满足: False
+
+## 2) 标题块构成（说明文档号来自首页页眉，不是 metadata）
+  metadata Title      : "ADC08xx0 Evaluation Module User's Guide (Rev. A)"
+  metadata Subject    : "User's Guide"
+  首页前 6 个非空行:
+    1| 1
+    2| SLAU715A–February 2017–Revised July 2017
+    3| Submit Documentation Feedback
+    4| Copyright © 2017, Texas Instruments Incorporated
+    5| ADC08xx0 Evaluation Module
+    6| User's Guide
+
+  title_block 拼接结果:
+    "ADC08xx0 Evaluation Module User's Guide (Rev. A) User's Guide 1 SLAU715A–February 2017–Revised July 2017 Submit Documentation Feedback Copyright © 2017, Texas Instruments Incorporated ADC08xx0 Evalua
+
+  metadata 里是否含 SLAU715A : False
+  首页前 6 行是否含 SLAU715A : True
+  metadata 里是否含 ADC08060 : False
+  首页前 6 行是否含 ADC08060 : False
+
+## 3) 决策档位顺序（为何一条假 DS 证据能压掉真 EVM 证据）
+  classifier.py:322  if board_strong and ds_title_strong:  -> UNKNOWN + conflict  [档 5，先执行]
+  classifier.py:334  if board_strong:                      -> EVM / high          [档 1，后执行]
+  即：只要 DS 侧出现任一标题级 STRONG，板级证据就失去裁决权。

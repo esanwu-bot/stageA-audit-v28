@@ -24,8 +24,10 @@
 3. **运维分流**：`NON_DATASHEET` 可自动归档，不进复核队列；`AMBIGUOUS` 进人工复核。**人工复核只能"退回"或"重跑"，绝不能"放行"——放行的唯一路径是重新经过分类器并满足全部 8 项白名单。**
 4. **验证矩阵**：V1 复现（A）、V2 对照（B，零回退）、V3–V7 真 Datasheet 防误伤（含 EVM 式文件名的 V022/V164/V255）、E1–E8 假 UG 与边界场景。
 
-## 一处需要 Reviewer 拍板
+## 修订版已发布
 
-上一轮 `evm_probe/FINAL_VERDICT.md` 的 `DEFECT-001` 现象段与本文 §1 不一致。本文未改动该文件（避免破坏已推送哈希）。是否发布 `DEFECT-001` 修订版，请裁定。
+`evm_probe/DEFECT-001_REVISED.md` 已发布，显式推翻原版归因，并附只读复现日志 `evm_probe/61_defect001_repro.log`。
+
+`FINAL_VERDICT.md` 正文保留原版原文不动（供审计对照），修订以 `DEFECT-001_REVISED.md` 为准。本设计文档 §1 与其完全一致。
 
 校验完整性：`sha256sum -c SHA256SUMS.txt`

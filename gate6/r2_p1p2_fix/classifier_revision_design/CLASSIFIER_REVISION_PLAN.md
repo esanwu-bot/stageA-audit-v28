@@ -51,7 +51,7 @@ DEVICE_WORD_RE 命中              → "ADC"  （来自元数据标题里的 "AD
 
 按原描述去改，会改错地方。这是本文存在的首要理由。
 
-**处理建议**：`FINAL_VERDICT.md` 的 `DEFECT-001` 现象段应发布修订版。本轮未改动该文件（避免破坏已推送哈希），修订内容以本文 §1 为准，等 Reviewer 确认后再统一更正。
+**处理建议**：`DEFECT-001` 的修订版已发布，见 `evm_probe/DEFECT-001_REVISED.md`（该文件显式推翻原版归因，并附只读复现日志 `61_defect001_repro.log`）。`FINAL_VERDICT.md` 正文保留原版原文不动，供审计对照；修订以 `DEFECT-001_REVISED.md` 为准，本文 §1 与其完全一致。
 
 ---
 
