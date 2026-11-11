@@ -67,8 +67,9 @@ json.dump(real_env, ...)          # ← 错误：dump 了全部 229 个键
 | 1 | 引入脱敏模块 `harness/_env_redact.py`：**白名单为主闸**，未列入 `allowlist` 的变量连键名都不写；白名单内的变量再过「敏感名 + 已知凭据形状 + 高熵值」兜底闸；命中一律置 `***` | 完成 |
 | 2 | 改写 `harness/_probe_v1_v4.py`：环境采集改走 `redact_env()`，不再 dump 全量 | 完成 |
 | 3 | 重新生成 `env/process_env.json`：229 → **4** 个键（`ICEX_WORKBENCH_ALLOW_PARSE`、`ICEX_CLASSIFY_ONLY`、`ICEX_WORKBENCH_PORT`、`PYTHONIOENCODING`），其余 225 个仅保留前缀族计数；写后回读校验，确认不含任何原始高敏值 | 完成 |
-| 4 | 重写引入该文件的提交并强制推送，使其从公开历史中消失（原提交 `e14f544d4b40b5d2b0e79663111f7a06d55d4cb6`，含密 blob `24ac7b0d05411e512841f2993eac683c908e4606`） | 见 §5 |
-| 5 | 全量重扫历史，确认无任何提交仍含这 5 个凭据的字面量 | 见 §5 |
+| 4 | 重写引入该文件的提交并强制推送，使其离开 `main` 的提交链（原提交 `e14f544d4b40b5d2b0e79663111f7a06d55d4cb6`，含密 blob `24ac7b0d05411e512841f2993eac683c908e4606`；新提交 `25cb7c1e7ce741d2cc0cb2fefefddb00cb7e38ab`） | 完成 |
+| 5 | 全量重扫历史，确认 `main` 可达的 241 个 blob 中已无这 5 个凭据的字面量 | 完成，命中 0 |
+| 6 | 实测 GitHub 侧旧提交是否仍可访问 | **仍可访问，见 §5.1** |
 
 选择「重写该提交」而不是「新提交覆盖」的理由：
 仓库是 **public**，新提交覆盖后旧 blob 仍可通过 `e14f544` 这个 SHA 直接访问；
@@ -77,7 +78,39 @@ json.dump(real_env, ...)          # ← 错误：dump 了全部 229 个键
 等既有审计哈希全部逐字节不变，`SHA256SUMS.txt` 中除 `env/process_env.json`
 自身外无一行需要改动。
 
-## 5. 必须由人完成、我无法代做的动作
+**但必须明确：重写 + 强推只解决了「main 分支链上不再包含它」，
+没有解决「按 SHA 仍能取到它」。** 见下一节实测。
+
+## 5. 重写之后的实测结果（重要）
+
+强推完成后立即做了两项验证：
+
+| 验证 | 结果 |
+|---|---|
+| 全新克隆 `main`，扫描全部 241 个 blob | 凭据字面量命中 **0** |
+| 全新克隆中旧提交 `e14f544` 是否存在 | **不存在** |
+| `sha256sum -c SHA256SUMS.txt`（29 条） | 29/29 OK |
+| `raw.githubusercontent.com/.../e14f544.../env/process_env.json` | **HTTP 200，28633 字节，仍含 `AIza` 形态与 `GEMINI_API_KEY` 键名** |
+| `git fetch origin e14f544` | **成功，旧提交仍可按 SHA 取回** |
+
+结论：GitHub 对「已被强推丢弃、但仍在服务端对象库中」的提交，
+在一段时间内仍提供按 SHA 的访问。**因此这次泄露不能认为已在服务端消除。**
+
+## 5.1 消除服务端残留的三条路（按建议顺序）
+
+1. **把仓库改为 private（最快、最有效）。** Settings → General → Danger Zone →
+   Change visibility → Private。改完该 URL 立即不再公开可读。
+   本仓库是纯文件传输用途、0 fork、无外部依赖，改私有不影响任何审计流程。
+2. **向 GitHub Support 申请清除不可达对象。** 提工单说明：已强推重写历史，
+   请求 *purge unreachable commits / remove cached views*，并附上原 SHA
+   `e14f544`。这是唯一能让该 URL 真正失效的官方途径。
+3. **极端情况：删除并重建仓库。** 若判定必须彻底，可删除该 repo 后重建再推一次
+   当前 `main`（内容已在本地完整保存，`25cb7c1` 可直接重推）。
+   代价是丢失 issue/PR/star 等元数据，本仓库基本为空，代价很小。
+
+**无论走哪条，第 6 节的凭据吊销都是必须做的**——它才是止损的根本。
+
+## 6. 必须由人完成、我无法代做的动作
 
 **这两项我都没有权限执行，不能假装已完成。**
 
@@ -95,7 +128,7 @@ json.dump(real_env, ...)          # ← 错误：dump 了全部 229 个键
 3. **可选：申请清除 GitHub 缓存。** 强推后旧提交在 GitHub 侧可能仍被缓存可达一段时间。
    通过 GitHub Support 提交 *Remove cached views / purge commit* 请求可加速清除。
 
-## 6. 教训（已写入项目规范）
+## 7. 教训（已写入项目规范）
 
 1. **取证采集一律白名单。** 黑名单永远补不完——`GEMINI_API_KEY` 含 `KEY`，
    但 `WORKBUDDY_VLM_AUTH_TOKEN` 含的是 `AUTH`，`CODEBUDDY_GATEWAY_PASSWORD`
