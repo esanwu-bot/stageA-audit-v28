@@ -1,0 +1,9 @@
+# 探针样本清单
+执行时刻: 2026-11-11 08:37:32
+
+| 代号 | 文件 | 绝对路径 | 大小 | SHA-256 | Reviewer 给定值一致 |
+| --- | --- | --- | --- | --- | --- |
+| A | ADC08060EVM__slau715a.pdf | `E:/workspace/IcPdfParser/data/pdfs/ADC08060EVM__slau715a.pdf` | 1260819 | `09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca` | PASS |
+| B | BQ25570EVM-206__sluuaa7a.pdf | `E:/workspace/IcPdfParser/data/pdfs/BQ25570EVM-206__sluuaa7a.pdf` | 1139868 | `60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e` | PASS |
+
+两份样本均在启动服务之前独立校验过 SHA-256，与服务端收到的上传副本再次比对（见 60_safety_matrix.md）。

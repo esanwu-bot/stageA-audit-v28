@@ -1,0 +1,49 @@
+样本 B 摘要
+============================================================
+request_id        : WB-20261111-083551-ac06
+HTTP 响应体字节   : 11327
+响应 SHA-256      : a077c5cb12220779131611a1d6257acf15457ff1df2bac16ea540389bfb19743
+
+[安全字段]
+parser.called               : False
+parser.status               : SKIPPED
+parser.stages_seen          : []
+parser.run_id / run_dir     : None / None
+diagnostics.parse_pdf_calls : 0
+diagnostics.parser_call_count: 0
+diagnostics.parse_worker_started: False
+llm_called                  : False
+classifier_llm_calls        : 0
+parser_output               : {}
+
+[分类结果]
+decision / doc_type / route : NON_DATASHEET / EVM / QUARANTINE
+document_type / assigned    : EVM / EVM
+confidence / review_status  : high / pending
+evidence_conflict           : False
+ic_datasheet_extraction     : False
+evidence_pages              : [1, 2, 3]
+source_sha256               : 60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e
+sha256_matches_upload       : True
+
+[命中规则计数]
+  DS_ELECTRICAL_SECTIONS       5
+  EVM_BOARD_TERMS              3
+  EVM_BOARD_TITLE              2
+  EVM_FILENAME_SUFFIX          1
+  EVM_BOARD_SCHEMATIC          1
+  EVM_BODY_MENTION             1
+
+[被否决规则] 共 3 条
+  DS_ELECTRICAL_SECTIONS   overridden_by_board_evidence 'Features'
+  DS_ELECTRICAL_SECTIONS   overridden_by_board_evidence 'General Description'
+  DS_ELECTRICAL_SECTIONS   overridden_by_board_evidence 'features'
+
+[门禁理由]
+  - 分类器明确判定为非 Datasheet 本体（doc_type=EVM，semantic_type=EVM）；立即终止，不进入 Parser
+  - 未满足准入项 route：实际='QUARANTINE'，要求='IC_PARSE'
+  - 未满足准入项 doc_type：实际='EVM'，要求='DS_STRONG'
+  - 未满足准入项 ic_datasheet_extraction：实际=False，要求=True
+
+[分类器阶段标记] ['WORKER_STARTED', 'EVIDENCE_LINK_READY', 'CLASSIFIER_CALL_ENTERED', 'CLASSIFIER_CALL_RETURNED', 'EVIDENCE_LINK_REMOVED']
+[解析器阶段标记] []  <= 必须为空

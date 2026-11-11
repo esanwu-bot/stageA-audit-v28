@@ -1,0 +1,5 @@
+样本 SHA256: 09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca
+文件大小: 1260819
+请求时刻: 2026-11-11 08:35:01
+--- 完整 curl 命令 ---
+curl -sS -m 300 --noproxy "*" -X POST http://127.0.0.1:8765/api/process -H "Content-Type: application/pdf" -H "x-filename: ADC08060EVM__slau715a.pdf" --data-binary "@<样本路径>" -o 10_A_response.json -D 10_A_headers.txt

@@ -1,0 +1,631 @@
+{
+  "captured_at": "2026-11-11T08:36:07",
+  "captured_at_epoch": 1794357367,
+  "root": "E:\\workspace\\icpdf-extractor\\workbench",
+  "targets": {
+    "uploads": {
+      "exists": true,
+      "file_count": 4,
+      "total_bytes": 5713736,
+      "dir_count": 4,
+      "files": [
+        {
+          "rel": "WB-20261111-074636-56ea/0c011cace66e4e31ac7f7e9061ea28f3.pdf",
+          "size": 803726,
+          "mtime": "2026-11-11T07:46:36",
+          "sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483"
+        },
+        {
+          "rel": "WB-20261111-074711-97c3/408f6dce24964b7a9bce259d29314d8f.pdf",
+          "size": 2509323,
+          "mtime": "2026-11-11T07:47:11",
+          "sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4"
+        },
+        {
+          "rel": "WB-20261111-083501-561e/938d90a7087b4c7b8753b256976a487a.pdf",
+          "size": 1260819,
+          "mtime": "2026-11-11T08:35:01",
+          "sha256": "09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca"
+        },
+        {
+          "rel": "WB-20261111-083551-ac06/69e9840756e148d7ada388a99ad417c3.pdf",
+          "size": 1139868,
+          "mtime": "2026-11-11T08:35:51",
+          "sha256": "60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e"
+        }
+      ],
+      "rollup_sha256": "3bf56ea4b2f95f8b9ce93f3b2e4efac101a3ea9418c16033372b9dc62675fde2"
+    },
+    "runs": {
+      "exists": true,
+      "file_count": 97,
+      "total_bytes": 46726465,
+      "dir_count": 4,
+      "files": [
+        {
+          "rel": "G6A-20261111-074646-32d1/boundary_decisions.json",
+          "size": 95101,
+          "mtime": "2026-11-11T07:46:56",
+          "sha256": "7adf3efc6a094fa759d671a3c750567d76e7d42e01d812a351304bbf6d250619"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/candidates.json",
+          "size": 254471,
+          "mtime": "2026-11-11T07:46:55",
+          "sha256": "533f0ee722bd3391e55cf1a2a9386afcc229c1fb5004e545e89e55886b9f6bb9"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/document.json",
+          "size": 1387,
+          "mtime": "2026-11-11T07:46:51",
+          "sha256": "269bd4a905a47c219551715edf2fcd4087323f93be31bd725eb06ef5f4530348"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/geometry.json",
+          "size": 6508,
+          "mtime": "2026-11-11T07:46:51",
+          "sha256": "4eaeed1789231bccc4b45c11ad4c2c31bf97abb392826932a614378908f7c718"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/page-0006.png",
+          "size": 318593,
+          "mtime": "2026-11-11T07:46:53",
+          "sha256": "d191c19e238aba912f3f2b87ceb19e15c4d99335574a5de71b1c684457c32a68"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/page-0008.png",
+          "size": 152323,
+          "mtime": "2026-11-11T07:46:53",
+          "sha256": "c5b85e7cb372fb5c1ac8b98ac3c7e87eb27814b96954247cf9886700f9494476"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/page-0009.png",
+          "size": 105342,
+          "mtime": "2026-11-11T07:46:53",
+          "sha256": "c125d6b9ad611cb876adf509ff4cb3354ebe38be8734e6da2be5ac4096170e6c"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/page-0010.png",
+          "size": 74298,
+          "mtime": "2026-11-11T07:46:53",
+          "sha256": "70ca7477cbf76993889ec70bc7b88ec1e8b36b0a3f9ec9056ade333d343c18b0"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/page-0014.png",
+          "size": 117964,
+          "mtime": "2026-11-11T07:46:54",
+          "sha256": "eb4695cb0cff6bfdd83a32ef6c2d03cb335383d20eea92bdcf58e29ef414befa"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/pages/page-0015.png",
+          "size": 93044,
+          "mtime": "2026-11-11T07:46:55",
+          "sha256": "023b5b6ddf08bee98a346f73c87c7edd9ba3bc14abbad068be3de2e39dab06ea"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/product.json",
+          "size": 298,
+          "mtime": "2026-11-11T07:46:56",
+          "sha256": "5dd610ac87ce12e7f6b7487d7c41f7e4ce595e6b4b0df7366cddec5331f2e166"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/run_config.json",
+          "size": 2578,
+          "mtime": "2026-11-11T07:46:56",
+          "sha256": "47c0a412ec29552da134a275f419a405ab63b368fa141d1318b69c778fd50c92"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/run_manifest.json",
+          "size": 4328,
+          "mtime": "2026-11-11T07:46:56",
+          "sha256": "797537181d223bb7c94f59be686e4f8a83d2a91d1a58fc4c5270f2a247bc7665"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/source.pdf",
+          "size": 803726,
+          "mtime": "2026-11-11T07:46:51",
+          "sha256": "699241f92bb3178908b6f0e6ef24e57dcf26c726986c2691f97634b957197483"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/tables.json",
+          "size": 260515,
+          "mtime": "2026-11-11T07:46:55",
+          "sha256": "26a6aa0ce3b1552ed36175c4555fae9b56ad5f2c816f12e2559bee4219efb9c4"
+        },
+        {
+          "rel": "G6A-20261111-074646-32d1/text_blocks.json",
+          "size": 559001,
+          "mtime": "2026-11-11T07:46:55",
+          "sha256": "b01696e227e20a1ef5e46d2c6754c0b0dfe0bad86035457f5e621b8afd09c2ef"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/boundary_decisions.json",
+          "size": 1445848,
+          "mtime": "2026-11-11T07:47:40",
+          "sha256": "6924371ea7175ae11d83a3d2503cc6f7f8b24642b527984693d0ac34ac93cbb0"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/candidates.json",
+          "size": 2340044,
+          "mtime": "2026-11-11T07:47:39",
+          "sha256": "074bc35974de6b968f0028d8559b85c75f65dc6945791816538c3403763ec785"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/document.json",
+          "size": 5105,
+          "mtime": "2026-11-11T07:47:20",
+          "sha256": "ebd3d854f412172bfd73bf62f03ac0fbe334c9d165880b70bcf8fb55d969ab2f"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/geometry.json",
+          "size": 36192,
+          "mtime": "2026-11-11T07:47:20",
+          "sha256": "07c9ec1d81d2a5f139e93536e2971562c0f6115e2804b7443761e900db150164"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0003.png",
+          "size": 195948,
+          "mtime": "2026-11-11T07:47:20",
+          "sha256": "b3d29c491f3546fbebbf5380e8dc9a74af19fa9f777dbb802ed99372c7dc068f"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0006.png",
+          "size": 213581,
+          "mtime": "2026-11-11T07:47:20",
+          "sha256": "e0490ad60f17551ff827732b3abd577f915e629c97e3284cd99738ede41116db"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0007.png",
+          "size": 277801,
+          "mtime": "2026-11-11T07:47:21",
+          "sha256": "2076e40ad90f680bb8578255ebd89108ca9e6e3341446aa59a720b88a25bc378"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0008.png",
+          "size": 49549,
+          "mtime": "2026-11-11T07:47:21",
+          "sha256": "6c595a271ad17dc486e3f81a45c09ee379081502996f113f74a99da219f93f68"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0009.png",
+          "size": 258162,
+          "mtime": "2026-11-11T07:47:21",
+          "sha256": "00d9c2161b04217426cac9aecf47d4d63ba4d9c79c47cde909d85c15abaf50da"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0010.png",
+          "size": 250348,
+          "mtime": "2026-11-11T07:47:21",
+          "sha256": "741631b5f266ac80061def4badc77d0f5e14a3fd0b54f9b3b8be2facd6955edf"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0011.png",
+          "size": 208300,
+          "mtime": "2026-11-11T07:47:21",
+          "sha256": "bd2e6e2091a5a64208364829bbb0ec31fecbcb4c922e3eadfb2ecf1fc413661a"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0012.png",
+          "size": 174380,
+          "mtime": "2026-11-11T07:47:21",
+          "sha256": "afc3e6fa64f764611e8ddf6346c3120e454d7c81d1ad978d152fb13cd8a592d5"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0013.png",
+          "size": 163964,
+          "mtime": "2026-11-11T07:47:22",
+          "sha256": "5b35e55bf48657a20abac35f9f95c751d079897afb577ad24efca198dd6ecab6"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0014.png",
+          "size": 211748,
+          "mtime": "2026-11-11T07:47:22",
+          "sha256": "ef7cb6f3b9f404aa48a0a006860c3fc50aeca847e3d76912928548079d8acafc"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0016.png",
+          "size": 220423,
+          "mtime": "2026-11-11T07:47:22",
+          "sha256": "68ba4c6440d4c2fc99fec48c4d8059a4f815c9aa74445d65ed6cdc50421a476f"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0017.png",
+          "size": 247578,
+          "mtime": "2026-11-11T07:47:22",
+          "sha256": "8d0c4c830f51c2099b1c28edadc456789346967e12a1fb75a34c912ffdb00185"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0018.png",
+          "size": 250889,
+          "mtime": "2026-11-11T07:47:23",
+          "sha256": "30b9d091c8e1675a07412fad26c30fe4aa4f3365dad2d0e15ce96cb213e03982"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0019.png",
+          "size": 491124,
+          "mtime": "2026-11-11T07:47:23",
+          "sha256": "c4d5dc62644514f2425183b43f5aef7dabb57cd67fdc663b34a97932bde77827"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0022.png",
+          "size": 279383,
+          "mtime": "2026-11-11T07:47:23",
+          "sha256": "66104130a7bcebd4e11df426e0b7b8136a95caa28c806130e5da40b7dd3cf1da"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0023.png",
+          "size": 326105,
+          "mtime": "2026-11-11T07:47:24",
+          "sha256": "c462b7ff0f8dca836a188be734b2fabfb9c16b6cae77ff53dcac4cba2656027e"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0025.png",
+          "size": 313647,
+          "mtime": "2026-11-11T07:47:24",
+          "sha256": "45d5b64cf076bacacbecd825adf334e57821cd9d1fce882dd8451034c8bd83ca"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0026.png",
+          "size": 333889,
+          "mtime": "2026-11-11T07:47:24",
+          "sha256": "ec4f5ef88d792b9350beff2f1c07d9c3b14a1a5d1f29691bb213dd4917b74b38"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0027.png",
+          "size": 372493,
+          "mtime": "2026-11-11T07:47:25",
+          "sha256": "b121c0866a16dd67ec9ff36ac8917d96f65802250052a2bcd17dda0a3e9c0119"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0028.png",
+          "size": 365654,
+          "mtime": "2026-11-11T07:47:25",
+          "sha256": "4016932e7dafd17928e3a15446feeb6768bd9e83e4d6e175ae9e8397dc4f3f0f"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0029.png",
+          "size": 240219,
+          "mtime": "2026-11-11T07:47:25",
+          "sha256": "7c13719fba2d9b1670909f4b7e8e9366fcf2b04f232637375d6cc23ec1bca7ef"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0030.png",
+          "size": 451208,
+          "mtime": "2026-11-11T07:47:25",
+          "sha256": "e6f70718df2c2560b0e4e1261e85c6ef8c17538367d93a4586d7243cc63e2494"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0031.png",
+          "size": 353921,
+          "mtime": "2026-11-11T07:47:26",
+          "sha256": "387c22bf42446729c53a6f7f2c446b7a0bad50faf4fda19a68ef5df94dcedaec"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0033.png",
+          "size": 373495,
+          "mtime": "2026-11-11T07:47:26",
+          "sha256": "f9168ab66863c2a07b586baf4be20000141a11a3e0b2ea243335f538dff61c61"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0034.png",
+          "size": 369403,
+          "mtime": "2026-11-11T07:47:26",
+          "sha256": "03fde810f92e3a647b7ef438d0103abd42ac95b118b7d0f91d852e6299fbc438"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0035.png",
+          "size": 265527,
+          "mtime": "2026-11-11T07:47:27",
+          "sha256": "9ea1929f353cd956ee3618221e808e7c8f9dfee251f650c8843ff69cbfa52268"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0036.png",
+          "size": 326877,
+          "mtime": "2026-11-11T07:47:27",
+          "sha256": "316695fea6aa43fde5a4e93d807cb5746fc2074a7916f359c22c34d462d26dac"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0041.png",
+          "size": 416086,
+          "mtime": "2026-11-11T07:47:27",
+          "sha256": "b94aea0dd5eba03aae9232a8827715bca331ce66f029181e85b3ab108af359a9"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0042.png",
+          "size": 396431,
+          "mtime": "2026-11-11T07:47:28",
+          "sha256": "789cb1c4b80ed2dbeb1be68e9ea99041d0d3ad94e257f9a3ee868d2fd6e692bb"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0044.png",
+          "size": 289151,
+          "mtime": "2026-11-11T07:47:28",
+          "sha256": "35486fdb715039a5087d34845f12bb2fb0d49058d7ace0e73695edc6fe191022"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0045.png",
+          "size": 311684,
+          "mtime": "2026-11-11T07:47:28",
+          "sha256": "8a4a885872e6d4d049d510de3f8a3f83baa92cf668c349b19fd9d7aaa90e56e8"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0046.png",
+          "size": 252128,
+          "mtime": "2026-11-11T07:47:28",
+          "sha256": "615347c7c3720bb893eb31d11704842fd95e6c73e3eef1189f271034f86668c2"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0047.png",
+          "size": 151566,
+          "mtime": "2026-11-11T07:47:29",
+          "sha256": "38001b9acbcb81f349cc6ed573e6ec7c475079185680727f706f174412c2ddc6"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0050.png",
+          "size": 317292,
+          "mtime": "2026-11-11T07:47:29",
+          "sha256": "ee4412150243791daaaad0fd3bd8a9fb7bced2c96df91a37b6ee8a42d37d0ca4"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0053.png",
+          "size": 401285,
+          "mtime": "2026-11-11T07:47:29",
+          "sha256": "300b1249331ceece6697b310527848fbc74b4382f67d539ee81addd402c637f9"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0057.png",
+          "size": 297294,
+          "mtime": "2026-11-11T07:47:30",
+          "sha256": "3b1799b80a0e29231ee5f8ae84e13b7c62ea66265e9b13dc9d433ae2d484e8a2"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0058.png",
+          "size": 289763,
+          "mtime": "2026-11-11T07:47:30",
+          "sha256": "cf0bd95081cef85e6487e5a5fa8525d2fc475f2c60c52d603fc3fad85c7fdcd5"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0059.png",
+          "size": 125852,
+          "mtime": "2026-11-11T07:47:30",
+          "sha256": "47d0f270f47c527e194a26bd23fd6db07f983e19858957a6812f85a5e31f34f8"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0061.png",
+          "size": 132786,
+          "mtime": "2026-11-11T07:47:30",
+          "sha256": "696dcb0a176982fa55ddf731f928ecb066d3e864a91237caf722b37e9cabfa5e"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0062.png",
+          "size": 160896,
+          "mtime": "2026-11-11T07:47:31",
+          "sha256": "0c2634c065b13d7db91862d4e12b2b94eb83e428630916266d14adedd1a2e71d"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0063.png",
+          "size": 148151,
+          "mtime": "2026-11-11T07:47:31",
+          "sha256": "4527dde7063839a7d6271a949414299ab018ffffef2227284eafdb743996235e"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0064.png",
+          "size": 208599,
+          "mtime": "2026-11-11T07:47:31",
+          "sha256": "9efbc05fcaca9654160718c05d764fbbcf4b932010cda4df1a28ddf04fd565fd"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0065.png",
+          "size": 170441,
+          "mtime": "2026-11-11T07:47:31",
+          "sha256": "9a6faba2908a05ceba9b7c70aa6721b520570f7b5a24770860ef87e48c61abdf"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0066.png",
+          "size": 123845,
+          "mtime": "2026-11-11T07:47:31",
+          "sha256": "f68a8805d9cb72373f7794710ce3fc49105e036906db1f6d2a0e044e7b01b1be"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0067.png",
+          "size": 195604,
+          "mtime": "2026-11-11T07:47:32",
+          "sha256": "40b42c17b1b85187dcb9908628a45361d8dc3f1c77d0904a2d6155c31fd2c95d"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0068.png",
+          "size": 137050,
+          "mtime": "2026-11-11T07:47:32",
+          "sha256": "267fb55b518576b7bc96e3a8c6231941805ec6646a3dae26f21b73c1dc3d7b09"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0069.png",
+          "size": 95995,
+          "mtime": "2026-11-11T07:47:32",
+          "sha256": "4ac2580821e52cbc2e62f953f6d4c92fc88eb8a3daf6f000399079539eecef0e"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0070.png",
+          "size": 221483,
+          "mtime": "2026-11-11T07:47:32",
+          "sha256": "e465bca571dbe0817e66fb2b63bd1bf7eeb735834fd367e725115fc670ead288"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0071.png",
+          "size": 122198,
+          "mtime": "2026-11-11T07:47:32",
+          "sha256": "a028ffb016afa02dbc9f6fab02d3601da4662061b3b9d247eaf5fd14e804f3e2"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0072.png",
+          "size": 184887,
+          "mtime": "2026-11-11T07:47:32",
+          "sha256": "2ff8a783e6b8ef11cd78268a5356113e321d8e715aa0ddbfa9a32de26a10b233"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0073.png",
+          "size": 138237,
+          "mtime": "2026-11-11T07:47:33",
+          "sha256": "77c077af0d19afa4ea64e6c917b7db5e1fdb2a8119e1a179ebcede44befe1822"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0074.png",
+          "size": 162740,
+          "mtime": "2026-11-11T07:47:33",
+          "sha256": "7675789ee90fc9e0757258a8ec012d0fa5bf18c2b1a121707a71e6c619fcf039"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0075.png",
+          "size": 163577,
+          "mtime": "2026-11-11T07:47:33",
+          "sha256": "e48a796f428880c414832e0c0d7401869d068276ac0167a1c27c9811b4388636"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0076.png",
+          "size": 149915,
+          "mtime": "2026-11-11T07:47:33",
+          "sha256": "93b9d86a003b52495c8f0430636674c22320a5a68ba9e63f0b49ff390d2fce9b"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0077.png",
+          "size": 199315,
+          "mtime": "2026-11-11T07:47:33",
+          "sha256": "ee61080134f0ddba4bcc02a28a29c1280dab15b6fe40707bd857a1221761c064"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0078.png",
+          "size": 230144,
+          "mtime": "2026-11-11T07:47:34",
+          "sha256": "e78d2b93da283bdadd5d72a6f85903ff1009d768561857925753406a1577a33b"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0079.png",
+          "size": 217689,
+          "mtime": "2026-11-11T07:47:34",
+          "sha256": "d24f92ae80555a8605a874076dc4ed7f526fe35187e0fbac255738d1e28b2359"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0080.png",
+          "size": 205377,
+          "mtime": "2026-11-11T07:47:34",
+          "sha256": "e8704d7c47378eec4d1b23b12e0fb080ff405771ed1780fc71da7409d87bedf5"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0081.png",
+          "size": 197012,
+          "mtime": "2026-11-11T07:47:34",
+          "sha256": "00e106f12fbf7d588dd0412625fcf9b7248b9ed967ad74c5b09a1d5730e1fae7"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0082.png",
+          "size": 208500,
+          "mtime": "2026-11-11T07:47:34",
+          "sha256": "cc7d150aa09f2fda3317a2a1e5ceb31e3679e19e8cd060475c030e3dce9bd424"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0083.png",
+          "size": 179367,
+          "mtime": "2026-11-11T07:47:35",
+          "sha256": "39b435bd868027c26ef004417992dfd6729d366157b8465751213453620afc3c"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0084.png",
+          "size": 102225,
+          "mtime": "2026-11-11T07:47:35",
+          "sha256": "08bab8748863a60842a25efe59208cac52266b7d7ca246a9b23b9347bc835fb5"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0086.png",
+          "size": 477205,
+          "mtime": "2026-11-11T07:47:35",
+          "sha256": "4ae1ce71e4c6df6b1a53c913141c99cf2649c8bd335c4490885ced9413269f7b"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0088.png",
+          "size": 319799,
+          "mtime": "2026-11-11T07:47:35",
+          "sha256": "cb2830476ce2468530a6710c098c6e3e27b130c56a94063c0fe31dd62b072f69"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0089.png",
+          "size": 169889,
+          "mtime": "2026-11-11T07:47:36",
+          "sha256": "3d9459128ba2f5770fea493a755ce07b3d38560e0aef3baea7e10596a22b358e"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0090.png",
+          "size": 280439,
+          "mtime": "2026-11-11T07:47:36",
+          "sha256": "35824f163cc300e6a9b12c820afc0e96d07cb326b6d157a9b89ec9c4b661c7d8"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0092.png",
+          "size": 144583,
+          "mtime": "2026-11-11T07:47:36",
+          "sha256": "ae2abb1ba500cac76cc14a0e1ce66baf368142897c5e22b907ce1473afc32c4b"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0093.png",
+          "size": 97689,
+          "mtime": "2026-11-11T07:47:36",
+          "sha256": "1cdbf44ef80f2cd05d42fb48246fdd6c99ec3b051fb06060dcc011a36940ecff"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0094.png",
+          "size": 69133,
+          "mtime": "2026-11-11T07:47:36",
+          "sha256": "657bfe0f85948ff8bfeaee34879fe214ecd82d40e4986dd50663bafef4a66422"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0096.png",
+          "size": 146987,
+          "mtime": "2026-11-11T07:47:37",
+          "sha256": "ba2a641d4f49f4101883f25bd683de2bc59572b221a8ca2060bcc06990d300a4"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/pages/page-0098.png",
+          "size": 118785,
+          "mtime": "2026-11-11T07:47:38",
+          "sha256": "3ff2c61a8af37d536e66eb82ad4d5df7fc9002795ceaf2d57ff99dd5e2090149"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/product.json",
+          "size": 292,
+          "mtime": "2026-11-11T07:47:40",
+          "sha256": "c9e09ac0e0904158ed567a27d17d29f183dbc05004d0fc7ce560a07c76f556cb"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/run_config.json",
+          "size": 2575,
+          "mtime": "2026-11-11T07:47:40",
+          "sha256": "97369eb08d710f01c5dfe849773bc684d12040feb1c5e7dce345b8367806601c"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/run_manifest.json",
+          "size": 4885,
+          "mtime": "2026-11-11T07:47:40",
+          "sha256": "bbcf5f06155135ba8bf09d0dcd769bfedc242883b062fffe37aeb0a74a0e0224"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/source.pdf",
+          "size": 2509323,
+          "mtime": "2026-11-11T07:47:19",
+          "sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/tables.json",
+          "size": 3094778,
+          "mtime": "2026-11-11T07:47:39",
+          "sha256": "37ff2b57dcc99b6d739b6e97592a42310ce0c3684381b4c0cbbd24eebca079a2"
+        },
+        {
+          "rel": "G6A-20261111-074715-f8db/text_blocks.json",
+          "size": 17723256,
+          "mtime": "2026-11-11T07:47:38",
+          "sha256": "8d7293f2b1619dd1088c133b2c68fdb507ef02f397e2aa13bbf67fe2d414332a"
+        }
+      ],
+      "rollup_sha256": "e2f035f022625b74d77ba8d9b05f4f65f4a3388c5119c51476c36ea6c82026df"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+样本 A 摘要
+============================================================
+request_id        : WB-20261111-083501-561e
+HTTP 响应体字节   : 9922
+响应 SHA-256      : 3ce79cf5b098224803abcf54eb20035e08f658e119d42eb316a249921148f773
+
+[安全字段]
+parser.called               : False
+parser.status               : SKIPPED
+parser.stages_seen          : []
+parser.run_id / run_dir     : None / None
+diagnostics.parse_pdf_calls : 0
+diagnostics.parser_call_count: 0
+diagnostics.parse_worker_started: False
+llm_called                  : False
+classifier_llm_calls        : 0
+parser_output               : {}
+
+[分类结果]
+decision / doc_type / route : AMBIGUOUS / UNKNOWN / REVIEW
+document_type / assigned    : UNKNOWN / UNKNOWN
+confidence / review_status  : low / pending
+evidence_conflict           : True
+ic_datasheet_extraction     : False
+evidence_pages              : [1, 2, 3]
+source_sha256               : 09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca
+sha256_matches_upload       : True
+
+[命中规则计数]
+  EVM_BOARD_TERMS              3
+  EVM_BOARD_TITLE              2
+  EVM_FILENAME_SUFFIX          1
+  DOCNUMBER_UG                 1
+  DS_PRODUCT_MODEL_TITLE       1
+  EVM_BODY_MENTION             1
+  DS_ELECTRICAL_SECTIONS       1
+  EVIDENCE_CONFLICT            1
+
+[被否决规则] 共 0 条
+
+[门禁理由]
+  - 不满足 DATASHEET 白名单，且不属于明确非 Datasheet 本体；按 fail-closed 隔离待人工复核
+  - 未满足准入项 route：实际='REVIEW'，要求='IC_PARSE'
+  - 未满足准入项 doc_type：实际='UNKNOWN'，要求='DS_STRONG'
+  - 未满足准入项 ic_datasheet_extraction：实际=False，要求=True
+  - 未满足准入项 evidence_conflict：实际=True，要求=False
+
+[分类器阶段标记] ['WORKER_STARTED', 'EVIDENCE_LINK_READY', 'CLASSIFIER_CALL_ENTERED', 'CLASSIFIER_CALL_RETURNED', 'EVIDENCE_LINK_REMOVED']
+[解析器阶段标记] []  <= 必须为空

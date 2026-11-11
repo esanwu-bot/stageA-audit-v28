@@ -1,0 +1,5 @@
+样本 SHA256: 60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e
+文件大小: 1139868
+请求时刻: 2026-11-11 08:35:50
+--- 完整 curl 命令 ---
+curl -sS -m 300 --noproxy "*" -X POST http://127.0.0.1:8765/api/process -H "Content-Type: application/pdf" -H "x-filename: BQ25570EVM-206__sluuaa7a.pdf" --data-binary "@<样本路径>" -o 20_B_response.json -D 20_B_headers.txt

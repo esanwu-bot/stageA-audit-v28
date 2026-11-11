@@ -1,0 +1,10 @@
+INFO:     Started server process [25416]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8765 (Press CTRL+C to quit)
+[Parser Lab] frozen=True  port=8765
+INFO:     127.0.0.1:65260 - "GET /api/health HTTP/1.1" 200 OK
+鍋滄鏃跺埢: 2026-11-11 08:36:40
+鐩爣 PID: 25416锛堝喕缁撴�侀獙璇佽繘绋嬶級
+成功: 已终止 PID 为 25416 的进程。
+exit=0

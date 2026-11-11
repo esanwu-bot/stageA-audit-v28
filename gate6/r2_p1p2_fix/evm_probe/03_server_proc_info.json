@@ -1,0 +1,16 @@
+{
+  "pid": 28040,
+  "create_time": "2026-11-11T08:34:33.808787",
+  "cmdline": [
+    "D:\\Program Files (x86)\\python\\python.exe",
+    "workbench/serve_parser.py",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8765"
+  ],
+  "cwd": "E:\\workspace\\icpdf-extractor",
+  "ICEX_WORKBENCH_ALLOW_PARSE": "1",
+  "ICEX_CLASSIFY_ONLY": "1",
+  "children": []
+}
