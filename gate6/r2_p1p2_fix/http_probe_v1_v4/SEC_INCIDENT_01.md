@@ -9,6 +9,49 @@
 
 ---
 
+## 0. 结论口径（引用本事件时请按此，禁止简化）
+
+### 0.1 已做到的
+
+泄露文件**已从 `main` 当前分支树彻底移除**。实测：全新克隆 `main` 后，
+全历史 **241 个 blob** 中 5 个凭据的字面量命中为 **0**；旧提交 `e14f544`
+不在克隆对象库中；`sha256sum -c SHA256SUMS.txt` 29/29 通过。
+
+### 0.2 未做到、且不得声称的
+
+**不得声称「已彻底从 GitHub 删除」。** 由于 Git 的悬空对象（dangling /
+unreachable object）机制，旧的 commit SHA 在被 GitHub 服务端垃圾回收之前，
+**依然可能通过直接 URL 访问**。
+
+这不是推测，是本项目实测的结论：
+
+| 实测项 | 结果 |
+|---|---|
+| `raw.githubusercontent.com/<repo>/e14f544…/…/env/process_env.json` | HTTP **200**，28633 字节，内容仍含该 Key |
+| `git fetch origin e14f544` | **成功**，旧提交仍可按 SHA 取回 |
+
+正确的表述模板：
+
+> 已从当前分支树彻底移除，但受 Git 悬空对象机制影响，旧 commit SHA 在
+> GitHub 完成垃圾回收前仍可能通过直接 URL 访问。
+
+### 0.3 凭据状态（写这句话前必须有证据）
+
+`GEMINI_API_KEY` 及另外 4 个凭据的**吊销尚未执行、也未获确认**——
+执行吊销需要 Google Cloud Console / CodeBuddy / WorkBuddy 的登录会话，本 Agent 无此权限。
+
+因此**在吊销被确认之前，任何文档、提交信息或对外说明都不得写「相关 Key 已失效 / 已吊销」。**
+写了就是虚假陈述，比泄露本身更难挽回。
+
+待 §6 第 1 项完成、并拿到后台的删除/禁用回执后，才可把 §0.2 的模板升级为：
+
+> 已从当前分支树彻底移除，且相关 Key 已吊销失效；受 Git 悬空对象机制影响，
+> 旧 commit SHA 在 GitHub 完成垃圾回收前仍可能通过直接 URL 访问，但内容已无利用价值。
+
+本文件目前的吊销状态字段：**`revocation_status = PENDING_USER_ACTION`**。
+
+---
+
 ## 1. 发生了什么
 
 V1–V4 受控 HTTP 探针需要取证「服务进程真实拿到的 `ALLOW_PARSE` / `CLASSIFY_ONLY`」。
@@ -69,7 +112,9 @@ json.dump(real_env, ...)          # ← 错误：dump 了全部 229 个键
 | 3 | 重新生成 `env/process_env.json`：229 → **4** 个键（`ICEX_WORKBENCH_ALLOW_PARSE`、`ICEX_CLASSIFY_ONLY`、`ICEX_WORKBENCH_PORT`、`PYTHONIOENCODING`），其余 225 个仅保留前缀族计数；写后回读校验，确认不含任何原始高敏值 | 完成 |
 | 4 | 重写引入该文件的提交并强制推送，使其离开 `main` 的提交链（原提交 `e14f544d4b40b5d2b0e79663111f7a06d55d4cb6`，含密 blob `24ac7b0d05411e512841f2993eac683c908e4606`；新提交 `25cb7c1e7ce741d2cc0cb2fefefddb00cb7e38ab`） | 完成 |
 | 5 | 全量重扫历史，确认 `main` 可达的 241 个 blob 中已无这 5 个凭据的字面量 | 完成，命中 0 |
-| 6 | 实测 GitHub 侧旧提交是否仍可访问 | **仍可访问，见 §5.1** |
+| 6 | 实测 GitHub 侧旧提交是否仍可访问 | **仍可访问，见 §5** |
+| 7 | 新增 `harness/_selftest_env_redact.py`：注入 16 个敏感样例（覆盖 `KEY/TOKEN/SECRET/PASS/AUTH` 五族 + 值形态闸 + 非白名单闸），产出 `env/redaction_selftest.json`，逐条记录期望/实际/是否泄漏 | 完成，17 项全 PASS |
+| 8 | 新增单测 `tests/unit/test_env_redact.py`（pytest），把上述契约锁进 CI | 完成，15 项全通过 |
 
 选择「重写该提交」而不是「新提交覆盖」的理由：
 仓库是 **public**，新提交覆盖后旧 blob 仍可通过 `e14f544` 这个 SHA 直接访问；
@@ -125,8 +170,14 @@ json.dump(real_env, ...)          # ← 错误：dump 了全部 229 个键
 2. **在 GitHub 关闭告警。** Security → Secret scanning → 找到该告警 →
    `Resolve alert` → 理由选 *Revoked*（若已吊销）或 *False positive*（不适用）。
    若选 *Revoked* 而实际未吊销，属于错误陈述，请务必先完成第 1 项。
-3. **可选：申请清除 GitHub 缓存。** 强推后旧提交在 GitHub 侧可能仍被缓存可达一段时间。
-   通过 GitHub Support 提交 *Remove cached views / purge commit* 请求可加速清除。
+3. **向 GitHub Support 申请清除不可达对象（建议与第 1 条并行，不是可选项）。**
+   实测已证明强推后旧 SHA 仍可访问，所以这一步在「必须消除服务端残留」的前提下
+   是必需的，仅靠改 private 只是限制了公开面，对象仍在服务端。
+
+   工单要点：仓库 `esanwu-bot/stageA-audit-v28`；已强推重写历史；请求
+   *purge unreachable / dangling commits and cached views*；附原 SHA
+   `e14f544d4b40b5d2b0e79663111f7a06d55d4cb6` 与 blob
+   `24ac7b0d05411e512841f2993eac683c908e4606`。
 
 ## 7. 教训（已写入项目规范）
 

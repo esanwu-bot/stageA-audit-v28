@@ -84,8 +84,10 @@ INFO:     127.0.0.1:63472 - "POST /api/process HTTP/1.1" 200 OK
 来源：`psutil.Process(63240).environ()`，Windows 下走 PEB 读取，
 **不是回显当前 shell 的变量**。
 
-> **本文件已于 2026-11-11 11:5x 重新生成，原始版本含未脱敏的宿主凭据，已从 Git 历史中清除。**
-> 详见 `SEC_INCIDENT_01.md`。以下为脱敏后的口径。
+> **本文件已于 2026-11-11 11:5x 重新生成，原始版本含未脱敏的宿主凭据，
+> 已从 `main` 当前分支树彻底移除。** 但受 Git 悬空对象机制影响，旧 commit SHA
+> 在 GitHub 完成垃圾回收前**仍可能通过直接 URL 访问**，不能表述为「已彻底删除」。
+> 详见 `SEC_INCIDENT_01.md` §0。以下为脱敏后的口径。
 
 采集时共取到 **229** 个环境变量，但父进程即本机 IDE，其中绝大多数与探针无关。
 现按**白名单 + 兜底闸**双层策略，只保留证明分类器运行所需的配置项，**4 个**：
@@ -327,6 +329,8 @@ port_released_conclusion = True
 | `env/process_env.json` | PID 63240 的环境块**脱敏版**：229 个变量中仅保留 4 个配置项，其余 225 个只留前缀族计数（见 §2.3） |
 | `harness/_env_redact.py` | 脱敏模块：白名单为主闸 + 敏感名/高熵值兜底闸 |
 | `harness/_regenerate_env.py` | 从已捕获环境块就地重算脱敏版，并回读校验无残留 |
+| `harness/_selftest_env_redact.py` | 脱敏自检：注入 16 个敏感样例，断言输出为 `***` |
+| `env/redaction_selftest.json` | 自检证据：逐条记录期望/实际/是否泄漏，17 项全 PASS |
 | `SEC_INCIDENT_01.md` | 安全事件说明：泄露范围、根因、处置、遗留动作 |
 | `raw/V{1..4}.request.head.txt` | 请求行与请求头原文 + body 字节数与 sha256 |
 | `raw/V{1..4}.response.raw` | 从 socket 读到的**完整原始响应字节**（含状态行与头） |

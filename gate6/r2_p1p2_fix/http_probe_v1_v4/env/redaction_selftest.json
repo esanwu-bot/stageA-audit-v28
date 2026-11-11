@@ -1,0 +1,156 @@
+{
+  "test": "env_redact_selftest",
+  "generated_at": "2026-11-11T11:58:34+08:00",
+  "policy_mode": "allowlist_then_denylist",
+  "mask_literal": "***",
+  "theme": "证明敏感环境变量注入后，输出 JSON 中的值确实是 ***",
+  "injected_count": 16,
+  "omitted_count": 4,
+  "cases": [
+    {
+      "variable": "ICEX_INJECT_FAKE_API_KEY",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_FAKE_TOKEN",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_FAKE_SECRET",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_FAKE_PASSWORD",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_FAKE_AUTH",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_BENIGN_NAME",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_BENIGN_SK",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_BENIGN_JWT",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_BENIGN_PRIVKEY",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_INJECT_BENIGN_OPAQUE",
+      "expected": "***",
+      "actual": "***",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "GEMINI_API_KEY",
+      "expected": "OMITTED",
+      "actual": "OMITTED",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "键名未出现在输出中"
+    },
+    {
+      "variable": "WORKBUDDY_VLM_AUTH_TOKEN",
+      "expected": "OMITTED",
+      "actual": "OMITTED",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "键名未出现在输出中"
+    },
+    {
+      "variable": "CODEBUDDY_GATEWAY_PASSWORD",
+      "expected": "OMITTED",
+      "actual": "OMITTED",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "键名未出现在输出中"
+    },
+    {
+      "variable": "ICEX_WORKBENCH_ALLOW_PARSE",
+      "expected": "1",
+      "actual": "1",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_CLASSIFY_ONLY",
+      "expected": "1",
+      "actual": "1",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "ICEX_WORKBENCH_PORT",
+      "expected": "8765",
+      "actual": "8765",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "符合预期"
+    },
+    {
+      "variable": "PATH",
+      "expected": "OMITTED",
+      "actual": "OMITTED",
+      "original_value_leaked": false,
+      "pass": true,
+      "note": "非白名单键整体挡掉"
+    }
+  ],
+  "secrets_leaked_in_output": [],
+  "all_pass": true,
+  "assertions": [
+    "白名单内、键名命中 KEY/TOKEN/SECRET/PASS/AUTH 的变量，值必须为 ***",
+    "白名单内、键名无害但值是凭据形状的变量，值必须为 ***",
+    "非白名单变量不得出现在输出中（连键名都不出现）",
+    "正常配置项不得被误伤",
+    "任何原始凭据值不得出现在输出 JSON 的任何位置"
+  ]
+}
