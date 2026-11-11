@@ -1,0 +1,650 @@
+{
+  "population": 11355,
+  "workers": 8,
+  "open_errors": 0,
+  "rows_any_diff": 3453,
+  "variant_legend": {
+    "A": "BEFORE: cand = document_subject_mpn or mpn",
+    "B": "R1' naive: cand = source_product_mpn or ''",
+    "D": "guard_only: A 参数 + 板级标题存在时抑制 DS_PRODUCT_MODEL_TITLE",
+    "E": "demote: A 参数 + 无条件移除该规则",
+    "F": "source+guard: B 参数 + 板级标题存在时抑制"
+  },
+  "per_variant": {
+    "B": {
+      "diff_key": 3243,
+      "doc_type_or_route_changed": 238,
+      "transitions": {
+        "UNKNOWN/REVIEW -> EVM/QUARANTINE": 144,
+        "EVM/QUARANTINE -> UNKNOWN/REVIEW": 75,
+        "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW": 18,
+        "EVM/QUARANTINE -> DS_STRONG/IC_PARSE": 1
+      },
+      "evm_lost": 76,
+      "leak_to_parser": 0,
+      "ds_demoted": 18,
+      "examples": [
+        {
+          "file": "ADC128S102EVM__snau274.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_BOARD;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADC12DL2500EVM__slau776a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD;EVM_BOARD_TITLE/EVAL_MODULE;ds_combo(SECTION_FEATURES|SECTION_PINS)"
+        },
+        {
+          "file": "ADC12DL3200EVM__slau776.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD;EVM_BOARD_TITLE/EVAL_MODULE;ds_combo(SECTION_FEATURES|SECTION_PINS)"
+        },
+        {
+          "file": "ADC12D2000RFIUT_NOPB__ADC12D2000RF.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "ADC12D2000RFIUT__ADC12D2000RF.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "ADC3644EVM__sbau232.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADC3663EVM__sbau366.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADC3664EVM__sbau361.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADC3669EVM__sbau441.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADC3910D125EVM__sbau442.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS1258EVM-PDK__sbau126e.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS1258EVM__sbau126e.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS1263EVM-PDK__sbau206a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS127L18EVM-PDK__sbau435.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS127L21EVM-PDK__sbau411.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS5500EVM__slwu010c.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "ADS7038Q1EVM-PDK__sbau279.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "ADS8555EVM-PDK__slau298a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "AM1806BZCE3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZCEA3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZWT3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZWT4__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806EZWTD4__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCE3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCE4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCEA3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCED4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWT4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWTA3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWTT3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AFE881H1EVM__slau858.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "AMC131M03EVM-PDK__sbau402.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE;ds_combo(SECTION_FEATURES|SECTION_PINS)"
+        },
+        {
+          "file": "AMC3306EVM__sbau336a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/DEV_KIT;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "AMC3336EVM__sbau336a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/DEV_KIT;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "BQ25620EVM__sluuck2a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "BQ25308EVM__sluud09.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "BQ25750EVM__sluucy7.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "BQ25756EVM__sluuct7b.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "BQ25820EVM__sluud36.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "CDC7005-EVM__scau005e.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "COP8-EMFLASH-00__COP8CFE9.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "COP8-REF-FL1__COP8CFE9.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "DAC121S101EVAL_NOPB__snau007.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD"
+        },
+        {
+          "file": "DAC121S101EVAL__snau007.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD"
+        },
+        {
+          "file": "DAC1220EVM__sbau102.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "DAC12DL3200EVM__sbau374a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC53701EVM__slau841.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC5574EVM__slau117a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC5672EVM__slau139b.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "DAC5681EVM__DAC5681_2C81z_2C82z_EVM.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC"
+        },
+        {
+          "file": "DAC5688EVM__DAC5668_2C88_2C89EVM.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC"
+        },
+        {
+          "file": "DAC39RF10EVM__sbau395.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC6571EVM__slau117a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC6573EVM__DAC5573_2C6573_2C7573_20_20EVM.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC6574EVM__slau117a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC63204EVM__slau866.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_SCHEMATIC/SCHEMATIC;EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC7571EVM__slau117a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC7573EVM__DAC5573_2C6573_2C7573_20_20EVM.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC7574EVM__slau117a.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_MODULE"
+        },
+        {
+          "file": "DAC7562EVM__DAC7562_2C8562_EVM_UG.pdf",
+          "t": "EVM/QUARANTINE -> UNKNOWN/REVIEW",
+          "kind": "evm_lost",
+          "other_strong": "EVM_BOARD_TITLE/EVAL_BOARD;ds_combo(SECTION_FEATURES|SECTION_PINS)"
+        }
+      ]
+    },
+    "D": {
+      "diff_key": 262,
+      "doc_type_or_route_changed": 260,
+      "transitions": {
+        "UNKNOWN/REVIEW -> EVM/QUARANTINE": 260
+      },
+      "evm_lost": 0,
+      "leak_to_parser": 0,
+      "ds_demoted": 0,
+      "examples": []
+    },
+    "E": {
+      "diff_key": 3371,
+      "doc_type_or_route_changed": 279,
+      "transitions": {
+        "UNKNOWN/REVIEW -> EVM/QUARANTINE": 261,
+        "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW": 18
+      },
+      "evm_lost": 0,
+      "leak_to_parser": 0,
+      "ds_demoted": 18,
+      "examples": [
+        {
+          "file": "ADC12D2000RFIUT_NOPB__ADC12D2000RF.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "ADC12D2000RFIUT__ADC12D2000RF.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZCE3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZCEA3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZWT3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZWT4__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806EZWTD4__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCE3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCE4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCEA3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCED4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWT4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWTA3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWTT3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "COP8-EMFLASH-00__COP8CFE9.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "COP8-REF-FL1__COP8CFE9.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "DLP-7970ABP__TRF7970A.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "EVM430-F6779__MSP430F677x.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        }
+      ]
+    },
+    "F": {
+      "diff_key": 3285,
+      "doc_type_or_route_changed": 280,
+      "transitions": {
+        "UNKNOWN/REVIEW -> EVM/QUARANTINE": 261,
+        "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW": 18,
+        "EVM/QUARANTINE -> DS_STRONG/IC_PARSE": 1
+      },
+      "evm_lost": 1,
+      "leak_to_parser": 0,
+      "ds_demoted": 18,
+      "examples": [
+        {
+          "file": "ADC12D2000RFIUT_NOPB__ADC12D2000RF.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "ADC12D2000RFIUT__ADC12D2000RF.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZCE3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZCEA3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZWT3__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806BZWT4__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1806EZWTD4__AM1806.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCE3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCE4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCEA3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZCED4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWT4__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWTA3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "AM1808EZWTT3__AM1808.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "COP8-EMFLASH-00__COP8CFE9.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "COP8-REF-FL1__COP8CFE9.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "DLP-7970ABP__TRF7970A.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "DRV2700EVM__slyu023.pdf",
+          "t": "EVM/QUARANTINE -> DS_STRONG/IC_PARSE",
+          "kind": "evm_lost",
+          "other_strong": "(none)"
+        },
+        {
+          "file": "EVM430-F6779__MSP430F677x.pdf",
+          "t": "DS_STRONG/IC_PARSE -> DS_WEAK/REVIEW",
+          "kind": "ds_demoted",
+          "other_strong": "(none)"
+        }
+      ]
+    }
+  }
+}
