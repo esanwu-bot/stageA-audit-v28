@@ -1,0 +1,212 @@
+# Gate 6A Batch 2 —— Reviewer 指定 4 条 Git 证据命令的终端原始输出
+# 仓库: E:/workspace/icpdf-extractor (origin = [REDACTED-INTERNAL-REPO])
+# 采集时间: 2026-11-11 20:42:15 +0800
+# 采集主机: PC-20260409SKMJ
+# 目标提交: a633bf4088761050295abfd680e1e63ca7342021
+# 分支: feat/gate6a-annotation (远端 origin/feat/gate6a-annotation)
+# 执行方式: git-bash 逐条执行，命令原文 + 原始 stdout/stderr + exit code 一并保留，未做任何编辑
+
+==================================================================
+$ git show -s --format=fuller a633bf4088761050295abfd680e1e63ca7342021
+==================================================================
+commit a633bf4088761050295abfd680e1e63ca7342021
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 20:30:20 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 20:33:47 2026 +0800
+
+    Gate 6A: Batch 2 精简 Gold（6 件 18 行，机检 18/18 OK）
+    
+    初稿 82 行（VLM 预标注 + 人工点选）中剔除 64 行：残词断句（Input volta /
+    Short-Circuit Durati）、把条件当参数名（VNEG_IN_x）、数值列塞英文
+    （Continuous / See Thermal Information Table）、表达式而非数值
+    （MIN(2.1, AVDD+0.3)）、同参数重复行（V349 SNR 5 行、V145 Input voltage 8 行）。
+    
+    保留标准四条：参数名必须在本页原文可原样搜到；min/typ/max 只放纯数字；
+    单位必须出现在该页；同一参数只留一行。18 行全部人工比对页面后签名
+    （row_status=CONFIRMED, reviewer=wuxiaoxian）。
+    
+    已知局限见 Batch2_Gate6A_README.md：V101 的 VIH/VIL/VOH 在手册中按 VCC 分三列，
+    本批每组只取一列；V162 名字保留列后缀以保持与页面一致；confidence_score 未经校准。
+    
+    附带：圈选台生成器（预载草稿 + CSV 回导 + 禁止点出孤儿数字行）、
+    机检脚本 validate_annotation.py（含 15 行脏数据自测）。
+[exit code: 0]
+
+==================================================================
+$ git diff-tree --no-commit-id --name-status -r a633bf4088761050295abfd680e1e63ca7342021
+==================================================================
+A	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+A	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+A	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+A	workbench/_gate6a_prep/_b2_app.js
+A	workbench/_gate6a_prep/_build_batch2_interactive.py
+A	workbench/_gate6a_prep/_build_batch2_viewer.py
+A	workbench/_gate6a_prep/_draft_extract.py
+A	workbench/_gate6a_prep/_vl_extract.py
+A	workbench/_gate6a_prep/validate_annotation.py
+[exit code: 0]
+
+==================================================================
+$ git merge-base origin/main a633bf4088761050295abfd680e1e63ca7342021
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+[exit code: 0]
+
+==================================================================
+$ git status --porcelain=v1
+==================================================================
+ M src/icpdf/cli.py
+ M workbench/_classifier_revision/R1_PRIME_SUPPLEMENT.md
+ M workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+ M workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+?? .workbuddy-ai/
+?? .workbuddy/
+?? _premerge_backup/
+?? backstage/
+?? docs/Document_Classifier_V2_Design.md
+?? docs/archive/
+?? docs/v2_2_1_review/
+?? "docs/\346\226\271\346\241\210\350\256\250\350\256\272.txt"
+?? "docs/\346\243\200\346\237\245\351\224\231\350\257\257\346\270\205\345\215\225.txt"
+?? gold/extracted/
+?? icpdf_c6_verify.bundle
+?? "review \346\211\247\350\241\214\346\270\205\345\215\225.md"
+?? tests/unit/test_classification_processpool_sim.py
+?? tests/unit/test_classification_v2.py
+?? tests/unit/test_env_redact.py
+?? tools/stage_a/
+?? tools/stage_b/
+?? workbench.html
+?? workbench/LOCALHOST_SMOKE_REPORT.md
+?? workbench/PARSER_CALL_CHAIN.md
+?? workbench/SHA256SUMS.txt
+?? workbench/WORKBENCH_CODE_CHANGES.md
+?? workbench/WORKBENCH_P1P2_FIX.diff
+?? workbench/WORKBENCH_P1P2_FIX_REPORT.md
+?? workbench/_classifier_revision/CALIBER_AND_FINDINGS.md
+?? workbench/_classifier_revision/CALLSITE_AUDIT.md
+?? workbench/_classifier_revision/COMPARISON_REPORT.md
+?? workbench/_classifier_revision/R1_PRIME_OVERTURN.md
+?? workbench/_classifier_revision/R1_prime_harm_76.csv
+?? workbench/_classifier_revision/VARIANT_changes.csv
+?? workbench/_classifier_revision/_ads1299_pack.py
+?? workbench/_classifier_revision/_build_csv.py
+?? workbench/_classifier_revision/_d_prime/
+?? workbench/_classifier_revision/_d_prime_check.py
+?? workbench/_classifier_revision/_git_ancestry_verify/
+?? workbench/_classifier_revision/_http_probe_v1_v4/
+?? workbench/_classifier_revision/_impact_demote/
+?? workbench/_classifier_revision/_impact_full/
+?? workbench/_classifier_revision/_impact_guard/
+?? workbench/_classifier_revision/_impact_guardonly/
+?? workbench/_classifier_revision/_impact_matrix/
+?? workbench/_classifier_revision/_logs/
+?? workbench/_classifier_revision/_scan_demote.py
+?? workbench/_classifier_revision/_scan_dprime.py
+?? workbench/_classifier_revision/_scan_guard.py
+?? workbench/_classifier_revision/_scan_guardonly.py
+?? workbench/_classifier_revision/_scan_impact.py
+?? workbench/_classifier_revision/_scan_matrix.py
+?? workbench/_classifier_revision/_trace_case.py
+?? workbench/_classifier_revision/ads1299/
+?? workbench/_classifier_revision/affected_samples.csv
+?? workbench/_classifier_revision/caliber_stats.json
+?? workbench/_deps/
+?? workbench/_diff/
+?? workbench/_doc_verify/
+?? workbench/_gate6a_prep/.__t.tmp
+?? workbench/_gate6a_prep/ANNOTATION_SOP.md
+?? workbench/_gate6a_prep/Batch1_Annotation.csv
+?? workbench/_gate6a_prep/Batch1_Annotation_DRAFT.csv
+?? workbench/_gate6a_prep/Batch1_Annotation_DRAFT.csv.txt
+?? workbench/_gate6a_prep/Batch1_Annotation_DRAFT.xlsx
+?? workbench/_gate6a_prep/Batch1_Annotation_EXAMPLE.csv
+?? workbench/_gate6a_prep/Batch1_README.md
+?? workbench/_gate6a_prep/Batch1_Sample_Status.csv
+?? workbench/_gate6a_prep/Batch1_Samples.csv
+?? workbench/_gate6a_prep/Batch1_Viewer.html
+?? workbench/_gate6a_prep/Batch2_ANNOTATED.csv
+?? workbench/_gate6a_prep/Batch2_ANNOTATED_V2.csv
+?? workbench/_gate6a_prep/Batch2_Annotation_DRAFT.csv
+?? workbench/_gate6a_prep/Batch2_Annotation_DRAFT.xlsx
+?? workbench/_gate6a_prep/Batch2_DRAFT.csv
+?? workbench/_gate6a_prep/Batch2_DRAFT_FIXED.csv
+?? workbench/_gate6a_prep/Batch2_DRAFT_FIXED.xlsx
+?? workbench/_gate6a_prep/Batch2_Viewer_V2.html
+?? workbench/_gate6a_prep/Batch2_Viewer_V3.html
+?? workbench/_gate6a_prep/Batch2_Viewer_v1_DEPRECATED.html
+?? workbench/_gate6a_prep/G7B_MERGE_REPORT.md
+?? workbench/_gate6a_prep/GATE6A_SAMPLE_CANDIDATES.csv
+?? workbench/_gate6a_prep/GOLD_SIZE_AUDIT.md
+?? workbench/_gate6a_prep/Gold_Set_Template.README.md
+?? workbench/_gate6a_prep/Gold_Set_Template.candidates.csv
+?? workbench/_gate6a_prep/Gold_Set_Template.column_roles.csv
+?? workbench/_gate6a_prep/Gold_Set_Template.csv
+?? workbench/_gate6a_prep/Gold_Set_v1.1_WORKING.csv
+?? workbench/_gate6a_prep/IMAGE_ONLY_CANDIDATES.csv
+?? workbench/_gate6a_prep/IMAGE_ONLY_SCAN_REPORT.md
+?? workbench/_gate6a_prep/PUSH_REVIEW_45_COMMITS.md
+?? workbench/_gate6a_prep/README.md
+?? workbench/_gate6a_prep/S01_S03_PAGE_DETAIL.csv
+?? workbench/_gate6a_prep/SCAN_SELECTION_EVIDENCE.md
+?? workbench/_gate6a_prep/_audit_gold_size.ps1
+?? workbench/_gate6a_prep/_build_batch1.py
+?? workbench/_gate6a_prep/_build_evidence_v11.py
+?? workbench/_gate6a_prep/_build_gold_template.py
+?? workbench/_gate6a_prep/_build_merge_report.py
+?? workbench/_gate6a_prep/_build_viewer.py
+?? workbench/_gate6a_prep/_capture_merge.py
+?? workbench/_gate6a_prep/_capture_push_review.py
+?? workbench/_gate6a_prep/_check_signed.py
+?? workbench/_gate6a_prep/_draft_batch2.py
+?? workbench/_gate6a_prep/_draft_extract_v1.bak
+?? workbench/_gate6a_prep/_draft_extract_v2.bak
+?? workbench/_gate6a_prep/_draft_fill.py
+?? workbench/_gate6a_prep/_scan_image_only.py
+?? workbench/_gate6a_prep/_select_supplementary.py
+?? workbench/_gate6a_prep/_selfcheck.py
+?? workbench/_gate6a_prep/_selftest_validator.log
+?? workbench/_gate6a_prep/_selftest_validator.py
+?? workbench/_gate6a_prep/_verify_fullpage.py
+?? workbench/_gate6a_prep/_vl_probe.py
+?? workbench/_gate6a_prep/annotate_fill_metadata.py
+?? workbench/_gate6a_prep/annotate_find_tables.py
+?? workbench/_gate6a_prep/annotate_init_gold_skeletons.py
+?? workbench/_gate6a_prep/annotate_pdf_probe.py
+?? workbench/_gate6a_prep/annotation_reports/
+?? workbench/_gate6a_prep/candidates.jsonl
+?? workbench/_gate6a_prep/draft_extract.json
+?? workbench/_gate6a_prep/full_page_textlayer_verify.json
+?? workbench/_gate6a_prep/g7b_merge_raw.log
+?? workbench/_gate6a_prep/git_evidence_gate6a.txt
+?? workbench/_gate6a_prep/gold_size_audit.txt
+?? workbench/_gate6a_prep/push_review_raw.log
+?? workbench/_gate6a_prep/scan_all.jsonl
+?? workbench/_gate6a_prep/scan_summary.json
+?? workbench/_gate6a_prep/selected_supplementary.json
+?? workbench/_gate6a_prep/selfcheck.json
+?? workbench/_guard/
+?? workbench/_probe_evm/
+?? workbench/_probe_v002_v022/
+?? workbench/_probe_v002_v022_slim/
+?? workbench/_smoke/
+?? workbench/_smoke_frozen_r2/
+?? workbench/_verify_p1p2_static.py
+?? workbench/classify_worker.py
+?? workbench/index.html
+?? workbench/parse_worker.py
+?? workbench/serve_parser.py
+?? workbench/uploads/
+[exit code: 0]
+
+==================================================================
+# 附：origin/main 当前 tip（证明 main 未被本次推送影响）
+==================================================================
+$ git rev-parse origin/main
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+[exit code: 0]
+
+$ git rev-parse origin/feat/gate6a-annotation
+a633bf4088761050295abfd680e1e63ca7342021
+[exit code: 0]
