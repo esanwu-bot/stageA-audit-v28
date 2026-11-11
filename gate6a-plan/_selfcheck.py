@@ -97,21 +97,28 @@ def main():
         "meaning": "3 件均在 350 池外、D' 变化集外，且实测抽样页文本为 0 字符",
     }
 
-    # 4. 模板自洽
+    # 4. 模板自洽（v1.1：33 行 = 29 池内 + 3 池外 + 1 诊断）
     tpl = read_csv(PREP / "Gold_Set_Template.csv")
     role = {}
     for r in tpl:
         role[r["set_role"]] = role.get(r["set_role"], 0) + 1
     diag = [r["sample_no"] for r in tpl if r["diagnostic_only"] == "TRUE"]
+    elig = {}
+    for r in tpl:
+        elig[r["denominator_eligible"]] = elig.get(r["denominator_eligible"], 0) + 1
+    expected_role = {"FORMAL": 29, "FORMAL_OUT_OF_POOL": 3, "DIAGNOSTIC_ONLY": 1}
+    expected_elig = {"TRUE": 32, "FALSE": 1}
+    ok4 = (role == expected_role and elig == expected_elig
+           and diag == ["V022"])
     checks["template_consistency"] = {
         "rows": len(tpl),
         "set_role_counts": role,
+        "denominator_eligible_counts": elig,
         "diagnostic_only_samples": diag,
-        "expected": {"FORMAL": 29, "DIAGNOSTIC_ONLY": 1, "SUPPLEMENTARY": 3},
-        "verdict": "PASS" if (role.get("FORMAL") == 29
-                              and role.get("DIAGNOSTIC_ONLY") == 1
-                              and role.get("SUPPLEMENTARY") == 3
-                              and diag == ["V022"]) else "FAIL",
+        "expected_set_role": expected_role,
+        "expected_denominator_eligible": expected_elig,
+        "verdict": "PASS" if ok4 else "FAIL",
+        "meaning": "33 = 29 池内 + 3 池外扫描件 + 1 诊断；可计 32、永不进分母 1",
     }
 
     overall = all(v.get("verdict") == "PASS" for v in checks.values())

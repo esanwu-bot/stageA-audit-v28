@@ -58,17 +58,26 @@
       "set_role_counts": {
         "FORMAL": 29,
         "DIAGNOSTIC_ONLY": 1,
-        "SUPPLEMENTARY": 3
+        "FORMAL_OUT_OF_POOL": 3
+      },
+      "denominator_eligible_counts": {
+        "TRUE": 32,
+        "FALSE": 1
       },
       "diagnostic_only_samples": [
         "V022"
       ],
-      "expected": {
+      "expected_set_role": {
         "FORMAL": 29,
-        "DIAGNOSTIC_ONLY": 1,
-        "SUPPLEMENTARY": 3
+        "FORMAL_OUT_OF_POOL": 3,
+        "DIAGNOSTIC_ONLY": 1
       },
-      "verdict": "PASS"
+      "expected_denominator_eligible": {
+        "TRUE": 32,
+        "FALSE": 1
+      },
+      "verdict": "PASS",
+      "meaning": "33 = 29 池内 + 3 池外扫描件 + 1 诊断；可计 32、永不进分母 1"
     }
   },
   "parser_invoked": false,

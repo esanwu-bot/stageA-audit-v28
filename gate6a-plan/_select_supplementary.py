@@ -79,6 +79,7 @@ def main():
                     key=lambda r: order.index(picks[r["sha256"]]))
     out = {
         "purpose": "PAIN-08（文本层缺失或乱码）覆盖：350 池内无真扫描件，需池外补充",
+        "stratum": "扫描件（无文本层）",
         "selection_rule": [
             "按 pdf_sha256 去重（同一文档多料号别名视为一件）",
             "按 page_count 分档 1-10 / 11-30 / 31-100",
@@ -98,6 +99,7 @@ def main():
             {
                 "sample_no": "S%02d" % (i + 1),
                 "band": picks[r["sha256"]],
+                "stratum": "扫描件（无文本层）",
                 "sha256": r["sha256"],
                 "file_name": r["name"],
                 "file_path": r["path"],
@@ -113,9 +115,16 @@ def main():
             for i, r in enumerate(chosen)
         ],
         "constraint_break_notice":
-            "这 3 件位于 350 池之外，突破了「从 350 池抽样」的约束，"
-            "依 GATE6A_PLAN.md §1.4 缺口 1 选项 2，须 Reviewer 明确批准后"
-            "才可计入指标分母；未获批前 status 保持 DRAFT，不进入任何指标。",
+            "这 3 件位于 350 池之外，突破了「从 350 池抽样」的约束。"
+            "依 GATE6A_PLAN.md §1.4 缺口 1 选项 2，Reviewer 已于 2026-11-11 批准"
+            "将其正式列入 Gold Set「扫描件（无文本层）」层并计入分母；"
+            "计入仍以 status = CONFIRMED 为前提（未 CONFIRMED 不进任何分母）。",
+        "approval": {
+            "approved_by": "Reviewer",
+            "approved_at": "2026-11-11",
+            "scope": "列入 Gold Set 扫描件层，准备计入分母",
+            "plan_ref": "GATE6A_PLAN.md v1.1 §1.3 / §1.4 缺口 1",
+        },
         "parser_invoked": False,
         "llm_called": False,
     }
