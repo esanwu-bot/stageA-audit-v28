@@ -1,0 +1,519 @@
+# -*- coding: utf-8 -*-
+"""Batch 3 圈选台生成器 —— VLM 出草稿，人点选确认，机器绝不直接产出 Gold。
+
+与 Batch 2 的关系
+------------------
+完全复用 Batch 2 的判定内核（`_build_batch2_viewer` 的表格定位/裁剪、
+`_build_batch2_interactive` 的 symbol 收敛 / 参数名补齐 / 置信度合成），
+只多做两件事：
+
+  1. **只要 3~5 行核心参数**。Batch 2 一件能出十几行，人核到后面会疲。
+     这里按 `CORE_ORDER` 打分，每件只留最核心的 3~5 行（供电、温度、电流、功耗…），
+     其余行**不丢证据**，只记进 `_dropped` 供复核时追问。
+  2. **显式标 low_confidence**。低于阈值的行在 notes 里写 `low_confidence`，
+     人可以在 Excel 里按这个词直接筛出来对图。标记归标记，
+     `row_status` 一律仍是 DRAFT_AWAITING_HUMAN_CONFIRM ——
+     机器无权替人确认。
+
+输出的 CSV 与 HTML 都是**草稿**，不是 Gold。
+"""
+from __future__ import print_function
+
+import argparse
+import csv
+import re
+import sys
+from pathlib import Path
+
+import fitz
+
+import _build_batch2_viewer as B
+import _build_batch2_interactive as I2
+from _vl_extract import extract_rows as vl_extract
+
+PREP = Path(__file__).resolve().parent
+WORKING = PREP / "Gold_Set_v1.1_WORKING.csv"
+
+OUT_CSV = PREP / "Batch3_DRAFT.csv"
+OUT_HTML = PREP / "Batch3_Viewer.html"
+REPORTS = PREP / "annotation_reports"
+
+THRESH = I2.THRESH          # 0.85，与 Batch 2 同源，不另起一个阈值
+WARN = "low_confidence"     # 人能在 Excel 里直接搜的词
+
+COLS = B.COLS + ["confidence_score"]
+KIND_CN = dict(B.KIND_CN)
+KIND_CN["ROC"] = "Recommended Operating Conditions"
+
+# Batch 3 多扫一类表：Recommended Operating Conditions。
+# 为什么 Batch 2 没扫：那批要的是"能不能抽对 MIN/TYP/MAX"，ROC 表通常只有单值；
+# 但这一轮人要的是**核心参数**，供电电压与工作温度恰恰最常出现在 ROC 里，
+# 只扫 AMR/ELC 会整件交不出温度行（V319 就是这种：AMR 里没有 TA）。
+KINDS = ("AMR", "ROC", "ELC")
+
+# Batch 2 已定稿的 6 件，绝不再进 Batch 3
+DONE = {"V097", "V101", "V111", "V145", "V162", "V349"}
+
+# 第一梯队：原 Batch 1 名单（5 件普通文本型）+ 1 件复杂参数表。
+# 选它们打头的原因：表格结构最规整，先用它们校准"核心 3~5 行"的取舍标准，
+# 再去碰多级表头/跨页那批硬骨头。
+BATCH1 = ["V319", "V304", "V199", "V336", "V173", "V345"]
+
+# 核心参数优先级。数字越小越先留；命不中的行排在后面。
+# 只收这几类：供电、温度（工作/存储/结温）、电流（输出/输入）、功耗、输入电压。
+CORE_ORDER = [
+    (re.compile(r"supply\s+voltage|^v(cc|dd|s)\b|\bv(cc|dd)\b", re.I), 1,
+     "供电电压"),
+    (re.compile(r"operating\s+(free[- ]air\s+)?temperature|ambient\s+temperature"
+                r"|^t\s*a$", re.I), 2, "工作温度"),
+    (re.compile(r"storage\s+temperature|^t\s*stg\b", re.I), 3, "存储温度"),
+    (re.compile(r"junction\s+temperature|^t\s*j\b", re.I), 4, "结温"),
+    (re.compile(r"(continuous\s+)?output\s+current|^i\s*o\b", re.I), 5, "输出电流"),
+    (re.compile(r"input\s+current|^i\s*i\b", re.I), 6, "输入电流"),
+    (re.compile(r"power\s+dissipation", re.I), 7, "功耗"),
+    (re.compile(r"input\s+voltage|^v\s*i\b", re.I), 8, "输入电压"),
+]
+
+
+def core_rank(r):
+    """给一行打核心度：(优先级, 有没有数值, 置信度)。数值齐的先留。"""
+    name = (r.get("parameter_name") or "") + " " + (r.get("symbol") or "")
+    pri = 99
+    for rx, p, _cn in CORE_ORDER:
+        if rx.search(name):
+            pri = p
+            break
+    has_num = any((r.get(k) or "").strip()
+                  for k in ("min_value", "typ_value", "max_value"))
+    try:
+        conf = float(r.get("confidence_score") or 0)
+    except ValueError:
+        conf = 0.0
+    # 没有数值的核心参数排在"有数值的非核心参数"后面：
+    # 人要先看到能核的数，空行放最后面再去补。
+    return (pri, 0 if has_num else 1, -conf)
+
+
+def pick_core(rows, lo=3, hi=5):
+    """每件只留最核心的 3~5 行，其余返回给调用方做记录，不落盘。"""
+    ranked = sorted(rows, key=core_rank)
+    keep = ranked[:hi]
+    drop = ranked[hi:]
+    # 不足 lo 行时不再从脏行里凑——宁可这件只有 2 行，也不拿垃圾行充数。
+    return keep, drop, [c for _, _, c in CORE_ORDER]
+
+
+def scan3(doc, npages):
+    """同 B.scan，但多扫 ROC（Recommended Operating Conditions）。
+
+    返回 (hits, nav)，结构与 B.scan 一致，只是 key 多了 "ROC"。
+    目录页判据沿用 Batch 2 的「同页命中 3 种以上表标题」——
+    正文页几乎不可能同时出现 AMR + ROC + ELC 三张表的标题。
+    """
+    import _draft_extract as X
+
+    hits = {k: [] for k in KINDS}
+    nav = {k: [] for k in KINDS}
+    for pno in range(1, min(npages, B.MAX_SCAN_PAGES) + 1):
+        page = doc.load_page(pno - 1)
+        rows = X.group_lines(X.dedup(page.get_text("words")))
+        found = {k: X.find_headings(rows, k) for k in KINDS}
+        if sum(1 for v in found.values() if v) >= 3:
+            continue                      # 目录页
+        for kind in KINDS:
+            hs = found.get(kind) or []
+            if not hs:
+                continue
+            bbs = X.table_bboxes(page)
+            for h in hs:
+                bb = X.choose_bbox(bbs, h)
+                recs, _ = X.parse_page(page, kind, bbox=bb)
+                good = [r for r in recs if r.get("label")]
+                if not any(n[0] == pno for n in nav[kind]):
+                    nav[kind].append((pno, h, bb, len(good)))
+                for r in good:
+                    hits[kind].append((B.rank(r), pno, r, h, bb))
+    return hits, nav
+
+
+def mark_dups(rows):
+    """同一符号出现多组不同取值时提醒人工。
+
+    V319 就是实例：两行都写 TA，一行 -40~85、一行 -55~125。
+    真实手册里这是温度等级不同（商用/工业/军品）或 VLM 把 Tstg 误标成 TA，
+    机器分不清哪种，也不该替人决定——只在 notes 里点出来，让人看一眼左图。
+    """
+    seen = {}
+    for r in rows:
+        sym = (r.get("symbol") or "").strip().upper()
+        if not sym:
+            continue
+        vals = tuple((r.get(k) or "").strip()
+                     for k in ("min_value", "typ_value", "max_value"))
+        seen.setdefault(sym, []).append((r, vals))
+    for sym, items in seen.items():
+        if len(items) < 2:
+            continue
+        uniq = {v for _, v in items}
+        if len(uniq) < 2:            # 完全重复的行，同样值得提醒
+            for r, _ in items[1:]:
+                r["notes"] = (r.get("notes", "")
+                              + "；与上一行完全重复，可能该删").strip("；")
+            continue
+        for r, _ in items:
+            r["notes"] = (r.get("notes", "")
+                          + "；%s 有多组取值（疑不同温度等级或 VLM 误标），请确认"
+                          % sym).strip("；")
+    return rows
+
+
+def value_flags(r):
+    """数值列自身的坏味道。返回问题描述列表，非空即判 low_confidence。
+
+    为什么置信度公式抓不到这些：公式只问"这个串在页面上找不找得到"，
+    而 `V_O =`、`V_DD +` 这类**截断残留**恰恰是从页面上原样抠下来的，
+    找得到，于是照样满分。但它们已经不是数值了，必须单独拦。
+
+    实测来源（第一批）：
+      V173 `Continuous output current` min=`V_O =`  —— 条件被抄进 min 列
+      V345 `V_FBX to AGND` max=`V_DD +`            —— 公式被截断，丢了 0.3
+    """
+    issues = []
+    for col, cn in (("min_value", "min"), ("typ_value", "typ"), ("max_value", "max")):
+        v = (r.get(col) or "").strip()
+        if not v:
+            continue
+        if "=" in v:
+            issues.append("%s 列含等号，疑把条件抄进数值" % cn)
+        elif re.search(r"[+\-*/]\s*$", v) and not re.fullmatch(r"[+\-]\d+(\.\d+)?", v):
+            issues.append("%s 列以运算符结尾，疑被截断" % cn)
+        elif not re.search(r"\d", v) and not re.match(r"(?i)^see\b", v):
+            issues.append("%s 列没有数字" % cn)
+    return issues
+
+
+def det_score3(doc, r, cache):
+    """确定性证据分（0-1）。每一项都能被人复算，不依赖模型自报。
+
+    与 Batch 2 的差别只一处：v1.6 的验证器把 `normalize()` 拆成了
+    `unify/collapse/nos` 三个函数，单位核对改用 `check_unit()`，
+    它还会区分"独立出现"和"只作为更长串的一部分"（后者只降分不判错）。
+    """
+    import validate_annotation as V
+
+    try:
+        pno = int(r["evidence_page"])
+    except (TypeError, ValueError):
+        return 0.30
+    if pno not in cache:
+        cache[pno] = V.collapse(doc.load_page(pno - 1).get_text("text"))
+    txt = cache[pno]
+
+    vals = [r.get("min_value"), r.get("typ_value"), r.get("max_value")]
+    vals = [v for v in vals if v]
+    hit = 0
+    for v in vals:
+        rx = V.num_pattern(v)
+        if rx and rx.search(txt):
+            hit += 1
+
+    s = 0.50
+    if vals and hit == len(vals):
+        s += 0.25
+    elif hit:
+        s += 0.10
+    else:
+        s -= 0.10
+
+    unit = (r.get("unit") or "").strip()
+    if unit:
+        verdict, _why = V.check_unit(unit, txt)
+        s += {"OK": 0.10, "SUSPECT": 0.03}.get(verdict, -0.10)
+
+    sym = (r.get("symbol") or "").strip()
+    # 允许下划线：`V_IH` 是手册里的真实写法
+    if sym and re.fullmatch(r"[A-Za-z\u0394][A-Za-z0-9()/_\-±.\u0394]{1,11}", sym):
+        s += 0.05
+
+    name = (r.get("parameter_name") or "").strip()
+    if 6 <= len(name) <= 60:
+        s += 0.05
+    if "=" in name:              # 把条件当参数名是典型坏行
+        s -= 0.15
+    if not name:
+        s -= 0.20
+    # 我们自己按规则清空的 symbol 不再倒扣，否则等于因规范化二次惩罚
+    if not sym and not r.get("_sym_cleared"):
+        s -= 0.05
+    return max(0.0, min(1.0, s))
+
+
+def score_rows3(doc, rows):
+    """补置信度。最终分只取确定性证据分——VLM 自报分实测恒为 1.00，
+    掺进公式只会给所有行统一加 0.3，反而抹平区分度（Batch 2 已验证）。
+    自报分仍写在 notes 里备查。"""
+    cache = {}
+    for r in rows:
+        det = det_score3(doc, r, cache)
+        r["confidence_score"] = "%.2f" % round(min(0.95, det), 2)
+    return rows
+
+
+def build_js(rows):
+    return I2.build_js(rows)
+
+
+def one_sample(meta, args):
+    """处理一件：定位表格 → 裁剪 → VLM → 收敛 → 打分 → 留 3~5 行。"""
+    sno = meta["sample_no"]
+    path = Path(meta["file_path"])
+    fname = path.name
+    npages = int(meta["page_count"])
+    pdf_url = "file:///" + str(path).replace("\\", "/")
+
+    doc = fitz.open(str(path))
+    hits, nav = scan3(doc, npages)
+    out_dir = REPORTS / sno
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    panes, rows = [], []
+    for kind in KINDS:
+        if not nav.get(kind):
+            continue
+        withrows = [c for c in nav[kind] if c[3] > 0]
+        if withrows:
+            pno, hy, bb, _n = max(withrows, key=lambda c: (c[3], -c[0]))
+        else:
+            pno, hy, bb, _n = min(nav[kind], key=lambda c: c[0])
+        png = out_dir / ("b3_%s_p%04d.png" % (kind, pno))
+        page = doc.load_page(pno - 1)
+        rect, used = B.render_clip(page, hy, bb, png)
+        lines = I2.lines_in_rect(page, rect)
+
+        vrows, vmeta = [], {}
+        if not args.no_vlm:
+            try:
+                vrows, vmeta = vl_extract(png)
+            except Exception as e:
+                vmeta = {"error": "%s: %s" % (type(e).__name__, e)}
+
+        pane_rows = []
+        ptxt = I2.page_text(page)
+        for vr in vrows:
+            row = {
+                "sample_no": sno, "file_name": fname,
+                "evidence_page": str(pno), "table_title": KIND_CN[kind],
+                "symbol": vr["symbol"],
+                "parameter_name": vr["parameter_name"],
+                "min_value": vr["min_value"], "typ_value": vr["typ_value"],
+                "max_value": vr["max_value"], "unit": vr["unit"],
+                "condition": "",
+                "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM",
+                "notes": "VLM 草稿，须对左图核；vlm自报=%.2f" % vr["vlm_confidence"],
+                "reviewer": "",
+            }
+            pane_rows.append(row)
+
+        if not pane_rows:      # VLM 空手而归时退回文本表格解析，别让页面白给
+            pane_rows = B.to_rows(sno, fname, kind, hits.get(kind, []))
+            for r in pane_rows:
+                r["notes"] = (r.get("notes", "")
+                              + "；VLM 无结果，退回文本表格解析").strip("；")
+
+        for r in pane_rows:
+            I2.sanitize_row(r, ptxt)
+            I2.repair_name(r)
+        rows.extend(pane_rows)
+
+        panes.append({"kind": kind, "pno": pno,
+                      "rel": png.relative_to(PREP).as_posix(),
+                      "bbox": used, "lines": lines,
+                      "vmeta": vmeta, "use_vl": bool(vrows),
+                      "span": sorted({n[0] for n in nav[kind]})})
+
+    score_rows3(doc, rows)          # 必须在 close 之前，det_score 要读页文本
+    doc.close()
+
+    # —— 只留核心 3~5 行 ——
+    keep, drop, _ = pick_core(rows)
+    mark_dups(keep)
+
+    # low_confidence 标记：低于阈值的行在 notes 里打词，方便 Excel 筛。
+    for r in keep:
+        try:
+            low = float(r.get("confidence_score") or 0) < THRESH
+        except ValueError:
+            low = True
+        bad = value_flags(r)
+        if bad:
+            low = True
+            r["notes"] = (r.get("notes", "") + "；" + "；".join(bad)).strip("；")
+        if low and WARN not in r.get("notes", ""):
+            r["notes"] = (r.get("notes", "") + " | " + WARN).strip(" |")
+
+    nlines = sum(len(p["lines"]) for p in panes)
+    nlow = sum(1 for r in keep if WARN in r.get("notes", ""))
+    if not panes:
+        quality, note = "未定位", "前 %d 页未找到 AMR/ELC 标题，需人工翻查" % B.MAX_SCAN_PAGES
+    elif nlines == 0:
+        quality = "无文本层"
+        note = "页面抓不到文字（纯图形/扫描），建议整件标 EXCLUDED"
+    elif not keep:
+        quality, note = "未定位", "定位到表格但没抽出行，需人工录入"
+    elif nlow:
+        quality, note = "需重点看", "核心 %d 行中 %d 行 low_confidence，先核这些" % (len(keep), nlow)
+    else:
+        quality, note = "好", "核心 %d 行置信度均 ≥%.2f" % (len(keep), THRESH)
+
+    card = {"sno": sno, "fname": fname, "npages": npages, "pdf": pdf_url,
+            "panes": panes, "rows": keep, "quality": quality, "note": note,
+            "dropped": len(drop), "nlow": nlow,
+            "stratum": meta.get("stratum_proposed", "")}
+    return keep, card
+
+
+def main():
+    ap = argparse.ArgumentParser(description="Batch 3 草稿 + 圈选台")
+    ap.add_argument("--samples", default=",".join(BATCH1),
+                    help="逗号分隔的 sample_no；默认第一批 6 件")
+    ap.add_argument("--out-prefix", default="Batch3",
+                    help="输出文件名前缀，默认 Batch3")
+    ap.add_argument("--no-vlm", action="store_true",
+                    help="不调视觉模型，只用文本表格解析（调试用）")
+    args = ap.parse_args()
+    want = [s.strip() for s in args.samples.split(",") if s.strip()]
+
+    meta_all = {r["sample_no"]: r for r in
+                csv.DictReader(open(WORKING, encoding="utf-8-sig"))}
+    todo = []
+    for s in want:
+        if s in DONE:
+            print("跳过 %s：Batch 2 已定稿" % s)
+            continue
+        if s not in meta_all:
+            print("警告 %s：不在 Gold_Set_v1.1_WORKING.csv 里，跳过" % s)
+            continue
+        todo.append(meta_all[s])
+
+    rows_out, cards = [], []
+    for meta in todo:
+        print("  ... %s" % meta["sample_no"], end="", flush=True)
+        got, card = one_sample(meta, args)
+        rows_out.extend(got)
+        cards.append(card)
+        print(" → 核心 %d 行（low=%d，丢弃 %d）"
+              % (len(got), card["nlow"], card["dropped"]))
+
+    out_csv = PREP / ("%s_DRAFT.csv" % args.out_prefix)
+    out_html = PREP / ("%s_Viewer.html" % args.out_prefix)
+
+    # utf-8-sig：Excel 靠 BOM 判编码，否则 ° µ − 会变 ?（中文 Windows 按 GBK 解码）
+    with open(out_csv, "w", encoding="utf-8-sig", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=COLS)
+        w.writeheader()
+        for r in rows_out:
+            w.writerow({k: r.get(k, "") for k in COLS})
+
+    p = []
+    p.append('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">')
+    p.append("<title>Batch 3 圈选台（左图右文）</title>")
+    p.append("<style>%s%s</style></head><body>" % (B.CSS, I2.EXTRA_CSS))
+    p.append("<header><h1>Batch 3 圈选台 · %d 件 · 核心参数草稿</h1>" % len(cards))
+    p.append("<p>左边是原图，右边是同区域抓出的纯文本。"
+             "页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；"
+             "红底行是 <code>low_confidence</code>，请优先对图。</p></header>")
+    p.append('<div class="wrap">')
+
+    p.append('<div class="note"><h2>怎么用</h2><ul>'
+             "<li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li>"
+             "<li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；"
+             "不是参数（表头、注释）直接删。</li>"
+             "<li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、"
+             "或模型自报很低。这些行最可能有错。</li>"
+             "<li>草稿没覆盖的核心参数，用「新增空行」自己补。</li>"
+             "<li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li>"
+             "</ul>"
+             '<div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、'
+             "既无参数名又无符号的行。</div></div>")
+
+    for c in cards:
+        p.append('<div class="card"><div class="head">')
+        p.append('<span class="sn">%s</span><span class="fn">%s</span>'
+                 % (B.esc(c["sno"]), B.esc(c["fname"])))
+        p.append('　<a href="%s" target="_blank">在 PDF 中打开</a>' % B.esc(c["pdf"]))
+        cls = "t-ok" if c["quality"] == "好" else "t-warn"
+        tags = ['<span class="tag %s">草稿：%s</span>' % (cls, B.esc(c["quality"]))]
+        for pn in c["panes"]:
+            tags.append('<span class="tag %s">%s = p%s</span>'
+                        % ("t-amr" if pn["kind"] == "AMR" else "t-elc",
+                           pn["kind"], "/".join(str(x) for x in pn["span"])))
+        p.append('<div class="meta">共 %d 页 　%s</div>' % (c["npages"], "".join(tags)))
+        p.append('<div class="meta">%s</div>' % B.esc(c["note"]))
+        p.append('</div><div class="body">')
+
+        if c["quality"] == "无文本层":
+            p.append('<div class="err">本页抓不到任何文字（纯图形/扫描件）。'
+                     "请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div>")
+        for pn in c["panes"]:
+            p.append('<div class="pane" data-sno="%s" data-fn="%s" data-page="%d" '
+                     'data-title="%s">'
+                     % (B.esc(c["sno"]), B.esc(c["fname"]), pn["pno"],
+                        B.esc(KIND_CN[pn["kind"]])))
+            p.append('<div class="cols"><div class="left">'
+                     '<a href="%s" target="_blank"><img src="%s" alt="%s p%d"></a>'
+                     '<div class="cap">%s · 第 %d 页%s</div></div>'
+                     % (B.esc(pn["rel"]), B.esc(pn["rel"]), B.esc(c["sno"]),
+                        pn["pno"], B.esc(KIND_CN[pn["kind"]]), pn["pno"],
+                        "（按表格边框裁剪）" if pn["bbox"] else "（按标题位置裁剪）"))
+            p.append('<div class="right"><div class="rh">点下面任意一行 → 自动填字段'
+                     '<span class="cnt">%d 行</span></div><ol class="lines">'
+                     % len(pn["lines"]))
+            for ln in pn["lines"]:
+                p.append('<li class="line" data-t="%s">%s</li>'
+                         % (B.esc(ln), B.esc(ln)))
+            p.append("</ol></div></div></div>")
+
+        if c["rows"]:
+            p.append('<div class="dh">本件核心草稿 %d 行（另有 %d 行非核心未载入）；'
+                     '<span class="pill ok">绿 ≥%.2f</span> '
+                     '<span class="pill low">红 &lt;%.2f = low_confidence</span></div>'
+                     % (len(c["rows"]), c["dropped"], THRESH, THRESH))
+        p.append("</div></div>")
+
+    p.append('<div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2>')
+    p.append('<div class="filter">'
+             '<label>样本 <select id="fsample"></select></label>'
+             '<label><input type="checkbox" id="fnum"> 只看有数值的行</label>'
+             '<label><input type="checkbox" id="ftodo"> 只看未确认的行</label>'
+             '<button class="ghost" onclick="addBlank()">新增空行</button>'
+             '<button class="ghost" onclick="dropNoName()">删掉无参数名的行</button>'
+             '<button class="ghost" onclick="resetDraft()">恢复机器草稿</button>'
+             '<label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label>'
+             "</div>")
+    p.append('<div id="stat" class="stat"></div>')
+    p.append('<table class="rows" id="tbl"><thead><tr>'
+             "<th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th>"
+             "<th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th>"
+             "<th></th></tr></thead><tbody id=\"tbody\"></tbody></table>")
+    p.append('<div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button>'
+             '<button onclick="copyOut()" class="dl">复制 CSV</button> '
+             '<label style="font-size:12.5px;margin-left:8px">'
+             '<input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label>'
+             '<span id="msg" class="msg"></span></div>')
+    p.append('<textarea id="out" readonly></textarea>')
+    p.append("</div>")
+    p.append("</div><script>%s</script></body></html>" % build_js(rows_out))
+    out_html.write_text("".join(p), encoding="utf-8", newline="\n")
+
+    print("\n圈选台: %s (%.1f KB, %d 件)"
+          % (out_html.name, out_html.stat().st_size / 1024, len(cards)))
+    print("草稿  : %s (%d 行)" % (out_csv.name, len(rows_out)))
+    for c in cards:
+        print("  %-5s %-6s 核心=%d low=%d 丢弃=%d  %s"
+              % (c["sno"], c["quality"], len(c["rows"]), c["nlow"],
+                 c["dropped"], c["note"][:36]))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
