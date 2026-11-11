@@ -1,0 +1,42 @@
+[
+  {
+    "file": "CC2500EMK__cc2500.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CC2500EMK__cc2500.pdf",
+    "sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+    "bytes": 2509323,
+    "pages": 99,
+    "metadata": {
+      "title": "Low-Cost Low-Power 2.4 GHz RF Transceiver datasheet (Rev. C)",
+      "subject": "Data Sheet",
+      "author": "Texas Instruments, Incorporated [SWRS040,C\n]",
+      "creator": "SPDF",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20260811004229-05'00'",
+      "modDate": "D:20260811004229-05'00'",
+      "format": "PDF 1.6"
+    },
+    "page1_text": "CC2500\nSWRS040C\nPage 1 of 89\nCC2500\nLow-Cost Low-Power 2.4 GHz RF Transceiver\nApplications\n\n2400-2483.5 MHz ISM/SRD band systems\n\nConsumer electronics\n\nWireless game controllers\n\nWireless audio\n\nWireless keyboard and mouse\n\nRF enabled remote controls\nProduct Description\nThe CC2500 is a low-cost 2.4 GHz transceiver\ndesigned for very low-power wireless appli-\ncations. The circuit is intended for the 2400-\n2483.5 MHz ISM (Industrial, Scientific and\nMedical)\nand\nSRD\n(Short\nRange\nDevice)\nfrequency band.\nThe RF transceiver is integrated with a highly\nconfigurable baseband modem. The modem\nsupports various modulation formats and has\na configurable data rate up to 500 kBaud.\nCC2500 provides extensive hardware support\nfor\npacket\nhandling,\ndata\nbuffering,\nburst\ntransmissions, clear channel assessment, link\nquality indication, and wake-on-radio.\nThe main operating parameters and the 64-\nbyte transmit/receive FIFOs of CC2500 can be\ncontrolled via an SPI interface. In a typical\nsystem, the CC2500 will be used together with\na microcontroller and a few additional passive\ncomponents.\n6\n7\n8\n9\n10\n20\n19\n18\n17\n16\nKey Features\nRF Performance\n\nHigh sensitivity (–104 dBm at 2.4 kBaud,\n1% packet error rate)\n\nLow current consumption (13.3 mA in RX,\n250 kBaud, input well above sensitivity\nlimit)\n\nProgrammable output power up to +1 dBm\n\nExcellent receiver selectivity and blocking\nperformance\n\n",
+    "page2_text": "CC2500\nSWRS040C\nPage 2 of 89\n\nProgrammable Preamble Quality Indicator\n(PQI) for improved protection against false\nsync word detection in random noise\n\nSupport\nfor\nautomatic\nClear\nChannel\nAssessment (CCA) before transmitting (for\nlisten-before-talk systems)\n\nSupport\nfor\nper-package\nLink\nQuality\nIndication (LQI)\n\nOptional\nautomatic\nwhitening\nand\nde-\nwhitening of data\nLow-Power Features\n\n400 nA SLEEP mode current consumption\n\nFast startup time: 240 us from SLEEP to\nRX or TX mode (measured on EM design)\n\nWake-on-radio functionality for automatic\nlow-power RX polling\n\nSeparate 64-byte RX and TX data FIFOs\n(enables burst mode data transmission)\nGeneral\n\nFew external components: Complete on-\nchip frequency synthesizer, no external\nfilters or RF switch needed\n\nGreen package: RoHS compliant and no\nantimony or bromine\n\nSmall size (QLP 4x4 mm package, 20\npins)\n\nSuited for systems compliant with EN 300\n328 and EN 300 440 class 2 (Europe),\nFCC CFR47 Part 15 (US), and ARIB STD-\nT66 (Japan)\n\nSupport\nfor\nasynchronous\nand\nsynchronous serial receive/transmit mode\nfor backwards compatibility with existing\nradio communication protocols",
+    "toc_page_no": 4,
+    "toc_text": "CC2500\nSWRS040C\nPage 4 of 89\nTable of Contents\nAPPLICATIONS...........................................................................................................................................1\nPRODUCT DESCRIPTION.........................................................................................................................1\nKEY FEATURES ..........................................................................................................................................1\nRF PERFORMANCE ...........................................................................................................................................1\nANALOG FEATURES..........................................................................................................................................1\nDIGITAL FEATURES ..........................................................................................................................................1\nLOW-POWER FEATURES...................................................................................................................................2\nGENERAL...............................................................................",
+    "last_page_text": "IMPORTANT NOTICE AND DISCLAIMER\nTI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE \nDESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS” \nAND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY \nIMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD \nPARTY INTELLECTUAL PROPERTY RIGHTS.\nThese resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate \nTI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable \nstandards, and any other safety, security, regulatory or other requirements.\nThese resources are subject to change without notic",
+    "ds_markers_in_first_6_pages": {
+      "Absolute Maximum Ratings": 2
+    },
+    "evm_markers_in_first_6_pages": {
+      "PCB Layout": 2
+    },
+    "ds_markers_whole_doc": {
+      "Absolute Maximum Ratings": 2,
+      "Pin Configuration": 5
+    },
+    "evm_markers_whole_doc": {
+      "Evaluation Module": 1,
+      "Bill of Materials": 1,
+      "Schematic": 2,
+      "PCB Layout": 7,
+      "Header": 18
+    },
+    "text_layer_chars": 203258
+  }
+]

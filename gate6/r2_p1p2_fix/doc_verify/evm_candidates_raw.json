@@ -1,0 +1,169 @@
+[
+  {
+    "file": "ADC08060EVM__slau715a.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\ADC08060EVM__slau715a.pdf",
+    "sha256": "09fabc2407fc5834f77c40b6f8a2b5bfb012caa983ac2724c950f9224a4c02ca",
+    "bytes": 1260819,
+    "pages": 20,
+    "metadata": {
+      "title": "ADC08xx0 Evaluation Module User's Guide (Rev. A)",
+      "subject": "User's Guide",
+      "author": "Texas Instruments, Incorporated [SLAU715,A\n]",
+      "creator": "TopLeaf 8.0.020",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20170710151543-05'00'",
+      "modDate": "D:20170710151543-05'00'",
+      "format": "PDF 1.4"
+    },
+    "page1_text": "1\nSLAU715A–February 2017–Revised July 2017\nSubmit Documentation Feedback\nCopyright © 2017, Texas Instruments Incorporated\nADC08xx0 Evaluation Module\nUser's Guide\nSLAU715A–February 2017–Revised July 2017\nADC08xx0 Evaluation Module\nThis user's guide describes the function and use of the ADC08xx0 evaluation module (EVM). Included in\nthis document are a quick-start guide, instructions for optimizing evaluation results, jumper and connector\ndescriptions, software description, and alternate hardware configurations.\nContents\n1\nOverview......................................................................................................................\n3\n1.1\nRequired Hardware................................................................................................. 3\n1.2\nRequired Software..................................................................................................\n3\n1.3\nEvaluation Board Feature Identification Summary ............................................................. 4\n1.4\nReferences ..........................................................................................................\n4\n2\nQuick-Start Guide............................................................................................................\n5\n2.1\nSoftware Installation................................................................................................\n5\n2.2\nHard",
+    "page2_text": "www.ti.com\n2\nSLAU715A–February 2017–Revised July 2017\nSubmit Documentation Feedback\nCopyright © 2017, Texas Instruments Incorporated\nADC08xx0 Evaluation Module\nTrademarks\nMicrosoft, Windows are registered trademarks of Microsoft Corporation.\nAll other trademarks are the property of their respective owners.",
+    "toc_page_no": null,
+    "toc_text": "",
+    "last_page_text": "IMPORTANT NOTICE FOR TI DESIGN INFORMATION AND RESOURCES\nTexas Instruments Incorporated (‘TI”) technical, application or other design advice, services or information, including, but not limited to,\nreference designs and materials relating to evaluation modules, (collectively, “TI Resources”) are intended to assist designers who are\ndeveloping applications that incorporate TI products; by downloading, accessing or using any particular TI Resource in any way, you\n(individually or, if you are acting on behalf of a company, your company) agree to use it solely for this purpose and subject to the terms of\nthis Notice.\nTI’s provision of TI Resources does not expand or otherwise alter TI’s applicable published warranties or warranty disclaimers for TI\nproducts, and no additional obligations or liabilities arise from TI providing such TI Resources. TI reserves the right to make corrections,\nenha",
+    "ds_markers_in_first_6_pages": {},
+    "evm_markers_in_first_6_pages": {
+      "Evaluation Module": 9,
+      "Evaluation Board": 2,
+      "User's Guide": 3,
+      "Schematic": 1,
+      "Jumper": 3,
+      "Hardware Setup": 3
+    },
+    "ds_markers_whole_doc": {},
+    "evm_markers_whole_doc": {
+      "Evaluation Module": 19,
+      "Evaluation Board": 3,
+      "User's Guide": 4,
+      "Schematic": 1,
+      "Jumper": 16,
+      "Header": 1,
+      "Quick Start": 3,
+      "Hardware Setup": 3
+    },
+    "text_layer_chars": 50848
+  },
+  {
+    "file": "BQ25570EVM-206__sluuaa7a.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\BQ25570EVM-206__sluuaa7a.pdf",
+    "sha256": "60aac1d0cad5e571feac7949f882b25a8eaaad814b190cbec333e7c0b5bb8d2e",
+    "bytes": 1139868,
+    "pages": 24,
+    "metadata": {
+      "title": "User's Guide for bq25570 Battery Charger Evaluation Module for Energy Harvesting (Rev. A)",
+      "subject": "EVM User's guide",
+      "author": "Texas Instruments, Incorporated [SLUUAA7,A\n]",
+      "creator": "TopLeaf 7.6.061",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20260206133017-06'00'",
+      "modDate": "D:20260206133017-06'00'",
+      "format": "PDF 1.6"
+    },
+    "page1_text": "User's Guide\nSLUUAA7A–July 2013–Revised August 2014\nUser's Guide for bq25570 Battery Charger Evaluation\nModule for Energy Harvesting\nThis user’s guide describes the bq25570 evaluation module (EVM), how to perform a stand-alone\nevaluation and how to allow the EVM to interface with the system and host. The boost charger output is\nconfigured to deliver up to 4.2-V maximum voltage to its output, VSTOR, using external resistors. This\nvoltage will be applied to the storage element as long as the storage element voltage at VBAT is above\nthe internally programmed undervoltage of 2.0 V. The integrated buck converter provides up to 1.8 V and\n100 mA at VOUT. The VBAT_OK indicator toggles high when VSTOR ramps up to 3.0 V and toggles low\nwhen VSTOR ramps down to 2.8 V.\nContents\n1\nIntroduction ...................................................................................................................\n2\n1.1\nEVM Features.......................................................................................................\n2\n1.2\nGeneral Description ................................................................................................ 2\n1.3\nDesign and Evaluation Considerations .......................................................................... 3\n1.4\nEVM Schematic.....................................................................................................\n4\n1.5\nEV",
+    "page2_text": "Introduction\nwww.ti.com\n1\nIntroduction\n1.1\nEVM Features\n•\nEvaluation module for bq25570\n•\nUltra-low power boost charger and buck converter with battery management for energy harvester\napplications\n•\nResistor-programmable settings for over voltage providing flexible battery management\n•\nProgrammable push-pull output indicator for battery status (VBAT_OK)\n•\nTest points for key signals available for testing purpose – easy probe hook-up.\n•\nJumpers available – easy to change settings\n1.2\nGeneral Description\nThe bq25570 is an integrated energy harvesting Nano-Power management solution that is well suited for\nmeeting the special needs of ultra-low power applications. The product is specifically designed to\nefficiently acquire and manage the microwatts (µW) to miliwatts (mW) of power generated from a variety of\nhigh output impedance (HiZ) DC sources like photovoltaic (solar) or thermal electric generators; or with an\nAC/DC rectifier, a piezoelectric generator. The bq25570 implements a highly efficient, pulse-frequency\nmodulated (PFM) boost converter/charger targeted toward products and systems, such as wireless sensor\nnetworks (WSN) which have stringent power and operational demands. Assuming a depleted storage\nelement has been attached, the bq25570 DC-DC boost converter/charger that requires only microwatts of\npower to begin operating in cold start mode. Once the boost converter outpu",
+    "toc_page_no": null,
+    "toc_text": "",
+    "last_page_text": "IMPORTANT NOTICE AND DISCLAIMER\nTI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE \nDESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS” \nAND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY \nIMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD \nPARTY INTELLECTUAL PROPERTY RIGHTS.\nThese resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate \nTI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable \nstandards, and any other safety, security, regulatory or other requirements.\nThese resources are subject to change without notic",
+    "ds_markers_in_first_6_pages": {},
+    "evm_markers_in_first_6_pages": {
+      "Evaluation Module": 8,
+      "User's Guide": 9,
+      "Bill of Materials": 3,
+      "Schematic": 5,
+      "PCB Layout": 1,
+      "Jumper": 2,
+      "Header": 2
+    },
+    "ds_markers_whole_doc": {
+      "Recommended Operating Conditions": 1
+    },
+    "evm_markers_whole_doc": {
+      "Evaluation Module": 23,
+      "Evaluation Board": 2,
+      "User's Guide": 25,
+      "Bill of Materials": 11,
+      "Schematic": 6,
+      "PCB Layout": 4,
+      "Jumper": 2,
+      "Header": 5
+    },
+    "text_layer_chars": 58616
+  },
+  {
+    "file": "DLPDLCR230NPEVM__dlpu103a.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DLPDLCR230NPEVM__dlpu103a.pdf",
+    "sha256": "8fdeb5f64f9fe8dbcb751a851912276a2112818ffcb9f0d622ab02415af8a93f",
+    "bytes": 916658,
+    "pages": 22,
+    "metadata": {
+      "title": "DLP® LightCrafter™ Display 230NP EVM User's Guide (Rev. B)",
+      "subject": "EVM User's guide",
+      "author": "Texas Instruments, Incorporated [DLPU103,B\n]",
+      "creator": "AH XSL Formatter V7.2 MR7 for Windows (x64) : 7.2.8.57525 (2022-08-18T17:06+09)",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20230510151507-05'00'",
+      "modDate": "D:20230510151507-05'00'",
+      "format": "PDF 1.6"
+    },
+    "page1_text": "User's Guide\nDLP® LightCrafter™ Display 230NP EVM\nABSTRACT\nThis user’s guide presents an overview of the DLP® LightCrafter™ Display 230NP evaluation module (EVM) and \na general description of the main features and functions. It explains the first steps to get started, and shows a \ndetailed description of onboard LEDs, connectors, and overall EVM assembly.\nThe EVM can be used by itself to display a DLP LightCrafter Display test image or in combination with a low-end \nprocessor including the Raspberry PI 4B.\nThis guide provides the user with further information on how to successfully connect the EVM to the Raspberry \nPI 4B and get the Raspberry PI content projected on the wall.\nTable of Contents\n1 DLP® LightCrafter™ Display 230NP EVM Overview.............................................................................................................2\n2 Safety Instructions..................................................................................................................................................................3\n3 Applicable Documents...........................................................................................................................................................3\n4 What is in the DLP® LightCrafter™ Display 230NP EVM?................................................................................................... 4\n5 Light Engine.....",
+    "page2_text": "Trademarks\nLightCrafter™ and TI E2E™ are trademarks of Texas Instruments.\nDLP® is a registered trademark of Texas Instruments.\nMicrosoft® and Windows® are registered trademarks of Microsoft Corporation.\nAll trademarks are the property of their respective owners.\n1 DLP® LightCrafter™ Display 230NP EVM Overview\nFigure 1-1. DLP® LightCrafter™ Display 230NP EVM\nIn addition to this document, use the documents shown in Section 3.\nTrademarks\nwww.ti.com\n2\nDLP® LightCrafter™ Display 230NP EVM\nDLPU103B – OCTOBER 2020 – REVISED MAY 2023\nSubmit Document Feedback\nCopyright © 2023 Texas Instruments Incorporated",
+    "toc_page_no": 1,
+    "toc_text": "User's Guide\nDLP® LightCrafter™ Display 230NP EVM\nABSTRACT\nThis user’s guide presents an overview of the DLP® LightCrafter™ Display 230NP evaluation module (EVM) and \na general description of the main features and functions. It explains the first steps to get started, and shows a \ndetailed description of onboard LEDs, connectors, and overall EVM assembly.\nThe EVM can be used by itself to display a DLP LightCrafter Display test image or in combination with a low-end \nprocessor including the Raspberry PI 4B.\nThis guide provides the user with further information on how to successfully connect the EVM to the Raspberry \nPI 4B and get the Raspberry PI content projected on the wall.\nTable of Contents\n1 DLP® LightCrafter™ Display 230NP EVM Overview.............................................................................................................2\n2 Safety Instructions..................................................................................................................................................................3\n3 Applicable Documents....................................................................................................................................",
+    "last_page_text": "IMPORTANT NOTICE AND DISCLAIMER\nTI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATA SHEETS), DESIGN RESOURCES (INCLUDING REFERENCE \nDESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS” \nAND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY \nIMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD \nPARTY INTELLECTUAL PROPERTY RIGHTS.\nThese resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate \nTI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable \nstandards, and any other safety, security, regulatory or other requirements.\nThese resources are subject to change without noti",
+    "ds_markers_in_first_6_pages": {},
+    "evm_markers_in_first_6_pages": {
+      "Evaluation Module": 1,
+      "User's Guide": 1
+    },
+    "ds_markers_whole_doc": {},
+    "evm_markers_whole_doc": {
+      "Evaluation Module": 1,
+      "User's Guide": 1,
+      "Header": 1,
+      "Hardware Setup": 1
+    },
+    "text_layer_chars": 44986
+  },
+  {
+    "file": "ADS1299EEGFE-PDK__slau443b.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\ADS1299EEGFE-PDK__slau443b.pdf",
+    "sha256": "6fd26141fe2d0f740c82a4de860d9c14e893a3297ce8c9860b55a044f4a666fa",
+    "bytes": 3119485,
+    "pages": 64,
+    "metadata": {
+      "title": "ADS1299EEG-FE EEG Front-End Performance Demonstration Kit (Rev. B)",
+      "subject": "User's Guide",
+      "author": "Texas Instruments, Incorporated [SLAU443,B\n]",
+      "creator": "TopLeaf 8.0.011",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20160121084557-06'00'",
+      "modDate": "D:20160121084557-06'00'",
+      "format": "PDF 1.4"
+    },
+    "page1_text": "1\nSLAU443B–May 2012–Revised January 2016\nSubmit Documentation Feedback\nCopyright © 2012–2016, Texas Instruments Incorporated\nEEG Front-End Performance Demonstration Kit\nIntel, Pentium, Celeron are registered trademarks of Intel Corporation.\nSPI is a trademark of Motorola.\nUser's Guide\nSLAU443B–May 2012–Revised January 2016\nEEG Front-End Performance Demonstration Kit\nThis user's guide describes the characteristics, operation, and use of the ADS1299EEG-FE. This EVM is\nan evaluation module for the ADS1299, an eight-channel, 24-bit, low-power; integrated analog front-end\n(AFE) designed for electroencephalography (EEG) applications. The ADS1299ECG-FE is intended for\nprototyping and evaluation. This user's guide includes a complete circuit description, schematic diagram,\nand bill of materials.\nThe following related documents are available through the Texas Instruments web site at www.ti.com.\nDevice\nLiterature Number\nADS1299\nSBAS499\nContents\n1\nADS1299EEG-FE Overview................................................................................................\n4\n1.1\nImportant Disclaimer Information ................................................................................. 4\n1.2\nInformation About Cautions and Warnings...................................................................... 4\n2\nOverview.................................................................................",
+    "page2_text": "www.ti.com\n2\nSLAU443B–May 2012–Revised January 2016\nSubmit Documentation Feedback\nCopyright © 2012–2016, Texas Instruments Incorporated\nEEG Front-End Performance Demonstration Kit\n7.2\nLead-Off Detection ................................................................................................\n36\n7.3\nExternal Calibration/Test Signals ............................................................................... 40\n8\nTest Options on the EVM ................................................................................................. 43\n8.1\nOn-Chip (ADS1299) Input Short ................................................................................ 43\n8.2\nExternal Input Short with 5K Resistor .......................................................................... 44\n8.3\nNoise with Common Reference on Negative Inputs ......................................................... 46\n8.4\nNoise with Buffered Common Reference Input ............................................................... 48\n8.5\nInternally Generated Test Signal and Other Multiplexer Inputs............................................. 49\n8.6\nArbitrary Input Signal ............................................................................................. 49\n9\nBill of Materials, Layouts and Schematics .............................................................................. 50\n9.1\nADS1299EEG-FE Fro",
+    "toc_page_no": null,
+    "toc_text": "",
+    "last_page_text": "IMPORTANT NOTICE\nTexas Instruments Incorporated and its subsidiaries (TI) reserve the right to make corrections, enhancements, improvements and other\nchanges to its semiconductor products and services per JESD46, latest issue, and to discontinue any product or service per JESD48, latest\nissue. Buyers should obtain the latest relevant information before placing orders and should verify that such information is current and\ncomplete. All semiconductor products (also referred to herein as “components”) are sold subject to TI’s terms and conditions of sale\nsupplied at the time of order acknowledgment.\nTI warrants performance of its components to the specifications applicable at the time of sale, in accordance with the warranty in TI’s terms\nand conditions of sale of semiconductor products. Testing and other quality control techniques are used to the extent TI deems necessary\nto support this w",
+    "ds_markers_in_first_6_pages": {},
+    "evm_markers_in_first_6_pages": {
+      "Evaluation Module": 2,
+      "Evaluation Board": 1,
+      "User's Guide": 3,
+      "Bill of Materials": 4,
+      "Schematic": 5,
+      "Jumper": 9
+    },
+    "ds_markers_whole_doc": {},
+    "evm_markers_whole_doc": {
+      "Evaluation Module": 3,
+      "Evaluation Board": 3,
+      "User's Guide": 3,
+      "Bill of Materials": 20,
+      "Schematic": 22,
+      "PCB Layout": 1,
+      "Jumper": 44,
+      "Header": 7
+    },
+    "text_layer_chars": 113824
+  }
+]

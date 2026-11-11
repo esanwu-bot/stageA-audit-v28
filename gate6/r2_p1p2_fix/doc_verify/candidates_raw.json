@@ -1,0 +1,131 @@
+[
+  {
+    "file": "CC2500EMK__cc2500.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CC2500EMK__cc2500.pdf",
+    "sha256": "27364e9593879ec0c098944c46b90e7243a44e5b34e77b6d9ec3a3610ea25ae4",
+    "bytes": 2509323,
+    "pages": 99,
+    "metadata": {
+      "title": "Low-Cost Low-Power 2.4 GHz RF Transceiver datasheet (Rev. C)",
+      "subject": "Data Sheet",
+      "author": "Texas Instruments, Incorporated [SWRS040,C\n]",
+      "creator": "SPDF",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20260811004229-05'00'",
+      "modDate": "D:20260811004229-05'00'",
+      "format": "PDF 1.6"
+    },
+    "page1_text": "CC2500\nSWRS040C\nPage 1 of 89\nCC2500\nLow-Cost Low-Power 2.4 GHz RF Transceiver\nApplications\n\n2400-2483.5 MHz ISM/SRD band systems\n\nConsumer electronics\n\nWireless game controllers\n\nWireless audio\n\nWireless keyboard and mouse\n\nRF enabled remote controls\nProduct Description\nThe CC2500 is a low-cost 2.4 GHz transceiver\ndesigned for very low-power wireless appli-\ncations. The circuit is intended for the 2400-\n2483.5 MHz ISM (Industrial, Scientific and\nMedical)\nand\nSRD\n(Short\nRange\nDevice)\nfrequency band.\nThe RF transceiver is integrated with a highly\nconfigurable baseband modem. The modem\nsupports various modulation formats and has\na configurable data rate up to 500 kBaud.\nCC2500 provides extensive hardware support\nfor\npacket\nhandling,\ndata\nbuffering,\nburst\ntransmissions, clear channel assessment, link\nquality indication, and wake-on-radio.\nThe main operating parameters and the 64-\nbyte transmit/receive FIFOs of CC2500 can be\ncontrolled via an SPI interface. In a typical\nsystem, the CC2500 will be used together with\na microcontroller and a few additional passive\ncomponents.\n6\n7\n8\n9\n10\n20\n19\n18\n17\n16\nKey Features\nRF Performance\n\nHigh sensitivity (–104 dBm at 2.4 kBaud,\n1% packet error rate)\n\nLow current consumption (13.3 mA in RX,\n250 kBaud, input well above sensitivity\nlimit)\n\nProgrammable output power up to +1 dBm\n\nExcellent receiver selectivity and blocking\nperformance\n\n",
+    "page2_text": "CC2500\nSWRS040C\nPage 2 of 89\n\nProgrammable Preamble Quality Indicator\n(PQI) for improved protection against false\nsync word detection in random noise\n\nSupport\nfor\nautomatic\nClear\nChannel\nAssessment (CCA) before transmitting (for\nlisten-before-talk systems)\n\nSupport\nfor\nper-package\nLink\nQuality\nIndication (LQI)\n\nOptional\nautomatic\nwhitening\nand\nde-\nwhitening of data\nLow-Power Features\n\n400 nA SLEEP mode current consumption\n\nFast startup time: 240 us from SLEEP to\nRX or TX mode (measured on EM design)\n\nWake-on-radio functionality for automatic\nlow-power RX polling\n\nSeparate 64-byte RX and TX data FIFOs\n(enables burst mode data transmission)\nGeneral\n\nFew external components: Complete on-\nchip frequency synthesizer, no external\nfilters or RF switch needed\n\nGreen package: RoHS compliant and no\nantimony or bromine\n\nSmall size (QLP 4x4 mm package, 20\npins)\n\nSuited for systems compliant with EN 300\n328 and EN 300 440 class 2 (Europe),\nFCC CFR47 Part 15 (US), and ARIB STD-\nT66 (Japan)\n\nSupport\nfor\nasynchronous\nand\nsynchronous serial receive/transmit mode\nfor backwards compatibility with existing\nradio communication protocols",
+    "toc_page_no": 4,
+    "toc_text": "CC2500\nSWRS040C\nPage 4 of 89\nTable of Contents\nAPPLICATIONS...........................................................................................................................................1\nPRODUCT DESCRIPTION.........................................................................................................................1\nKEY FEATURES ..........................................................................................................................................1\nRF PERFORMANCE ...........................................................................................................................................1\nANALOG FEATURES..........................................................................................................................................1\nDIGITAL FEATURES ..........................................................................................................................................1\nLOW-POWER FEATURES...................................................................................................................................2\nGENERAL...............................................................................",
+    "last_page_text": "IMPORTANT NOTICE AND DISCLAIMER\nTI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE \nDESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS” \nAND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY \nIMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD \nPARTY INTELLECTUAL PROPERTY RIGHTS.\nThese resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate \nTI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable \nstandards, and any other safety, security, regulatory or other requirements.\nThese resources are subject to change without notic",
+    "ds_markers_in_first_6_pages": {
+      "Absolute Maximum Ratings": 2
+    },
+    "evm_markers_in_first_6_pages": {
+      "PCB Layout": 2
+    },
+    "ds_markers_whole_doc": {
+      "Absolute Maximum Ratings": 2,
+      "Pin Configuration": 5
+    },
+    "evm_markers_whole_doc": {
+      "Evaluation Module": 1,
+      "Bill of Materials": 1,
+      "Schematic": 2,
+      "PCB Layout": 7,
+      "Header": 18
+    },
+    "text_layer_chars": 203258
+  },
+  {
+    "file": "DRV8262VEVM__drv8262.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DRV8262VEVM__drv8262.pdf",
+    "sha256": "f07b6126ffab94c7b13a46ce0b758c85e6fa58068bf407480f7a0b954ddc32a7",
+    "bytes": 2922322,
+    "pages": 65,
+    "metadata": {
+      "title": "DRV8262 : 60V, Single or Dual H-Bridge Motor Driver with Current Sense Output datasheet (Rev. C)",
+      "subject": "Data Sheet",
+      "author": "Texas Instruments, Incorporated [SLVSFV5,C\n]",
+      "creator": "Antenna House XSL Formatter V7.4 R1 Windows : 7.4.1.63121 (2023-12-20T11:05+09)",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20251108003936-06'00'",
+      "modDate": "D:20251108003936-06'00'",
+      "format": "PDF 1.6"
+    },
+    "page1_text": "DRV8262: 60V, Single or Dual H-Bridge Motor Driver with Current Sense Output\n1 Features\n•\n–\nSingle or dual H-bridge motor driver\n–\nDrives One or two brushed-DC motors\n–\nOne stepper motor\n–\nOne or two thermoelectric coolers (TEC)\n•\n4.5V to 60V operating supply voltage range\n•\nLow RDS(ON):\n–\n100mΩ HS + LS (Dual H-Bridge)\n–\n50mΩ HS + LS (Single H-Bridge)\n•\nHigh output current capability:\n–\nDual H-Bridge (24V, 25 °C):\n•\n8A peak with DDW package\n•\n16A peak with DDV package\n–\nSingle H-Bridge (24V, 25 °C):\n•\n16A peak with DDW package\n•\n32A peak with DDV package\n•\nProgrammable interface of operation -\n–\nPhase/Enable (PH/EN)\n–\nPWM (IN/IN)\n•\nIntegrated current sense and regulation\n–\nCurrent sensing for high-side MOSFETs\n–\nSense output (IPROPI) for each H-bridge\n–\n± 4 % sense accuracy at maximum current\n•\nSeparate logic supply voltage (VCC)\n•\nConfigurable off-Time PWM chopping\n–\n7, 16, 24 or 32μs\n•\nProgrammable fault recovery method\n•\nSupports 1.8V, 3.3V, 5.0V logic inputs\n•\nLow-current sleep mode (3µA)\n•\nProtection features\n–\nVM undervoltage lockout (UVLO)\n–\nCharge pump undervoltage (CPUV)\n–\nOvercurrent protection (OCP)\n–\nThermal shutdown (OTSD)\n–\nFault condition output (nFAULT)\n2 Applications\n•\nBrushed DC Motors\n•\nFactory Automation, Stepper Drives and Robotics\n•\nMedical Imaging, Diagnostics and Equipment\n•\nATMs, currency counters, and EPOS\n•\nTEC Drivers\n3 Description\nThe DRV8262 is a w",
+    "page2_text": "Table of Contents\n1 Features............................................................................1\n2 Applications.....................................................................1\n3 Description.......................................................................1\n4 Pin Configuration and Functions...................................3\n5 Specifications.................................................................. 7\n5.1 Absolute Maximum Ratings........................................ 7\n5.2 ESD Ratings............................................................... 7\n5.3 Recommended Operating Conditions.........................8\n5.4 Thermal Information....................................................8\n5.5 Electrical Characteristics.............................................9\n5.6 Typical Characteristics..............................................12\n6 Detailed Description......................................................15\n6.1 Overview...................................................................15\n6.2 Functional Block Diagram.........................................16\n6.3 Feature Description...................................................18\n6.4 Device Operational Modes........................................19\n6.5 Current Sensing and Regulation...............................21\n6.6 Charge Pump...........................................................",
+    "toc_page_no": 2,
+    "toc_text": "Table of Contents\n1 Features............................................................................1\n2 Applications.....................................................................1\n3 Description.......................................................................1\n4 Pin Configuration and Functions...................................3\n5 Specifications.................................................................. 7\n5.1 Absolute Maximum Ratings........................................ 7\n5.2 ESD Ratings............................................................... 7\n5.3 Recommended Operating Conditions.........................8\n5.4 Thermal Information....................................................8\n5.5 Electrical Characteristics.............................................9\n5.6 Typical Characteristics..............................................12\n6 Detailed Description......................................................15\n6.1 Overview...................................................................15\n6.2 Functional Block Diagram.........................................16\n6.3 Feature Description...................................................18\n6.4 Device Op",
+    "last_page_text": "IMPORTANT NOTICE AND DISCLAIMER\nTI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE \nDESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS” \nAND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY \nIMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD \nPARTY INTELLECTUAL PROPERTY RIGHTS.\nThese resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate \nTI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable \nstandards, and any other safety, security, regulatory or other requirements.\nThese resources are subject to change without notic",
+    "ds_markers_in_first_6_pages": {
+      "Absolute Maximum Ratings": 1,
+      "Electrical Characteristics": 1,
+      "Recommended Operating Conditions": 1,
+      "Pin Configuration": 4,
+      "Thermal Information": 1,
+      "Device Information": 1
+    },
+    "evm_markers_in_first_6_pages": {
+      "Schematic": 1
+    },
+    "ds_markers_whole_doc": {
+      "Absolute Maximum Ratings": 5,
+      "Electrical Characteristics": 4,
+      "Recommended Operating Conditions": 4,
+      "Pin Configuration": 4,
+      "Thermal Information": 2,
+      "Device Information": 1
+    },
+    "evm_markers_whole_doc": {
+      "Schematic": 5
+    },
+    "text_layer_chars": 101661
+  },
+  {
+    "file": "CC31XXEMUBOOST__cc3100.pdf",
+    "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CC31XXEMUBOOST__cc3100.pdf",
+    "sha256": "afff32c3799552e86868e75557d7cb6aec65c221430b45542631e44c785f6911",
+    "bytes": 2161992,
+    "pages": 45,
+    "metadata": {
+      "title": "CC3100 SimpleLink Wi-Fi Network Processor, Internet-of-Things Solution for MCU Applications datasheet (Rev. D)",
+      "subject": "Data Sheet",
+      "author": "Texas Instruments, Incorporated [SWAS031,D\n]",
+      "creator": "TopLeaf 8.0.001",
+      "producer": "iText 2.1.7 by 1T3XT",
+      "creationDate": "D:20260905012228-05'00'",
+      "modDate": "D:20260905012228-05'00'",
+      "format": "PDF 1.6"
+    },
+    "page1_text": "Product\nFolder\nSample &\nBuy\nTechnical\nDocuments\nTools &\nSoftware\nSupport &\nCommunity\nCC3100\nSWAS031D –JUNE 2013–REVISED FEBRUARY 2015\nCC3100 SimpleLink™Wi-Fi® Network Processor,\nInternet-of-Things Solution for MCU Applications\n1\nDevice Overview\n1.1\nFeatures\n1\n– RX Sensitivity\n•\nCC3100 SimpleLink Wi-Fi Consists of Wi-Fi\nNetwork Processor and Power-Management\n•\n–95.7 dBm @ 1 DSSS\nSubsystems\n•\n–74.0 dBm @ 54 OFDM\n•\nWi-Fi CERTIFIED™Chip\n– Application Throughput\n•\nWi-Fi Network Processor Subsystem\n•\nUDP: 16 Mbps\n– Featuring Wi-Fi Internet-On-a-Chip™\n•\nTCP: 13 Mbps\n– Dedicated ARM MCU\n•\nHost Interface\nCompletely Offloads Wi-Fi and Internet\n– Interfaces with 8-, 16-, and 32-Bit MCU or\nProtocols from the External Microcontroller\nASICs Over SPI or UART Interface\n– Wi-Fi Driver and Multiple Internet Protocols in\n– Low External Host Driver Footprint: Less Than\nROM\n7KB of Code Memory and 700 B of RAM\n– 802.11 b/g/n Radio, Baseband, and Medium\nMemory Required for TCP Client Application\nAccess Control (MAC), Wi-Fi Driver, and\n•\nPower-Management Subsystem\nSupplicant\n– Integrated DC-DC Supports a Wide Range of\n– TCP/IP Stack\nSupply Voltage:\n•\nIndustry-Standard BSD Socket Application\n•\nVBAT Wide-Voltage Mode: 2.1 to 3.6 V\nProgramming Interfaces (APIs)\n•\nPreregulated 1.85-V Mode\n•\n8 Simultaneous TCP or UDP Sockets\n– Advanced Low-Power Modes\n•\n2 Simultaneous TLS and SSL Sockets\n•\nHibernate with R",
+    "page2_text": "CC3100\nSWAS031D –JUNE 2013–REVISED FEBRUARY 2015\nwww.ti.com\n1.2\nApplications\n•\nFor Internet-of-Things applications, such as:\n–\nCloud Connectivity\n–\nInternet Gateway\n–\nHome Automation\n–\nIndustrial Control\n–\nHome Appliances\n–\nSmart Plug and Metering\n–\nAccess Control\n–\nWireless Audio\n–\nSecurity Systems\n–\nIP Network Sensor Nodes\n–\nSmart Energy\n1.3\nDescription\nConnect any low-cost, low-power microcontroller (MCU) to the Internet of Things (IoT). The CC3100\ndevice is the industry's first Wi-Fi CERTIFIED chip used in the wireless networking solution. The CC3100\ndevice is part of the new SimpleLink Wi-Fi family that dramatically simplifies the implementation of Internet\nconnectivity. The CC3100 device integrates all protocols for Wi-Fi and Internet, which greatly minimizes\nhost MCU software requirements. With built-in security protocols, the CC3100 solution provides a robust\nand simple security experience. Additionally, the CC3100 device is a complete platform solution including\nvarious tools and software, sample applications, user and programming guides, reference designs and the\nTI E2E™support community. The CC3100 device is available in an easy-to-layout QFN package.\nThe Wi-Fi network processor subsystem features a Wi-Fi Internet-on-a-Chip and contains an additional\ndedicated ARM MCU that completely offloads the host MCU. This subsystem includes an 802.11 b/g/n\nradio, baseband, and ",
+    "toc_page_no": 4,
+    "toc_text": "CC3100\nSWAS031D –JUNE 2013–REVISED FEBRUARY 2015\nwww.ti.com\nTable of Contents\n1\nDevice Overview ......................................... 1\n4.12\nExternal Interfaces .................................. 22\n1.1\nFeatures ..............................................\n1\n4.13\nHost UART ..........................................\n23\n1.2\nApplications...........................................\n2\n5\nDetailed Description ................................... 26\n1.3\nDescription............................................\n2\n5.1\nOverview ............................................\n26\n1.4\nFunctional Block Diagram ............................ 3\n5.2\nFunctional Block Diagram........................... 27\n2\nRevision History ......................................... 4\n5.3\nWi-Fi Network Processor Subsystem............... 27\n3\nTerminal Configuration and Functions.............. 5\n5.4\nPower-Management Subsystem .................... 28\n3.1\nPin Attributes .........................................\n5\n5.5\nLow-Power Operating Modes ....................... 29\n4\nSpecifications ............................................ 8\n5.6\nMemory..............................................\n29\n4.1\nAbsolute Maximum Ratings ......",
+    "last_page_text": "IMPORTANT NOTICE AND DISCLAIMER\nTI PROVIDES TECHNICAL AND RELIABILITY DATA (INCLUDING DATASHEETS), DESIGN RESOURCES (INCLUDING REFERENCE \nDESIGNS), APPLICATION OR OTHER DESIGN ADVICE, WEB TOOLS, SAFETY INFORMATION, AND OTHER RESOURCES “AS IS” \nAND WITH ALL FAULTS, AND DISCLAIMS ALL WARRANTIES, EXPRESS AND IMPLIED, INCLUDING WITHOUT LIMITATION ANY \nIMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR NON-INFRINGEMENT OF THIRD \nPARTY INTELLECTUAL PROPERTY RIGHTS.\nThese resources are intended for skilled developers designing with TI products. You are solely responsible for (1) selecting the appropriate \nTI products for your application, (2) designing, validating and testing your application, and (3) ensuring your application meets applicable \nstandards, and any other safety, security, regulatory or other requirements.\nThese resources are subject to change without notic",
+    "ds_markers_in_first_6_pages": {
+      "Absolute Maximum Ratings": 1,
+      "Electrical Characteristics": 2,
+      "Recommended Operating Conditions": 2,
+      "Switching Characteristics": 1,
+      "Device Information": 2
+    },
+    "evm_markers_in_first_6_pages": {},
+    "ds_markers_whole_doc": {
+      "Absolute Maximum Ratings": 2,
+      "Electrical Characteristics": 3,
+      "Recommended Operating Conditions": 3,
+      "Switching Characteristics": 2,
+      "Device Information": 2
+    },
+    "evm_markers_whole_doc": {
+      "Evaluation Board": 1,
+      "Bill of Materials": 4,
+      "Schematic": 4,
+      "Header": 1
+    },
+    "text_layer_chars": 77090
+  }
+]

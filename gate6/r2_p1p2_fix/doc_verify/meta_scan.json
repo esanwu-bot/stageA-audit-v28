@@ -1,0 +1,4363 @@
+[
+ {
+  "file": "1208-ADCDJ5200EVM__slau863.pdf",
+  "pages": 22,
+  "bytes": 3660585,
+  "title": "ADCxxDJxx00RF-TRF1208 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC08060EVM__slau715a.pdf",
+  "pages": 20,
+  "bytes": 1260819,
+  "title": "ADC08xx0 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC08100EVM__slau715a.pdf",
+  "pages": 20,
+  "bytes": 1260819,
+  "title": "ADC08xx0 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC08200EVM__slau715a.pdf",
+  "pages": 20,
+  "bytes": 1260819,
+  "title": "ADC08xx0 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC08DJ3200EVM__slau701a.pdf",
+  "pages": 28,
+  "bytes": 879081,
+  "title": "ADCxxDJxx00 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC08DJ5200RFEVM__slau640a.pdf",
+  "pages": 33,
+  "bytes": 2648226,
+  "title": "ADCxxDJxx00RF Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC12DJ2700EVM__slau701a.pdf",
+  "pages": 28,
+  "bytes": 879081,
+  "title": "ADCxxDJxx00 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC12DJ3200EVMCVAL__sbau311.pdf",
+  "pages": 23,
+  "bytes": 1439562,
+  "title": "ADC12DJ3200EVMCVAL Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC12DJ3200EVM__slau701a.pdf",
+  "pages": 28,
+  "bytes": 879081,
+  "title": "ADCxxDJxx00 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC12DJ5200RFEVM__slau640a.pdf",
+  "pages": 33,
+  "bytes": 2648226,
+  "title": "ADCxxDJxx00RF Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC12DL2500EVM__slau776a.pdf",
+  "pages": 22,
+  "bytes": 1724853,
+  "title": "ADC12DLXX00 Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC12DL3200EVM__slau776.pdf",
+  "pages": 22,
+  "bytes": 1724853,
+  "title": "ADC12DLXX00 Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC12J1600EVM__slau560.pdf",
+  "pages": 27,
+  "bytes": 13735844,
+  "title": "ADC12J2700EVM and ADC12J1600EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC12QJ1600EVM__slau808.pdf",
+  "pages": 30,
+  "bytes": 2190430,
+  "title": "ADCxxQJ1x00 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3120EVM-PDK__sbau359a.pdf",
+  "pages": 31,
+  "bytes": 2765788,
+  "title": "ADCx120EVM-PDK, PCMD3140EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3120Q1EVM-PDK__sbau398.pdf",
+  "pages": 35,
+  "bytes": 2638911,
+  "title": "ADCx120EVM-PDK, PCMD3140EVM-PDK Evaluation Module User’s Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC3221EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3222EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3223EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3241EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3242EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3243EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3244EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J22EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J23EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J24EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J25EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J42EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J44EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32J45EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32RF55EVM__sbau377.pdf",
+  "pages": 17,
+  "bytes": 1610899,
+  "title": "ADC32RF5xEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC32RF80EVM__slau620e.pdf",
+  "pages": 39,
+  "bytes": 11109712,
+  "title": "ADC32RFxxEVM User's Guide (Rev. E)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3421EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3423EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3424EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3441EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3442EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3443EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J22EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J23EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J24EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J25EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J42EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J43EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC34J45EVM__slau579d.pdf",
+  "pages": 36,
+  "bytes": 3488129,
+  "title": "ADC3xxxEVM and ADC3xJxxEVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3642EVM__sbau232.pdf",
+  "pages": 33,
+  "bytes": 2875774,
+  "title": "ADC3660 and ADC364x Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC3644EVM__sbau232.pdf",
+  "pages": 33,
+  "bytes": 2875774,
+  "title": "ADC3660 and ADC364x Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC3663EVM__sbau366.pdf",
+  "pages": 37,
+  "bytes": 2934341,
+  "title": "ADC36xx Evaluation Module (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC3664EVM__sbau361.pdf",
+  "pages": 23,
+  "bytes": 2473728,
+  "title": "ADC3664EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3669EVM__sbau441.pdf",
+  "pages": 16,
+  "bytes": 3646563,
+  "title": "ADC3669 Evaluation Module (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC3683EVMCVAL__sbau446.pdf",
+  "pages": 17,
+  "bytes": 1364488,
+  "title": "ADC36xxEVMCVAL Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC3683EVM__sbau360.pdf",
+  "pages": 29,
+  "bytes": 2670159,
+  "title": "ADC368xEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC3910D125EVM__sbau442.pdf",
+  "pages": 17,
+  "bytes": 3611749,
+  "title": "ADC3910D125 Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC5120EVM-PDK__sbau359a.pdf",
+  "pages": 31,
+  "bytes": 2765788,
+  "title": "ADCx120EVM-PDK, PCMD3140EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC5120Q1EVM-PDK__sbau398.pdf",
+  "pages": 35,
+  "bytes": 2638911,
+  "title": "ADCx120EVM-PDK, PCMD3140EVM-PDK Evaluation Module User’s Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC5140EVM-PDK__sbau335.pdf",
+  "pages": 30,
+  "bytes": 4087551,
+  "title": "ADCx140EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC6120EVM-PDK__sbau359a.pdf",
+  "pages": 31,
+  "bytes": 2765788,
+  "title": "ADCx120EVM-PDK, PCMD3140EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADC6120Q1EVM-PDK__sbau398.pdf",
+  "pages": 35,
+  "bytes": 2638911,
+  "title": "ADCx120EVM-PDK, PCMD3140EVM-PDK Evaluation Module User’s Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADC6140EVM-PDK__sbau335.pdf",
+  "pages": 30,
+  "bytes": 4087551,
+  "title": "ADCx140EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1015V2EVM-PDK__sbau362.pdf",
+  "pages": 36,
+  "bytes": 9733491,
+  "title": "ADS1x15V2EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1115V2EVM-PDK__sbau362.pdf",
+  "pages": 36,
+  "bytes": 9733491,
+  "title": "ADS1x15V2EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS112C04EVM__sbau297.pdf",
+  "pages": 52,
+  "bytes": 4834196,
+  "title": "ADS1x2C04 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1131REF__sbau175a.pdf",
+  "pages": 31,
+  "bytes": 632459,
+  "title": "ADS1x31REF User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1148V2EVM-PDK__sbau378a.pdf",
+  "pages": 43,
+  "bytes": 2389483,
+  "title": "ADS1x48EVM-PDK User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS114S08EVM__sbau272.pdf",
+  "pages": 50,
+  "bytes": 23428859,
+  "title": "ADS1x4S08 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1158EVM-PDK__sbau126e.pdf",
+  "pages": 32,
+  "bytes": 2472206,
+  "title": "ADS1258EVM-PDK Evaluation Module (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS1192ECG-FE__slau384a.pdf",
+  "pages": 58,
+  "bytes": 4313760,
+  "title": "ADS1x9xECG-FE User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1209EVM__sbau167.pdf",
+  "pages": 9,
+  "bytes": 108865,
+  "title": "ADS1209EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1220EVM__sbau203.pdf",
+  "pages": 23,
+  "bytes": 851964,
+  "title": "ADS1x20EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS122C04EVM__sbau297.pdf",
+  "pages": 52,
+  "bytes": 4834196,
+  "title": "ADS1x2C04 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS122U04EVM__sbau288.pdf",
+  "pages": 50,
+  "bytes": 12387023,
+  "title": "ADS1x2U04 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1231REF__sbau175a.pdf",
+  "pages": 31,
+  "bytes": 632459,
+  "title": "ADS1x31REF User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1232REF__sbau120b.pdf",
+  "pages": 30,
+  "bytes": 677520,
+  "title": "ADS1232REF User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1235EVM__sbau293a.pdf",
+  "pages": 37,
+  "bytes": 1549413,
+  "title": "ADS1261 and ADS1235 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1248V2EVM-PDK__sbau378.pdf",
+  "pages": 43,
+  "bytes": 2389483,
+  "title": "ADS1x48EVM-PDK User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS124S08EVM__sbau272.pdf",
+  "pages": 50,
+  "bytes": 23428859,
+  "title": "ADS1x4S08 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1256EVM-PDK__sbau090e.pdf",
+  "pages": 42,
+  "bytes": 3229775,
+  "title": "ADS1256EVM and ADS1256EVM-PDK (Rev. E)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1258EVM-PDK__sbau126e.pdf",
+  "pages": 32,
+  "bytes": 2472206,
+  "title": "ADS1258EVM-PDK Evaluation Module (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS1258EVM__sbau126e.pdf",
+  "pages": 32,
+  "bytes": 2472206,
+  "title": "ADS1258EVM-PDK Evaluation Module (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS125H02EVM__sbau318a.pdf",
+  "pages": 35,
+  "bytes": 4339988,
+  "title": "ADS125H02 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1263EVM-PDK__sbau206a.pdf",
+  "pages": 38,
+  "bytes": 2171221,
+  "title": "ADS1263EVM-PDK Evaluation Module (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS1263V2EVM-PDK__sbau206b.pdf",
+  "pages": 38,
+  "bytes": 2171221,
+  "title": "ADS1263EVM-PDK Evaluation Module (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS1271EVM-PDK__sbau107c.pdf",
+  "pages": 23,
+  "bytes": 1603795,
+  "title": "ADS1271EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1271EVM__sbau107c.pdf",
+  "pages": 23,
+  "bytes": 1603795,
+  "title": "ADS1271EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1278V2EVM-PDK__sbau436a.pdf",
+  "pages": 41,
+  "bytes": 3578087,
+  "title": "ADS1278EVM-PDK Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS127L01EVM__sbau261b.pdf",
+  "pages": 45,
+  "bytes": 2528477,
+  "title": "ADS127L01 Evaluation Module User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS127L18EVM-PDK__sbau435.pdf",
+  "pages": 48,
+  "bytes": 5085396,
+  "title": "ADS127L18EVM-PDK Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS127L21EVM-PDK__sbau411.pdf",
+  "pages": 37,
+  "bytes": 4708677,
+  "title": "ADS127L21EVM-PDK Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS1285EVM-PDK__sbau394a.pdf",
+  "pages": 37,
+  "bytes": 3552348,
+  "title": "ADS1285EVM-PDK User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1292ECG-FE__slau384a.pdf",
+  "pages": 58,
+  "bytes": 4313760,
+  "title": "ADS1x9xECG-FE User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1292RECG-FE__slau384a.pdf",
+  "pages": 58,
+  "bytes": 4313760,
+  "title": "ADS1x9xECG-FE User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1298RECGFE-PDK__sbau181b.pdf",
+  "pages": 71,
+  "bytes": 7038443,
+  "title": "ADS1298RECG-FE ECG Front-End Performance Demonstration Kit (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1299EEGFE-PDK__slau443b.pdf",
+  "pages": 64,
+  "bytes": 3119485,
+  "title": "ADS1299EEG-FE EEG Front-End Performance Demonstration Kit (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS131B04-Q1EVM__sbau352.pdf",
+  "pages": 28,
+  "bytes": 1905688,
+  "title": "ADS131B04-Q1EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS131M04EVM__sbau332a.pdf",
+  "pages": 34,
+  "bytes": 2137370,
+  "title": "ADS131M04 Evaluation Module (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS131M08EVM__sbau334a.pdf",
+  "pages": 32,
+  "bytes": 2331805,
+  "title": "ADS131M08 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS1672EVM__sbau147.pdf",
+  "pages": 39,
+  "bytes": 2376057,
+  "title": "ADS1672EVM, ADS1672EVM-PDK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4222EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4225EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4226EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4229EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4245EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4246EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS4249EVM__slau333a.pdf",
+  "pages": 15,
+  "bytes": 498226,
+  "title": "ADS42xx EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS42B49EVM__slau477a.pdf",
+  "pages": 17,
+  "bytes": 36230127,
+  "title": "ADS42B4x - User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS42JB49EVM__slau467d.pdf",
+  "pages": 23,
+  "bytes": 1373794,
+  "title": "ADS42JB46, ADS42JB49, and ADS42JB69 Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS42JB69EVM__slau467d.pdf",
+  "pages": 23,
+  "bytes": 1373794,
+  "title": "ADS42JB46, ADS42JB49, and ADS42JB69 Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS42LB49EVM__slau465a.pdf",
+  "pages": 14,
+  "bytes": 1113373,
+  "title": "ADS42LBx9EVM User’s Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS42LB69EVM__slau465a.pdf",
+  "pages": 14,
+  "bytes": 1113373,
+  "title": "ADS42LBx9EVM User’s Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS4449EVM__slau485a.pdf",
+  "pages": 17,
+  "bytes": 773573,
+  "title": "ADS4449 User Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5232EVM__sbau111b.pdf",
+  "pages": 26,
+  "bytes": 843326,
+  "title": "ADS5231/32EVM User's Guide (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5281EVM__slau205.pdf",
+  "pages": 29,
+  "bytes": 2388483,
+  "title": "ADS528x User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5287EVM__slau205.pdf",
+  "pages": 29,
+  "bytes": 2388483,
+  "title": "ADS528x User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5295EVM__slau442.pdf",
+  "pages": 68,
+  "bytes": 9780934,
+  "title": "ADS5295, 8-Channel ADC Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS52J90EVM__slau632.pdf",
+  "pages": 47,
+  "bytes": 8460006,
+  "title": "ADS52J90 EVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5400EVM-CVAL__slau471.pdf",
+  "pages": 36,
+  "bytes": 3757952,
+  "title": "ADS5400EVM-CVAL User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5400EVM__slau293.pdf",
+  "pages": 33,
+  "bytes": 2793464,
+  "title": "ADS5400EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5402EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5403EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5404EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5407EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5409EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5440EVM__slau194a.pdf",
+  "pages": 24,
+  "bytes": 1453916,
+  "title": "ADS5463 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5463EVM-CVAL__slau457a.pdf",
+  "pages": 24,
+  "bytes": 1763375,
+  "title": "ADS5444/63/74-SP EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5463EVM__slau194a.pdf",
+  "pages": 24,
+  "bytes": 1453916,
+  "title": "ADS5463 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5474ADX-EVM__slau247.pdf",
+  "pages": 28,
+  "bytes": 4725703,
+  "title": "ADS5474 Interleave Reference Design",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5474EVM-CVAL__slau457a.pdf",
+  "pages": 24,
+  "bytes": 1763375,
+  "title": "ADS5444/63/74-SP EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5474EVM__slau194a.pdf",
+  "pages": 24,
+  "bytes": 1453916,
+  "title": "ADS5463 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5481EVM__slau207.pdf",
+  "pages": 33,
+  "bytes": 3168498,
+  "title": "ADS5483 User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5483EVM__slau207.pdf",
+  "pages": 33,
+  "bytes": 3168498,
+  "title": "ADS5483 User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5484EVM__slau207.pdf",
+  "pages": 33,
+  "bytes": 3168498,
+  "title": "ADS5483 User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS5485EVM__slau207.pdf",
+  "pages": 33,
+  "bytes": 3168498,
+  "title": "ADS5483 User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS54J54EVM__slau616a.pdf",
+  "pages": 22,
+  "bytes": 3652435,
+  "title": "ADS54J54 EVM Users Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS54J64EVM__sbau290.pdf",
+  "pages": 24,
+  "bytes": 2794244,
+  "title": "ADS54J64 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS54RF63EVM__slau194a.pdf",
+  "pages": 24,
+  "bytes": 1453916,
+  "title": "ADS5463 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS54RF63_ADX4__slau296.pdf",
+  "pages": 39,
+  "bytes": 4036159,
+  "title": "ADS54RF63-ADX4 EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS54T01EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS54T02EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS54T04EVM__slau450.pdf",
+  "pages": 21,
+  "bytes": 915756,
+  "title": "ADS540x and ADS54T0x Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS5562EVM__slau260.pdf",
+  "pages": 20,
+  "bytes": 1961916,
+  "title": "ADS556x EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS58C28EVM__slau329.pdf",
+  "pages": 17,
+  "bytes": 1355663,
+  "title": "ADS58C28 EVM User’s Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS58H43EVM__slau455.pdf",
+  "pages": 21,
+  "bytes": 589679,
+  "title": "ADS58H4x EVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS58J63EVM__slau641d.pdf",
+  "pages": 22,
+  "bytes": 2511945,
+  "title": "ADS54J/58J6x Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS58J64EVM__sbau284.pdf",
+  "pages": 19,
+  "bytes": 5029804,
+  "title": "ADS58J64 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS58J89EVM__slau604a.pdf",
+  "pages": 25,
+  "bytes": 6478031,
+  "title": "ADS58J89 EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS62P43EVM__slau237a.pdf",
+  "pages": 26,
+  "bytes": 616861,
+  "title": "ADS62PXX EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS62P49EVM__slau237a.pdf",
+  "pages": 26,
+  "bytes": 616861,
+  "title": "ADS62PXX EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7038Q1EVM-PDK__sbau279.pdf",
+  "pages": 25,
+  "bytes": 3979629,
+  "title": "ADS7038Q1EVM-PDK Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7066EVM-PDK__sbau342a.pdf",
+  "pages": 29,
+  "bytes": 10093958,
+  "title": "ADS7066EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7853EVM-PDK__sbau210a.pdf",
+  "pages": 40,
+  "bytes": 11934945,
+  "title": "ADS8353EVM-PDK and ADS7853EVM-PDK (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7863EVM__slau094a.pdf",
+  "pages": 9,
+  "bytes": 1124584,
+  "title": "ADS7861/7863/8361EVM Users Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7883EVM__slau166b.pdf",
+  "pages": 20,
+  "bytes": 574011,
+  "title": "ADS788xEVM Users Guide (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7884EVM__slau166b.pdf",
+  "pages": 20,
+  "bytes": 574011,
+  "title": "ADS788xEVM Users Guide (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7885EVM__slau166b.pdf",
+  "pages": 20,
+  "bytes": 574011,
+  "title": "ADS788xEVM Users Guide (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7886EVM__slau166b.pdf",
+  "pages": 20,
+  "bytes": 574011,
+  "title": "ADS788xEVM Users Guide (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7887EVM__slau166b.pdf",
+  "pages": 20,
+  "bytes": 574011,
+  "title": "ADS788xEVM Users Guide (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7924EVM-PDK__sbau173.pdf",
+  "pages": 32,
+  "bytes": 1855469,
+  "title": "ADS7924EVM/ADS7924EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7924EVM__sbau173.pdf",
+  "pages": 32,
+  "bytes": 1855469,
+  "title": "ADS7924EVM/ADS7924EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7945EVM-PDK__sbau194b.pdf",
+  "pages": 30,
+  "bytes": 1921997,
+  "title": "ADS794xEVM and ADS794xEVM-PDK User Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS7946EVM-PDK__sbau194b.pdf",
+  "pages": 30,
+  "bytes": 1921997,
+  "title": "ADS794xEVM and ADS794xEVM-PDK User Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8028EVM-PDK__sbau198a.pdf",
+  "pages": 21,
+  "bytes": 1776410,
+  "title": "ADS8028EVM-PDK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8168EVM-PDK__sbau291.pdf",
+  "pages": 33,
+  "bytes": 5927495,
+  "title": "ADS8168EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8317EVM-PDK__sbau140.pdf",
+  "pages": 28,
+  "bytes": 2280594,
+  "title": "MSOP-8EVM and MSOP-8EVM-PDK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8322EVM__slau086a.pdf",
+  "pages": 18,
+  "bytes": 555142,
+  "title": "ADS8322EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8326EVM-PDK__sbau140.pdf",
+  "pages": 28,
+  "bytes": 2280594,
+  "title": "MSOP-8EVM and MSOP-8EVM-PDK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8332EVMV2-PDK__sbau251a.pdf",
+  "pages": 35,
+  "bytes": 2092015,
+  "title": "ADS8332EVMV2-PDK Evaluation Module (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS8339EVM-PDK__sbau233a.pdf",
+  "pages": 24,
+  "bytes": 1813748,
+  "title": "ADS8339EVM-PDK User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8342EVM__slau120.pdf",
+  "pages": 22,
+  "bytes": 184776,
+  "title": "ADS8342EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8344EVM__sbau080.pdf",
+  "pages": 14,
+  "bytes": 65067,
+  "title": "ADS8344EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8345EVM__sbau082.pdf",
+  "pages": 16,
+  "bytes": 63242,
+  "title": "ADS8345EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8350EVM-PDK__sbau218.pdf",
+  "pages": 36,
+  "bytes": 9942004,
+  "title": "ADS8350EVM-PDK (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8364M-EVM__slau189.pdf",
+  "pages": 14,
+  "bytes": 282283,
+  "title": "ADS8364/65M EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8365M-EVM__slau189.pdf",
+  "pages": 14,
+  "bytes": 282283,
+  "title": "ADS8364/65M EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8381EVM__slau133a.pdf",
+  "pages": 30,
+  "bytes": 315242,
+  "title": "ADS8381EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8402EVM__slau126a.pdf",
+  "pages": 19,
+  "bytes": 672405,
+  "title": "ADS8402/ADS8406/ADS8412 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8412EVM__slau126a.pdf",
+  "pages": 19,
+  "bytes": 672405,
+  "title": "ADS8402/ADS8406/ADS8412 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8484EVM__slau186a.pdf",
+  "pages": 24,
+  "bytes": 696183,
+  "title": "ADS848xEVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8555EVM-PDK__slau298a.pdf",
+  "pages": 27,
+  "bytes": 2895072,
+  "title": "ADS8555EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8556EVM__slau298.pdf",
+  "pages": 27,
+  "bytes": 2895072,
+  "title": "ADS8555EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8557EVM__slau298.pdf",
+  "pages": 27,
+  "bytes": 2895072,
+  "title": "ADS8555EVM-PDK Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8588SEVM-PDK__sbau278b.pdf",
+  "pages": 31,
+  "bytes": 3638803,
+  "title": "ADS8588SEVM-PDK User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8638EVM-PDK__sbau192a.pdf",
+  "pages": 28,
+  "bytes": 2294109,
+  "title": "ADS8638EVM-PDK User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8681EVM-PDK__sbau252.pdf",
+  "pages": 28,
+  "bytes": 2661913,
+  "title": "ADS8681EVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8686SEVM-PDK__sbau319.pdf",
+  "pages": 35,
+  "bytes": 10690229,
+  "title": "ADS8686SEVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8688EVM-PDK__sbau230c.pdf",
+  "pages": 24,
+  "bytes": 2010434,
+  "title": "ADS8688EVM-PDK Evaluation Module (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8860V2EVM-PDK__sbau213a.pdf",
+  "pages": 22,
+  "bytes": 2028890,
+  "title": "ADS8860EVM-PDK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8881EVMV2-PDK__sbau281a.pdf",
+  "pages": 29,
+  "bytes": 3230777,
+  "title": "ADS8881EVMV2-PDK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS8920BEVM-PDK__sbau270.pdf",
+  "pages": 39,
+  "bytes": 3996779,
+  "title": "ADS8920BEVM-PDK User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ADS9219EVM__sbau440.pdf",
+  "pages": 31,
+  "bytes": 3026476,
+  "title": "ADS9219 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS9224REVM-PDK__sbau315a.pdf",
+  "pages": 34,
+  "bytes": 3160531,
+  "title": "ADS9224REVM-PDK User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ADS9817EVM__sbau416a.pdf",
+  "pages": 40,
+  "bytes": 4722288,
+  "title": "ADS9813EVM and ADS9817EVM User's Guide (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AFE3010EVM__slyu038.pdf",
+  "pages": 23,
+  "bytes": 911625,
+  "title": "AFE3010 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE4300EVM-PDK__sbau201a.pdf",
+  "pages": 46,
+  "bytes": 1828516,
+  "title": "AFE4300 User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE4400SPO2EVM__slau480c.pdf",
+  "pages": 64,
+  "bytes": 5916594,
+  "title": "AFE44x0SPO2EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE4403EVM__slau572b.pdf",
+  "pages": 73,
+  "bytes": 8685756,
+  "title": "AFE4403EVM Users Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE4404EVM__slau621a.pdf",
+  "pages": 78,
+  "bytes": 27408115,
+  "title": "AFE4404 Development Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE4490SPO2EVM__slau480c.pdf",
+  "pages": 64,
+  "bytes": 5916594,
+  "title": "AFE44x0SPO2EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE5801EVM__slou257b.pdf",
+  "pages": 58,
+  "bytes": 10633903,
+  "title": "AFE5801 8-Channel Varable Gain Ampl w/Octal High-Speed ADC (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE5803EVM__slou332b.pdf",
+  "pages": 52,
+  "bytes": 15586568,
+  "title": "AFE5803EVM User Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE5809EVM__slou338a.pdf",
+  "pages": 63,
+  "bytes": 21240295,
+  "title": "AFE5809EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE5851EVM__slou258c.pdf",
+  "pages": 64,
+  "bytes": 10171641,
+  "title": "AFE5851 16-Channel Variable Gain Ampl w/Octal High-Speed ADC (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE7071EVM__slou337a.pdf",
+  "pages": 16,
+  "bytes": 904561,
+  "title": "AFE707xEVM - User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AFE881H1EVM__slau858.pdf",
+  "pages": 25,
+  "bytes": 2388212,
+  "title": "AFE881H1 Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AIC3262-STICKEVM__slau448.pdf",
+  "pages": 20,
+  "bytes": 864248,
+  "title": "TLV320AIC3262 Stick EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ALM2402Q1EVM__slvuaf1.pdf",
+  "pages": 5,
+  "bytes": 99828,
+  "title": "ALM2402Q1EVM Dual High-Current Amplifier Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1035EVM__sbau320.pdf",
+  "pages": 8,
+  "bytes": 171499,
+  "title": "AMC1035EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1203EVM__sbau170.pdf",
+  "pages": 9,
+  "bytes": 166473,
+  "title": "AMC1203EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1210MB-EVM__sbau188a.pdf",
+  "pages": 23,
+  "bytes": 1543029,
+  "title": "AMC1210MB-EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1304L05EVM__sbau236.pdf",
+  "pages": 11,
+  "bytes": 4022595,
+  "title": "AMC1304EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1304L25EVM__sbau236.pdf",
+  "pages": 11,
+  "bytes": 4022595,
+  "title": "AMC1304EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1304M25EVM__sbau236.pdf",
+  "pages": 11,
+  "bytes": 4022595,
+  "title": "AMC1304EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1305L25EVM__sbau237.pdf",
+  "pages": 15,
+  "bytes": 4101591,
+  "title": "AMC1305xxEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1305M25EVM__sbau237.pdf",
+  "pages": 15,
+  "bytes": 4101591,
+  "title": "AMC1305xxEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC1306EVM__sbau271b.pdf",
+  "pages": 11,
+  "bytes": 7282690,
+  "title": "AMC1303, AMC1306, and AMC1336 Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC131M03EVM-PDK__sbau402.pdf",
+  "pages": 33,
+  "bytes": 3253362,
+  "title": "AMC131M03EVM AMC131M03 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC1333M10EVM__sbau399.pdf",
+  "pages": 10,
+  "bytes": 864301,
+  "title": "AMC1333M10 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC1336EVM__sbau271b.pdf",
+  "pages": 11,
+  "bytes": 7282690,
+  "title": "AMC1303, AMC1306, and AMC1336 Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC23C11EVM__sbau375.pdf",
+  "pages": 10,
+  "bytes": 809224,
+  "title": "AMC23CxxEVM Isolated Comparator Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC23C12EVM__sbau375.pdf",
+  "pages": 10,
+  "bytes": 809224,
+  "title": "AMC23CxxEVM Isolated Comparator Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC23C14EVM__sbau375.pdf",
+  "pages": 10,
+  "bytes": 809224,
+  "title": "AMC23CxxEVM Isolated Comparator Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "AMC3306EVM__sbau336a.pdf",
+  "pages": 9,
+  "bytes": 771718,
+  "title": "AMC3306 and AMC3336 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC3336EVM__sbau336a.pdf",
+  "pages": 9,
+  "bytes": 771718,
+  "title": "AMC3306 and AMC3336 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC7812EVM-PDK__sbau177e.pdf",
+  "pages": 33,
+  "bytes": 4156753,
+  "title": "AMC7812EVM-PDK User’s Guide (Rev. E)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC7823EVM__slau171.pdf",
+  "pages": 18,
+  "bytes": 819829,
+  "title": "AMC7823 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC7832EVM__slau544a.pdf",
+  "pages": 32,
+  "bytes": 4830261,
+  "title": "AMC7832EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC7834EVM__slau608b.pdf",
+  "pages": 32,
+  "bytes": 3286402,
+  "title": "AMC7834EVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AMC7836EVM__slau609a.pdf",
+  "pages": 30,
+  "bytes": 3508937,
+  "title": "AMC7836EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ATL431EVM-001__slvuae7.pdf",
+  "pages": 12,
+  "bytes": 455445,
+  "title": "ATL431 EVM Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "AWR1843BOOST__spruim4.pdf",
+  "pages": 26,
+  "bytes": 6987345,
+  "title": "AWR1843BOOST and IWR1843BOOST Single-Chip mmWave Sensing Solution User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BOOST-DRV8711__slvu967.pdf",
+  "pages": 15,
+  "bytes": 3491160,
+  "title": "BOOST-DRV8711 User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BOOST-PSEMTHR-007__slvub84b.pdf",
+  "pages": 40,
+  "bytes": 2529817,
+  "title": "TPS23880EVM: PoE, PSE, TPS23880 Evaluation Module (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BOOST-PSEMTHR8-097__slvubq3.pdf",
+  "pages": 34,
+  "bytes": 5463779,
+  "title": "TPS23882EVM: PoE, PSE, TPS23882 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BOOST5545ULP__sprui92.pdf",
+  "pages": 47,
+  "bytes": 694422,
+  "title": "C5545 BoosterPack Software",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BOOSTXL-C2KLED__spruhh9.pdf",
+  "pages": 19,
+  "bytes": 1182951,
+  "title": "C2000 LED BoosterPack User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BOOSTXL-EDUMKII__slau599b.pdf",
+  "pages": 20,
+  "bytes": 1736591,
+  "title": "BOOSTXL-EDUMKII Educational BoosterPack Plug-in Module Mark II User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BOOSTXL-K350QVG-S1__slau601b.pdf",
+  "pages": 10,
+  "bytes": 574102,
+  "title": "BOOSTXL-K350QVG-S1 QVGA Display BoosterPack™ Plug-in Module User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BP-DAC61402EVM__slau825.pdf",
+  "pages": 30,
+  "bytes": 5187403,
+  "title": "DAC81404 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BP-DAC81404EVM__slau825.pdf",
+  "pages": 30,
+  "bytes": 5187403,
+  "title": "DAC81404 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ24130EVM__slvu495.pdf",
+  "pages": 19,
+  "bytes": 922499,
+  "title": "600kHz Synchronous Switch-Mode Li-Ion/Li-Polymer Host-Controlled Batt Chgr (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BQ24230EVM__slvu274e.pdf",
+  "pages": 21,
+  "bytes": 660568,
+  "title": "bq24072/3/4/5/9(T) and bq24230/2 1.5-A Single-Chip Li-Ion (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BQ24232EVM__slvu274e.pdf",
+  "pages": 21,
+  "bytes": 660568,
+  "title": "bq24072/3/4/5/9(T) and bq24230/2 1.5-A Single-Chip Li-Ion (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BQ24392EVM__slvua61.pdf",
+  "pages": 21,
+  "bytes": 1298124,
+  "title": "BQ24392EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ25898EVM-730__slvuap4.pdf",
+  "pages": 22,
+  "bytes": 1038138,
+  "title": "bq25898, bq25898D, and bq25898C PWR730 Evaluation Modules",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BQ2980EVM-883__slvub38.pdf",
+  "pages": 16,
+  "bytes": 1589075,
+  "title": "BQ2980EVM-883 Evaluation Module for BQ2980 High-Side Driver",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ50002EVM-607__slvuaj7.pdf",
+  "pages": 25,
+  "bytes": 902183,
+  "title": "BQ50002 Wireless Power TX EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ500211EVM-045__slvu536a.pdf",
+  "pages": 19,
+  "bytes": 562592,
+  "title": "bq500211EVM-045 bqTESLA Wireless Power TX EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ500410AEVM-085__slvu688a.pdf",
+  "pages": 23,
+  "bytes": 851453,
+  "title": "bq500410A bqTESLA Wireless Power Transmitter EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ76920EVM__slvu924d.pdf",
+  "pages": 46,
+  "bytes": 2351552,
+  "title": "bq76920 Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ76922EVM__slvu957a.pdf",
+  "pages": 33,
+  "bytes": 3887626,
+  "title": "BQ76922EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "BQ76930EVM__slvu925c.pdf",
+  "pages": 66,
+  "bytes": 6286054,
+  "title": "bq76930 and bq76940 Evaluation Module (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BQ77905EVM-707__slvuan2.pdf",
+  "pages": 20,
+  "bytes": 1229370,
+  "title": "bq77905 3-5S Low-Power Protector Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BQ79606EVM-897__slou471e.pdf",
+  "pages": 40,
+  "bytes": 3049919,
+  "title": "BQ79606A-Q1 Evaluation Module (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "BUF802RGTEVM__sbau383.pdf",
+  "pages": 8,
+  "bytes": 830382,
+  "title": "BUF802RGTEVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "C185EVK01_NOPB__snlu103.pdf",
+  "pages": 15,
+  "bytes": 214842,
+  "title": "",
+  "subject": ""
+ },
+ {
+  "file": "CDCE72010EVM__slau250.pdf",
+  "pages": 20,
+  "bytes": 4429331,
+  "title": "CDCE72010 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC1220EVM__sbau102.pdf",
+  "pages": 27,
+  "bytes": 235528,
+  "title": "DAC1220EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC12DL3200EVM__sbau374a.pdf",
+  "pages": 32,
+  "bytes": 1998610,
+  "title": "DAC12DL3200 Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC161S997EVM__snlu146a.pdf",
+  "pages": 20,
+  "bytes": 2121370,
+  "title": "DAC161S997EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC2932EVM__slau159.pdf",
+  "pages": 14,
+  "bytes": 565219,
+  "title": "DAC2932 12-Bit Dual Channel DAC EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC3154EVM__slau466a.pdf",
+  "pages": 16,
+  "bytes": 1053978,
+  "title": "DAC31x4EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC3164EVM__slau466a.pdf",
+  "pages": 16,
+  "bytes": 1053978,
+  "title": "DAC31x4EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC3174EVM__slau466a.pdf",
+  "pages": 16,
+  "bytes": 1053978,
+  "title": "DAC31x4EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC3282EVM__slau304c.pdf",
+  "pages": 13,
+  "bytes": 666907,
+  "title": "DAC3282 EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC3482EVM__slau432a.pdf",
+  "pages": 25,
+  "bytes": 1068493,
+  "title": "DAC348x EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC3484EVM__slau432a.pdf",
+  "pages": 25,
+  "bytes": 1068493,
+  "title": "DAC348x EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC34H84EVM__slau432a.pdf",
+  "pages": 25,
+  "bytes": 1068493,
+  "title": "DAC348x EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC37J82EVM__slau547b.pdf",
+  "pages": 20,
+  "bytes": 1084481,
+  "title": "DAC3XJ8XEVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC37J84EVM__slau547b.pdf",
+  "pages": 20,
+  "bytes": 1084481,
+  "title": "DAC3XJ8XEVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC38J82EVM__slau547b.pdf",
+  "pages": 20,
+  "bytes": 1084481,
+  "title": "DAC3XJ8XEVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC38J84EVM__slau547b.pdf",
+  "pages": 20,
+  "bytes": 1084481,
+  "title": "DAC3XJ8XEVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC38RF80EVM__slau671a.pdf",
+  "pages": 24,
+  "bytes": 5208229,
+  "title": "DAC38RF8xEVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC38RF82EVM__slau671a.pdf",
+  "pages": 24,
+  "bytes": 5208229,
+  "title": "DAC38RF8xEVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC38RF86EVM__slau671a.pdf",
+  "pages": 24,
+  "bytes": 5208229,
+  "title": "DAC38RF8xEVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC38RF87EVM__slau671a.pdf",
+  "pages": 24,
+  "bytes": 5208229,
+  "title": "DAC38RF8xEVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC39J82EVM__slau547b.pdf",
+  "pages": 20,
+  "bytes": 1084481,
+  "title": "DAC3XJ8XEVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC39J84EVM__slau547b.pdf",
+  "pages": 20,
+  "bytes": 1084481,
+  "title": "DAC3XJ8XEVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC39RF10EVM__sbau395.pdf",
+  "pages": 32,
+  "bytes": 5723145,
+  "title": "DAC39RF10EVM User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC53608EVM__slau790a.pdf",
+  "pages": 31,
+  "bytes": 6257011,
+  "title": "DAC53608 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC53701EVM__slau841.pdf",
+  "pages": 24,
+  "bytes": 1047766,
+  "title": "DAC53701EVM User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC5574EVM__slau117a.pdf",
+  "pages": 39,
+  "bytes": 537559,
+  "title": "DAC7571/4, DA6571/4, DAC5571/4, DAC8571 EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC5652AEVM__slau773.pdf",
+  "pages": 12,
+  "bytes": 519234,
+  "title": "DAC5652AEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC5652EVM__slau139b.pdf",
+  "pages": 25,
+  "bytes": 1555662,
+  "title": "DAC5672/62/52 14- and 12-Bit Dual Channel DAC EVM (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC5662EVM__slau139b.pdf",
+  "pages": 25,
+  "bytes": 1555662,
+  "title": "DAC5672/62/52 14- and 12-Bit Dual Channel DAC EVM (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC5672EVM__slau139b.pdf",
+  "pages": 25,
+  "bytes": 1555662,
+  "title": "DAC5672/62/52 14- and 12-Bit Dual Channel DAC EVM (Rev. B",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC60096EVM__slau644.pdf",
+  "pages": 28,
+  "bytes": 1020752,
+  "title": "DAC60096EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC63204EVM__slau866.pdf",
+  "pages": 21,
+  "bytes": 1056322,
+  "title": "DAC63204EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC6571EVM__slau117a.pdf",
+  "pages": 39,
+  "bytes": 537559,
+  "title": "DAC7571/4, DA6571/4, DAC5571/4, DAC8571 EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC6574EVM__slau117a.pdf",
+  "pages": 39,
+  "bytes": 537559,
+  "title": "DAC7571/4, DA6571/4, DAC5571/4, DAC8571 EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC70508EVM__slau734a.pdf",
+  "pages": 21,
+  "bytes": 904545,
+  "title": "DACx0508 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7311EVM__slau299a.pdf",
+  "pages": 15,
+  "bytes": 1087864,
+  "title": "SC70 DAC EVM Users Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7558EVM__slau162a.pdf",
+  "pages": 14,
+  "bytes": 854110,
+  "title": "DAC7558 Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC7568EVM__slau301.pdf",
+  "pages": 10,
+  "bytes": 266384,
+  "title": "DACxx68EVM Users Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7571EVM__slau117a.pdf",
+  "pages": 39,
+  "bytes": 537559,
+  "title": "DAC7571/4, DA6571/4, DAC5571/4, DAC8571 EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7574EVM__slau117a.pdf",
+  "pages": 39,
+  "bytes": 537559,
+  "title": "DAC7571/4, DA6571/4, DAC5571/4, DAC8571 EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7678EVM__sbau168c.pdf",
+  "pages": 14,
+  "bytes": 2773167,
+  "title": "DAC7678EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7716EVM__sbau159.pdf",
+  "pages": 12,
+  "bytes": 1161182,
+  "title": "DAC7716EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7741EVM__slau093a.pdf",
+  "pages": 22,
+  "bytes": 843538,
+  "title": "DAC7741 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7750EVM__sbau205a.pdf",
+  "pages": 29,
+  "bytes": 850397,
+  "title": "DAC7760EVM and DAC8760EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7760EMC-EVM__sbau229.pdf",
+  "pages": 22,
+  "bytes": 5803401,
+  "title": "DACx760EMC-EVM and DACx750EMC-EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC7760EVM__sbau205a.pdf",
+  "pages": 29,
+  "bytes": 850397,
+  "title": "DAC7760EVM and DAC8760EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC80004EVM__slau689.pdf",
+  "pages": 11,
+  "bytes": 582961,
+  "title": "DAC80004EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC80501EVM__slau795.pdf",
+  "pages": 19,
+  "bytes": 1580412,
+  "title": "DAC80501EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC80502-01EVM__slau919.pdf",
+  "pages": 28,
+  "bytes": 1695484,
+  "title": "DAC80502-01 Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC80504EVM__slau735b.pdf",
+  "pages": 22,
+  "bytes": 817793,
+  "title": "DACx0504 Evaluation Module User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC80508-04EVM__slau920.pdf",
+  "pages": 28,
+  "bytes": 1600137,
+  "title": "DAC80508-04 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC80508EVM__slau734a.pdf",
+  "pages": 21,
+  "bytes": 904545,
+  "title": "DACx0508 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC81404EVM__slau825.pdf",
+  "pages": 30,
+  "bytes": 5187403,
+  "title": "DAC81404 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC81408EVM__slau778a.pdf",
+  "pages": 26,
+  "bytes": 3127932,
+  "title": "DAC81408 EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8164EVM__slau256.pdf",
+  "pages": 19,
+  "bytes": 795680,
+  "title": "DAC8164, DAC8165",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8165EVM__slau256.pdf",
+  "pages": 19,
+  "bytes": 795680,
+  "title": "DAC8164, DAC8165",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8168EVM__slau301.pdf",
+  "pages": 10,
+  "bytes": 266384,
+  "title": "DACxx68EVM Users Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC82002EVM__sbau401.pdf",
+  "pages": 24,
+  "bytes": 1640783,
+  "title": "DAC82002EVM User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8218EVM__sbau166a.pdf",
+  "pages": 19,
+  "bytes": 1778124,
+  "title": "DAC8218EVM User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8311EVM__slau299a.pdf",
+  "pages": 15,
+  "bytes": 1087864,
+  "title": "SC70 DAC EVM Users Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8411EVM-PDK__slau299a.pdf",
+  "pages": 15,
+  "bytes": 1087864,
+  "title": "SC70 DAC EVM Users Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8411EVM__slau299a.pdf",
+  "pages": 15,
+  "bytes": 1087864,
+  "title": "SC70 DAC EVM Users Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8534EVM__slau107.pdf",
+  "pages": 27,
+  "bytes": 298993,
+  "title": "DAC8534 EVM Users Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8551EVM__slau172a.pdf",
+  "pages": 19,
+  "bytes": 727575,
+  "title": "DAC8550/51/52 EVM (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8552EVM__slau172a.pdf",
+  "pages": 19,
+  "bytes": 727575,
+  "title": "DAC8550/51/52 EVM (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8554EVM__sbau121.pdf",
+  "pages": 23,
+  "bytes": 611094,
+  "title": "DAC8554EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8560EVM-PDK__slau211a.pdf",
+  "pages": 22,
+  "bytes": 1166553,
+  "title": "DAC8560EVM User Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8560EVM__slau211a.pdf",
+  "pages": 22,
+  "bytes": 1166553,
+  "title": "DAC8560EVM User Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8562TEVM__slau650.pdf",
+  "pages": 14,
+  "bytes": 608791,
+  "title": "DAC8562TEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8565EVM__slau252.pdf",
+  "pages": 27,
+  "bytes": 2586592,
+  "title": "DAC8564/65 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8568EVM__slau301.pdf",
+  "pages": 10,
+  "bytes": 266384,
+  "title": "DACxx68EVM Users Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8571EVM__slau117a.pdf",
+  "pages": 39,
+  "bytes": 537559,
+  "title": "DAC7571/4, DA6571/4, DAC5571/4, DAC8571 EVM (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8574EVM__slau109.pdf",
+  "pages": 32,
+  "bytes": 511919,
+  "title": "DAC8574 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8581EVM-PDK__slau173a.pdf",
+  "pages": 22,
+  "bytes": 1207431,
+  "title": "DAC8580/81 EVM (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8718EVM__sbau158a.pdf",
+  "pages": 14,
+  "bytes": 1332260,
+  "title": "DAC8718EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8728EVM__sbau161.pdf",
+  "pages": 20,
+  "bytes": 1619472,
+  "title": "DAC8728EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8734EVM__sbau156b.pdf",
+  "pages": 13,
+  "bytes": 1101013,
+  "title": "DAC8734EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8742HEVM__slau700a.pdf",
+  "pages": 27,
+  "bytes": 1592382,
+  "title": "DAC8742H Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8760EMC-EVM__sbau229.pdf",
+  "pages": 22,
+  "bytes": 5803401,
+  "title": "DACx760EMC-EVM and DACx750EMC-EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8760EVM__sbau205a.pdf",
+  "pages": 29,
+  "bytes": 850397,
+  "title": "DAC7760EVM and DAC8760EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8771EVM__slau727.pdf",
+  "pages": 23,
+  "bytes": 911573,
+  "title": "DAC8771 Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8775EVM__sbau248.pdf",
+  "pages": 20,
+  "bytes": 2858613,
+  "title": "DAC8775EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8803EVM__slau184.pdf",
+  "pages": 10,
+  "bytes": 114910,
+  "title": "DAC8803/14 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8806EVM__slau190a.pdf",
+  "pages": 8,
+  "bytes": 129646,
+  "title": "DAC8806/20EVM (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8811EVM-PDK__slau151a.pdf",
+  "pages": 16,
+  "bytes": 2161219,
+  "title": "DAC8811EVM User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8814EVM__slau184.pdf",
+  "pages": 10,
+  "bytes": 114910,
+  "title": "DAC8803/14 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC8831EVM__slau202a.pdf",
+  "pages": 18,
+  "bytes": 1421362,
+  "title": "DAC883xEVM (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8832EVM-PDK__slau202a.pdf",
+  "pages": 18,
+  "bytes": 1421362,
+  "title": "DAC883xEVM (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8871EVM__slau233.pdf",
+  "pages": 16,
+  "bytes": 802794,
+  "title": "DAC8871 Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DAC8881EVM-PDK__slau257a.pdf",
+  "pages": 24,
+  "bytes": 3360721,
+  "title": "DAC8881 EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC900EVM__slau726.pdf",
+  "pages": 18,
+  "bytes": 4868404,
+  "title": "DAC90x Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC902EVM__slau726.pdf",
+  "pages": 18,
+  "bytes": 4868404,
+  "title": "DAC90x Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC908EVM__slau726.pdf",
+  "pages": 18,
+  "bytes": 4868404,
+  "title": "DAC90x Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC9881EVM-PDK__slau279a.pdf",
+  "pages": 22,
+  "bytes": 1041282,
+  "title": "DAC9881EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DAC9881EVM__slau279a.pdf",
+  "pages": 22,
+  "bytes": 1041282,
+  "title": "DAC9881EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DCA1000EVM__spruik7.pdf",
+  "pages": 6,
+  "bytes": 1854311,
+  "title": "DCA1000EVM Quick Start Guide",
+  "subject": "Quick Start Guide"
+ },
+ {
+  "file": "DCPA10505EVM-861__slvuaz2.pdf",
+  "pages": 11,
+  "bytes": 432205,
+  "title": "Using the DCPA1 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DCPA10512DEVM-868__slvuaz2.pdf",
+  "pages": 11,
+  "bytes": 432205,
+  "title": "Using the DCPA1 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DCPA10515DEVM-868__slvuaz2.pdf",
+  "pages": 11,
+  "bytes": 432205,
+  "title": "Using the DCPA1 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DCPA10515EVM-861__slvuaz2.pdf",
+  "pages": 11,
+  "bytes": 432205,
+  "title": "Using the DCPA1 EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DDC264EVM__sbau186.pdf",
+  "pages": 41,
+  "bytes": 3685400,
+  "title": "DDC264EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DEM-PCM2912AEVM__sbau141.pdf",
+  "pages": 28,
+  "bytes": 1829109,
+  "title": "PCM2912A Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DES24-35OVT_NOPB__snlu084.pdf",
+  "pages": 4,
+  "bytes": 3520234,
+  "title": "SERDES24-35OVT Evaluation Kit for OV7710 Image Sensor Application w/ a FPD-Link",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLP2010EVM-LC__dlpu069b.pdf",
+  "pages": 13,
+  "bytes": 3251744,
+  "title": "DLP2010 Light Control EVM User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLP2021LEQ1EVM__dlpu113a.pdf",
+  "pages": 28,
+  "bytes": 2020108,
+  "title": "DLP2021LEQ1EVM Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP2021LEWQ1EVM__dlpu113a.pdf",
+  "pages": 28,
+  "bytes": 2020108,
+  "title": "DLP2021LEQ1EVM Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP3021LEQ1EVM__dlpu106a.pdf",
+  "pages": 28,
+  "bytes": 1467269,
+  "title": "DLP3021LEQ1EVM Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP4621Q1EVM__dlpu137.pdf",
+  "pages": 27,
+  "bytes": 2756178,
+  "title": "DLP462xQ1 Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP470NEEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP470TEEVM__dlpu126.pdf",
+  "pages": 28,
+  "bytes": 2610584,
+  "title": "DLPC4420AEVM DLP® Display ≥0.47-in Array 4K UHD Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP4710EVM-LC__dlpu079a.pdf",
+  "pages": 20,
+  "bytes": 1360749,
+  "title": "DLP4710EVM-LC Light Control EVM (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP471TEEVM__dlpu109.pdf",
+  "pages": 25,
+  "bytes": 3004229,
+  "title": "DLP Display DLPC7540 4K UHD Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP550HEEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP550JEEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP5530PGUQ1EVM__dlpu091.pdf",
+  "pages": 22,
+  "bytes": 1786037,
+  "title": "DLP5530PGUQ1EVM Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP5530PROJQ1EVM__dlpu092.pdf",
+  "pages": 21,
+  "bytes": 2035112,
+  "title": "DLP5530PROJQ1EVM Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP5531LEQ1EVM__dlpu099a.pdf",
+  "pages": 24,
+  "bytes": 1506254,
+  "title": "DLP5531-Q1 Light Engine Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP650LEEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP670REEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP780NEEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP780TEEVM__dlpu126.pdf",
+  "pages": 28,
+  "bytes": 2610584,
+  "title": "DLPC4420AEVM DLP® Display ≥0.47-in Array 4K UHD Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLP800REEVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPC4420AEVM__dlpu126.pdf",
+  "pages": 28,
+  "bytes": 2610584,
+  "title": "DLPC4420AEVM DLP® Display ≥0.47-in Array 4K UHD Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPC4430EVM__dlpu127.pdf",
+  "pages": 36,
+  "bytes": 2666966,
+  "title": "DLPC4430EVM DLP® Display ≥0.47-in Array WUXGA/1080p/WXGA/XGA/SVGA Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPC7540EVM__dlpu109.pdf",
+  "pages": 25,
+  "bytes": 3004229,
+  "title": "DLP Display DLPC7540 4K UHD Evaluation Module User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPDLCR230NPEVM__dlpu103a.pdf",
+  "pages": 22,
+  "bytes": 916658,
+  "title": "DLP® LightCrafter™ Display 230NP EVM User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPDLCR3010EVM-G2__dlpu058a.pdf",
+  "pages": 11,
+  "bytes": 1627775,
+  "title": "DLP LightCrafter(TM) Display 3010 EVM Gen2 User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPDLCR3310EVM__dlpu063.pdf",
+  "pages": 15,
+  "bytes": 996256,
+  "title": "DLPDLCR3310EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPDLCR470TEVM__dlpu077a.pdf",
+  "pages": 34,
+  "bytes": 12223740,
+  "title": "DLP ECD 4K UHD EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPDLCR4710EVM-G2__dlpu044d.pdf",
+  "pages": 12,
+  "bytes": 815713,
+  "title": "DLP LightCrafter™ Display 4710 EVM Gen2 User’s Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPDLCR471TPEVM__dlpu105.pdf",
+  "pages": 19,
+  "bytes": 2227329,
+  "title": "DLP® LightCrafter™ Display 471TP EVM User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR4500EVM__dlpu011f.pdf",
+  "pages": 66,
+  "bytes": 8706183,
+  "title": "DLP® LightCrafter™ 4500 Evaluation Module User's Guide (Rev. F)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPLCR6500EVM__dlpu028d.pdf",
+  "pages": 69,
+  "bytes": 8023244,
+  "title": "DLP LightCrafter 6500 and 9000 EVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPLCR65EVM__dlpu101.pdf",
+  "pages": 69,
+  "bytes": 4845606,
+  "title": "DLP® LightCrafter™ Single DLPC900 Evaluation Module (EVM) User's Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR65FLQEVM__dlpu124.pdf",
+  "pages": 79,
+  "bytes": 21152998,
+  "title": "DLP LightCrafter DLPC910 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR67EVM__dlpu102.pdf",
+  "pages": 70,
+  "bytes": 5000894,
+  "title": "DLP LightCrafter Dual DLPC900 Evaluation Module (EVM) User's Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR70EVM__dlpu040a.pdf",
+  "pages": 63,
+  "bytes": 3147419,
+  "title": "DLP Discovery 4100 Development Kit Software EVM User’s Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR9000EVM__dlpu028d.pdf",
+  "pages": 69,
+  "bytes": 8023244,
+  "title": "DLP LightCrafter 6500 and 9000 EVM User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DLPLCR90EVM__dlpu102.pdf",
+  "pages": 70,
+  "bytes": 5000894,
+  "title": "DLP LightCrafter Dual DLPC900 Evaluation Module (EVM) User's Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR90XUVEVM__dlpu124.pdf",
+  "pages": 79,
+  "bytes": 21152998,
+  "title": "DLP LightCrafter DLPC910 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR95EVM__dlpu040a.pdf",
+  "pages": 63,
+  "bytes": 3147419,
+  "title": "DLP Discovery 4100 Development Kit Software EVM User’s Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR95UVEVM__dlpu040a.pdf",
+  "pages": 63,
+  "bytes": 3147419,
+  "title": "DLP Discovery 4100 Development Kit Software EVM User’s Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCR99EVM__dlpu132.pdf",
+  "pages": 46,
+  "bytes": 3851796,
+  "title": "DLPLCRC964 Evaluation Module Quick Start Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCRC410EVM__dlpu040a.pdf",
+  "pages": 63,
+  "bytes": 3147419,
+  "title": "DLP Discovery 4100 Development Kit Software EVM User’s Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DLPLCRC900DEVM__dlpu102.pdf",
+  "pages": 70,
+  "bytes": 5000894,
+  "title": "DLP LightCrafter Dual DLPC900 Evaluation Module (EVM) User's Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DP83630-EVK_NOPB__snlu003.pdf",
+  "pages": 12,
+  "bytes": 897927,
+  "title": "DP83630 Ethernet Physical Layer Transceiver Demo Board User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83640T-EVK_NOPB__snlu030.pdf",
+  "pages": 14,
+  "bytes": 1106699,
+  "title": "DP83640T Evaluation Demo Board User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83640T-EVK__snlu030.pdf",
+  "pages": 14,
+  "bytes": 1106699,
+  "title": "DP83640T Evaluation Demo Board User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83816-MAAP__snlu087.pdf",
+  "pages": 24,
+  "bytes": 87311,
+  "title": "DP83816-MAAP User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83825EVM__snlu239.pdf",
+  "pages": 23,
+  "bytes": 1222691,
+  "title": "DP83825 Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DP83826EVM__snlu262.pdf",
+  "pages": 33,
+  "bytes": 2034152,
+  "title": "DP83826EVM User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DP83848H-MAU-EK__snlu093.pdf",
+  "pages": 5,
+  "bytes": 94386,
+  "title": "DP83848H User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83848J-MAU-EK__snlu089.pdf",
+  "pages": 6,
+  "bytes": 100062,
+  "title": "DP83848J User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83848K-MAU-EK__snlu090.pdf",
+  "pages": 6,
+  "bytes": 100094,
+  "title": "DP83848K User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83848M-MAU-EK__snlu091.pdf",
+  "pages": 5,
+  "bytes": 94303,
+  "title": "DP83848M User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83848YB-EVK__snlu094.pdf",
+  "pages": 3,
+  "bytes": 129558,
+  "title": "DP83848C/I/YB User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83849IFVS-EVK_NOPB__snlu081.pdf",
+  "pages": 8,
+  "bytes": 370054,
+  "title": "DP83849IFVS User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83849IFVS-EVK__snlu081.pdf",
+  "pages": 8,
+  "bytes": 370054,
+  "title": "DP83849IFVS User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83849IVS-EVK__snlu088.pdf",
+  "pages": 8,
+  "bytes": 369691,
+  "title": "DP83849IVS-EVK User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83867ERGZ-R-EVM__snlu190.pdf",
+  "pages": 36,
+  "bytes": 1323980,
+  "title": "DP83867ERGZ EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83867ERGZ-S-EVM__snlu209.pdf",
+  "pages": 30,
+  "bytes": 2030820,
+  "title": "DP83867E SGMII EVM Users Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83869EVM__snlu237.pdf",
+  "pages": 35,
+  "bytes": 2461068,
+  "title": "DP83869EVM User's Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DP83TC811EVM__snlu231.pdf",
+  "pages": 41,
+  "bytes": 10834493,
+  "title": "DP83TC811EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83TC811SEVM__snlu234.pdf",
+  "pages": 30,
+  "bytes": 8683081,
+  "title": "DP83TC811SEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DP83TG720EVM-MC__snlu289.pdf",
+  "pages": 20,
+  "bytes": 3488896,
+  "title": "DP83TG720 Media Converter Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DPS-DONGLE-EVM__snlu184.pdf",
+  "pages": 17,
+  "bytes": 961439,
+  "title": "DPS_DONGLE_EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV10963AEVM__slau643.pdf",
+  "pages": 28,
+  "bytes": 3029857,
+  "title": "DRV10963 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV10963EVM__slau643.pdf",
+  "pages": 28,
+  "bytes": 3029857,
+  "title": "DRV10963 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV10964EVM__slau675a.pdf",
+  "pages": 16,
+  "bytes": 733165,
+  "title": "DRV10964 Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV10975EVM__slou393e.pdf",
+  "pages": 46,
+  "bytes": 5114296,
+  "title": "DRV10983EVM and DRV10975EVM User's Guide (Rev. E)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV10983EVM__slou395d.pdf",
+  "pages": 40,
+  "bytes": 4921976,
+  "title": "DRV10983 and DRV10975 Tuning Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV110EVM__slvu686b.pdf",
+  "pages": 21,
+  "bytes": 824705,
+  "title": "DRV110/DRV120 EVM User’s Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV120EVM__slvu686b.pdf",
+  "pages": 21,
+  "bytes": 824705,
+  "title": "DRV110/DRV120 EVM User’s Guide (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV2510Q1EVM__slou449.pdf",
+  "pages": 21,
+  "bytes": 800352,
+  "title": "DRV2510Q1EVM Haptic Solenoid Driver Evaluation Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2603EVM-CT__slou340b.pdf",
+  "pages": 28,
+  "bytes": 1306364,
+  "title": "DRV2603 ERM/LRA Haptic Driver Evaluation Kit (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2604EVM-CT__slou355.pdf",
+  "pages": 32,
+  "bytes": 1555683,
+  "title": "DRV2604 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2604LDGSEVM-M__slou397.pdf",
+  "pages": 9,
+  "bytes": 2199067,
+  "title": "DRV2604L Haptic Driver Mini Board",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2604LEVM-CT__slou390.pdf",
+  "pages": 33,
+  "bytes": 4001747,
+  "title": "DRV2604L ERM, LRA Haptic Driver Evaluation Kit (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2605LDGSEVM-M__slou396.pdf",
+  "pages": 9,
+  "bytes": 3280954,
+  "title": "DRV2605LDGS Haptic Driver Mini Board",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2605LEVM-CT__slou389a.pdf",
+  "pages": 36,
+  "bytes": 3934751,
+  "title": "DRV2605L ERM and LRA Haptic Driver Evaluation Kit (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2605LEVM-MD__slou400.pdf",
+  "pages": 29,
+  "bytes": 1668887,
+  "title": "DRV2605L Multi-Driver ERM, LRA Haptics Evaluation Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2624EVM-CT__slou435b.pdf",
+  "pages": 26,
+  "bytes": 3357397,
+  "title": "DRV2624EVM-CT ERM and LRA haptic driver evaluation (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2625EVM-CT__slou432a.pdf",
+  "pages": 31,
+  "bytes": 3884884,
+  "title": "DRV2625 ERM, LRA Haptic Driver Evaluation Kit (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2700EVM-HV500__slou407.pdf",
+  "pages": 30,
+  "bytes": 3248556,
+  "title": "DRV2700EVM-HV500 High Voltage Piezo Driver Evaluation Kit (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV2700EVM__slyu023.pdf",
+  "pages": 5,
+  "bytes": 809008,
+  "title": "DRV2700EVM Quick Start Guide",
+  "subject": "Reference Guide"
+ },
+ {
+  "file": "DRV3201EVM__slvu846a.pdf",
+  "pages": 18,
+  "bytes": 2444011,
+  "title": "DRV3201EVM user's guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV411EVM__slvu772a.pdf",
+  "pages": 13,
+  "bytes": 582678,
+  "title": "DRV411EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV5825PEVM__slau628.pdf",
+  "pages": 23,
+  "bytes": 4391498,
+  "title": "DRV5825P Evaluation Module",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV593EVM__slou142.pdf",
+  "pages": 21,
+  "bytes": 1014091,
+  "title": "DRV593 and DRV594 PWM Power Driver Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV595EVM__slau479.pdf",
+  "pages": 13,
+  "bytes": 1003203,
+  "title": "DRV595 PWM Power Driver Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV601EVM2__slou217.pdf",
+  "pages": 25,
+  "bytes": 1314974,
+  "title": "DRV601EVM2 User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV601EVM__slou215.pdf",
+  "pages": 24,
+  "bytes": 616655,
+  "title": "DRV601EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV603EVM__slou252.pdf",
+  "pages": 23,
+  "bytes": 1101242,
+  "title": "DRV603EVM User's Guide (Rev. A",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV604PWPEVM__slou288.pdf",
+  "pages": 20,
+  "bytes": 2765456,
+  "title": "DRV604PWPEVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV612EVM__slou307.pdf",
+  "pages": 10,
+  "bytes": 1854540,
+  "title": "DRV612 EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8106H-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8106S-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8143P-Q1LEVM__slvuc46a.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8144H-Q1EVM__slvuc46a.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8210EVM__slou540a.pdf",
+  "pages": 21,
+  "bytes": 3019834,
+  "title": "DRV821xEVM and DRV8220EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8212EVM__slou540a.pdf",
+  "pages": 21,
+  "bytes": 3019834,
+  "title": "DRV821xEVM and DRV8220EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8213EVM__slvuco1.pdf",
+  "pages": 36,
+  "bytes": 4643685,
+  "title": "DRV821x and DRV823x Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8220EVM__slou540a.pdf",
+  "pages": 21,
+  "bytes": 3019834,
+  "title": "DRV821xEVM and DRV8220EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8234EVM__slvuco1.pdf",
+  "pages": 36,
+  "bytes": 4643685,
+  "title": "DRV821x and DRV823x Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8235EVM__slvuco1a.pdf",
+  "pages": 36,
+  "bytes": 4643685,
+  "title": "DRV821x and DRV823x Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8242S-Q1EVM__slvuc46d.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8243H-Q1EVM__slvuc46b.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8243S-Q1LEVM__slvuc46b.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8244H-Q1EVM__slvuc46b.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8244S-Q1LEVM__slvuc46b.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8245H-Q1EVM__slvuc46b.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8245S-Q1LEVM__slvuc46b.pdf",
+  "pages": 33,
+  "bytes": 2264812,
+  "title": "DRV824x_DRV814x-Q1EVM User’s Guide (Rev. E)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8251EVM__slvuc78.pdf",
+  "pages": 15,
+  "bytes": 1949210,
+  "title": "DRV8251 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8256EEVM__slou520d.pdf",
+  "pages": 14,
+  "bytes": 1186550,
+  "title": "DRV84XX_89XX_8256X EVM GUI User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8300DIPW-EVM__slvubv6.pdf",
+  "pages": 13,
+  "bytes": 1493665,
+  "title": "DRV8300xxx-EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8300DPW-Q1EVM__slvubv6.pdf",
+  "pages": 13,
+  "bytes": 1493665,
+  "title": "DRV8300xxx-EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8305-Q1EVM__slvuaq4a.pdf",
+  "pages": 25,
+  "bytes": 3858380,
+  "title": "DRV8305-Q1EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8306EVM__slvubb7.pdf",
+  "pages": 14,
+  "bytes": 968068,
+  "title": "DRV8306EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8311HEVM__slou552.pdf",
+  "pages": 27,
+  "bytes": 3290395,
+  "title": "DRV8311HEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8313EVM__slvu815.pdf",
+  "pages": 39,
+  "bytes": 2147003,
+  "title": "DRV8313EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8316REVM__slvubz9b.pdf",
+  "pages": 33,
+  "bytes": 2871951,
+  "title": "DRV8316REVM Evaluation Module (Rev. B)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8317HEVM__slvucl3.pdf",
+  "pages": 29,
+  "bytes": 2462292,
+  "title": "DRV8317HEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8328AEVM__slvucd3a.pdf",
+  "pages": 29,
+  "bytes": 2742782,
+  "title": "DRV8328AEVM User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8334EVM__slvucu7.pdf",
+  "pages": 33,
+  "bytes": 1764335,
+  "title": "DRV8334 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8343S-Q1EVM__slvubb8b.pdf",
+  "pages": 23,
+  "bytes": 3403771,
+  "title": "DRV8343H-Q1EVM and DRV8343S-Q1EVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8350H-EVM__slvub78a.pdf",
+  "pages": 24,
+  "bytes": 17454527,
+  "title": "DRV8350x-EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8350S-EVM__slvub78a.pdf",
+  "pages": 24,
+  "bytes": 17454527,
+  "title": "DRV8350x-EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8351EVM__slvucx2a.pdf",
+  "pages": 25,
+  "bytes": 1936258,
+  "title": "DRV8351 Evaluation Module User’s Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8353RH-EVM__slvub79a.pdf",
+  "pages": 13,
+  "bytes": 3093776,
+  "title": "DRV8353Rx-EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8412DDWEVM__slou287.pdf",
+  "pages": 10,
+  "bytes": 2562909,
+  "title": "DRV8412EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8421BEVM__slou571.pdf",
+  "pages": 27,
+  "bytes": 2393717,
+  "title": "DRV8421 Evaluation Module User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8424EEVM__slou519b.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8424EVM__slou519b.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8424PEVM__slou519b.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8426EEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8428EEVM__slou535.pdf",
+  "pages": 5,
+  "bytes": 339524,
+  "title": "DRV8428xEVM EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8428EVM__slou535.pdf",
+  "pages": 5,
+  "bytes": 339524,
+  "title": "DRV8428xEVM EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8428PEVM__slou535.pdf",
+  "pages": 5,
+  "bytes": 339524,
+  "title": "DRV8428xEVM EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8432EVM__slou291.pdf",
+  "pages": 10,
+  "bytes": 2480318,
+  "title": "DRV8432EVM Motor Drive Evaluation Board.. (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8434AEVM__slou546.pdf",
+  "pages": 5,
+  "bytes": 700736,
+  "title": "DRV8434AEVM user's guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8434EEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8434PEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8434SEVM__slou549.pdf",
+  "pages": 5,
+  "bytes": 628934,
+  "title": "DRV8434SEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8436EEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8436EVM__slou516a.pdf",
+  "pages": 5,
+  "bytes": 7398672,
+  "title": "DRV8436EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8436PEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8461EVM__slou558a.pdf",
+  "pages": 54,
+  "bytes": 8772602,
+  "title": "DRV84x2_DRV82x2_DRV89x2-EVM-GUI User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8462EVM__slou558a.pdf",
+  "pages": 54,
+  "bytes": 8772602,
+  "title": "DRV84x2_DRV82x2_DRV89x2-EVM-GUI User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8662EVM__slou319b.pdf",
+  "pages": 26,
+  "bytes": 4732359,
+  "title": "DRV8662 Piezo Haptics Driver Evaluation Module (RevD Silicon) (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8702D-Q1EVM__slvub10.pdf",
+  "pages": 12,
+  "bytes": 837003,
+  "title": "DRV8702D-Q1 EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8703-Q1EVM__slvuaw3a.pdf",
+  "pages": 9,
+  "bytes": 1845391,
+  "title": "DRV8703-Q1 EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8703D-Q1EVM__slvub11.pdf",
+  "pages": 12,
+  "bytes": 914143,
+  "title": "DRV8703D-Q1 EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8704EVM__slvual6.pdf",
+  "pages": 11,
+  "bytes": 444985,
+  "title": "DRV8704 User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8705H-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8705S-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8706H-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8706S-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8714S-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8718S-Q1EVM__slvubn5a.pdf",
+  "pages": 26,
+  "bytes": 7798082,
+  "title": "DRV87xx-Q1EVM and DRV8106-Q1EVM User’s Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8802EVM__slvu361c.pdf",
+  "pages": 36,
+  "bytes": 4689593,
+  "title": "DRV88xx EVM GUI (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8813EVM__slvu361c.pdf",
+  "pages": 36,
+  "bytes": 4689593,
+  "title": "DRV88xx EVM GUI (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8818EVM__slvu681.pdf",
+  "pages": 33,
+  "bytes": 2894619,
+  "title": "DRV8818 EVM GUI (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8823EVM__slvu350a.pdf",
+  "pages": 24,
+  "bytes": 2866040,
+  "title": "DRV8821-23 EVM GUI (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8825EVM__slvu361c.pdf",
+  "pages": 36,
+  "bytes": 4689593,
+  "title": "DRV88xx EVM GUI (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8830EVM__slvu472.pdf",
+  "pages": 11,
+  "bytes": 545579,
+  "title": "DRV8830-32 User Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8832EVM__slvu472.pdf",
+  "pages": 11,
+  "bytes": 545579,
+  "title": "DRV8830-32 User Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8833CEVM__slvuad4.pdf",
+  "pages": 12,
+  "bytes": 2415833,
+  "title": "DRV8833C EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8833EVM__slvu498.pdf",
+  "pages": 10,
+  "bytes": 120228,
+  "title": "DRV8833EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8837EVM__slvu749a.pdf",
+  "pages": 14,
+  "bytes": 400004,
+  "title": "DRV8837EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8838EVM__slvua43.pdf",
+  "pages": 12,
+  "bytes": 1990053,
+  "title": "DRV8838EVM User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8839EVM__slvu879.pdf",
+  "pages": 16,
+  "bytes": 871175,
+  "title": "DRV8839EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8840EVM__slvu410.pdf",
+  "pages": 10,
+  "bytes": 351325,
+  "title": "CPG005_DRV88xx Evaluation Modules",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8841EVM__slvu361c.pdf",
+  "pages": 36,
+  "bytes": 4689593,
+  "title": "DRV88xx EVM GUI (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8843EVM__slvu361c.pdf",
+  "pages": 36,
+  "bytes": 4689593,
+  "title": "DRV88xx EVM GUI (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8844EVM__slvu762.pdf",
+  "pages": 11,
+  "bytes": 328981,
+  "title": "DRV8844EVM Users Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8845EVM__slou559.pdf",
+  "pages": 24,
+  "bytes": 1525697,
+  "title": "DRV8845_49-EVM-GUI User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8847SEVM__slvubf8.pdf",
+  "pages": 6,
+  "bytes": 834239,
+  "title": "DRV8847EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8850EVM__slvua01.pdf",
+  "pages": 14,
+  "bytes": 1576160,
+  "title": "DRV8850EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8860EVM__slvu976.pdf",
+  "pages": 18,
+  "bytes": 2825231,
+  "title": "DRV8860",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8871EVM__slvuaj4.pdf",
+  "pages": 7,
+  "bytes": 1729661,
+  "title": "DRV8871 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8872EVM__slvuaj5.pdf",
+  "pages": 10,
+  "bytes": 2021378,
+  "title": "DRV8872 EVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8873HEVM__slvub68b.pdf",
+  "pages": 13,
+  "bytes": 4948236,
+  "title": "DRV8873x-Q1EVM User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8873SEVM__slvub68b.pdf",
+  "pages": 13,
+  "bytes": 4948236,
+  "title": "DRV8873x-Q1EVM User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8876EVM__slvubg7c.pdf",
+  "pages": 15,
+  "bytes": 1359470,
+  "title": "DRV8876/74-Q1 Evaluation Module (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DRV8880EVM__slvuai1b.pdf",
+  "pages": 15,
+  "bytes": 1150709,
+  "title": "DRV8880 Evaluation Module User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8881EEVM__slvuai3a.pdf",
+  "pages": 17,
+  "bytes": 1846389,
+  "title": "DRV8881E Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8885EVM__slvual3.pdf",
+  "pages": 19,
+  "bytes": 1078167,
+  "title": "DRV8885 Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8886EVM__slvub15.pdf",
+  "pages": 19,
+  "bytes": 3262206,
+  "title": "DRV8886 Evaluation Module User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8899-Q1EVM__slvubr7.pdf",
+  "pages": 6,
+  "bytes": 10851194,
+  "title": "DRV8899-Q1 EMV User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8932PEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8935PEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8955PEVM__slou519d.pdf",
+  "pages": 5,
+  "bytes": 658878,
+  "title": "DRV84XX_89XX_8256X Evaluation Module User's Guide (Rev. D)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DRV8962EVM__slou558b.pdf",
+  "pages": 54,
+  "bytes": 8772602,
+  "title": "DRV84x2_DRV82x2_DRV89x2-EVM-GUI User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS10BR150EVK_NOPB__snlu007.pdf",
+  "pages": 9,
+  "bytes": 190937,
+  "title": "1.06 Gbps LVDS Buffer Repeater (DS10BR150) Evaluation Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS110DF111EVM__snlu142a.pdf",
+  "pages": 23,
+  "bytes": 5193596,
+  "title": "DS110DF111EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS110DF410EVM__snlu126c.pdf",
+  "pages": 47,
+  "bytes": 3348985,
+  "title": "DS100DF410EVK, DS110DF410EVK, DS125DF410EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125BR111EVM__snlu168a.pdf",
+  "pages": 15,
+  "bytes": 2678788,
+  "title": "DS125BR111EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125BR401AEVM__snlu150a.pdf",
+  "pages": 15,
+  "bytes": 605930,
+  "title": "DS125BR401AEVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125BR401EVM__snlu121.pdf",
+  "pages": 14,
+  "bytes": 600119,
+  "title": "DS125BR401EVK User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125BR820EVM__snlu166.pdf",
+  "pages": 20,
+  "bytes": 668579,
+  "title": "DS125BR820EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125DF111EVM__snlu158.pdf",
+  "pages": 23,
+  "bytes": 5167017,
+  "title": "DS125DF111EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125DF1610EVM__snlu159b.pdf",
+  "pages": 15,
+  "bytes": 2054511,
+  "title": "DS125DF1610EVM User's Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS125DF410EVM__snlu126c.pdf",
+  "pages": 47,
+  "bytes": 3348985,
+  "title": "DS100DF410EVK, DS110DF410EVK, DS125DF410EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS160PR412-421EVM__snlu288.pdf",
+  "pages": 24,
+  "bytes": 4857834,
+  "title": "DS160PR412-421EVM Evaluation Module",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS160PR810EVM-RSC__snlu273.pdf",
+  "pages": 28,
+  "bytes": 2189599,
+  "title": "DS160PR810EVM-RSC Evaluation Module (EVM)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS16EV51-AEVKH__snlu015.pdf",
+  "pages": 6,
+  "bytes": 201217,
+  "title": "DS16EV51-AEVKH: HDMI Extender Demo Kit for HDMI Cables",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS22EV5110-EVKC_NOPB__snlu016a.pdf",
+  "pages": 15,
+  "bytes": 390304,
+  "title": "DS22EV5110-EVKC: CAT5 Extender Demo Kit for HDMI Cables (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS22EV5110-EVKH__snlu018.pdf",
+  "pages": 7,
+  "bytes": 212775,
+  "title": "DS22EV5110-EVKH: HDMI Extender Demo Kit for HDMI Cables",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS250DF230EVM__snlu238a.pdf",
+  "pages": 26,
+  "bytes": 2819142,
+  "title": "DS250DF230EVM User Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS250DF810EVM__snlu180c.pdf",
+  "pages": 26,
+  "bytes": 3319869,
+  "title": "DS250DF810EVM User's Guide (Rev. C)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS25CP104EVK_NOPB__snlu024.pdf",
+  "pages": 37,
+  "bytes": 1418833,
+  "title": "3.125 Gbps 4x4 LVDS Crosspoint Switch Evaluation Board",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS25MB100-EVK__snlu072.pdf",
+  "pages": 7,
+  "bytes": 507373,
+  "title": "DS25MB100-EVK Signal Conditioning Mux-Buffer Demo Board User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS280MB810EVM__snlu213.pdf",
+  "pages": 23,
+  "bytes": 2364992,
+  "title": "DS280MB810EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS320-SLIMSAS-EVM__snlu299.pdf",
+  "pages": 19,
+  "bytes": 1843105,
+  "title": "DS320-SLIMSAS-EVM User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS320PR410-RSC-EVM__snlu334.pdf",
+  "pages": 34,
+  "bytes": 3937410,
+  "title": "DS320PR410-RSC-EVM Evaluation Module User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS320PR412-421EVM__snlu301.pdf",
+  "pages": 26,
+  "bytes": 2531092,
+  "title": "DS320PR4xxEVM User's Guide",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS320PR810-RSC-EVM__snlu297.pdf",
+  "pages": 27,
+  "bytes": 6466024,
+  "title": "DS320PR810-RSC-EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS32EV100-EVK__snlu073.pdf",
+  "pages": 4,
+  "bytes": 152498,
+  "title": "DS32EV100-EVK User Guide DS32EV100 Programmable Equalizer",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS34RT5110-EVKH__snlu033a.pdf",
+  "pages": 14,
+  "bytes": 347595,
+  "title": "DS34RT110-EVKH: HDMI Single Repeater Demo Kit for HDMI Cables (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS50PCI401EVK__snlu077.pdf",
+  "pages": 21,
+  "bytes": 2275919,
+  "title": "DS50PCI401EVK User Guide PCI Express SMA Evaluation Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS560DF410EVM__snlu324.pdf",
+  "pages": 21,
+  "bytes": 1243497,
+  "title": "DS560DF410EVM User's Guide (Full)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS560DF810EVM__snlu293a.pdf",
+  "pages": 23,
+  "bytes": 1419244,
+  "title": "DS560DF810 EVM User's Guide (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS560MB410EVM__snlu296a.pdf",
+  "pages": 29,
+  "bytes": 1891321,
+  "title": "DS280MB410EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS64BR111EVK_NOPB__snlu181.pdf",
+  "pages": 17,
+  "bytes": 907340,
+  "title": "DS64BR111EVK User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS64BR401EVK_NOPB__snlu037.pdf",
+  "pages": 12,
+  "bytes": 3467838,
+  "title": "SATA SAS MiniSAS4X Cable Extender Demo Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS80PCI102EVK_NOPB__snlu111.pdf",
+  "pages": 17,
+  "bytes": 737501,
+  "title": "DS80PCI102EVK User Guide SMA Evaluation Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS80PCI800EVK_NOPB__snlu119.pdf",
+  "pages": 11,
+  "bytes": 655964,
+  "title": "DS80PCI800EVK User’s Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS80PCI810EVM__snlu171.pdf",
+  "pages": 20,
+  "bytes": 771141,
+  "title": "DS80PCI810EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90C189-Q1EVM__snlu236.pdf",
+  "pages": 24,
+  "bytes": 1068292,
+  "title": "DS90C189-Q1EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90CR285-86ATQEVM__snlu218.pdf",
+  "pages": 22,
+  "bytes": 2000921,
+  "title": "DS90CR285-86ATQEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90LV011-12AEVM__slau782.pdf",
+  "pages": 14,
+  "bytes": 1753189,
+  "title": "DS90LV011-12AEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90LV047-48AEVM__snlu195.pdf",
+  "pages": 14,
+  "bytes": 1027614,
+  "title": "DS90LV047-48AEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB913A-CXEVM__snlu135.pdf",
+  "pages": 67,
+  "bytes": 26528795,
+  "title": "DS90UB913A-CXEVM and DS90UB914A-CXEVM REV A User’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB921-Q1EVM__snlu205.pdf",
+  "pages": 55,
+  "bytes": 3391201,
+  "title": "DS90UB921-Q1EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB924-Q1EVM__snlu208.pdf",
+  "pages": 44,
+  "bytes": 10687783,
+  "title": "DS90UB924-Q1EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB926QSEVB_NOPB__snlu114.pdf",
+  "pages": 34,
+  "bytes": 4715970,
+  "title": "DS90UB926QSEVB User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB927QEVM__snlu125.pdf",
+  "pages": 30,
+  "bytes": 3845341,
+  "title": "DS90UB927QEVM User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB933-Q1EVM__snlu210b.pdf",
+  "pages": 21,
+  "bytes": 1840581,
+  "title": "DS90UB933-Q1 Evaluation Module User's Guide (Rev. C)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS90UB934-Q1EVM__snlu220.pdf",
+  "pages": 36,
+  "bytes": 7042991,
+  "title": "DS90UB934-Q1EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB947-Q1EVM__snlu140a.pdf",
+  "pages": 59,
+  "bytes": 3518009,
+  "title": "DS90Ux947-Q1EVM Evaluation Board (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB949-Q1EVM__snlu169.pdf",
+  "pages": 53,
+  "bytes": 4915876,
+  "title": "DS90UH949-Q1EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB949A-Q1EVM__snlu232a.pdf",
+  "pages": 58,
+  "bytes": 6423142,
+  "title": "DS90UH949A-Q1EVM or DS90UB949A-Q1EVM User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB954-Q1EVM__snlu223b.pdf",
+  "pages": 67,
+  "bytes": 5324839,
+  "title": "DS90UB95x-Q1EVM Deserializer User's Guide (Rev. D)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "DS90UB960-Q1EVM__snlu226b.pdf",
+  "pages": 49,
+  "bytes": 5519841,
+  "title": "DS90UB960-Q1 Evaluation Module (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UB964-Q1EVMTDA__snlu177.pdf",
+  "pages": 64,
+  "bytes": 3957405,
+  "title": "DS90UB96XEVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UH925QSEVB_NOPB__snlu115.pdf",
+  "pages": 35,
+  "bytes": 3638942,
+  "title": "DS90UH925QSEVB User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UH926QSEVB_NOPB__snlu116.pdf",
+  "pages": 34,
+  "bytes": 4002787,
+  "title": "DS90UH926QSEVB User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS90UR907Q-EVK_NOPB__snlu039.pdf",
+  "pages": 8,
+  "bytes": 262909,
+  "title": "DS90UR907Q-EVK FPD-Link to FPD-Link II Converter Evaluation Kit",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DS91M125EVK_NOPB__snlu047.pdf",
+  "pages": 19,
+  "bytes": 487902,
+  "title": "125 MHz 1:4 M-LVDS Repeater with LVDS Input Evaluation Board",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DSLVDS1047-1048EVM__snlu240.pdf",
+  "pages": 11,
+  "bytes": 1063711,
+  "title": "DSLVDS1047-1048EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DVI-FPDLINKII-M_NOPB__snlu105.pdf",
+  "pages": 12,
+  "bytes": 740121,
+  "title": "DVI - FPD LINK II (DS90UR905Q/906Q) Demo Platform User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "DVI-FPDLINKII-R_NOPB__snlu105.pdf",
+  "pages": 12,
+  "bytes": 740121,
+  "title": "DVI - FPD LINK II (DS90UR905Q/906Q) Demo Platform User Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ESD-EVM-001__slvu702.pdf",
+  "pages": 10,
+  "bytes": 2790665,
+  "title": "ESD PROTECTION DIODES EVM",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ESD122DMX-EVM__slvub40a.pdf",
+  "pages": 13,
+  "bytes": 2892162,
+  "title": "ESD122 Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ESD122DMY-EVM__slvub40a.pdf",
+  "pages": 13,
+  "bytes": 2892162,
+  "title": "ESD122 Evaluation Module (Rev. A)",
+  "subject": "EVM User's guide"
+ },
+ {
+  "file": "ESD224EVM__slvube1a.pdf",
+  "pages": 13,
+  "bytes": 316928,
+  "title": "ESD224 Evaluation Module User's Guide  (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "ESDEVM__slvubg5a.pdf",
+  "pages": 12,
+  "bytes": 698699,
+  "title": "Generic ESD Evaluation Module User's Guide (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "EVM430-CAPMINI__slau784.pdf",
+  "pages": 12,
+  "bytes": 475110,
+  "title": "EVM430-CAPMINI Getting Started Guide",
+  "subject": "Getting Started"
+ },
+ {
+  "file": "EVM430-FR6989__slau611.pdf",
+  "pages": 21,
+  "bytes": 6084235,
+  "title": "EVM430-FR6989 Evaluation Kit User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "EVMK2GX__sprui65.pdf",
+  "pages": 82,
+  "bytes": 4138383,
+  "title": "K2G General Purpose Evaluation Module (EVMK2G) TRM (Rev. A)",
+  "subject": "Technical Reference"
+ },
+ {
+  "file": "EZ430-F2013__slau176e.pdf",
+  "pages": 11,
+  "bytes": 375789,
+  "title": "eZ430-F2013 Development Tool User's Guide (Rev. E)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "F28M35E50B1RFPT__spruh22.pdf",
+  "pages": 1655,
+  "bytes": 11396118,
+  "title": "Concerto F28M35x Technical Reference Manual (Rev. I)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "FLAT-CLAMP-TVS-EVM__slvubj8.pdf",
+  "pages": 15,
+  "bytes": 668521,
+  "title": "Flat Clamp TVS Evaluation Module—Adaptor Boards",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "FLINK3V8BT-85_NOPB__snlu032a.pdf",
+  "pages": 24,
+  "bytes": 2412219,
+  "title": "FLINK3V8BT-85 Evaluation Kit (Rev. A)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "FPC401EVM__snlu222.pdf",
+  "pages": 18,
+  "bytes": 1424249,
+  "title": "FPC401 and FPC402 Evaluation Module (EVM) User ’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "FPC402EVM__snlu222.pdf",
+  "pages": 18,
+  "bytes": 1424249,
+  "title": "FPC401 and FPC402 Evaluation Module (EVM) User ’s Guide (Rev. B)",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "HD3SS213-1-2MUXEVM__slau534.pdf",
+  "pages": 11,
+  "bytes": 812311,
+  "title": "HD3SS213 EVM User's Guide",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "HD3SS6126EVM__slau541.pdf",
+  "pages": 12,
+  "bytes": 685393,
+  "title": "HD3SS6126EVM Device Reference Design",
+  "subject": "User's Guide"
+ },
+ {
+  "file": "HTFLASHEVM__slvu805.pdf",
+  "pages": 21,
+  "bytes": 827090,
+  "title": "HTFLASHEVM User’s Guide",
+  "subject": "User's Guide"
+ }
+]
