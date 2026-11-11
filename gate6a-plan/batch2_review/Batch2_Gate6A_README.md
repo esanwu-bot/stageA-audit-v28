@@ -1,139 +1,135 @@
-# Gate 6A · Batch 2 Gold Set（v1.2）
+# Gate 6A · Batch 2 Gold Set（v1.3）
 
 ## 这批是什么
 
 6 件样本、**24 行**电气参数，全部经人工逐行比对 PDF 页面后签名
 （`row_status=CONFIRMED`，`reviewer=wuxiaoxian`）。
+PDF 原件另有 SHA-256 与页数留痕，见 `Batch2_PDF_PROVENANCE.csv`。
 
 ## 一、样本身份：以 PDF 封面为准，不看文件名
 
-Reviewer 指出型号对不上。逐个翻开封面核对后，确认 README 早期版本 **4 处写错**，已全部改正：
-
-| 样本 | 文件名（语料里的订购码） | 封面原文型号 | 本批 `device_model` | 行数 | 旧 README |
-| --- | --- | --- | --- | --- | --- |
-| V101 | `CD74HCT574EE4__schs183c.pdf` | CD54/74HC374 … **CD54/74HCT574** | `CD74HCT574` | 9 | CD74HCT574 ✓ |
-| V097 | `DEM-OPA-MSOP-2A__opa2830.pdf` | **OPA2830** Dual, Low-Power, Wideband Op Amp | `OPA2830` | 3 | ~~DEM-OPA~~ ✗ |
-| V162 | `74LVTH182504APMG4__sn74lvth18504a.pdf` | SN54LVTH18504A…**SN74LVTH182504A** | `SN74LVTH182504A` | 3 | ~~SN74LVTH18504A~~ ✗ |
-| V349 | `ADC3544IRSBT__adc3544.pdf` | **ADC3544** 14-bit, 125-MSPS ADC | `ADC3544` | 3 | ~~ADC3541~~ ✗ |
-| V145 | `DAC8775IRWFR__dac8775.pdf` | **DAC8775** Quad-Channel, 16-Bit DAC | `DAC8775` | 3 | ~~DAC7750~~ ✗ |
-| V111 | `DS90C189TWRTDTQ1__ds90c189-q1.pdf` | **DS90C189-Q1** RGB-to-Open LDI Bridge | `DS90C189-Q1` | 3 | ~~DS90C~~ ✗ |
-
-三条容易踩的坑，一并记下来：
-
-1. **文件名前缀是订购码，不是芯片型号**。`DEM-OPA-MSOP-2A` 是评估板编号，手册讲的是 OPA2830；
-   `74LVTH182504APMG4` 是 182504A 的订购码，手册把 18504A 和 182504A 印在同一份里。
-2. **旧 CSV 的文件名还被截断过**：`DAC8775IRWFR.pdf`、`DS90C189TWRTDTQ1.pdf` 都丢了
-   `__<手册名>.pdf` 后缀，照着找文件必然找不到。现按磁盘真实文件名改正，脚本会断言文件存在。
-3. **`ADC3541` 确实出现在 ADC3544 手册第 1 页**——在 "Device Comparison" 表里作为同族型号列出。
-   所以"封面上有这串字"不足以证明身份，型号判定以**标题行**为准，证据见 `screenshots/`。
-
-封面与关键页截图（红框标出型号原文，说明条在图片下方）：
-
-- `screenshots/V349_cover_ADC3544.png`、`V145_cover_DAC8775.png` —— Reviewer 指定
-- `screenshots/V097_cover_OPA2830.png`、`V162_cover_SN74LVTH182504A.png`、
-  `V111_cover_DS90C189-Q1.png`、`V101_cover_CD74HCT574E.png`
-- `screenshots/V101_p3_full_5.9.png`、`V101_p3_VOH_zoom.png` —— 5.9 的位置
-
-## 二、V101 按 VCC 拆行（上一轮意见，已落地）
-
-第 3 页 `TEST CONDITIONS` 列里的 `2` / `4.5` / `6` 是**三个行条件**，不是三个列头，
-所以 MIN/MAX 要按行读，不能按列取。三个参数各拆 3 行，共 9 行，`condition` 填 `HC, VCC=xV`：
-
-| 参数 | VCC=2V | VCC=4.5V | VCC=6V | 取值列 |
+| 样本 | 文件名（语料里的订购码） | 封面原文型号 | 本批 `device_model` | 行数 |
 | --- | --- | --- | --- | --- |
-| VIH（MIN） | 1.5 | 3.15 | 4.2 | MIN |
-| VIL（MAX） | 0.5 | 1.35 | 1.8 | MAX |
-| VOH（MIN） | 1.9 | 4.4 | **5.9** | MIN |
+| V101 | `CD74HCT574EE4__schs183c.pdf` | CD54/74HC374 … **CD54/74HCT574** | `CD74HCT574` | 9 |
+| V097 | `DEM-OPA-MSOP-2A__opa2830.pdf` | **OPA2830** Dual, Low-Power, Wideband Op Amp | `OPA2830` | 3 |
+| V162 | `74LVTH182504APMG4__sn74lvth18504a.pdf` | SN54LVTH18504A…**SN74LVTH182504A** | `SN74LVTH182504A` | 3 |
+| V349 | `ADC3544IRSBT__adc3544.pdf` | **ADC3544** 14-bit, 125-MSPS ADC | `ADC3544` | 3 |
+| V145 | `DAC8775IRWFR__dac8775.pdf` | **DAC8775** Quad-Channel, 16-Bit DAC | `DAC8775` | 3 |
+| V111 | `DS90C189TWRTDTQ1__ds90c189-q1.pdf` | **DS90C189-Q1** RGB-to-Open LDI Bridge | `DS90C189-Q1` | 3 |
 
-顺带修正：v1 把 VOH 第三组误写成 4.4（与 4.5V 行重复），实测页面是 **5.9**。
+三条容易踩的坑：
 
-## 三、机检脚本 v2：补上三种漏判
+1. **文件名前缀是订购码，不是芯片型号**。`DEM-OPA-MSOP-2A` 是评估板编号，手册讲 OPA2830；
+   `74LVTH182504APMG4` 是 182504A 的订购码，手册把 18504A / 182504A 印在同一份里。
+2. **旧 CSV 的文件名被截断过**：`DAC8775IRWFR.pdf`、`DS90C189TWRTDTQ1.pdf` 都丢了
+   `__<手册名>.pdf` 后缀。现按磁盘真实名改正，脚本会断言文件存在。
+3. **`ADC3541` 确实印在 ADC3544 手册第 1 页**——在 Device Comparison 表里作为同族型号。
+   所以"封面上有这串字"证明不了身份，型号判定以**标题行**为准，截图全部框标题。
 
-v1 的三个洞，v2 逐个堵：
+## 二、PDF 溯源：6 件原件逐一留痕
 
-| 漏洞 | v1 行为 | v2 做法 |
+| 样本 | 型号 | 文件 | 页数 | 大小 | SHA-256（前 16 位） |
+| --- | --- | --- | --- | --- | --- |
+| V097 | OPA2830 | `DEM-OPA-MSOP-2A__opa2830.pdf` | 52 | 2.07 MB | `0165370d5ffbabba` |
+| V101 | CD74HCT574 | `CD74HCT574EE4__schs183c.pdf` | 21 | 1.17 MB | `059d448c5a34a4b1` |
+| V111 | DS90C189-Q1 | `DS90C189TWRTDTQ1__ds90c189-q1.pdf` | 39 | 2.25 MB | `0c31c316536a2156` |
+| V145 | DAC8775 | `DAC8775IRWFR__dac8775.pdf` | 80 | 7.51 MB | `099d8e430da67530` |
+| V162 | SN74LVTH182504A | `74LVTH182504APMG4__sn74lvth18504a.pdf` | 43 | 0.86 MB | `025966b873cd942a` |
+| V349 | ADC3544 | `ADC3544IRSBT__adc3544.pdf` | 75 | 3.42 MB | `095874fb14061c23` |
+
+完整 64 位哈希在 `Batch2_PDF_PROVENANCE.csv`（也写进了 XLSX 的 `pdf_provenance` 页），
+同时作为 `sha256` / `page_count` / `size_bytes` 三个字段存进 `page_text.json`，
+机检会用它挡掉"页码超出该 PDF 页数"这种错。
+
+留痕的意义：别人拿到同一批语料，`sha256sum` 一比就知道是不是同一份手册；
+换了一份修订版，哈希变了，Gold 行也就该重核。
+
+## 三、机检脚本 v2.1：把"只查了一半"也堵上
+
+| 检查 | 旧行为 | 现在 |
 | --- | --- | --- |
-| 不验参数名 | 只验 `symbol`，`Input volta`、`VPOS_IN_x` 都能过 | 名字必须在该页原文出现，三级比对（整串 / 去空白 / 逐词），缺词要报出缺哪个 |
-| 数值只认第一个数 | `±2.5` 只验 `2.5`；`-0.5 to 7` 只验左端点；`VCC-0.2` 抠出 `-0.2` | 先分类再验：NUMBER / ±PM / RANGE / FORMULA / WITH_UNIT / TEXT；公式、文字、带单位一律 ERROR |
-| 路径写死 | 依赖 `Gold_Set_v1.1_WORKING.csv` 里的绝对路径 | 只认 CSV 的 `file_name`；PDF 目录按 `--pdf-dir` → `ICPDF_PDF_DIR` → 同目录 `pdfs/` 找，都找不到就退到随包的 `page_text.json`，此时**不需要 PyMuPDF** |
+| 参数名 | 不验 | 必须在本页原文出现；整串→去空白→逐词三级，**带字母边界**（`Input volta` 是 `...input voltage...` 的子串，只用 `in` 会放过去） |
+| 数值类型 | 只认第一个数 | 先分类：NUMBER / ±PM / RANGE / FORMULA / WITH_UNIT / TEXT，公式与文字直接 ERROR |
+| **±PM** | `±2.5` 只验 `2.5` 出现过；页面上只有 `-2.5` 也能过 | **正负号都要真出现**：要么页面印 `±2.5`，要么 `+2.5` 与 `-2.5` 都在。用带符号的正则，不再复用不限符号的 `num_pattern`（它会把 `-2.5` 里的 `2.5` 当成正数） |
+| **RANGE** | 只验两个端点各自在页面上 | 必须匹配 `A to B` / `A ~ B` / `A ... B` / `A - B` 的**完整结构**（允许端点后带单位，真实页面印的是 `-0.5V to 7V`）。两端点分列在两列不算区间 |
+| 路径 | 写死 WORKING.csv | 只认 CSV 的 `file_name`；PDF 目录按 `--pdf-dir`→`ICPDF_PDF_DIR`→`./pdfs` 找，都没有就退到 `page_text.json`，**不需要 PyMuPDF** |
+| 其他 | — | 型号在第 1 页核对、单位需独立出现（`µA` 里的 A 不算）、整行重复、`CONFIRMED` 必须有签名、页码不得超过 PDF 页数 |
 
-另外新增：型号在第 1 页核对（含 `CD54/74HCT574` 这类族名还原）、整行完全重复检测、
-`CONFIRMED` 必须有 `reviewer` 签名、单位必须是"独立出现"而非 `mA` 里的一截。
+**自测 21 例，21/21 通过**（`_selftest_validator_v2.py`）。其中 5 例跑的是**合成页文本**
+（样本 V900），专造"页面只印了一半"的反例：
 
-自测 14 例（`_selftest_validator_v2.py`），每例埋一个已知的错，**14/14 判定正确**：
+| 合成页内容 | 标注 | 期望 |
+| --- | --- | --- |
+| 只有 `-2.5` | `±2.5` | **ERROR** ← 审稿人要求的反例 |
+| `±2.5` | `±2.5` | OK |
+| `+2.5` 与 `-2.5` 分列 | `±2.5` | OK |
+| `-0.5` `7` 分列、无 `to` | `-0.5 to 7` | **ERROR** ← 第二个反例 |
+| `-0.5 to 7` | `-0.5 to 7` | OK |
+
+## 四、人工裁定：3 条空 symbol 已定性，不再是 SUSPECT
+
+`Slew rate`、`Settling time to 0.1%`、`Current Flowing into VSENSEP` 三个参数，
+手册上只印名字、不印符号。CSV 新增 `human_adjudication` 列，这三行填：
 
 ```
-用例 14，通过 14，失败 0
+human_adjudication = ACCEPTED_SOURCE_HAS_NO_SYMBOL
 ```
 
-## 四、跑一遍
-
-```bash
-# 离线（包里没有 PDF 也能跑，靠 page_text.json）
-python validate_annotation.py --csv Batch2_GOLD_v1.csv
-
-# 有 PDF 原件时（能做"这个值到底在哪一页"的建议）
-python validate_annotation.py --csv Batch2_GOLD_v1.csv --pdf-dir /path/to/pdfs
-
-# 自测机检本身有没有失效
-python _selftest_validator_v2.py
-```
-
-本批结果：**OK=21，SUSPECT=3，ERROR=0**。三条 SUSPECT 都是 `symbol` 为空
-（Slew rate / Settling time / Current Flowing into VSENSEP 三个参数手册上只给名字、没给符号），
-不是错误，已标注待 Reviewer 裁定是否补符号。
-
-原始输出见 `validation_report.txt`（机检）、`selftest_report.txt`（自测）。
+机检见到这个裁定码就放行并单独列一节，**OK=24、SUSPECT=0、ERROR=0**；
+裁定码写错（比如 `BOGUS`）或空符号却没填裁定，仍会报错——"没查"和"查过、源头确实没有"必须能区分。
 
 ## 五、CSV 与 XLSX 同源
 
-两者都由 `_freeze_gold.py` 从同一份 rows 生成，写完立刻回读逐格比对：
+`_freeze_gold.py` 是唯一真源：一个 rows 同时写 CSV 和 XLSX，写完回读**逐格比对**，
+不等就非零退出。XLSX 三个页签：`Gold`（数据）、`meta`（源 CSV 的 SHA-256 与行数）、
+`pdf_provenance`（6 件 PDF 的溯源）。改动请改脚本，直接改表会被对账发现。
 
+## 六、提交链：为什么是两个 SHA
+
+- `2725f90` —— **数据提交**：Gold 24 行、机检 v2、截图、全部脚本
+- `2c7881b` —— 它的**子提交**，只新增 `git_evidence_gate6a.txt` 一个文件（`git diff --stat` 可验）
+
+拆两个的原因：4 条指定命令里有一条是 `git status --porcelain=v1`。若把证据文件写进工作区再采集，
+status 会显示 `?? git_evidence_gate6a.txt`，等于自己把自己忽略掉。所以先在 `2725f90` 上清空工作区、
+把证据写到 worktree 之外，采到真正的空 status，再单独提交证据文件。
+
+原始输出见 `git_evidence_commit_chain.txt`：`git cat-file -p 2c7881b` 的 `parent` 行、
+`git rev-parse 2c7881b^`、`git merge-base --is-ancestor` 三条互为印证。
+
+## 七、跑一遍
+
+```bash
+python validate_annotation.py --csv Batch2_GOLD_v1.csv          # 离线：OK=24
+python validate_annotation.py --csv Batch2_GOLD_v1.csv --pdf-dir /path/to/pdfs
+python _selftest_validator_v2.py                                # 自测：21/21
+python _freeze_gold.py                                          # 重新生成 CSV/XLSX 并逐格比对
 ```
-CSV 行数 24，样本 6 件，SHA-256 6f62d79c…（完整值见 meta 页）
-CSV/XLSX 逐格比对：全部一致
-```
 
-XLSX 的 `meta` 页记录了源 CSV 的 SHA-256 与行数，改表不改脚本会被对账发现。
+## 八、已知局限
 
-## 六、保留下来的四条硬规则
-
-1. 参数名必须能在该页原文里原样搜到，不是模型转述、不是条件、不是残词；
-2. `min/typ/max` 只放纯数字（允许 `±` 与 `A to B`），单位一律进 `unit` 列；
-3. 单位必须出现在该页；
-4. 同一参数若按条件（VCC/温度/负载）分组，按条件拆行、条件写进 `condition`。
-
-初稿 82 行剔除 64 行的理由：残词断句（`Input volta`、`Short-Circuit Durati`）、
-把条件当参数名（`VNEG_IN_x`）、数值列塞英文（`Continuous`、`See Thermal Information Table`）、
-表达式而非数值（`MIN(2.1, AVDD+0.3)`、`VCC-0.2`）、同参数重复（V349 SNR 5 行、V145 Input voltage 8 行）。
-
-## 七、已知局限
-
-1. **型号核对只判"封面上有没有这串字"**。ADC3541 就印在 ADC3544 手册第 1 页的
-   Device Comparison 表里，机检拦不住近亲型号，必须看图。
-2. **单位核对是"出现在页面上"级别**。`A` 这种单字母单位，页面正文里随便一个 "a" 就能命中，
-   机检不判错；真正要确认单位对不对，看 `unit` 列语境。
-3. **参数名的语义判断不了**。`VNEG_IN_x` 这种"引脚名当参数名"，机检只能提示
-   "全大写带下划线、疑似引脚名"，是否为条件需人读表。
-4. `confidence_score` 是纯 det 分（VLM 自报恒为 1.00，掺进去只会抹平区分度），
-   **未经校准**，不能当准确率上界。
+1. **型号核对只判"封面上有没有这串字"**。ADC3541 就印在 ADC3544 手册里，拦不住近亲型号，
+   必须看图（`screenshots/` 六张封面）。
+2. **单位核对是"出现在页面上"级别**。`A` 这种单字母单位，正文里随便一个 "a" 就能命中。
+3. **参数名的语义判断不了**。`VNEG_IN_x` 这类引脚名，机检只能提示"全大写带下划线、疑似引脚名"。
+4. `confidence_score` 是纯 det 分（VLM 自报恒为 1.00），未校准，不能当准确率上界。
 5. 分母口径未变：准确率 = Gold `CONFIRMED` 行；漏提取分母 = Gold 应有总数；
    错提取分母 = Parser 输出候选总数。本批不得外推到 28 件全集。
 
-## 八、文件
+## 九、文件
 
 | 文件 | 说明 |
 | --- | --- |
-| `Batch2_GOLD_v1.csv` | 交付 Gold，24 行，UTF-8 带 BOM |
-| `Batch2_GOLD_v1.xlsx` | 同源 Excel，含 `meta` 对账页 |
-| `page_text.json` | 6 件样本第 1 页 + 证据页原文，供离线机检 |
-| `validate_annotation.py` | 机检 v2 |
-| `_selftest_validator_v2.py` | 机检自测 14 例 |
+| `Batch2_GOLD_v1.csv` | 交付 Gold，24 行，UTF-8 带 BOM，含 `device_model` / `human_adjudication` |
+| `Batch2_GOLD_v1.xlsx` | 同源 Excel：`Gold` + `meta` + `pdf_provenance` 三页 |
+| `Batch2_PDF_PROVENANCE.csv` | 6 件 PDF 的 SHA-256 / 页数 / 大小 |
+| `page_text.json` | 第 1 页 + 证据页原文 + 溯源字段，供离线机检 |
+| `validate_annotation.py` | 机检 v2.1 |
+| `_selftest_validator_v2.py` | 自测 21 例（含 5 例合成反例） |
 | `_freeze_gold.py` | CSV/XLSX 同源生成 + 逐格比对 |
-| `_build_page_text.py` | 抽取证据页原文 |
-| `_shots_batch2.py` | 证据截图（封面 + V101 5.9） |
-| `screenshots/*.png` | 8 张证据图 |
-| `git_evidence_gate6a.txt` | Reviewer 指定的 4 条 Git 命令原始输出 |
+| `_build_page_text.py` / `_build_provenance.py` | 抽页原文 / 生成溯源表 |
+| `_shots_batch2.py` + `screenshots/` | 8 张证据图（6 封面 + V101 5.9） |
+| `git_evidence_gate6a.txt` | 4 条指定命令的原始输出 |
+| `git_evidence_commit_chain.txt` | 2725f90 与 2c7881b 的父子关系 |
 | `validation_report.txt` / `selftest_report.txt` | 机检与自测的终端原始输出 |
 | `Batch2_DRAFT_FIXED.csv` | 82 行机器草稿，Gold 的筛选来源 |
 | `_build_batch2_interactive.py` / `_b2_app.js` | 圈选台生成器与前端 |

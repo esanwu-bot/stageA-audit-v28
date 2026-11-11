@@ -1,0 +1,226 @@
+# Gate 6A Batch 2 v1.3 —— Git 证据
+# 采集时间: 2026-11-11 21:20:41 +0800   主机: PC-20260409SKMJ
+# 采集目录: 独立 worktree（--detach origin/feat/gate6a-annotation）
+# 本文件记录两件事：
+#   A. 审稿人指定的 4 条命令，对象 = 数据提交 2725f90（v1.2 的数据就在这个提交里）
+#   B. v1.3 修正提交 5f5cc29525860ef3038a65155f0c5d0db0b317dd 的元数据与干净工作区
+
+##################################################################
+# A. 4 条指定命令（对象：2725f90）
+##################################################################
+
+$ git show -s --format=fuller 2725f90
+==================================================================
+commit 2725f90d64b7d096a64bf5c5fae671d1258e55f3
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 21:03:25 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 21:03:25 2026 +0800
+
+    Gate 6A Batch 2 v1.2：样本身份按封面纠正、机检重构、CSV/XLSX 同源
+    
+    一、样本身份（Reviewer 指出型号对不上）
+    逐个翻开 PDF 封面核对，README 里有 4 处型号写错，已改正并把核对依据写进文档：
+      V097  DEM-OPA（评估板号）→ OPA2830
+      V162  SN74LVTH18504A → SN74LVTH182504A（订购码 74LVTH182504APMG4）
+      V349  ADC3541 → ADC3544
+      V145  DAC7750 → DAC8775
+    V111 统一写成 DS90C189-Q1，V101 统一写成 CD74HCT574。
+    另修正两处被截断的文件名：DAC8775IRWFR.pdf → DAC8775IRWFR__dac8775.pdf，
+    DS90C189TWRTDTQ1.pdf → DS90C189TWRTDTQ1__ds90c189-q1.pdf；脚本现在会断言文件存在。
+    CSV 新增 device_model 列（填封面型号），由第 1 页原文机检核对。
+    注：ADC3541 确实印在 ADC3544 手册第 1 页的 Device Comparison 表里，所以型号判定以标题行为准，
+    证据见 screenshots/ 下 6 张封面图（红框标注型号原文）。
+    
+    二、机检脚本 validate_annotation.py 重构（v2）
+    1. 新增 parameter_name 核验：整串 → 去空白 → 逐词，带字母边界；
+       只用子串判断会让 Input volta 这类截断词混过去，实测已验证。
+    2. 数值先分类再验：NUMBER / ±PM / RANGE / FORMULA / WITH_UNIT / TEXT，
+       ±2.5 要求正负号写法，-0.5 to 7 要求两端点，VCC-0.2 与 MIN(...) 直接判 ERROR。
+    3. 去掉硬编码路径：只认 CSV 的 file_name，PDF 目录依次取 --pdf-dir、ICPDF_PDF_DIR、
+       同目录 pdfs/；都没有则退到随包的 page_text.json，此时不需要 PyMuPDF。
+    4. 新增：单位需独立出现（µA 里的一截 A 不算）、整行重复检测、CONFIRMED 必须有签名。
+    
+    三、CSV 与 XLSX 同源
+    _freeze_gold.py 从一个 rows 真源同时写两个文件，写完回读逐格比对；
+    XLSX meta 页记录源 CSV 的 SHA-256 与行数，改表不改脚本会被对账发现。
+    本次比对结果：全部一致，24 行。
+    
+    四、结果
+    Gold 24 行（V101 按 VCC 拆 9 行 + 其余 15 行）。
+    机检：OK=21 SUSPECT=3 ERROR=0；3 条 SUSPECT 均为 symbol 为空（手册只给名字）。
+    自测 14 例（每例埋一个已知错误）：14/14 判定正确。
+    新增截图脚本 _shots_batch2.py，产出 8 张证据图（6 张封面 + V101 第 3 页 5.9 圈选与放大）。
+    
+    未改动 main，未改动 src/ 下任何代码。
+[exit code: 0]
+
+$ git diff-tree --no-commit-id --name-status -r 2725f90
+==================================================================
+A	workbench/_gate6a_prep/.gitignore
+A	workbench/_gate6a_prep/ANNOTATION_SOP.md
+A	workbench/_gate6a_prep/Batch1_Annotation.csv
+A	workbench/_gate6a_prep/Batch1_Annotation_DRAFT.csv
+A	workbench/_gate6a_prep/Batch1_Annotation_DRAFT.xlsx
+A	workbench/_gate6a_prep/Batch1_Annotation_EXAMPLE.csv
+A	workbench/_gate6a_prep/Batch1_README.md
+A	workbench/_gate6a_prep/Batch1_Sample_Status.csv
+A	workbench/_gate6a_prep/Batch1_Samples.csv
+A	workbench/_gate6a_prep/Batch2_ANNOTATED.csv
+A	workbench/_gate6a_prep/Batch2_ANNOTATED_V2.csv
+A	workbench/_gate6a_prep/Batch2_Annotation_DRAFT.csv
+A	workbench/_gate6a_prep/Batch2_Annotation_DRAFT.xlsx
+A	workbench/_gate6a_prep/Batch2_DRAFT.csv
+A	workbench/_gate6a_prep/Batch2_DRAFT_FIXED.csv
+A	workbench/_gate6a_prep/Batch2_DRAFT_FIXED.xlsx
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+A	workbench/_gate6a_prep/Batch2_Viewer_V3.html
+A	workbench/_gate6a_prep/G7B_MERGE_REPORT.md
+A	workbench/_gate6a_prep/GATE6A_SAMPLE_CANDIDATES.csv
+A	workbench/_gate6a_prep/GOLD_SIZE_AUDIT.md
+A	workbench/_gate6a_prep/Gold_Set_Template.README.md
+A	workbench/_gate6a_prep/Gold_Set_Template.candidates.csv
+A	workbench/_gate6a_prep/Gold_Set_Template.column_roles.csv
+A	workbench/_gate6a_prep/Gold_Set_Template.csv
+A	workbench/_gate6a_prep/Gold_Set_v1.1_WORKING.csv
+A	workbench/_gate6a_prep/IMAGE_ONLY_CANDIDATES.csv
+A	workbench/_gate6a_prep/IMAGE_ONLY_SCAN_REPORT.md
+A	workbench/_gate6a_prep/PUSH_REVIEW_45_COMMITS.md
+A	workbench/_gate6a_prep/README.md
+A	workbench/_gate6a_prep/S01_S03_PAGE_DETAIL.csv
+A	workbench/_gate6a_prep/SCAN_SELECTION_EVIDENCE.md
+A	workbench/_gate6a_prep/_build_batch1.py
+A	workbench/_gate6a_prep/_build_evidence_v11.py
+A	workbench/_gate6a_prep/_build_gold_template.py
+A	workbench/_gate6a_prep/_build_merge_report.py
+A	workbench/_gate6a_prep/_build_page_text.py
+A	workbench/_gate6a_prep/_build_viewer.py
+A	workbench/_gate6a_prep/_capture_merge.py
+A	workbench/_gate6a_prep/_capture_push_review.py
+A	workbench/_gate6a_prep/_check_signed.py
+A	workbench/_gate6a_prep/_draft_batch2.py
+A	workbench/_gate6a_prep/_draft_fill.py
+A	workbench/_gate6a_prep/_freeze_gold.py
+A	workbench/_gate6a_prep/_scan_image_only.py
+A	workbench/_gate6a_prep/_select_supplementary.py
+A	workbench/_gate6a_prep/_selfcheck.py
+A	workbench/_gate6a_prep/_selftest_validator_v2.py
+A	workbench/_gate6a_prep/_shots_batch2.py
+A	workbench/_gate6a_prep/_verify_fullpage.py
+A	workbench/_gate6a_prep/_vl_probe.py
+A	workbench/_gate6a_prep/annotate_fill_metadata.py
+A	workbench/_gate6a_prep/annotate_find_tables.py
+A	workbench/_gate6a_prep/annotate_init_gold_skeletons.py
+A	workbench/_gate6a_prep/annotate_pdf_probe.py
+A	workbench/_gate6a_prep/candidates.jsonl
+A	workbench/_gate6a_prep/draft_extract.json
+A	workbench/_gate6a_prep/full_page_textlayer_verify.json
+A	workbench/_gate6a_prep/page_text.json
+A	workbench/_gate6a_prep/scan_summary.json
+A	workbench/_gate6a_prep/screenshots/V097_cover_OPA2830.png
+A	workbench/_gate6a_prep/screenshots/V101_cover_CD74HCT574E.png
+A	workbench/_gate6a_prep/screenshots/V101_p3_VOH_zoom.png
+A	workbench/_gate6a_prep/screenshots/V101_p3_full_5.9.png
+A	workbench/_gate6a_prep/screenshots/V111_cover_DS90C189-Q1.png
+A	workbench/_gate6a_prep/screenshots/V145_cover_DAC8775.png
+A	workbench/_gate6a_prep/screenshots/V162_cover_SN74LVTH182504A.png
+A	workbench/_gate6a_prep/screenshots/V349_cover_ADC3544.png
+A	workbench/_gate6a_prep/selected_supplementary.json
+A	workbench/_gate6a_prep/selfcheck.json
+A	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
+[exit code: 0]
+
+$ git merge-base origin/main 2725f90
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+[exit code: 0]
+
+$ git status --porcelain=v1
+==================================================================
+[exit code: 0]  （空输出 = 工作区干净）
+
+##################################################################
+# B. v1.3 提交 5f5cc29525860ef3038a65155f0c5d0db0b317dd
+##################################################################
+
+$ git show -s --format=fuller 5f5cc29525860ef3038a65155f0c5d0db0b317dd
+==================================================================
+commit 5f5cc29525860ef3038a65155f0c5d0db0b317dd
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 21:20:20 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 21:20:20 2026 +0800
+
+    Gate 6A Batch 2 v1.3：机检补 PM/RANGE 反例、PDF 溯源留痕、空符号人工裁定
+    
+    一、机检脚本（validate_annotation.py）
+    1. ±PM 分支修掉"只查到负值就放行"：原实现复用不限符号的 num_pattern，
+       它会从 -2.5 里抠出 2.5，于是"正数也在"成立。现改为带符号的正则——
+       要么页面印 ±2.5，要么 +2.5 与 -2.5 同时出现，缺哪边就报缺哪边。
+    2. RANGE 分支不再只验两个端点各自存在：必须匹配 A to B / A ~ B / A ... B / A - B
+       的完整结构，且允许端点后带单位（真实页面印的是 -0.5V to 7V）。
+       两端点分列在两列不算区间，判 ERROR 并说明原因。
+    3. 新增页码上限校验（用溯源里的 page_count 挡越界）。
+    4. 自测从 14 例扩到 21 例，新增 5 例合成页文本（样本 V900）专造反例：
+       页面只有 -2.5 却验 ±2.5、两端点分列却没有 to 结构，都必须报 ERROR。
+       另加"空符号没填裁定码"与"裁定码写错"两例。结果 21/21 通过。
+    
+    二、PDF 溯源
+    新增 Batch2_PDF_PROVENANCE.csv 与 XLSX 的 pdf_provenance 页：
+    6 件 PDF 的 sha256 / page_count / size_bytes。
+    这三个字段同时写进 page_text.json，机检离线也能做页码越界判断。
+    
+    三、空符号的人工裁定
+    Slew rate、Settling time to 0.1%、Current Flowing into VSENSEP 三行，
+    手册只印名字不印符号。CSV 新增 human_adjudication 列，填
+    ACCEPTED_SOURCE_HAS_NO_SYMBOL；机检见此码放行并单列一节，报告里
+    OK=24 SUSPECT=0 ERROR=0。裁定码写错或空符号无裁定仍报错。
+    
+    四、提交链说明
+    新增 git_evidence_commit_chain.txt：给出 2725f90（数据）与 2c7881b（证据）的
+    父子关系原始输出，并解释为什么要拆两个提交——status 那条命令要求工作区干净。
+    
+    五、CSV/XLSX 仍同源
+    _freeze_gold.py 重新生成并逐格比对：全部一致。XLSX 现为 Gold / meta /
+    pdf_provenance 三页。
+    
+    未改动 main，未改动 src/ 下任何代码。
+[exit code: 0]
+
+$ git diff-tree --no-commit-id --name-status -r 5f5cc29525860ef3038a65155f0c5d0db0b317dd
+==================================================================
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+A	workbench/_gate6a_prep/Batch2_PDF_PROVENANCE.csv
+M	workbench/_gate6a_prep/_build_page_text.py
+A	workbench/_gate6a_prep/_build_provenance.py
+M	workbench/_gate6a_prep/_freeze_gold.py
+M	workbench/_gate6a_prep/_selftest_validator_v2.py
+A	workbench/_gate6a_prep/git_evidence_commit_chain.txt
+M	workbench/_gate6a_prep/page_text.json
+M	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
+[exit code: 0]
+
+$ git merge-base origin/main 5f5cc29525860ef3038a65155f0c5d0db0b317dd
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+[exit code: 0]  （= origin/main tip，说明分支从 main 线性长出）
+
+$ git log --format='%h  父=%p  %s' -4 5f5cc29525860ef3038a65155f0c5d0db0b317dd
+==================================================================
+5f5cc29  父=2c7881b  Gate 6A Batch 2 v1.3：机检补 PM/RANGE 反例、PDF 溯源留痕、空符号人工裁定
+2c7881b  父=2725f90  Gate 6A：补入 v1.2 的 Git 证据（对应提交 2725f90）
+2725f90  父=a390a5e  Gate 6A Batch 2 v1.2：样本身份按封面纠正、机检重构、CSV/XLSX 同源
+a390a5e  父=a633bf4  Gate 6A Batch 2 修正：V101 按 VCC 拆成 3×3，Gold 24 行机检 24/24
+[exit code: 0]
+
+$ git status --porcelain=v1
+==================================================================
+[exit code: 0]  （空输出 = 工作区干净）

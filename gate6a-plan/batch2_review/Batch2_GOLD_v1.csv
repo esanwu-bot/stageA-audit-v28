@@ -1,25 +1,25 @@
-﻿sample_no,file_name,device_model,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,confidence_score
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIH,High Level Input Voltage,1.5,,,V,"HC, VCC=2V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIH,High Level Input Voltage,3.15,,,V,"HC, VCC=4.5V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIH,High Level Input Voltage,4.2,,,V,"HC, VCC=6V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIL,Low Level Input Voltage,,,0.5,V,"HC, VCC=2V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIL,Low Level Input Voltage,,,1.35,V,"HC, VCC=4.5V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIL,Low Level Input Voltage,,,1.8,V,"HC, VCC=6V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VOH,High Level Output Voltage CMOS Loads,1.9,,,V,"HC, VCC=2V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VOH,High Level Output Voltage CMOS Loads,4.4,,,V,"HC, VCC=4.5V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VOH,High Level Output Voltage CMOS Loads,5.9,,,V,"HC, VCC=6V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,wuxiaoxian,
-V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,3,Absolute Maximum Ratings,VID,Differential input voltage,,,±2.5,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,8,Electrical Characteristics,,Slew rate,135,220,,V/µs,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 8 页；已剔除残词/非数值/重复行,wuxiaoxian,0.85
-V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,8,Electrical Characteristics,,Settling time to 0.1%,,46,73,ns,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 8 页；已剔除残词/非数值/重复行,wuxiaoxian,0.85
-V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,VCC,"Supply voltage range, VCC",-0.5,,4.6,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,wuxiaoxian,0.85
-V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,VI,"Input voltage range, VI",-0.5,,7,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,wuxiaoxian,0.85
-V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,IO,"Current into any output in the low state, IO",,,96,mA,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,wuxiaoxian,0.85
-V349,ADC3544IRSBT__adc3544.pdf,ADC3544,5,Absolute Maximum Ratings,TJ,Junction temperature,,,105,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 5 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V349,ADC3544IRSBT__adc3544.pdf,ADC3544,5,Absolute Maximum Ratings,Tstg,Storage temperature,-65,,150,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 5 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V349,ADC3544IRSBT__adc3544.pdf,ADC3544,9,Electrical Characteristics,NSD,Noise Spectral Density,,-153,,dBFS/Hz,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 9 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V145,DAC8775IRWFR__dac8775.pdf,DAC8775,12,Electrical Characteristics,PDISS,Power Dissipation (PVDD+AVDD),,0.86,1.1,W,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 12 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V145,DAC8775IRWFR__dac8775.pdf,DAC8775,12,Electrical Characteristics,,Current Flowing into VSENSEP,,,40,nA,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 12 页；已剔除残词/非数值/重复行,wuxiaoxian,0.9
-V145,DAC8775IRWFR__dac8775.pdf,DAC8775,12,Electrical Characteristics,Tsett,Output Voltage Settling Time,,15,,µs,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 12 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V111,DS90C189TWRTDTQ1__ds90c189-q1.pdf,DS90C189-Q1,6,Absolute Maximum Ratings,VDD,Supply Voltage (VDD),-0.3,,2.5,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 6 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V111,DS90C189TWRTDTQ1__ds90c189-q1.pdf,DS90C189-Q1,6,Absolute Maximum Ratings,Tstg,Storage Temperature (Tstg),-65,,150,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 6 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
-V111,DS90C189TWRTDTQ1__ds90c189-q1.pdf,DS90C189-Q1,7,Electrical Characteristics,VOS,Offset Voltage,1.09,1.22,1.36,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 7 页；已剔除残词/非数值/重复行,wuxiaoxian,0.95
+﻿sample_no,file_name,device_model,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,human_adjudication,reviewer,confidence_score
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIH,High Level Input Voltage,1.5,,,V,"HC, VCC=2V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIH,High Level Input Voltage,3.15,,,V,"HC, VCC=4.5V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIH,High Level Input Voltage,4.2,,,V,"HC, VCC=6V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIL,Low Level Input Voltage,,,0.5,V,"HC, VCC=2V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIL,Low Level Input Voltage,,,1.35,V,"HC, VCC=4.5V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VIL,Low Level Input Voltage,,,1.8,V,"HC, VCC=6V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VOH,High Level Output Voltage CMOS Loads,1.9,,,V,"HC, VCC=2V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VOH,High Level Output Voltage CMOS Loads,4.4,,,V,"HC, VCC=4.5V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V101,CD74HCT574EE4__schs183c.pdf,CD74HCT574,3,DC Electrical Specifications,VOH,High Level Output Voltage CMOS Loads,5.9,,,V,"HC, VCC=6V",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；VCC 为 TEST CONDITIONS 列的行条件,,wuxiaoxian,
+V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,3,Absolute Maximum Ratings,VID,Differential input voltage,,,±2.5,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 3 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,8,Electrical Characteristics,,Slew rate,135,220,,V/µs,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 8 页；已剔除残词/非数值/重复行,ACCEPTED_SOURCE_HAS_NO_SYMBOL,wuxiaoxian,0.85
+V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,8,Electrical Characteristics,,Settling time to 0.1%,,46,73,ns,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 8 页；已剔除残词/非数值/重复行,ACCEPTED_SOURCE_HAS_NO_SYMBOL,wuxiaoxian,0.85
+V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,VCC,"Supply voltage range, VCC",-0.5,,4.6,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.85
+V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,VI,"Input voltage range, VI",-0.5,,7,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.85
+V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,IO,"Current into any output in the low state, IO",,,96,mA,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.85
+V349,ADC3544IRSBT__adc3544.pdf,ADC3544,5,Absolute Maximum Ratings,TJ,Junction temperature,,,105,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 5 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V349,ADC3544IRSBT__adc3544.pdf,ADC3544,5,Absolute Maximum Ratings,Tstg,Storage temperature,-65,,150,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 5 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V349,ADC3544IRSBT__adc3544.pdf,ADC3544,9,Electrical Characteristics,NSD,Noise Spectral Density,,-153,,dBFS/Hz,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 9 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V145,DAC8775IRWFR__dac8775.pdf,DAC8775,12,Electrical Characteristics,PDISS,Power Dissipation (PVDD+AVDD),,0.86,1.1,W,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 12 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V145,DAC8775IRWFR__dac8775.pdf,DAC8775,12,Electrical Characteristics,,Current Flowing into VSENSEP,,,40,nA,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 12 页；已剔除残词/非数值/重复行,ACCEPTED_SOURCE_HAS_NO_SYMBOL,wuxiaoxian,0.9
+V145,DAC8775IRWFR__dac8775.pdf,DAC8775,12,Electrical Characteristics,Tsett,Output Voltage Settling Time,,15,,µs,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 12 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V111,DS90C189TWRTDTQ1__ds90c189-q1.pdf,DS90C189-Q1,6,Absolute Maximum Ratings,VDD,Supply Voltage (VDD),-0.3,,2.5,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 6 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V111,DS90C189TWRTDTQ1__ds90c189-q1.pdf,DS90C189-Q1,6,Absolute Maximum Ratings,Tstg,Storage Temperature (Tstg),-65,,150,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 6 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
+V111,DS90C189TWRTDTQ1__ds90c189-q1.pdf,DS90C189-Q1,7,Electrical Characteristics,VOS,Offset Voltage,1.09,1.22,1.36,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 7 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95

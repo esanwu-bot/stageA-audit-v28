@@ -1,24 +1,33 @@
-# 机检脚本自测  2026-11-11 21:01:32 +0800
+# 机检脚本自测  2026-11-11 21:19:06 +0800
 # $ python _selftest_validator_v2.py
+# 前 16 例跑真实页文本，后 5 例跑合成页文本（样本 V900），
+# 合成用例专验'页面只印了一半'的反例：只有 -2.5 却验 ±2.5、两端点分列却没有 to 结构。
 
-========================================================================================
-用例                                           期望       实测       结果
-========================================================================================
-原样 Gold 行（V101 VIH 1.5V @2V）                 OK       OK       PASS
-参数名被截断成残词 volta                              SUSPECT  SUSPECT  PASS
-把条件当参数名 VNEG_IN_x                            SUSPECT  SUSPECT  PASS
-数值写公式 VCC-0.2                                ERROR    ERROR    PASS
-数值写 MIN(2.1, AVDD+0.3)                       ERROR    ERROR    PASS
-数值写 Continuous                               ERROR    ERROR    PASS
-数值混单位 0.5V                                   ERROR    ERROR    PASS
-正负值 ±2.5（应识别为 PM 并命中）                        OK       OK       PASS
-范围 -0.5 to 7（应识别两端点）                         OK       OK       PASS
-值 5.9 填错页（p1 是封面）                            ERROR    ERROR    PASS
-整行与第 2 行完全重复                                 SUSPECT  SUSPECT  PASS
-CONFIRMED 却没签名                               ERROR    ERROR    PASS
-单位写成页面上没有的 dBm                               ERROR    ERROR    PASS
-型号写成不存在的 ADC9999                             SUSPECT  SUSPECT  PASS
-========================================================================================
-用例 14，通过 14，失败 0
+============================================================================================
+用例                                               期望       实测       结果
+============================================================================================
+原样 Gold 行（V101 VIH 1.5V @2V）                     OK       OK       PASS
+参数名被截断成残词 volta                                  SUSPECT  SUSPECT  PASS
+把条件当参数名 VNEG_IN_x                                SUSPECT  SUSPECT  PASS
+数值写公式 VCC-0.2                                    ERROR    ERROR    PASS
+数值写 MIN(2.1, AVDD+0.3)                           ERROR    ERROR    PASS
+数值写 Continuous                                   ERROR    ERROR    PASS
+数值混单位 0.5V                                       ERROR    ERROR    PASS
+正负值 ±2.5（真实页面就印 ±2.5）                            OK       OK       PASS
+范围 -0.5 to 7（真实页面有该结构）                           OK       OK       PASS
+值 5.9 填错页（p1 是封面）                                ERROR    ERROR    PASS
+整行与第 2 行完全重复                                     SUSPECT  SUSPECT  PASS
+CONFIRMED 却没签名                                   ERROR    ERROR    PASS
+单位写成页面上没有的 dBm                                   ERROR    ERROR    PASS
+型号写成不存在的 ADC9999                                 SUSPECT  SUSPECT  PASS
+空符号但没填裁定码                                        SUSPECT  SUSPECT  PASS
+裁定码写成不存在的 BOGUS                                  ERROR    ERROR    PASS
+反例：页面只有 -2.5，验 ±2.5 必须报错                         ERROR    ERROR    PASS
+正例：页面写着 ±2.5                                     OK       OK       PASS
+正例：页面分列 +2.5 与 -2.5                              OK       OK       PASS
+反例：两端点分列、没有 to 结构，验范围必须报错                        ERROR    ERROR    PASS
+正例：页面写着 -0.5 to 7                                OK       OK       PASS
+============================================================================================
+用例 21（真实页文本 16 + 合成页文本 5），通过 21，失败 0
 
 [exit code: 0]

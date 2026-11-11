@@ -1,16 +1,10 @@
-# 机检原始输出  2026-11-11 21:01:29 +0800
+# 机检原始输出  2026-11-11 21:19:03 +0800
 # $ python validate_annotation.py --csv Batch2_GOLD_v1.csv --pdf-dir <语料目录>
 
 ==============================================================================
 标注机检 v2  Batch2_GOLD_v1.csv   行数 24   样本 6
 页文本来源: PDF 原件
 ==============================================================================
-[SUSPECT  ] 行12   V097  
-            - symbol 为空（允许，但会降低可追溯性）
-[SUSPECT  ] 行13   V097  
-            - symbol 为空（允许，但会降低可追溯性）
-[SUSPECT  ] 行21   V145  
-            - symbol 为空（允许，但会降低可追溯性）
 [OK      ] 行2    V101  
 [OK      ] 行3    V101  
 [OK      ] 行4    V101  
@@ -21,6 +15,8 @@
 [OK      ] 行9    V101  
 [OK      ] 行10   V101  
 [OK      ] 行11   V097  
+[OK      ] 行12   V097  
+[OK      ] 行13   V097  
 [OK      ] 行14   V162  
 [OK      ] 行15   V162  
 [OK      ] 行16   V162  
@@ -28,13 +24,19 @@
 [OK      ] 行18   V349  
 [OK      ] 行19   V349  
 [OK      ] 行20   V145  
+[OK      ] 行21   V145  
 [OK      ] 行22   V145  
 [OK      ] 行23   V111  
 [OK      ] 行24   V111  
 [OK      ] 行25   V111  
 
+人工裁定（human_adjudication）：
+  行12   V097   Slew rate                                ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行13   V097   Settling time to 0.1%                    ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V145   Current Flowing into VSENSEP             ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
 数值分类: 数值=33  正负值=1
-统计: OK=21  SUSPECT=3
+统计: OK=24
 
 无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
 
@@ -43,11 +45,17 @@
 # 离线模式（无 PDF，仅靠 page_text.json）
 # $ python validate_annotation.py --csv Batch2_GOLD_v1.csv
 
+[OK      ] 行22   V145  
 [OK      ] 行23   V111  
 [OK      ] 行24   V111  
 [OK      ] 行25   V111  
 
+人工裁定（human_adjudication）：
+  行12   V097   Slew rate                                ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行13   V097   Settling time to 0.1%                    ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V145   Current Flowing into VSENSEP             ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
 数值分类: 数值=33  正负值=1
-统计: OK=21  SUSPECT=3
+统计: OK=24
 
 无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。

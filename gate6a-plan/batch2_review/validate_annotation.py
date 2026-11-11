@@ -79,16 +79,21 @@ def nos(s):
     return SPACE_RE.sub("", unify(s)).lower()
 
 
+def num_body(num):
+    """把一个数字串变成"容忍 PDF 把 1.75 抽成 1 . 75"的正则体，并剥掉尾零。"""
+    core = num
+    if "." in core:
+        core = core.rstrip("0").rstrip(".")
+    return r"\s*".join(re.escape(ch) for ch in core)
+
+
 def num_pattern(val):
     """数字的宽松正则：容忍 `1 . 75` 这种被拆开的抽取，剥尾零，两侧不许贴数字。"""
     v = collapse(val)
     m = re.search(r"-?" + NUM_BODY, v)
     if not m:
         return None
-    core = m.group(0)
-    if "." in core:
-        core = core.rstrip("0").rstrip(".")
-    body = r"\s*".join(re.escape(ch) for ch in core)
+    body = num_body(m.group(0))
     return re.compile(r"(?<![\d.])" + body + r"0*(?![\d.])")
 
 
@@ -187,9 +192,16 @@ class Pages(object):
         self.cache[key] = text
         return text
 
-    def page_count(self, sno):
-        if self.mode == "pdf" and sno in self.docs:
-            return self.docs[sno].page_count
+    def page_count(self, sno, file_name=None):
+        if self.mode == "pdf":
+            import fitz
+            if sno not in self.docs and file_name:
+                try:
+                    self.docs[sno] = fitz.open(str(self.pdf_dir / file_name))
+                except Exception:
+                    return None
+            if sno in self.docs:
+                return self.docs[sno].page_count
         if self.mode == "json":
             node = (self.json.get("samples") or {}).get(sno) or {}
             return node.get("page_count")
@@ -267,7 +279,14 @@ def check_name(name, ptext):
     return ("SUSPECT" if ratio >= 0.6 else "ERROR"), msg
 
 
-def check_symbol(sym, ptext):
+ADJ_NO_SYMBOL = "ACCEPTED_SOURCE_HAS_NO_SYMBOL"
+ADJ_KNOWN = {ADJ_NO_SYMBOL}
+
+
+def check_symbol(sym, ptext, adjudication=""):
+    """符号核验。手册只印名字不印符号时，允许用人工裁定码放行——
+    但要留痕：裁定码写进 CSV 的 human_adjudication 列，报告里单独列一节，
+    这样"没查"和"查过、源头确实没有"能区分开。"""
     """符号核验。
 
     表格里符号和相邻单元格是"粘"在一起的（`VIH` 右边紧跟 `-0.02`），
@@ -275,7 +294,10 @@ def check_symbol(sym, ptext):
     先按原样（带空格）判一次边界，再退回子串包含。
     """
     if not sym:
-        return "SUSPECT", "symbol 为空（允许，但会降低可追溯性）"
+        adj = (adjudication or "").strip()
+        if adj == ADJ_NO_SYMBOL:
+            return "OK", ""
+        return "SUSPECT", "symbol 为空且没有人工裁定（需填 human_adjudication）"
     s = nos(sym)
     if re.search(BOUND_L + re.escape(s) + BOUND_R, collapse(ptext).lower()):
         return "OK", ""
@@ -328,25 +350,48 @@ def check_value(col, val, ptext_coll, pages, sno, file_name):
         return "ERROR", "%s=%s 本页找不到（也没有别页命中）" % (col, raw), kind
 
     if kind == "PM":
-        if pm_pattern(nums[0]).search(ptext_coll):
-            return "OK", "", kind
-        # ± 也可能被排版成 +2.5 / -2.5 两处
-        plus = num_pattern(nums[0]).search(ptext_coll)
-        minus = re.search(r"(?<![\d.])-\s*" + r"\s*".join(re.escape(ch) for ch in nums[0]),
-                          ptext_coll)
-        if plus and minus:
-            return "OK", "本页以 +%s / -%s 分列印出" % (nums[0], nums[0]), kind
-        return "ERROR", "%s=±%s 本页找不到完整正负号写法" % (col, nums[0]), kind
+        core = nums[0]
+        body = num_body(core)
+        # 写法一：页面上就是 ±2.5
+        if re.search(r"[±]\s*" + body + r"0*(?![\d.])", ptext_coll):
+            return "OK", "本页印作 ±%s" % core, kind
+        # 写法二：分列成 +2.5 与 -2.5。两侧正负号都必须真的出现——
+        # 只找到一个 -2.5 时，num_pattern 会从里面抠出 2.5 从而误判为"正数也在"，
+        # 所以这里必须用带符号的正则，不能复用不限符号的 num_pattern。
+        plus_rx = re.compile(r"(?<![\d.+])\+\s*" + body + r"0*(?![\d.])")
+        minus_rx = re.compile(r"(?<![\d.])-\s*" + body + r"0*(?![\d.])")
+        has_plus = plus_rx.search(ptext_coll) is not None
+        has_minus = minus_rx.search(ptext_coll) is not None
+        if has_plus and has_minus:
+            return "OK", "本页以 +%s / -%s 分列印出" % (core, core), kind
+        lack = []
+        if not has_plus:
+            lack.append("正号（+%s 或无符号的 %s）" % (core, core))
+        if not has_minus:
+            lack.append("负号（-%s）" % core)
+        return ("ERROR", "%s=±%s 本页缺 %s，不能证明是正负对称" %
+                (col, core, "、".join(lack)), kind)
 
     if kind == "RANGE":
-        miss = []
-        for n in nums:
-            rx = num_pattern(n)
-            if not rx or not rx.search(ptext_coll):
-                miss.append(n)
+        lo, hi = nums[0], nums[1]
+        # 结构化匹配：必须是 "A to B" / "A ~ B" / "A ... B" / "A - B"（连字符要求两侧有空格，
+        # 否则会和负数自身的负号混淆）。只验两个数字各自存在是不够的：
+        # 表格里两列分别印 -0.5 和 7，也满足"两端点都在"，但那不是一个区间。
+        # 端点和分隔符之间可能夹着单位（真实页面印的是 `-0.5V to 7V`），
+        # 所以两端各允许一段短的单位尾巴，否则会把规范写法判成没有结构。
+        unit_tail = r"(?:\s*[A-Za-z%\u00b0\u00b5\u03a9/]{1,6})?"
+        sep = (r"(?:" + unit_tail + r"\s+(?:to|through)\s*"
+               r"|\s*~\s*|\s*\.\.\.\s*"
+               r"|" + unit_tail + r"\s+-\s+)")
+        rx = re.compile(r"(?<![\d.])" + num_body(lo) + r"0*" + sep
+                        + num_body(hi) + r"0*(?![\d.])")
+        if rx.search(ptext_coll):
+            return "OK", "本页以 A to B 结构印出", kind
+        miss = [n for n in nums if not (num_pattern(n) and num_pattern(n).search(ptext_coll))]
         if miss:
             return "ERROR", "%s=%s 的端点本页找不到: %s" % (col, raw, ",".join(miss)), kind
-        return "OK", "两端点均命中", kind
+        return ("ERROR", "%s=%s 两个端点都在页面上，但没有 'A to B' 这样的区间结构"
+                "（可能分属两列或两行），不能证明是同一个区间" % (col, raw), kind)
 
     return "ERROR", "%s=%s 无法归类" % (col, raw), kind
 
@@ -419,6 +464,12 @@ def main():
             verdicts.append(("ERROR", idx, sno, ["evidence_page 不是整数"]))
             continue
 
+        pc = pages.page_count(sno, fname)
+        if pc and page > pc:
+            verdicts.append(("ERROR", idx, sno,
+                             ["evidence_page=%d 超出该 PDF 页数 %d" % (page, pc)]))
+            continue
+
         ptext = pages.page_text(sno, fname, page)
         if ptext is None:
             verdicts.append(("CANNOT_VERIFY", idx, sno,
@@ -436,8 +487,12 @@ def main():
         if nmsg and nv != "OK":
             (problems if nv == "ERROR" else notes).append("参数名: " + nmsg)
 
-        # 2) 符号
-        sv, smsg = check_symbol((r.get("symbol") or "").strip(), ptext)
+        # 2) 符号（空符号可用人工裁定码放行）
+        adj = (r.get("human_adjudication") or "").strip()
+        if adj and adj not in ADJ_KNOWN:
+            problems.append("human_adjudication=%s 不是已知裁定码（可选：%s）"
+                            % (adj, ", ".join(sorted(ADJ_KNOWN))))
+        sv, smsg = check_symbol((r.get("symbol") or "").strip(), ptext, adj)
         if smsg:
             (problems if sv == "ERROR" else notes).append(smsg)
 
@@ -525,6 +580,16 @@ def main():
         print("[%-9s] 行%-4d %-6s" % (verdict, idx, sno))
         for m in msgs:
             print("            - %s" % m)
+
+    adjudged = [(i, r) for i, r in enumerate(rows, start=2)
+                if (r.get("human_adjudication") or "").strip()]
+    if adjudged:
+        print()
+        print("人工裁定（human_adjudication）：")
+        for i, r in adjudged:
+            print("  行%-4d %-6s %-40s %s"
+                  % (i, r.get("sample_no"), (r.get("parameter_name") or "")[:40],
+                     r.get("human_adjudication")))
 
     print()
     if kinds:

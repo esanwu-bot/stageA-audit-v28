@@ -49,8 +49,18 @@ FILES = {
 COLS = [
     "sample_no", "file_name", "device_model", "evidence_page", "table_title",
     "symbol", "parameter_name", "min_value", "typ_value", "max_value",
-    "unit", "condition", "row_status", "notes", "reviewer", "confidence_score",
+    "unit", "condition", "row_status", "notes", "human_adjudication",
+    "reviewer", "confidence_score",
 ]
+
+# 手册上只印名字、不印符号的三个参数。人工裁定：接受，源头就没有符号。
+# 留空会被机检当作"symbol 缺失"反复报警，写明裁定码才能区分"没查"和"查过、接受"。
+NO_SYMBOL_OK = {
+    "Slew rate",
+    "Settling time to 0.1%",
+    "Current Flowing into VSENSEP",
+}
+ADJ_CODE = "ACCEPTED_SOURCE_HAS_NO_SYMBOL"
 
 
 def load_rows():
@@ -62,6 +72,10 @@ def load_rows():
         sno = r["sample_no"].strip()
         r["device_model"] = MODELS[sno][1]
         r["file_name"] = FILES[sno]
+        if not r.get("symbol") and r.get("parameter_name") in NO_SYMBOL_OK:
+            r["human_adjudication"] = ADJ_CODE
+        elif r.get("human_adjudication") not in (ADJ_CODE,):
+            r["human_adjudication"] = ""
         if not (PDF_DIR / r["file_name"]).exists():
             raise SystemExit("文件不存在，先核对文件名: %s" % r["file_name"])
         out.append({c: (r.get(c) or "") for c in COLS})
@@ -115,6 +129,24 @@ def write_xlsx(rows, csv_sha):
         meta.append([k, v])
     meta.column_dimensions["A"].width = 20
     meta.column_dimensions["B"].width = 70
+
+    # PDF 溯源单独一页：样本 → 文件 → SHA-256 → 页数。
+    # 数据来自 page_text.json（_build_provenance.py 摊平），不在这里重算哈希。
+    prov = PREP / "Batch2_PDF_PROVENANCE.csv"
+    if prov.exists():
+        ps = wb.create_sheet("pdf_provenance")
+        with open(prov, encoding="utf-8-sig", newline="") as fh:
+            pr = list(csv.reader(fh))
+        for row in pr:
+            ps.append(row)
+        for c in ps[1]:
+            c.font = Font(bold=True, color="FFFFFF")
+            c.fill = head_fill
+            c.alignment = Alignment(horizontal="center", wrap_text=True)
+        for k, v in (("A", 10), ("B", 18), ("C", 46), ("D", 66), ("E", 11), ("F", 12)):
+            ps.column_dimensions[k].width = v
+        ps.freeze_panes = "A2"
+
     wb.save(OUT_XLSX)
 
 
