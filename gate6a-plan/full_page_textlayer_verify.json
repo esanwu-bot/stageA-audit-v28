@@ -1,0 +1,540 @@
+{
+  "method": "PyMuPDF 逐页 get_text('text')；阈值 20 字符，与 Gate 1 一致",
+  "parser_invoked": false,
+  "llm_called": false,
+  "overall": "PASS",
+  "samples": [
+    {
+      "sample_no": "S01",
+      "file_name": "CY74FCT162827CTPAC__CYPRS379-1.pdf",
+      "sha256": "0e0ac847ab07cb9141a1c5ef79106a4895ffa6360932b258ea108fb4e5d6d07e",
+      "page_count": 6,
+      "pages_probed": 6,
+      "is_encrypted": false,
+      "max_chars_per_page": 0,
+      "total_chars": 0,
+      "min_image_area_ratio": 1.0,
+      "verdict": "IMAGE_ONLY_CONFIRMED",
+      "pages": [
+        {
+          "page": 1,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 2,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 3,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 4,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 5,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 6,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        }
+      ]
+    },
+    {
+      "sample_no": "S02",
+      "file_name": "ATOPA4343NA_2K5__BURRS00055-1.pdf",
+      "sha256": "055b0c8e47e82529c6579eb928962b9c0a3ae61de7e11c1c5a37c51d37eddc14",
+      "page_count": 11,
+      "pages_probed": 11,
+      "is_encrypted": false,
+      "max_chars_per_page": 0,
+      "total_chars": 0,
+      "min_image_area_ratio": 1.0,
+      "verdict": "IMAGE_ONLY_CONFIRMED",
+      "pages": [
+        {
+          "page": 1,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 2,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 3,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 4,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 5,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 6,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 7,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 8,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 9,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 10,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 11,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        }
+      ]
+    },
+    {
+      "sample_no": "S03",
+      "file_name": "32P4752-CGT__SISYD006-4-73.pdf",
+      "sha256": "6712c9281cfe063bf77280233022a46781428dc2c0fee20cba5b1cb12afbfe40",
+      "page_count": 53,
+      "pages_probed": 53,
+      "is_encrypted": false,
+      "max_chars_per_page": 0,
+      "total_chars": 0,
+      "min_image_area_ratio": 0.997,
+      "verdict": "IMAGE_ONLY_CONFIRMED",
+      "pages": [
+        {
+          "page": 1,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 2,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 3,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 4,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 5,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 6,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 7,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 8,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 9,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 10,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.9973
+        },
+        {
+          "page": 11,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 12,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 13,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.9976
+        },
+        {
+          "page": 14,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 15,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 1.0
+        },
+        {
+          "page": 16,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.9976
+        },
+        {
+          "page": 17,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 18,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 19,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 20,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 21,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 22,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 23,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 24,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 25,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 26,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 27,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 28,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 29,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 30,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.9999
+        },
+        {
+          "page": 31,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 32,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 33,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 34,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 35,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 36,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 37,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 38,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 39,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 40,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 41,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 42,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 43,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 44,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 45,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 46,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 47,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 48,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 49,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 50,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 51,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 52,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        },
+        {
+          "page": 53,
+          "chars": 0,
+          "image_objects": 1,
+          "image_draw_instances": 1,
+          "image_area_ratio": 0.997
+        }
+      ]
+    }
+  ]
+}

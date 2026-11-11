@@ -1,0 +1,76 @@
+{
+  "generated_at_note": "由 _selfcheck.py 生成",
+  "overall": "PASS",
+  "checks": {
+    "d_prime_intersection": {
+      "formal_samples": 30,
+      "d_prime_change_records": 193,
+      "intersection_count": 0,
+      "intersection": [],
+      "verdict": "PASS",
+      "meaning": "0 命中即 D' 不改变这 30 件的分类结论，样本集不会因 D' 上线失效"
+    },
+    "text_layer_of_pool": {
+      "pool_350_distribution": {
+        "TRUE": 350
+      },
+      "formal_30_distribution": {
+        "TRUE": 30
+      },
+      "verdict": "PASS",
+      "meaning": "350 池内不存在真扫描件，故 PAIN-08 必须靠池外补充"
+    },
+    "supplementary_exclusion": {
+      "rows": [
+        {
+          "sample_no": "S01",
+          "file_name": "CY74FCT162827CTPAC__CYPRS379-1.pdf",
+          "in_350_pool_by_sha": false,
+          "in_350_pool_by_name": false,
+          "in_d_prime_change_set": false,
+          "page1_text_chars": 0,
+          "sampled_chars": 0
+        },
+        {
+          "sample_no": "S02",
+          "file_name": "ATOPA4343NA_2K5__BURRS00055-1.pdf",
+          "in_350_pool_by_sha": false,
+          "in_350_pool_by_name": false,
+          "in_d_prime_change_set": false,
+          "page1_text_chars": 0,
+          "sampled_chars": 0
+        },
+        {
+          "sample_no": "S03",
+          "file_name": "32P4752-CGT__SISYD006-4-73.pdf",
+          "in_350_pool_by_sha": false,
+          "in_350_pool_by_name": false,
+          "in_d_prime_change_set": false,
+          "page1_text_chars": 0,
+          "sampled_chars": 0
+        }
+      ],
+      "verdict": "PASS",
+      "meaning": "3 件均在 350 池外、D' 变化集外，且实测抽样页文本为 0 字符"
+    },
+    "template_consistency": {
+      "rows": 33,
+      "set_role_counts": {
+        "FORMAL": 29,
+        "DIAGNOSTIC_ONLY": 1,
+        "SUPPLEMENTARY": 3
+      },
+      "diagnostic_only_samples": [
+        "V022"
+      ],
+      "expected": {
+        "FORMAL": 29,
+        "DIAGNOSTIC_ONLY": 1,
+        "SUPPLEMENTARY": 3
+      },
+      "verdict": "PASS"
+    }
+  },
+  "parser_invoked": false,
+  "llm_called": false
+}

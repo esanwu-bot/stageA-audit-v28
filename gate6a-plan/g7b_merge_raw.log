@@ -1,0 +1,157 @@
+==============================================================================
+G7b 合入终端证据（只读命令逐条执行）
+repo      : E:\workspace\icpdf-extractor
+recorded  : 2026-11-11T12:16:22
+==============================================================================
+
+### 合并动作发生当时现场记录（PRE-MERGE，不可事后重算）
+  main_sha                 6f3e58d51e6e4278e623171251f055474de8ae0a
+  head_sha                 60a503cc8015ef9bfb27ddef1685e41593f3a75f
+  branch                   feat/s2b-schema-d4-d6
+  commits_ahead            17
+  commits_behind           0
+  classifier_py_sha256     28b9f0bfc1b23f27f6b170b00c4651a0ba5a9baad35c375d2434e9fd07ee7d5b
+  cli_py_sha256            c288bffa1d0ac87d31624b3b9727dc23f5f3c51f7d8905625cb68d77c7f3a2a4
+  r1_supplement_sha256     e9c766500d3d28e292d302465b95b5c4c3018e9ac710c50c51314c52c2311ae7
+
+### 合并后现场执行（POST-MERGE）
+
+$ git rev-parse main
+60a503cc8015ef9bfb27ddef1685e41593f3a75f
+[EXIT=0]
+
+$ git rev-parse HEAD
+60a503cc8015ef9bfb27ddef1685e41593f3a75f
+[EXIT=0]
+
+$ git rev-parse --abbrev-ref HEAD
+main
+[EXIT=0]
+
+$ git status --porcelain=v1
+ M src/icpdf/cli.py
+ M workbench/_classifier_revision/R1_PRIME_SUPPLEMENT.md
+?? .workbuddy-ai/
+?? .workbuddy/
+?? _premerge_backup/
+?? backstage/
+?? docs/Document_Classifier_V2_Design.md
+?? docs/archive/
+?? docs/v2_2_1_review/
+?? "docs/\346\226\271\346\241\210\350\256\250\350\256\272.txt"
+?? "docs/\346\243\200\346\237\245\351\224\231\350\257\257\346\270\205\345\215\225.txt"
+?? icpdf_c6_verify.bundle
+?? "review \346\211\247\350\241\214\346\270\205\345\215\225.md"
+?? tests/unit/test_classification_processpool_sim.py
+?? tests/unit/test_classification_v2.py
+?? tests/unit/test_env_redact.py
+?? tools/stage_a/
+?? tools/stage_b/
+?? workbench.html
+?? workbench/LOCALHOST_SMOKE_REPORT.md
+?? workbench/PARSER_CALL_CHAIN.md
+?? workbench/SHA256SUMS.txt
+?? workbench/WORKBENCH_CODE_CHANGES.md
+?? workbench/WORKBENCH_P1P2_FIX.diff
+?? workbench/WORKBENCH_P1P2_FIX_REPORT.md
+?? workbench/_classifier_revision/CALIBER_AND_FINDINGS.md
+?? workbench/_classifier_revision/CALLSITE_AUDIT.md
+?? workbench/_classifier_revision/COMPARISON_REPORT.md
+?? workbench/_classifier_revision/R1_PRIME_OVERTURN.md
+?? workbench/_classifier_revision/R1_prime_harm_76.csv
+?? workbench/_classifier_revision/VARIANT_changes.csv
+?? workbench/_classifier_revision/_ads1299_pack.py
+?? workbench/_classifier_revision/_build_csv.py
+?? workbench/_classifier_revision/_d_prime/
+?? workbench/_classifier_revision/_d_prime_check.py
+?? workbench/_classifier_revision/_git_ancestry_verify/
+?? workbench/_classifier_revision/_http_probe_v1_v4/
+?? workbench/_classifier_revision/_impact_demote/
+?? workbench/_classifier_revision/_impact_full/
+?? workbench/_classifier_revision/_impact_guard/
+?? workbench/_classifier_revision/_impact_guardonly/
+?? workbench/_classifier_revision/_impact_matrix/
+?? workbench/_classifier_revision/_logs/
+?? workbench/_classifier_revision/_scan_demote.py
+?? workbench/_classifier_revision/_scan_dprime.py
+?? workbench/_classifier_revision/_scan_guard.py
+?? workbench/_classifier_revision/_scan_guardonly.py
+?? workbench/_classifier_revision/_scan_impact.py
+?? workbench/_classifier_revision/_scan_matrix.py
+?? workbench/_classifier_revision/_trace_case.py
+?? workbench/_classifier_revision/ads1299/
+?? workbench/_classifier_revision/affected_samples.csv
+?? workbench/_classifier_revision/caliber_stats.json
+?? workbench/_deps/
+?? workbench/_diff/
+?? workbench/_doc_verify/
+?? workbench/_gate6a_prep/
+?? workbench/_guard/
+?? workbench/_probe_evm/
+?? workbench/_probe_v002_v022/
+?? workbench/_probe_v002_v022_slim/
+?? workbench/_smoke/
+?? workbench/_smoke_frozen_r2/
+?? workbench/_verify_p1p2_static.py
+?? workbench/classify_worker.py
+?? workbench/index.html
+?? workbench/parse_worker.py
+?? workbench/serve_parser.py
+?? workbench/uploads/
+[EXIT=0]
+
+$ git -c core.whitespace=cr-at-eol diff --check 60a503c^ 60a503c
+[EXIT=0]
+
+$ git merge-base --is-ancestor 60a503c main
+[EXIT=0]
+
+$ git rev-list --count main..60a503c
+0
+[EXIT=0]
+
+$ git rev-list --count 60a503c..main
+0
+[EXIT=0]
+
+$ git log -1
+commit 60a503cc8015ef9bfb27ddef1685e41593f3a75f
+Author: esan <esan.wu@gmail.com>
+Date:   Wed Nov 11 10:36:39 2026 +0800
+
+    G7b: D' —— 板级证据足以裁决时抑制 DS_PRODUCT_MODEL_TITLE
+    
+    最小修订，只动一条规则的参与权，不动参数传递、不动 Parser、不动 8 项白名单、
+    不动 assert_route_invariant。
+    
+    抑制前提（_board_decisive）：
+    - EVM_BOARD_SCHEMATIC，或
+    - EVM_BOARD_TITLE 的 EVAL_MODULE / EVAL_BOARD / DEV_KIT 三组
+    明确排除：USER_GUIDE 组、DOCNUMBER_UG、EVM_BOARD_TERMS、EVM_BODY_MENTION。
+    
+    抑制动作：把 DS_PRODUCT_MODEL_TITLE 的命中从 hits 中移除，并写入
+    rejected_rules，reason code = overridden_by_board_evidence。
+    仅当 ds_title 全部由该规则构成时才抑制；DS_DOCUMENT_TITLE 在场时仍走档 5 冲突。
+    
+    定向验收 8/8 PASS（含 V1/V2/V3 修复，V4 致命反例不变，V5-V8 真 DS 不降级）。
+    全量 11,355 份离线回归：193 份变化，全部 UNKNOWN/REVIEW -> EVM/QUARANTINE，
+    EVM 退出隔离区 0、非 DS 进 Parser 0、真 DS 降级 0，打开失败 0。
+    
+    文件 sha256（修改后）= 28b9f0bfc1b23f27f6b170b00c4651a0ba5a9baad35c375d2434e9fd07ee7d5b
+[EXIT=0]
+
+$ git log --oneline -5
+60a503c G7b: D' —— 板级证据足以裁决时抑制 DS_PRODUCT_MODEL_TITLE
+35cd8a1 G7a: 纳入 classification 包基线（D' 之前的原始状态）
+55da906 G6: replace R1 blacklist with parameter-source fix (R1' supplement)
+3ed22a4 C6: never let a failed cleanup mask the original write error
+a48c771 C5: clean up the temp file when write_json fails to rename
+[EXIT=0]
+
+### 合并后关键文件 SHA-256（工作区实测）
+  src/icpdf/classification/classifier.py                   28b9f0bfc1b23f27f6b170b00c4651a0ba5a9baad35c375d2434e9fd07ee7d5b
+  src/icpdf/cli.py                                         c288bffa1d0ac87d31624b3b9727dc23f5f3c51f7d8905625cb68d77c7f3a2a4
+  workbench/_classifier_revision/R1_PRIME_SUPPLEMENT.md    e9c766500d3d28e292d302465b95b5c4c3018e9ac710c50c51314c52c2311ae7
+
+### HEAD 中 classifier.py 对象哈希（不读工作区）
+  2918bc63823bc9283b06818480bc831e564e5377

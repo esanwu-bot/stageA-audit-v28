@@ -1,0 +1,811 @@
+{
+  "corpus": "E:\\workspace\\IcPdfParser\\data\\pdfs",
+  "total_pdf": 11355,
+  "elapsed_sec": 817.1,
+  "text_threshold_chars": 20,
+  "sample_pages_cap": 8,
+  "counts": {
+    "valid_true": 11355,
+    "valid_false": 0,
+    "encrypted_true": 0,
+    "image_only_true": 79,
+    "image_only_false": 11276,
+    "excluded_encrypted": 0,
+    "excluded_empty": 0
+  },
+  "candidates": [
+    {
+      "name": "32F8103-CN__SISYD004-4-33.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32F8103-CN__SISYD004-4-33.pdf",
+      "sha256": "6da3ee5d622a070de2acaf6f97ff04c01b56e64644183d71b397e5015edff83c",
+      "page_count": 12,
+      "size_bytes": 315373,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "32F8120-CLR__SISYD005-8-33.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32F8120-CLR__SISYD005-8-33.pdf",
+      "sha256": "6e9491f61d798c35362e6abd1f61a5408bb313fe73874dd708704d4a2ebaf109",
+      "page_count": 8,
+      "size_bytes": 224189,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "32F8120-CL__SISYD005-8-33.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32F8120-CL__SISYD005-8-33.pdf",
+      "sha256": "6e9491f61d798c35362e6abd1f61a5408bb313fe73874dd708704d4a2ebaf109",
+      "page_count": 8,
+      "size_bytes": 224189,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "32F8130-CL__SISYD005-8-41.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32F8130-CL__SISYD005-8-41.pdf",
+      "sha256": "5567b1529d15934d4273137c53d6063fea00cb1fe41d3b09ea21b8a1182b0bb2",
+      "page_count": 8,
+      "size_bytes": 272065,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "32P4742-CGT__SISYD006-4-7.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32P4742-CGT__SISYD006-4-7.pdf",
+      "sha256": "6a657c3bc0796922ebc2ba11e82e84d27fac6739cba8cdbb8e0fea2aa4728433",
+      "page_count": 53,
+      "size_bytes": 1488294,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "32P4752-CGT__SISYD006-4-73.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32P4752-CGT__SISYD006-4-73.pdf",
+      "sha256": "6712c9281cfe063bf77280233022a46781428dc2c0fee20cba5b1cb12afbfe40",
+      "page_count": 53,
+      "size_bytes": 1502553,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "32P4782A-CGT__SISYD004-5-249.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\32P4782A-CGT__SISYD004-5-249.pdf",
+      "sha256": "9326cf7fd3ed4c3f65ff8f0157e8f845cd48f33136056d98dd2ab086967ab3d8",
+      "page_count": 43,
+      "size_bytes": 1371274,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-8869401RA__TXIID036-2-615.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-8869401RA__TXIID036-2-615.pdf",
+      "sha256": "78c98122a372bc158b9415ff3856558d70880b356169bdcb54fc9c3465489b33",
+      "page_count": 4,
+      "size_bytes": 98255,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-8968001RA__5962-89680B.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-8968001RA__5962-89680B.pdf",
+      "sha256": "426dddec9f9342b16a98b3b4276d2afe7a8cecc2e4915e18a291034acef7c8a4",
+      "page_count": 13,
+      "size_bytes": 876927,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-8968001SA__5962-89680B.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-8968001SA__5962-89680B.pdf",
+      "sha256": "426dddec9f9342b16a98b3b4276d2afe7a8cecc2e4915e18a291034acef7c8a4",
+      "page_count": 13,
+      "size_bytes": 876927,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-89681012A__5962-89681C.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-89681012A__5962-89681C.pdf",
+      "sha256": "2c8ff3a713d41cc0cb8d7dd91f4f7f756ed9493f4154779c0f42583c33b38b5f",
+      "page_count": 15,
+      "size_bytes": 788207,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-8968101RA__5962-89681C.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-8968101RA__5962-89681C.pdf",
+      "sha256": "2c8ff3a713d41cc0cb8d7dd91f4f7f756ed9493f4154779c0f42583c33b38b5f",
+      "page_count": 15,
+      "size_bytes": 788207,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-8968101SA__5962-89681C.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-8968101SA__5962-89681C.pdf",
+      "sha256": "2c8ff3a713d41cc0cb8d7dd91f4f7f756ed9493f4154779c0f42583c33b38b5f",
+      "page_count": 15,
+      "size_bytes": 788207,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9050601RA__TXIID038-2-279.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9050601RA__TXIID038-2-279.pdf",
+      "sha256": "b5c27e45b4afe7adcd23725e47fdf5af908130d45af524452ffcd47dbfe6492b",
+      "page_count": 4,
+      "size_bytes": 111847,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-90604012A__5962-90604A.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-90604012A__5962-90604A.pdf",
+      "sha256": "e7d7b763485998d991342d5507f2ea58b3a2b0648ea68f4f557ed9ac3c120b72",
+      "page_count": 13,
+      "size_bytes": 362134,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9060402CA__5962-90604A.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9060402CA__5962-90604A.pdf",
+      "sha256": "e7d7b763485998d991342d5507f2ea58b3a2b0648ea68f4f557ed9ac3c120b72",
+      "page_count": 13,
+      "size_bytes": 362134,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-90604052A__5962-90604A.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-90604052A__5962-90604A.pdf",
+      "sha256": "e7d7b763485998d991342d5507f2ea58b3a2b0648ea68f4f557ed9ac3c120b72",
+      "page_count": 13,
+      "size_bytes": 362134,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9086101QPA__5962-90861A.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9086101QPA__5962-90861A.pdf",
+      "sha256": "d32fa791efed586cf4a366b2aff8a52347bc6179ca5890ebc72b365ce9d4af3b",
+      "page_count": 13,
+      "size_bytes": 654957,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9460101QXA__5962-94601B.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9460101QXA__5962-94601B.pdf",
+      "sha256": "439f0f70e1c309caf27e6a61fb0d367689c0bcbb712c36593d8e32281deb099b",
+      "page_count": 26,
+      "size_bytes": 1238518,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9558201QEA__TXIID004-3-583.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9558201QEA__TXIID004-3-583.pdf",
+      "sha256": "5325957f90a57488ff613bfa9af14e4042ec4e15058f9388829610437d7efe1e",
+      "page_count": 6,
+      "size_bytes": 210688,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9676801QCA__sn54abt125.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9676801QCA__sn54abt125.pdf",
+      "sha256": "110c6c96bc00ff14fe95066466388cd3052ee1afdcaf5bab25e89a60bd5338ba",
+      "page_count": 25,
+      "size_bytes": 3494009,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "5962-9681501QXA__TXIID012-8-33.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\5962-9681501QXA__TXIID012-8-33.pdf",
+      "sha256": "b3df28b819ccf0704e65ba65d491adfc25e0a3a09dce9899dd534e04ceee6d21",
+      "page_count": 6,
+      "size_bytes": 171396,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "74AC16245DGG__TXIID033-3-33.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\74AC16245DGG__TXIID033-3-33.pdf",
+      "sha256": "85ea3573a5092cb5545d8b6d18933fbf822fc3ebd18e73fdaec971339c627129",
+      "page_count": 6,
+      "size_bytes": 139140,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "74ALVCH16543DL__PHGLD00149-6-68.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\74ALVCH16543DL__PHGLD00149-6-68.pdf",
+      "sha256": "9f64cea6fc561cb24dc85b31e4acd7d6a3ba1bd2532e55a5db41219ced0a15b5",
+      "page_count": 5,
+      "size_bytes": 180412,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "8607601EA__sn54hc163.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\8607601EA__sn54hc163.pdf",
+      "sha256": "c5d70463f52cda5c62e5f6afaa05522676ee5395df608a149645776d99901697",
+      "page_count": 28,
+      "size_bytes": 4087130,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "AD7528MJB__TXIIS145836-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\AD7528MJB__TXIIS145836-1.pdf",
+      "sha256": "f08ae8b7de0a8806b4c6f500ceded4f5662870ee31c32f65dc8018a3385abbc9",
+      "page_count": 14,
+      "size_bytes": 792443,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "ADC0808MFKB__TXIIS178299-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\ADC0808MFKB__TXIIS178299-1.pdf",
+      "sha256": "c28d38fb6a6a7f8aba2088ef077603059ee1242022638bdfb9a94dbd552a64bd",
+      "page_count": 7,
+      "size_bytes": 356167,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "ADC76JG-1__d0009172.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\ADC76JG-1__d0009172.pdf",
+      "sha256": "2efae82c9ae6a5c35cd0072cba18e693cec975752b41d3eaafaf3f3d3d493f15",
+      "page_count": 8,
+      "size_bytes": 875196,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "AM26S11CD__TXIIS144689-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\AM26S11CD__TXIIS144689-1.pdf",
+      "sha256": "cfb51603fc980a6a6f7fbd96aa8904dba67d11aee6cbc706e82f887a8ae27ec3",
+      "page_count": 7,
+      "size_bytes": 326097,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "ARRIAV-TI-ADAPTER__ARRIA_V-TI_ADAPTER-ASY_C_Dwg.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\ARRIAV-TI-ADAPTER__ARRIA_V-TI_ADAPTER-ASY_C_Dwg.pdf",
+      "sha256": "fad11b5dce8501114adb9f54ea81f5c3484dee849ae753acc1a404a7093a6105",
+      "page_count": 1,
+      "size_bytes": 31674,
+      "page1_chars": 0,
+      "sample_pages": 1,
+      "sample_chars": 0
+    },
+    {
+      "name": "ATOPA4343NA_2K5__BURRS00055-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\ATOPA4343NA_2K5__BURRS00055-1.pdf",
+      "sha256": "055b0c8e47e82529c6579eb928962b9c0a3ae61de7e11c1c5a37c51d37eddc14",
+      "page_count": 11,
+      "size_bytes": 677523,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74AC191E__TXIIS01219-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74AC191E__TXIIS01219-1.pdf",
+      "sha256": "781329b0bba570517634446233eff4794d25139cade0d97e4a8df0b58a5e4235",
+      "page_count": 10,
+      "size_bytes": 293736,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74FCT240M96__HRISD033-8-23.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74FCT240M96__HRISD033-8-23.pdf",
+      "sha256": "36d7cd351433fb5b9a05ae40394abaf735c9944963c7a7a4f67c95a62c2caa44",
+      "page_count": 5,
+      "size_bytes": 143315,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74FCT540E__HRISD033-8-48.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74FCT540E__HRISD033-8-48.pdf",
+      "sha256": "78d80f1edea3e634734291db03350302bf594bf115133b9a36827eac436cd439",
+      "page_count": 5,
+      "size_bytes": 135182,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74FCT573M__HRISD033-8-62.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74FCT573M__HRISD033-8-62.pdf",
+      "sha256": "2d4be1c6196ddd92e697410b108a4baebc46b7e65e606060dd670d01796f9dc6",
+      "page_count": 5,
+      "size_bytes": 149301,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74FCT646EN__HRISD033-8-67.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74FCT646EN__HRISD033-8-67.pdf",
+      "sha256": "de4b95d680541b218801803943a503648da72e8ac42428e28a567551e06ad143",
+      "page_count": 5,
+      "size_bytes": 161846,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74HC00ADBLE__HRISSE18-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74HC00ADBLE__HRISSE18-1.pdf",
+      "sha256": "3e875f81b3f78767b80efb3acd51dee48dfc9707e3c8775d803c4a1ed9503153",
+      "page_count": 5,
+      "size_bytes": 102844,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CD74HC161E__HRISS01005-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CD74HC161E__HRISS01005-1.pdf",
+      "sha256": "58e296aef1e5ab0d1f61200723bd6878e6201b3e7784433efc837fe1d5779536",
+      "page_count": 9,
+      "size_bytes": 202561,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CDC208-7DW__TXIIS140464-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CDC208-7DW__TXIIS140464-1.pdf",
+      "sha256": "c4cef5b30cd2fbde44e486cbbf9cd8e81b69ef1c29be19e8a16c4fc79493291f",
+      "page_count": 10,
+      "size_bytes": 483473,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT138ATQC__CYPRS249-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT138ATQC__CYPRS249-1.pdf",
+      "sha256": "3fd74d01223c388cab6b7035f9ebd041e2f9f6dde73a5f8028baa70cf4c8ee5e",
+      "page_count": 6,
+      "size_bytes": 131636,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT138CTQC__CYPRS249-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT138CTQC__CYPRS249-1.pdf",
+      "sha256": "3fd74d01223c388cab6b7035f9ebd041e2f9f6dde73a5f8028baa70cf4c8ee5e",
+      "page_count": 6,
+      "size_bytes": 131636,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162373ATPAC__CYPRS371-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162373ATPAC__CYPRS371-1.pdf",
+      "sha256": "253a22c8da926733529da8d3ecc122bdebf0a088d76da3ea25ef437c3f081f38",
+      "page_count": 6,
+      "size_bytes": 149423,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162374ETPAC__CYPRS11315-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162374ETPAC__CYPRS11315-1.pdf",
+      "sha256": "df75ebffb98afdd5271cb3ac7a42f8f39c8018da827e0aef53ea0f9ff6be23c8",
+      "page_count": 6,
+      "size_bytes": 368005,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT16245ETPVC__CYPRS11203-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT16245ETPVC__CYPRS11203-1.pdf",
+      "sha256": "41991706d14d33130c796c91c3374d5d7040f24f7174fd9f86733ef345a12bf6",
+      "page_count": 7,
+      "size_bytes": 469851,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT16245TPAC__CYPRS370-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT16245TPAC__CYPRS370-1.pdf",
+      "sha256": "f12b20cfb78adad16815dd8510732f00e3b1fa346287b8d615259b2f26880876",
+      "page_count": 7,
+      "size_bytes": 189882,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162501ATPAC__CYPRS374-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162501ATPAC__CYPRS374-1.pdf",
+      "sha256": "49cebedf775d62758267a36a8f96a3c7af73f3d8a746f0ccd699419468285329",
+      "page_count": 7,
+      "size_bytes": 182551,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162543CTPAC__CYPRS00707-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162543CTPAC__CYPRS00707-1.pdf",
+      "sha256": "8b392a539e262b1169edb6b80bfed3fe09619a3fbdaa01c76688a8825a310345",
+      "page_count": 6,
+      "size_bytes": 170698,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162543ETPVC__CYPRS00707-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162543ETPVC__CYPRS00707-1.pdf",
+      "sha256": "8b392a539e262b1169edb6b80bfed3fe09619a3fbdaa01c76688a8825a310345",
+      "page_count": 6,
+      "size_bytes": 170698,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162646ATPAC__CYPRS376-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162646ATPAC__CYPRS376-1.pdf",
+      "sha256": "37417c02ab7d99433b9aa407f49909251fe538d0ae74022f25972f4e2df5c181",
+      "page_count": 8,
+      "size_bytes": 190350,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162823ATPAC__CYPRS378-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162823ATPAC__CYPRS378-1.pdf",
+      "sha256": "b2d0d3057137acb580ab807df92a345630cc4a530ccd9c1296b3ca8335268398",
+      "page_count": 7,
+      "size_bytes": 177099,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT162827CTPAC__CYPRS379-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT162827CTPAC__CYPRS379-1.pdf",
+      "sha256": "0e0ac847ab07cb9141a1c5ef79106a4895ffa6360932b258ea108fb4e5d6d07e",
+      "page_count": 6,
+      "size_bytes": 149887,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT163245APACT__CYPRS196-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT163245APACT__CYPRS196-1.pdf",
+      "sha256": "80d11a30e0a3a75d22b04fb49682d3edbf35e6d6669a666da649373b54f7e47d",
+      "page_count": 5,
+      "size_bytes": 144963,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT163245CPAC__CYPRS11280-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT163245CPAC__CYPRS11280-1.pdf",
+      "sha256": "e4c0806f83dd934d27aaf5cce21dc32b2398df5fa34c228d1abb657e15a14d57",
+      "page_count": 6,
+      "size_bytes": 450049,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT163543CPACT__CYPRS197-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT163543CPACT__CYPRS197-1.pdf",
+      "sha256": "9ba38e36f43c479fe3f2500fe9be4b1f5af4b6536aa0640086e1f66879746f9d",
+      "page_count": 5,
+      "size_bytes": 143428,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT16374CTPAC__CYPRS372-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT16374CTPAC__CYPRS372-1.pdf",
+      "sha256": "e7a0ca759df9872f5ba37b982080d292e8a9d41996a084c76dec8088eabc0e90",
+      "page_count": 6,
+      "size_bytes": 149331,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT16646ETPVCT__CYPRS376-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT16646ETPVCT__CYPRS376-1.pdf",
+      "sha256": "37417c02ab7d99433b9aa407f49909251fe538d0ae74022f25972f4e2df5c181",
+      "page_count": 8,
+      "size_bytes": 190350,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT16646ETPVC__CYPRS11311-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT16646ETPVC__CYPRS11311-1.pdf",
+      "sha256": "8b85759e26710abc7716869f67cd71e8171b9b152f837550a78f11d93ffb3574",
+      "page_count": 8,
+      "size_bytes": 465747,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT2374ATQC__TXIIS180437-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT2374ATQC__TXIIS180437-1.pdf",
+      "sha256": "4946a22c752b68cd429a728130f28ff3ac49d6cdd98c50c5ff532bfc17ba2f1d",
+      "page_count": 7,
+      "size_bytes": 278275,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT240CTQC__TXIIS180414-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT240CTQC__TXIIS180414-1.pdf",
+      "sha256": "72d3bf8f6950ea0f2408cc7b864bd8f4a9e1113f2960bed0facf017a9b803430",
+      "page_count": 2,
+      "size_bytes": 162090,
+      "page1_chars": 0,
+      "sample_pages": 2,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT245DTQC__CYPRS251-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT245DTQC__CYPRS251-1.pdf",
+      "sha256": "2b006a5576f4d2757a8833489b7fd82299e96475ce6e610f6361d946bf5ff467",
+      "page_count": 6,
+      "size_bytes": 138979,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT2541ATQC__TXIIS180435-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT2541ATQC__TXIIS180435-1.pdf",
+      "sha256": "e35402f9db2e3174259aca57a898f92a60e306e88bcae6c237add360dad4d8b8",
+      "page_count": 6,
+      "size_bytes": 275981,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT2543TQC__TXIIS180434-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT2543TQC__TXIIS180434-1.pdf",
+      "sha256": "57d06d9453167b41d368a6d40ab4ad9a8bd9ec75afe669e67e92115336204b41",
+      "page_count": 5,
+      "size_bytes": 268455,
+      "page1_chars": 0,
+      "sample_pages": 5,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT2574TSOCG4__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT2574TSOCG4__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT257ATD__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT257ATD__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT257CTDR__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT257CTDR__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT257CTD__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT257CTD__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT257CTSOCT__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT257CTSOCT__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT257CTSOC__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT257CTSOC__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT257TQCT__CYPRS11426-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT257TQCT__CYPRS11426-1.pdf",
+      "sha256": "e5ce30642f436be6c9ab3f33abd1e423559d6bfcdc21b04c885e2b490b3dde4c",
+      "page_count": 4,
+      "size_bytes": 265973,
+      "page1_chars": 0,
+      "sample_pages": 4,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT2652ATQC__CYPRS458-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT2652ATQC__CYPRS458-1.pdf",
+      "sha256": "602058dfeff10521aaf4235bcb0fdf309fc260d1418cca155045c4f536d6e800",
+      "page_count": 6,
+      "size_bytes": 152868,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT540CTQC__CYPRS09559-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT540CTQC__CYPRS09559-1.pdf",
+      "sha256": "25fb443e4eda134b4e59c0d142aaacd564af5e1f7b1f5009923f1cf8b09065a3",
+      "page_count": 7,
+      "size_bytes": 381075,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT543CTQC__CYPRS257-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT543CTQC__CYPRS257-1.pdf",
+      "sha256": "6affcfc4f376412f46d2a02c8c8c0efd4b5cbbcaeeea1b28b8abbe2f8041aacc",
+      "page_count": 8,
+      "size_bytes": 160066,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "CY74FCT841CTQC__CYPRS263-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\CY74FCT841CTQC__CYPRS263-1.pdf",
+      "sha256": "9a8ee0fc7ad5f44fd33fbb83304a59929613fc4a46df119a22ecd9c71fba23b1",
+      "page_count": 7,
+      "size_bytes": 145805,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "DAC1214U__BURRD005-3.134.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DAC1214U__BURRD005-3.134.pdf",
+      "sha256": "82546de714c6b8ad1eebed5d7ee070017006152a352b53e5e2bcbf6e88c5726e",
+      "page_count": 7,
+      "size_bytes": 187041,
+      "page1_chars": 0,
+      "sample_pages": 7,
+      "sample_chars": 0
+    },
+    {
+      "name": "DS7831WB__NATLS12684-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DS7831WB__NATLS12684-1.pdf",
+      "sha256": "82c100473ff45be8241fd607c64c64e1b4fb3febbfe733d0d5a17c66c34e6d24",
+      "page_count": 11,
+      "size_bytes": 405516,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    },
+    {
+      "name": "DS7832AW__TXIIS144712-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DS7832AW__TXIIS144712-1.pdf",
+      "sha256": "ebc6c6a4864ed28e4a749c883edf97f0b2bd81d8b145fd0af0263449ed0bcf7d",
+      "page_count": 6,
+      "size_bytes": 378637,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "DS7832FK__TXIIS144712-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DS7832FK__TXIIS144712-1.pdf",
+      "sha256": "ebc6c6a4864ed28e4a749c883edf97f0b2bd81d8b145fd0af0263449ed0bcf7d",
+      "page_count": 6,
+      "size_bytes": 378637,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "DS7832JB__TXIIS144712-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\DS7832JB__TXIIS144712-1.pdf",
+      "sha256": "ebc6c6a4864ed28e4a749c883edf97f0b2bd81d8b145fd0af0263449ed0bcf7d",
+      "page_count": 6,
+      "size_bytes": 378637,
+      "page1_chars": 0,
+      "sample_pages": 6,
+      "sample_chars": 0
+    },
+    {
+      "name": "HPC46083TXQ_V30_SP108663__NATLS05009-1.pdf",
+      "path": "E:\\workspace\\IcPdfParser\\data\\pdfs\\HPC46083TXQ_V30_SP108663__NATLS05009-1.pdf",
+      "sha256": "cdac12113eb0d2c4c0b8d9f90c9317a419ef98336c986c7bc101e63a966d4a60",
+      "page_count": 33,
+      "size_bytes": 2573312,
+      "page1_chars": 0,
+      "sample_pages": 8,
+      "sample_chars": 0
+    }
+  ],
+  "parser_invoked": false,
+  "llm_called": false,
+  "run_artifacts_written": false
+}
