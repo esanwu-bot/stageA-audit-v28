@@ -1,0 +1,15 @@
+{
+  "population": 11355,
+  "open_errors": 0,
+  "changed_files": 193,
+  "harm": {
+    "evm_lost": 0,
+    "leak_to_parser": 0,
+    "ds_demoted": 0,
+    "other": 193
+  },
+  "transitions": {
+    "UNKNOWN/REVIEW -> EVM/QUARANTINE": 193
+  },
+  "suppressed_files": 193
+}

@@ -1,0 +1,334 @@
+{
+  "cases": [
+    {
+      "file": "ADC08060EVM__slau715a.pdf",
+      "note": "V1 缺陷样本：靠 EVAL_MODULE 抑制",
+      "A": {
+        "doc_type": "UNKNOWN",
+        "route": "REVIEW",
+        "confidence": "low",
+        "semantic": "UNKNOWN",
+        "conflict": true,
+        "candidate": "slau715a",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "conflict": false,
+        "candidate": "slau715a",
+        "rejected": [
+          {
+            "rule_id": "DS_PRODUCT_MODEL_TITLE",
+            "matched_text": "ADC08xx0 Evaluation Module User's Guide (Rev. A) User's Guide 1 SLAU715A–February 2017–Revised July 2017 Submit Document",
+            "reason": "overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); 评估板标题里的芯片型号不代表本文档是 Datasheet",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_PRODUCT_MODEL_TITLE",
+            "matched_text": "ADC08xx0 Evaluation Module User's Guide (Rev. A) User's Guide 1 SLAU715A–February 2017–Revised July 2017 Submit Document",
+            "reason": "overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "features",
+            "reason": "overridden by board evidence (CONNECTOR/EVAL_MODULE/JUMPER/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          }
+        ]
+      },
+      "expected": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE"
+      },
+      "pass": true
+    },
+    {
+      "file": "BQ25570EVM-206__sluuaa7a.pdf",
+      "note": "V2 对照：本就有 SCHEMATIC",
+      "A": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "conflict": false,
+        "candidate": "sluuaa7a",
+        "rejected": [
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "Features",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "General Description",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "Features",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "General Description",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "features",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          }
+        ]
+      },
+      "D_prime": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "conflict": false,
+        "candidate": "sluuaa7a",
+        "rejected": [
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "Features",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "General Description",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "Features",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "General Description",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "features",
+            "reason": "overridden by board evidence (BOM/EVAL_MODULE/JUMPER/SCHEMATIC/TEST_POINTS/USER_GUIDE); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          }
+        ]
+      },
+      "expected": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE"
+      },
+      "pass": true
+    },
+    {
+      "file": "DS10CP154TSQX_NOPB__DS10CP154.pdf",
+      "note": "V3 边界：只有 EVM_BOARD_SCHEMATIC",
+      "A": {
+        "doc_type": "UNKNOWN",
+        "route": "REVIEW",
+        "confidence": "low",
+        "semantic": "UNKNOWN",
+        "conflict": true,
+        "candidate": "DS10CP154",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "high",
+        "semantic": "EVM",
+        "conflict": false,
+        "candidate": "DS10CP154",
+        "rejected": [
+          {
+            "rule_id": "DS_PRODUCT_MODEL_TITLE",
+            "matched_text": "DS10CP154  1.5 Gbps 4x4 LVDS Crosspoint Switch DS10CP154 August 19, 2008 DS10CP154 1.5 Gbps 4x4 LVDS Crosspoint Switch G",
+            "reason": "overridden by board evidence (SCHEMATIC); 评估板标题里的芯片型号不代表本文档是 Datasheet",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_PRODUCT_MODEL_TITLE",
+            "matched_text": "DS10CP154  1.5 Gbps 4x4 LVDS Crosspoint Switch DS10CP154 August 19, 2008 DS10CP154 1.5 Gbps 4x4 LVDS Crosspoint Switch G",
+            "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "pinout",
+            "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "Features",
+            "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          },
+          {
+            "rule_id": "DS_ELECTRICAL_SECTIONS",
+            "matched_text": "General Description",
+            "reason": "overridden by board evidence (SCHEMATIC); IC 参数不能代表整板",
+            "code": "overridden_by_board_evidence"
+          }
+        ]
+      },
+      "expected": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE"
+      },
+      "pass": true
+    },
+    {
+      "file": "DRV2700EVM__slyu023.pdf",
+      "note": "V4 致命反例：不得因抑制而改变",
+      "A": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "medium",
+        "semantic": "EVM",
+        "conflict": false,
+        "candidate": "slyu023",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE",
+        "confidence": "medium",
+        "semantic": "EVM",
+        "conflict": false,
+        "candidate": "slyu023",
+        "rejected": []
+      },
+      "expected": {
+        "doc_type": "EVM",
+        "route": "QUARANTINE"
+      },
+      "pass": true
+    },
+    {
+      "file": "CC2500EMK__cc2500.pdf",
+      "note": "V5 真 DS：不得降级",
+      "A": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "cc2500",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "cc2500",
+        "rejected": []
+      },
+      "expected": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE"
+      },
+      "pass": true
+    },
+    {
+      "file": "DRV8262VEVM__drv8262.pdf",
+      "note": "V6 真 DS（EVM 式文件名）：不得降级",
+      "A": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "drv8262",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "drv8262",
+        "rejected": []
+      },
+      "expected": {
+        "doc_type": null,
+        "route": null
+      },
+      "pass": true
+    },
+    {
+      "file": "CC31XXEMUBOOST__cc3100.pdf",
+      "note": "V7 真 DS（EMUBOOST 式文件名）：不得降级",
+      "A": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "cc3100",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "cc3100",
+        "rejected": []
+      },
+      "expected": {
+        "doc_type": null,
+        "route": null
+      },
+      "pass": true
+    },
+    {
+      "file": "CD4098BE-NG__cd4098b.pdf",
+      "note": "V8 真 DS：不得降级",
+      "A": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "cd4098b",
+        "rejected": []
+      },
+      "D_prime": {
+        "doc_type": "DS_STRONG",
+        "route": "IC_PARSE",
+        "confidence": "high",
+        "semantic": "IC_DATASHEET",
+        "conflict": false,
+        "candidate": "cd4098b",
+        "rejected": []
+      },
+      "expected": {
+        "doc_type": null,
+        "route": null
+      },
+      "pass": true
+    }
+  ],
+  "failures": [],
+  "pass": true
+}
