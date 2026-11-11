@@ -232,6 +232,34 @@ async def _fake_run_child(script, spec, timeout):
 
 再叠加 L3：即使 worker 被绕过父进程拉起，它也在 `import parse_pdf` 之前退出。
 
+### 4.1 补充证据：真实子进程验证（不只是 `runpy` 同进程）
+
+用例 4 用 `runpy` 在**同一进程**里跑 worker，能证明「未 import parser」，但证明不了「独立进程的退出码传播」。为此补一次真实子进程验证（**不涉及任何 PDF**）：
+
+```bash
+# A：开哨兵，spec 故意给非法内容
+$ ICEX_CLASSIFY_ONLY=1 py -3.13 workbench/parse_worker.py '{"bogus": true}'
+[WORKER] WORKER_STARTED
+[WORKER] SAFETY_BLOCKED
+{"ok": false, "safety_blocked": true, "parser_call_entered": false,
+ "error_type": "SafetyBlocked", "stages": ["WORKER_STARTED", "SAFETY_BLOCKED"]}
+exit=3
+
+# B：反向对照，同一非法 spec，不设哨兵
+$ env -u ICEX_CLASSIFY_ONLY py -3.13 workbench/parse_worker.py '{"bogus": true}'
+[WORKER] WORKER_STARTED
+[WORKER] WORKER_EXCEPTION
+{"ok": false, "error_type": "KeyError", "error": "'src_dir'", ...}
+exit=1
+```
+
+两处关键推断：
+
+1. **A 中 spec 是非法内容，却完全没有 JSON / KeyError 报错**——证明哨兵在 `json.loads(argv[1])` **之前**就已退出，位置符合设计。
+2. **B 报的是 `KeyError: 'src_dir'`**，说明进程本来会继续深入读 spec；A 与 B 的唯一差异就是一个环境变量，拦截是条件性的。
+
+两次运行的 stdout 中都没有 `[WORKER] PARSER_MODULE_IMPORTED` / `PARSER_CALL_ENTERED` / `PARSER_CALL_RETURNED` 任一标记。原始输出见 `_l3_subprocess_proof.log`。
+
 ---
 
 ## 5. 静态验收：61/61 PASS（新增 S-11 ~ S-18）
@@ -313,6 +341,7 @@ async def _fake_run_child(script, spec, timeout):
 | `_verify_p1p2_static.py` | 静态验收脚本（61 项，含 S-11~S-18） |
 | `_pytest_guard.log` | 单测原始输出（5 passed） |
 | `_p1p2_static_verify_guard.log` | 静态验收原始输出（61/61 PASS） |
+| `_l3_subprocess_proof.log` | L3 真实子进程验证（A 拦截 / B 反向对照） |
 | `SHA256SUMS.txt` | 本目录文件校验和 |
 
 > 父目录 `gate6/r2_p1p2_fix/` 的 `SHA256SUMS.txt` **保持不变**——它描述的是 Reviewer 已审阅的冻结快照。本目录是**增量**，自带 manifest。

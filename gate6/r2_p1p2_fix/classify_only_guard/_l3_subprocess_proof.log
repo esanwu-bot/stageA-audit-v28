@@ -1,0 +1,44 @@
+# L3 真实子进程验证（非 runpy 同进程）
+# 目的：证明 parse_worker.py 作为独立进程被拉起时，ICEX_CLASSIFY_ONLY=1 会让它在
+#       读取 spec 之前就退出（exit 3），且不产生任何 PARSER_* 阶段标记。
+# 本验证不涉及任何 PDF，不调用 parse_pdf()。
+
+================================================================
+A. ICEX_CLASSIFY_ONLY=1   spec 故意给非法内容 '{"bogus": true}'
+   若哨兵位置在 json.loads 之后，这里必然报 JSON/KeyError —— 它没有。
+================================================================
+$ ICEX_CLASSIFY_ONLY=1 py -3.13 workbench/parse_worker.py '{"bogus": true}'
+[WORKER] WORKER_STARTED
+[WORKER] SAFETY_BLOCKED
+__ICEX_PARSE_JSON_BEGIN__
+{"ok": false, "safety_blocked": true, "parser_call_entered": false, "error_type": "SafetyBlocked", "error": "ICEX_CLASSIFY_ONLY=1：parse_worker 拒绝执行；parse_pdf() 未被调用", "stages": ["WORKER_STARTED", "SAFETY_BLOCKED"]}
+__ICEX_PARSE_JSON_END__
+exit=3
+
+--- stderr（应为空）---
+
+================================================================
+B. 反向对照：不设 ICEX_CLASSIFY_ONLY，同一非法 spec
+   证明该进程本来会继续深入（走到读 spec 才失败），拦截是条件性的。
+================================================================
+$ env -u ICEX_CLASSIFY_ONLY py -3.13 workbench/parse_worker.py '{"bogus": true}'
+[WORKER] WORKER_STARTED
+[WORKER] WORKER_EXCEPTION
+__ICEX_PARSE_JSON_BEGIN__
+{"ok": false, "error_type": "KeyError", "error": "'src_dir'", "parser_call_entered": false, "stages": ["WORKER_STARTED", "WORKER_EXCEPTION"]}
+__ICEX_PARSE_JSON_END__
+exit=1
+
+================================================================
+判定
+================================================================
+A 与 B 的差异只来自一个环境变量：
+  A: exit=3, stages=[WORKER_STARTED, SAFETY_BLOCKED], error_type=SafetyBlocked
+  B: exit=1, stages=[WORKER_STARTED, WORKER_EXCEPTION], error_type=KeyError('src_dir')
+
+两次运行的 stdout 中都【没有】出现以下任一标记：
+  [WORKER] PARSER_MODULE_IMPORTED   （紧跟 from icpdf.parser.pipeline import parse_pdf）
+  [WORKER] PARSER_CALL_ENTERED
+  [WORKER] PARSER_CALL_RETURNED
+即：A 中 parse_pdf 连符号都未被加载；B 中尚未走到该行就已因 spec 缺字段失败。
+两者均证明 parse_pdf() 调用次数 = 0。

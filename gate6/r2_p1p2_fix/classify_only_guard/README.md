@@ -9,6 +9,7 @@
 | 看结论与三层拦截的代码证明 | `GUARD_REPORT.md` |
 | 只看代码改了什么 | `CLASSIFY_ONLY_GUARD.diff`（168 行 / 2 文件 / 9 补丁点） |
 | 复现「强注 DATASHEET 也调不到 `parse_pdf`」 | `test_classify_only_guard.py` + `_pytest_guard.log` |
+| 看真实子进程下的拦截行为 | `_l3_subprocess_proof.log`（A 拦截 exit 3 / B 反向对照 exit 1） |
 | 复跑静态验收（61 项） | `_verify_p1p2_static.py` + `_p1p2_static_verify_guard.log` |
 | 自己验证 diff 可应用且逐字节还原 | `pre_guard/` + `serve_parser.py` / `parse_worker.py` |
 
@@ -40,6 +41,10 @@ py -3.13 -m pytest test_classify_only_guard.py -v
 
 # 静态验收（61/61 PASS）
 py -3.13 _verify_p1p2_static.py
+
+# L3 真实子进程（A 应 exit=3；B 应 exit=1 且报 KeyError: 'src_dir'）
+ICEX_CLASSIFY_ONLY=1 py -3.13 parse_worker.py '{"bogus": true}'
+env -u ICEX_CLASSIFY_ONLY py -3.13 parse_worker.py '{"bogus": true}'
 
 # diff 可应用 + 逐字节还原（注意必须关掉 autocrlf）
 mkdir -p /tmp/v/workbench && cp pre_guard/*.py /tmp/v/workbench/
