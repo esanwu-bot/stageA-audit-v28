@@ -1,0 +1,96 @@
+# Gate 6A Batch 2 v1.6 —— Git 证据
+# 采集时间: 2026-11-11 22:02:57 +0800   主机: PC-20260409SKMJ
+# 采集目录: 独立 worktree（--detach origin/feat/gate6a-annotation）
+# A. 指定 4 条命令，对象 = 数据提交 695bb92（v1.6 的改动都在这个提交里）
+# B. 该提交的元数据与干净工作区
+
+##################################################################
+# A. 4 条指定命令（对象：695bb92）
+##################################################################
+
+$ git show -s --format=fuller 695bb92
+==================================================================
+commit 695bb923d0c2a76d819c959db737885b9542eaf3
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 22:02:47 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 22:02:47 2026 +0800
+
+    Gate 6A Batch 2 v1.6：PDF 预检必打开、修 SKIP 口径、补 N9 与实证记录
+    
+    数据未改（24 行 / 6 样本，双模式仍 OK=24 / SUSPECT=0 / ERROR=0）。本轮只收紧判定。
+    
+    F5（v1.5 遗留的 F3 缺口）：坏 PDF 会退化成 CANNOT_VERIFY
+    - 根因：预检只调 pdf_sha256()。哈希证明"字节没变"，证明不了"这文件还能读"。
+      当溯源表里的 sha256 恰好就是残文件的哈希时，三处互校全过、哈希全对，
+      而 PDF 已一页不剩；行循环里 page_count() 才第一次 open，失败后 ptext=None，
+      落到 CANNOT_VERIFY —— 它不触发非零退出，报告仍写"无 ERROR"、退出码 0。
+    - 改法一：预检对每个样本无条件 open_doc() + page_count()，与哈希结果无关；
+      打不开即样本级 ERROR，绝不进入行循环。
+    - 改法二：page_count == 0（被截断）同样判 ERROR。截断的 PDF 在 fitz 里能打开、
+      页数为 0，而旧代码 `if pc and page > pc` 遇到 0 直接跳过判断，等于同一洞的第二个入口；
+      改为 `if pc is not None and page > pc`。
+    - 改法三：行循环在 page_count() 之后再查一次 sample_errors 兜底。
+    
+    N9（新增负面测试）：
+    - 构造：真 PDF 截到 30%（能打开、0 页），把残文件 SHA-256 写进 sidecar 与 provenance，
+      刻意让哈希"对得上"。
+    - 断言：退出码 1、输出含"页数为 0"或"PDF 打不开"、不含 CANNOT_VERIFY、
+      不含"使用随包的 page_text.json"（即未退回离线）。
+    
+    SKIP 口径（测试脚本）：
+    - 废弃"total - bad 即通过数"的算法，SKIP 不再计入 PASS。
+    - 改为三计数汇总：PASS=x, FAIL=y, SKIP=z。
+    - 未提供 ICPDF_PDF_DIR → 直接打印 "FAIL: 缺少 PDF 测试环境，测试不完整"，退出码 2。
+    - 环境在但 PDF 不在、导致 N8/N9 被跳过 → 汇总后仍退出码 1，并列出被跳过的项。
+    
+    实证记录（validation_report.txt 新增 C 段）：
+    - C.0 用 git show 按提交号取回 v1.4（a87ba4a）与 v1.5（0e0af78）脚本，未改动工作区。
+    - C.1 溯源表不存在：v1.4 提示"跳过三处互校"、OK=24、退出码 0；v1.6 拒绝出报告、退出码 2。
+    - C.2 --pdf-dir 不存在：v1.4 提示"使用随包的 page_text.json"、OK=24、退出码 0；v1.6 退出码 2。
+    - C.3 损坏 PDF（哈希对得上）：v1.5 判 CANNOT_VERIFY=9、无 ERROR、退出码 0；v1.6 判 ERROR=9、退出码 1。
+    - C.4 SKIP 口径：缺环境退出码 2；环境在但 PDF 不在则 PASS=28, SKIP=3、退出码 1。
+    以上均为终端原样输出与退出码，未做裁剪。
+    
+    新增 _mk_corrupt_pdf_fixture.py：一键重建 C.3 / N9 的夹具，供复核者独立复现。
+
+$ git diff-tree --no-commit-id --name-status -r 695bb92
+==================================================================
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+A	workbench/_gate6a_prep/_mk_corrupt_pdf_fixture.py
+M	workbench/_gate6a_prep/_selftest_validator_v2.py
+M	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
+
+$ git merge-base origin/main 695bb92
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+(结果不等于 695bb92，说明本提交不在 main 上)
+
+$ git status --porcelain=v1
+==================================================================
+(输出为空 = 工作区 clean；本文件写在 worktree 之外，不会把自己算进未跟踪)
+
+##################################################################
+# B. v1.6 数据提交 695bb923d0c2a76d819c959db737885b9542eaf3 的元数据
+##################################################################
+
+$ git log --format='%h  父=%p  %s' -6 695bb92
+==================================================================
+695bb92  父=4aa3863  Gate 6A Batch 2 v1.6：PDF 预检必打开、修 SKIP 口径、补 N9 与实证记录
+4aa3863  父=0e0af78  Gate 6A：补入 v1.5 的 Git 证据（对应提交 0e0af78）
+0e0af78  父=a87ba4a  Gate 6A Batch 2 v1.5：修掉验证器 4 处 Fail-Open，补 8 个负面测试
+a87ba4a  父=9097ed6  Gate 6A：补入 v1.4 的 Git 证据（对应提交 9097ed6）
+9097ed6  父=db785b7  Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
+db785b7  父=5f5cc29  Gate 6A：补入 v1.3 的 Git 证据（对应提交 5f5cc29）
+
+$ git diff --stat origin/feat/gate6a-annotation 695bb92
+==================================================================
+ workbench/_gate6a_prep/Batch2_Gate6A_README.md    |  78 ++++--
+ workbench/_gate6a_prep/_mk_corrupt_pdf_fixture.py | 133 ++++++++++
+ workbench/_gate6a_prep/_selftest_validator_v2.py  | 146 +++++++++--
+ workbench/_gate6a_prep/selftest_report.txt        |   4 +-
+ workbench/_gate6a_prep/validate_annotation.py     |  60 ++++-
+ workbench/_gate6a_prep/validation_report.txt      | 288 +++++++++++++++++++++-
+ 6 files changed, 648 insertions(+), 61 deletions(-)

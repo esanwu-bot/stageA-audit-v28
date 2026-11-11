@@ -1,4 +1,4 @@
-# Gate 6A · Batch 2 Gold Set（v1.5）
+# Gate 6A · Batch 2 Gold Set（v1.6）
 
 ## 这批是什么
 
@@ -6,10 +6,11 @@
 （`row_status=CONFIRMED`，`reviewer=wuxiaoxian`）。
 PDF 原件另有 SHA-256 与页数留痕，见 `Batch2_PDF_PROVENANCE.csv`。
 
-v1.4 把"数据自己说的身份"和"PDF 原件"绑死了；v1.5 修的是另一类问题：
-**该报错的地方没报错**。四处 Fail-Open——溯源表读不到只提示一句、空字段直接跳过互校、
-`--pdf-dir` 指不到就悄悄换数据源、哈希不符还接着核页内文字——全部改成硬失败。
-数据一行没动，24 行结论仍是 OK=24。
+v1.4 把"数据自己说的身份"和"PDF 原件"绑死了；v1.5 开始收拾另一类问题——
+**该报错的地方没报错**（Fail-Open）；v1.6 把最后一条也堵上：**哈希对得上，文件却已经读不了**。
+
+v1.6 的关键改动只有一句：PDF 预检不能只算哈希，必须**真的打开一次**。
+哈希证明"字节没变"，证明不了"这文件还能读"。数据一行没动，24 行结论仍是 OK=24。
 
 ## 一、样本身份：以 PDF 封面为准，不看文件名
 
@@ -65,9 +66,9 @@ v1.4 把"数据自己说的身份"和"PDF 原件"绑死了；v1.5 修的是另�
 这也说明一件事：数值在页面上出现，不等于它是**这一行**的值——同一个数字可能属于邻列、邻档、
 邻型号。机检能验"存在"，验不了"归属"，所以 `condition` 必须写清。
 
-## 四、机检脚本 v1.5：把"只查了一半"和"查错了对象"都堵上
+## 四、机检脚本 v1.6：把"只查了一半"和"查错了对象"都堵上
 
-| 检查 | 旧行为 | 现在（v1.5） |
+| 检查 | 旧行为 | 现在（v1.6） |
 | --- | --- | --- |
 | **溯源一致性** | 无 | CSV ↔ sidecar 比 `file_name`/`device_model`；sidecar ↔ provenance 比 `file_name`/`device_model`/`sha256`/`page_count`。**任一侧为空或两侧不等都算 ERROR** |
 | **PDF 实算哈希** | 无 | PDF 模式从原件重算 SHA-256，与 sidecar 不符 → **ERROR**，且该样本**不再读页内文字** |
@@ -78,7 +79,7 @@ v1.4 把"数据自己说的身份"和"PDF 原件"绑死了；v1.5 修的是另�
 | 路径 | 写死绝对路径 `E:\workspace\...` | 零硬编码：CSV 走 `--csv`，PDF 目录按 `--pdf-dir`→`ICPDF_PDF_DIR`→`./pdfs` 三级回退，sidecar/provenance 也都能 `--page-text` / `--provenance` 指定。干净解压包直接能跑 |
 | 其他 | — | 型号在第 1 页核对、单位需独立出现（`µA` 里的 A 不算）、整行重复、`CONFIRMED` 必须有签名、页码不得超过 PDF 页数 |
 
-### v1.5 修的 4 处 Fail-Open
+### v1.5 修的 4 处 Fail-Open + v1.6 补的第 5 处
 
 Fail-Open 是"本该报错却没报错"，比"漏查一项"更危险：报告还是绿的，人却以为查过了。
 
@@ -88,6 +89,23 @@ Fail-Open 是"本该报错却没报错"，比"漏查一项"更危险：报告还
 | F2 | 空字段跳过互校 | `if a and b and a != b`：任一侧为空就整条跳过，"缺"被当成"无所谓" | 统一成 `if not a or not b or a != b → ERROR`，并写死字段对应关系 |
 | F3 | PDF 缺失静默降级 | `--pdf-dir` 不存在 / 文件不在 / 打不开，都掉头去读 sidecar，只多一行提示 | 显式给了 `--pdf-dir`（或 `ICPDF_PDF_DIR`）却不可用 → 退出码 2；目录在但文件缺/打不开/算不了哈希 → 该样本 ERROR。**任何情况下不再自动换源** |
 | F4 | 哈希不符仍读文本 | 哈希不符混进 `prov_issues` 后，行循环照样调 `page_text()` | 发现不符即入 `hash_bad`，该样本所有行 ERROR 并 `continue`，**在 `page_text()` 之前短路** |
+
+**F5（v1.6 补）：哈希对得上，文件却读不了。** 预检原来只调 `pdf_sha256()`。
+哈希能证明"字节没变"，证明不了"这文件还能读"：
+
+- 一个被截断/覆写的 PDF，字节变了但哈希照算得出 → 进 `hash_bad`，看起来没问题；
+- 如果有人（或某次同步）把溯源表里的哈希也改成了残文件的哈希，三处互校全过、哈希全对，
+  可这个 PDF 已经一页都没有了。行循环里 `page_count()` 才第一次 `open`，失败后 `ptext`
+  变 None，落到 **CANNOT_VERIFY**——而 CANNOT_VERIFY 不触发非零退出，报告写"无 ERROR"、退出码 0。
+
+v1.6 的预检对每个样本**无条件** `open_doc()` + `page_count()`（与哈希结果无关），
+打不开即样本级 ERROR；`page_count == 0`（被截断）同样判 ERROR——因为 0 是 falsy，
+原来那句 `if pc and page > pc` 会被跳过，等于给同一个洞留了第二个入口。
+行循环另加一处兜底：`page_count()` 之后再查一次 `sample_errors`。
+
+这一条有实证：同一份"哈希对得上但 0 页"的夹具，
+**v1.5 判 `CANNOT_VERIFY=9`、结论"无 ERROR"、退出码 0；v1.6 判 `ERROR=9`、退出码 1。**
+原始输出见 `validation_report.txt` 的 C.3 段，夹具用 `_mk_corrupt_pdf_fixture.py` 可一键重建。
 
 F4 的自证方式值得单独说：自测最后一例把 `Pages.page_text` 换成计数器，在同一进程里跑
 `main()`，断言调用次数为 **0**。否则"哈希不符就不读页文本"只是一句承诺，没人能验。
@@ -100,9 +118,14 @@ F4 的自证方式值得单独说：自测最后一例把 `Pages.page_text` 换�
 判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
 ```
 
-**自测 30 例，30/30 通过**（`_selftest_validator_v2.py`）：16 例跑真实 Gold 行与真实页文本，
-5 例跑**合成页文本**（样本 V900）专造"页面只印了一半"的反例，1 例篡改 PDF 验哈希门禁，
-8 例是 v1.5 新增的 Fail-Open 负面用例。
+**自测 31 例，PASS=31 / FAIL=0 / SKIP=0**（`_selftest_validator_v2.py`）：16 例跑真实 Gold 行与
+真实页文本，5 例跑**合成页文本**（样本 V900）专造"页面只印了一半"的反例，1 例篡改 PDF 验哈希门禁，
+9 例是 Fail-Open 负面用例（N1–N9）。
+
+SKIP 的规矩（v1.6 改）：**SKIP 永远不计入 PASS**。N8/N9 必须用真实 PDF，所以脚本要求
+`ICPDF_PDF_DIR`；没给就直接 `FAIL: 缺少 PDF 测试环境，测试不完整` 并以退出码 2 结束；
+给了环境但 PDF 不在、导致有用例被跳过，则汇总打出 `PASS=x, FAIL=y, SKIP=z` 后仍以退出码 1 结束。
+"没跑"和"通过"混在一起，本身就是一次 fail-open。
 
 | 用例 | 标注 | 期望 | 实测 |
 | --- | --- | --- | --- |
@@ -116,7 +139,7 @@ F4 的自证方式值得单独说：自测最后一例把 `Pages.page_text` 换�
 第 6 例是关键：它证明溯源检查是**门禁**而不是注释——PDF 被动过一个字节，整批行立刻落 ERROR，
 哪怕页内文字一个都没变。
 
-8 个 Fail-Open 负面用例（`N1`–`N8`），每一例都断言"报错"，而且还要断言输出里没有那句自我安慰：
+9 个 Fail-Open 负面用例（`N1`–`N9`），每一例都断言"报错"，而且还要断言输出里没有那句自我安慰：
 
 | # | 构造的坏输入 | 期望 | 实测 |
 | --- | --- | --- | --- |
@@ -128,9 +151,15 @@ F4 的自证方式值得单独说：自测最后一例把 `Pages.page_text` 换�
 | N6 | PDF 模式 + 目录里没有该样本的 PDF | ERROR（不是 `CANNOT_VERIFY`） | ERROR |
 | N7 | 同名路径是目录，哈希算不出来 | ERROR（"无法计算哈希"） | ERROR |
 | N8 | 篡改 PDF 触发哈希不符 | 该样本全行 ERROR，且 `page_text()` 调用 **0 次** | 0 次 |
+| N9 | 损坏 PDF，且**把哈希改成残文件的哈希**（溯源全对） | ERROR + 退出码 1，**不是** `CANNOT_VERIFY`，且不退回 sidecar | ERROR |
 
 N1、N5 特意加了"不含某句话"的断言——只验"有 ERROR"不够，还要证明它没有再悄悄绕过去。
 N8 是唯一跑在同一进程里的用例（换成计数器才能数调用次数），其余都走子进程，看的是真实退出码。
+
+N9 是最狠的一例：截断真 PDF 到 30%（`fitz` 仍能打开，但 `page_count=0`），
+再把残文件的 SHA-256 写进 sidecar 和 provenance。这样**三处互校全过、哈希全对**，
+只剩"这文件到底能不能读"没被任何检查覆盖。v1.5 在这里给出 `CANNOT_VERIFY` + 退出码 0，
+v1.6 给出 `ERROR` + 退出码 1。夹具可用 `_mk_corrupt_pdf_fixture.py` 一键重建。
 
 ## 五、人工裁定：3 条空 symbol 已定性，不再是 SUSPECT
 
@@ -172,7 +201,8 @@ status 会显示 `?? git_evidence_*.txt`，等于自己把自己忽略掉。所�
 | v1.2 | `2725f90` | `2c7881b` |
 | v1.3 | `5f5cc29` | `db785b7` |
 | v1.4 | `9097ed6` | `a87ba4a` |
-| v1.5 | 见 `git_evidence_commit_chain.txt` | 见 `git_evidence_commit_chain.txt` |
+| v1.5 | `0e0af78` | `4aa3863` |
+| v1.6 | 见 `git_evidence_commit_chain.txt` | 见 `git_evidence_commit_chain.txt` |
 
 v1.5 这一对不在这里写死：数据提交的 SHA 要在提交之后才知道，而证据子提交的 SHA
 又要等它提交之后才知道——写进同一份文档就会指向一个不存在的对象。
@@ -184,9 +214,10 @@ v1.5 这一对不在这里写死：数据提交的 SHA 要在提交之后才知�
 ```bash
 python validate_annotation.py --csv Batch2_GOLD_v1.csv          # 离线：OK=24，退出码 0
 python validate_annotation.py --csv Batch2_GOLD_v1.csv --pdf-dir /path/to/pdfs
-python _selftest_validator_v2.py                                # 自测：30/30
-ICPDF_PDF_DIR=/path/to/pdfs python _selftest_validator_v2.py    # 含篡改 PDF 与 N8 计数断言
+ICPDF_PDF_DIR=/path/to/pdfs python _selftest_validator_v2.py    # 自测：31 例，PASS=31
+python _selftest_validator_v2.py                                # 缺环境：FAIL + 退出码 2（不再拿 SKIP 充 PASS）
 python _freeze_gold.py                                          # CSV → XLSX 并逐格比对
+python _mk_corrupt_pdf_fixture.py --pdf-dir <PDF> --out /tmp/corrupt_case   # 造 N9 夹具
 ```
 
 `--pdf-dir` 只影响"页文本从哪来"和"哈希能不能实算"，不影响 CSV 读取；
@@ -194,6 +225,8 @@ python _freeze_gold.py                                          # CSV → XLSX �
 
 但有一条不一样了：**给了 `--pdf-dir` 就必须能用**。路径不存在、文件不在、打不开、
 哈希算不了，一律报错退出，不会再悄悄换成 `page_text.json` 把结论凑绿。
+而且"能用"是**真打开过**才算数：预检对每个样本执行 `open_doc()` + `page_count()`，
+打不开、或页数为 0（被截断），都直接判该样本 ERROR。
 退出码：`0` 无 ERROR，`1` 有 ERROR 行，`2` 判据/环境不可用（拒绝出报告）。
 
 ## 九、已知局限
@@ -207,9 +240,13 @@ python _freeze_gold.py                                          # CSV → XLSX �
 5. `confidence_score` 是纯 det 分（VLM 自报恒为 1.00），未校准，不能当准确率上界。
 6. 分母口径未变：准确率 = Gold `CONFIRMED` 行；漏提取分母 = Gold 应有总数；
    错提取分母 = Parser 输出候选总数。本批不得外推到 28 件全集。
-7. **"关掉 Fail-Open"不等于"全覆盖"**。v1.5 关门的是我们**想到**的四条路径，
-   自测只能证明这四条被关上；没被想到的 fail-open 仍然存在。真正的判据是
-   每次新增检查时都问一句"它失败的时候，报告会不会还是绿的"。
+7. **"关掉 Fail-Open"不等于"全覆盖"**。v1.5/v1.6 关掉的是我们**想到**的五条路径
+   （F1–F5），自测只能证明这五条被关上；没被想到的 fail-open 仍然存在。
+   真正的判据不是这份清单，而是每次新增检查时都问一句：
+   "它失败的时候，报告会不会还是绿的？"
+8. **预检打开 PDF 只证明"能打开"，不证明"内容对"**。N9 用的是整份截断，
+   所以 `page_count=0` 一眼可见；如果坏文件恰好还能打开、页数也对，那只有哈希能救——
+   也就是说，哈希与可读性这两道闸，谁也不能替谁。
 
 ## 十、文件
 
@@ -219,8 +256,9 @@ python _freeze_gold.py                                          # CSV → XLSX �
 | `Batch2_GOLD_v1.xlsx` | 由 CSV 派生：`Gold` + `meta` + `pdf_provenance` 三页 |
 | `Batch2_PDF_PROVENANCE.csv` | 6 件 PDF 的 SHA-256 / 页数 / 大小 |
 | `page_text.json` | 第 1 页 + 证据页原文 + 溯源字段，供离线机检 |
-| `validate_annotation.py` | 机检 v1.5（含溯源三方互校、PDF 实算哈希、4 处 Fail-Open 收紧） |
-| `_selftest_validator_v2.py` | 自测 30 例（16 真实 + 5 合成反例 + 1 篡改 PDF + 8 Fail-Open 负面） |
+| `validate_annotation.py` | 机检 v1.6（溯源三方互校、PDF 实算哈希 + 预检必打开、5 处 Fail-Open 收紧） |
+| `_selftest_validator_v2.py` | 自测 31 例（16 真实 + 5 合成反例 + 1 篡改 PDF + 9 Fail-Open 负面），SKIP 不计 PASS |
+| `_mk_corrupt_pdf_fixture.py` | 造"损坏但哈希对得上"的 PDF 夹具，用于复现 N9 / F5 |
 | `_freeze_gold.py` | 读 CSV → 生成 XLSX → 逐格比对 |
 | `_build_page_text.py` / `_build_provenance.py` | 抽页原文 / 生成溯源表 |
 | `_shots_batch2.py` + `screenshots/` | 8 张证据图（6 封面 + V101 5.9） |

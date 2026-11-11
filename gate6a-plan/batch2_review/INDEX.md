@@ -1,160 +1,131 @@
-# Batch 2 复审包 v1.5 · 入口
+# Batch 2 复审包 v1.6 · 入口
 
-Gate 6A Batch 2 Gold Set 第六次送审。**数据一行没动**（24 行仍 OK=24 / SUSPECT=0 / ERROR=0），
-本轮只做一件事：把 `validate_annotation.py` 里 **4 处 Fail-Open** 关掉，并补上证明它们真关掉的
-**8 个负面测试**。
-
-Fail-Open 的意思是"本该报错的地方没报错"。它比"漏查一项"更危险——漏查的报告至少有人会去补，
-Fail-Open 的报告是绿的，看的人以为自己查过了。
+Gate 6A Batch 2 Gold Set 第七次送审。**数据一行没动**（24 行仍 OK=24 / SUSPECT=0 / ERROR=0）。
+本轮收掉 v1.5 剩下的两个硬伤：**损坏 PDF 能变成 CANNOT_VERIFY**、**SKIP 被算进 PASS**，
+并补上 N9 与 v1.4/v1.5 的实证记录。
 
 - 代码仓：`[REDACTED-INTERNAL-REPO]`
 - 送审分支：`feat/gate6a-annotation`
-  - `2725f90` v1.2 数据 → `2c7881b` 证据
-  - `5f5cc29` v1.3 数据 → `db785b7` 证据
-  - `9097ed6` v1.4 数据 → `a87ba4a` 证据
-  - **`0e0af78` v1.5 数据 → `4aa3863` 证据（分支 tip）**
+  - `2725f90` v1.2 → `2c7881b` ｜ `5f5cc29` v1.3 → `db785b7`
+  - `9097ed6` v1.4 → `a87ba4a` ｜ `0e0af78` v1.5 → `4aa3863`
+  - **`695bb92` v1.6 数据 → `df67dfd` 证据（分支 tip）**
 - `main` 未动，仍为 `853a80d`
 
 ## 先看这五个
 
 | 顺序 | 文件 | 看什么 |
 | --- | --- | --- |
-| 1 | `selftest_report.txt` | **30 例，30/30**；末尾 8 行就是本轮 N1–N8 |
-| 2 | `validation_report.txt` | A/B 双模式 OK=24，C 段是"拒绝出报告"的实拍输出 |
-| 3 | `validate_annotation.py` | 4 处改动：`FatalInput`、`open_doc`、`check_provenance`、`hash_bad` |
-| 4 | `Batch2_Gate6A_README.md` | 第四节 Fail-Open 对照表 + 30 例明细 |
-| 5 | `git_evidence_v15.txt` / `git_evidence_commit_chain.txt` | 0e0af78 的 4 条命令、四轮父子关系 |
+| 1 | `validation_report.txt` | **C 段是本轮重点**：历史版本同命令对照的原始输出与退出码 |
+| 2 | `selftest_report.txt` | 31 例，末行 `PASS=31, FAIL=0, SKIP=0` |
+| 3 | `_mk_corrupt_pdf_fixture.py` | 造"损坏但哈希对得上"的夹具，C.3 与 N9 都用它 |
+| 4 | `validate_annotation.py` | 预检里 `open_doc()` + `page_count()`，以及 `pc is not None` |
+| 5 | `Batch2_Gate6A_README.md` | 第四节 F5、N9 明细、SKIP 口径 |
 
-## 1. F1：溯源表读不到，不许"提示一句"就继续
+## 1. F5：哈希对得上，文件却已经读不了
 
-v1.4 的实现：
+v1.5 的 PDF 预检只调 `pdf_sha256()`。这件事有个盲区：
 
-```python
-if prov is None:
-    notes.append("未找到 Batch2_PDF_PROVENANCE.csv，跳过三处互校（只做 CSV ↔ sidecar）")
-```
+- 哈希证明"字节没变"，**证明不了"这文件还能读"**；
+- 更麻烦的是，如果溯源表里的哈希被同步改成了残文件的哈希，三处互校全过、哈希全对，
+  而 PDF 本身已经一页都没有了。
 
-三处互校里，CSV 和 sidecar 都是我们自己生成的，provenance 是唯一的"第三方参照"。
-它一缺席，所谓"互校"就退化成自己跟自己对账——对得再齐也证明不了什么。而报告仍然会打出
-`结论：三处溯源一致`、`OK=24`。
+这种情况下 v1.5 会在行循环的 `page_count()` 才第一次 `open`，失败后 `ptext` 变 None，
+落到 **CANNOT_VERIFY**——而 CANNOT_VERIFY 不触发非零退出，报告照写"无 ERROR"、退出码 0。
+这是第七条 fail-open，也是最隐蔽的一条：前六条至少还能从日志里看出"跳过/降级"的痕迹，
+这条在报告上只是一句"缺页文本，需人工复看"。
 
-v1.5：`load_provenance()` 在文件不存在 / 读不了 / 为空时抛 `FatalInput`；
-`check_provenance()` 收到 `None` 也抛（双重保险）。表现是
+v1.6 三处改动：
 
-```
-[ERROR] 拒绝出报告：溯源表不存在：E:\nonexistent\prov.csv（它是第三方参照，缺了就只能自己跟自己对账）
-退出码 2
-```
+| 位置 | 改动 |
+| --- | --- |
+| 预检 | 对每个样本**无条件** `open_doc()` + `page_count()`（与哈希结果无关），打不开即样本级 ERROR |
+| 预检 | `page_count == 0`（被截断）也判 ERROR |
+| 行循环 | `if pc and page > pc` → `if pc is not None and page > pc`，别让 0 被 falsy 吃掉 |
 
-## 2. F2：空字段不是"无所谓"，是"这条链断了"
+`page_count == 0` 这条单看很不起眼，但它是同一个洞的第二个入口：截断的 PDF 在 `fitz` 里
+**能打开**，只是 `page_count` 为 0；老代码那句 `if pc and page > pc` 遇到 0 直接跳过判断，
+后面照样落到 CANNOT_VERIFY。
 
-v1.4 的三处判断都长这样：
+## 2. 实证：不是"分析代码路径"，是把旧版本跑了一遍
 
-```python
-if fname and node.get("file_name") and fname != node["file_name"]:      # 任一侧空就整条跳过
-if model and node.get("device_model") and model != node["device_model"]:
-if a and b and a != b:
-```
+`validation_report.txt` 的 C 段原样收录了终端命令、输出和退出码。摘录：
 
-结果是：把 sidecar 里的 `file_name` 清空、把 provenance 的 `page_count` 清空，机检一声不响地
-跳过该字段，报告还是绿的。**"缺"被当成了"不需要"，而实际上"缺"是最该报错的状态。**
-
-v1.5 统一为 `if not a or not b or a != b: ERROR`，并把字段对应关系写死、印在报告里：
-
-| 比对 | 参与字段 | 为什么 |
+| 场景 | v1.4 / v1.5 | v1.6 |
 | --- | --- | --- |
-| CSV ↔ sidecar | `file_name`、`device_model` | CSV 没有 `sha256` / `page_count` 列，这两项无从比 |
-| sidecar ↔ provenance | `file_name`、`device_model`、`sha256`、`page_count` | 四项都该有 |
+| C.1 溯源表不存在 | `提示 未找到…跳过三处互校` → `OK=24` → **退出码 0** | `[ERROR] 拒绝出报告` → **退出码 2** |
+| C.2 `--pdf-dir` 不存在 | `提示 使用随包的 page_text.json` → `OK=24` → **退出码 0** | `[ERROR]` → **退出码 2** |
+| C.3 损坏 PDF（哈希对得上） | `CANNOT_VERIFY=9` → `无 ERROR` → **退出码 0** | `ERROR=9` → **退出码 1** |
+
+C.3 的夹具生成方式（`_mk_corrupt_pdf_fixture.py`）：
+
+1. 把真 PDF 截到 30% —— `fitz` 仍能打开，但 `page_count=0`；
+2. 把残文件的 SHA-256 写进 sidecar 和 provenance —— **刻意让哈希全对**；
+3. 生成只含该样本行的 CSV。
+
+三条一起看，v1.5 的 `OK=24 / 无 ERROR / 退出码 0` 与 v1.6 的 `拒绝出报告 / ERROR=9` 是
+同一份输入跑出来的，不是推断。
+
+## 3. N9：损坏 PDF 必须 ERROR，且不许退回 sidecar
+
+| 断言 | 结果 |
+| --- | --- |
+| 退出码 = 1 | ✅ |
+| 输出含"页数为 0"或"PDF 打不开" | ✅（证明预检真的打开过） |
+| 输出**不含** `CANNOT_VERIFY` | ✅ |
+| 输出**不含**"使用随包的 page_text.json" | ✅（没降级） |
+
+第三、四条是否命题断言——只验"有 ERROR"不够，还要证明它没有换个姿势绕过去。
+
+## 4. SKIP 口径：SKIP 永远不计入 PASS
+
+v1.5 的汇总用 `total - bad` 当"通过数"，SKIP 既不进 bad 也不进 pass，
+于是**跳过的项被算进了通过数**。这本身就是一次 fail-open：环境不全，报告一片绿。
+
+v1.6 改成三计数：
 
 ```
-字段对应：CSV↔sidecar 比 file_name/device_model；
-          sidecar↔provenance 比 file_name/device_model/sha256/page_count
-判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+用例 31（真实页文本 16 + 合成页文本 5 + 篡改场景 1 + Fail-Open 负面 9）
+PASS=31, FAIL=0, SKIP=0
 ```
 
-顺带把"provenance 有、sidecar 没有"的条目从"提示"升级为 ERROR——那也是链断了一节。
+并且：
 
-## 3. F3：PDF 缺失不许静默降级
+| 情形 | 行为 |
+| --- | --- |
+| 没给 `ICPDF_PDF_DIR` | 直接打印 `FAIL: 缺少 PDF 测试环境，测试不完整`，**退出码 2** |
+| 环境给了但 PDF 不在，N8/N9 跳过 | 打出 `PASS=x, FAIL=y, SKIP=z` + `FAIL: 缺少 PDF 测试环境，测试不完整` + 列出被跳过的项，**退出码 1** |
 
-v1.4 有个很舒服、也很危险的兜底：`--pdf-dir` 指错了，就自动去读 `page_text.json`，
-只打一行"提示"。于是"我想验证 PDF 原件"和"我只看了随包的页文本"在报告上几乎看不出区别。
+两种情形都在 `validation_report.txt` C.4 段有实跑记录。
 
-v1.5 把三种情况全部改成硬失败：
-
-| 情况 | v1.4 | v1.5 |
-| --- | --- | --- |
-| `--pdf-dir` 目录不存在 / 不是目录 / 缺 PyMuPDF | 掉头读 sidecar，一行提示 | `FatalInput` → 退出码 2 |
-| 目录在，但该样本的 PDF 不在 | `CANNOT_VERIFY`（看起来只是"缺页文本"） | 该样本 **ERROR**："PDF 缺失…（PDF 模式不做离线降级）" |
-| PDF 打不开 / 哈希算不了 | 静默返回 None | 该样本 **ERROR**："PDF 打不开 / 无法计算哈希" |
-
-保留的唯一例外：自动探测的 `./pdfs` 不存在不算错——那只是"没提供 PDF"，不是"提供了却不能用"。
-
-## 4. F4：哈希不符之后，不许再读页内文字
-
-v1.4 已经能发现哈希不符，但发现之后**照样**调 `pages.page_text()` 去核对页内文字，
-只是把错误信息附在行上。这在逻辑上讲不通：文件都已经不是溯源记录里的那一份了，
-"这一页面上有没有这个数"核得再对也没有意义。
-
-v1.5 引入 `hash_bad` 集合：PDF 模式先逐样本算哈希，不符即入集合；行循环里
-
-```python
-if sno in hash_bad:
-    verdicts.append(("ERROR", idx, sno, list(prov_issues.get(sno))))
-    continue                      # 在 page_count / page_text 之前
-```
-
-**这条承诺必须能被验证**，否则只是代码里的一句话。所以 N8 把 `Pages.page_text` 换成计数器，
-在同一进程里跑 `main()`，断言调用次数为 **0**。
-
-## 5. 8 个负面测试（N1–N8）
-
-| # | 构造的坏输入 | 断言 | 实测 |
-| --- | --- | --- | --- |
-| N1 | `--provenance` 指向不存在的文件 | 退出码 2 + `[ERROR]`，且**不含**"跳过三处互校" | PASS |
-| N2 | sidecar 的 `file_name` 置空 | ERROR | PASS |
-| N3 | CSV 的 `device_model` 置空 | ERROR | PASS |
-| N4 | provenance 的 `page_count` 置空 | ERROR | PASS |
-| N5 | `--pdf-dir` 指向不存在的目录 | 退出码 2 + `[ERROR]`，且**不含**"使用随包的 page_text.json" | PASS |
-| N6 | PDF 模式 + 目录里没有该样本 PDF | ERROR，且**不是** `CANNOT_VERIFY` | PASS |
-| N7 | 同名路径是目录，哈希算不出 | ERROR（"无法计算哈希"） | PASS |
-| N8 | 篡改 PDF 触发哈希不符 | 全行 ERROR + `page_text()` 调用 **0 次** | PASS |
-
-N1、N5 特意加了"**不含**某句话"的断言。只验"有 ERROR"是不够的——旧代码在那些场景下也
-可能因为别的原因碰巧报错，但"跳过三处互校""使用随包的 page_text.json"这两句一旦出现，
-就说明它还是走了那条绕路。断言否命题，才是真的关门。
-
-N8 是唯一跑在同一进程里的用例：子进程的调用次数从外面看不到，只能换成计数器。
-
-## 6. 结论
+## 5. 结论
 
 | 项 | 结果 |
 | --- | --- |
-| 机检（PDF 模式） | OK=24 / SUSPECT=0 / ERROR=0，PDF 实算哈希已比对，三处溯源一致，退出码 0 |
+| 机检（PDF 模式） | OK=24 / SUSPECT=0 / ERROR=0，实算哈希已比对，三处溯源一致，退出码 0 |
 | 机检（离线模式） | 同上，退出码 0 |
-| 自测 | 30 例，30/30 通过 |
-| 数据 | 24 行、6 件样本，与 v1.4 逐字相同 |
-| 退出码语义 | `0` 无 ERROR；`1` 有 ERROR 行；`2` 判据/环境不可用（拒绝出报告） |
+| 自测 | 31 例，`PASS=31, FAIL=0, SKIP=0`，退出码 0 |
+| 数据 | 24 行 / 6 样本，与 v1.4 逐字相同 |
+| 退出码语义 | `0` 无 ERROR；`1` 有 ERROR 行或测试不完整；`2` 判据/环境不可用 |
 
-## 7. 复核命令
+## 6. 复核命令
 
 ```bash
-python validate_annotation.py                                     # OK=24，退出码 0
-python validate_annotation.py --pdf-dir <PDF 目录>                 # 实算哈希：已比对
-python _selftest_validator_v2.py                                   # 30/30
-ICPDF_PDF_DIR=<PDF 目录> python _selftest_validator_v2.py          # 含篡改 PDF 与 N8 计数断言
-python validate_annotation.py --provenance /no/such.csv            # 应退出码 2（F1）
-python validate_annotation.py --pdf-dir /no/such/dir               # 应退出码 2（F3）
+python validate_annotation.py                                   # OK=24，退出码 0
+python validate_annotation.py --pdf-dir <PDF>                   # 实算哈希已比对 + 预检打开每个 PDF
+ICPDF_PDF_DIR=<PDF> python _selftest_validator_v2.py            # PASS=31, FAIL=0, SKIP=0
+python _selftest_validator_v2.py                                # 缺环境：FAIL + 退出码 2
+python _mk_corrupt_pdf_fixture.py --pdf-dir <PDF> --out /tmp/cc # 造 N9 夹具，再跑 C.3 两条命令
 sha256sum -c SHA256SUMS.txt
 ```
 
-## 已知局限（本轮又添一条）
+## 已知局限
 
 1. 型号核对只判"封面上有没有这串字"，拦不住近亲型号（ADC3541 就印在 ADC3544 手册里）。
-   溯源一致性只保证"三处写的是同一个型号"，不保证"这个型号是对的"。
 2. 单位核对是"出现在页面上"级别，`A` 这种单字母单位正文里随便一个 "a" 就能命中。
 3. 参数名语义判不了：`VNEG_IN_x` 只能提示"全大写带下划线、疑似引脚名"。
 4. **数值归属判不了**——V162 的 96 mA 是靠人眼看表头才发现的，机检只认"页面上有 128"。
-5. `confidence_score` 是纯 det 分，未校准，不能当准确率上界。本批 24 行不得外推到 28 件全集。
-6. **"关掉 Fail-Open"不等于"全覆盖"**。本轮关掉的是我们**想到**的四条路径，N1–N8 只能证明
-   这四条被关上；没被想到的 fail-open 仍然存在。真正管用的不是这份清单，而是每次新增检查时
-   都问一句："它失败的时候，报告会不会还是绿的？"
+5. `confidence_score` 是纯 det 分，未校准，不能当准确率上界；本批 24 行不得外推到 28 件全集。
+6. **"关掉 Fail-Open"不等于"全覆盖"**。目前关掉的是 F1–F5 五条，自测只能证明这五条被关上。
+   管用的不是这份清单，而是每次新增检查时问一句："它失败的时候，报告会不会还是绿的？"
+7. **预检打开只证明"能打开"，不证明"内容对"**。N9 用整份截断，`page_count=0` 一眼可见；
+   若坏文件恰好还能打开、页数也对，就只有哈希能救——哈希与可读性两道闸，谁也不能替谁。

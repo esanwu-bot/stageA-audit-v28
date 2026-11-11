@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""标注机检 v1.5 —— 核对"这一行填的东西，是不是真印在你说的那一页上"。
+"""标注机检 v1.6 —— 核对"这一行填的东西，是不是真印在你说的那一页上"。
 
 v1 的三个漏洞，v2 逐个补上
 --------------------------
@@ -45,7 +45,20 @@ F3. **PDF 缺失静默降级**：`--pdf-dir` 指向不存在的目录时，老�
 F4. **哈希不符仍继续读文本**：老逻辑把"哈希不符"混进 `prov_issues` 后，行循环照样调
     `page_text()` 核页内文字——文件都不是那一份了，核出来的字毫无意义。现在发现不符就把
     该样本丢进 `hash_bad`，它的所有行直接 ERROR 并 `continue`，**在调用 `page_text()` 之前**。
-    自测最后一项专门断言这一点（`page_text` 调用次数为 0）。
+    自测 N8 专门断言这一点（`page_text` 调用次数为 0）。
+
+v1.6 再补一处 F3 的缺口：预检必须真的打开 PDF
+---------------------------------------------
+v1.5 的预检只做了 `pdf_sha256()`。哈希能证明"字节没变"，证明不了"这文件还能读"。
+
+一个被截断、被覆写、被替换成乱码的 PDF：哈希照算得出（只是和期望不同），
+于是要么进 `hash_bad`、要么（当 sidecar 缺 sha256 时）根本没触发检查；等到行循环里
+`page_count()` 才第一次 `open`，失败后 `ptext` 变 None，落到 **CANNOT_VERIFY**——
+而 CANNOT_VERIFY 不触发非零退出，报告依旧"无 ERROR"、退出码 0。这就是最后一条 fail-open。
+
+v1.6：预检里对每个样本无条件执行 `open_doc()` + `page_count()`（与哈希结果无关），
+打不开即记样本级 ERROR；行循环另加一处兜底，`page_count()` 之后再查一次 `sample_errors`。
+坏 PDF 从此不可能变成 CANNOT_VERIFY。自测 N9 用"内容损坏但哈希算得出"的 PDF 守住这条。
 
 它不是什么
 ----------
@@ -71,7 +84,7 @@ import re
 import sys
 from pathlib import Path
 
-VERSION = "1.5"
+VERSION = "1.6"
 
 HERE = Path(__file__).resolve().parent
 DEFAULT_CSV = HERE / "Batch2_GOLD_v1.csv"
@@ -703,7 +716,12 @@ def _run(rows, csv_path, pdf_dir, pdf_explicit, sidecar_path, prov_path, no_sugg
         print("提示: %s" % pages.error)
         print()
 
-    # ---- F4：哈希不符的样本，整批判死，且不再读它的页文本
+    # ---- PDF 预检：每个样本既要算哈希，也要真打开一次
+    #
+    # v1.5 只算了哈希。哈希能证明"文件字节没变"，证明不了"这文件还能读"——
+    # 一个被截断/覆写的 PDF，哈希照算，直到行循环里 page_count() 才 open 失败；
+    # 而那时 ptext 会变成 None，落到 CANNOT_VERIFY，报告照样"无 ERROR"、退出码 0。
+    # 所以预检必须 open_doc() + page_count()：打不开就在这里定成样本级 ERROR。
     hash_bad = set()
     if pages.mode == "pdf":
         for sno in sorted({(r.get("sample_no") or "").strip() for r in rows}):
@@ -713,6 +731,20 @@ def _run(rows, csv_path, pdf_dir, pdf_explicit, sidecar_path, prov_path, no_sugg
             want = str(node.get("sha256") or "").strip()
             fname = next((r.get("file_name") for r in rows
                           if (r.get("sample_no") or "").strip() == sno), None)
+
+            # 1) 能不能打开——与哈希无关，先做
+            doc = pages.open_doc(sno, fname)
+            if doc is not None:
+                pc0 = pages.page_count(sno, fname)
+                # 被截断的 PDF 可能"能打开但 0 页"，那和打不开一样不可用。
+                # 不拦这一条，pc=0 会被当成 falsy 跳过"页码越界"判断，
+                # 最后又落到 CANNOT_VERIFY —— 同一个洞的另一个入口。
+                if pc0 is not None and pc0 <= 0:
+                    pages._sample_error(
+                        sno, "PDF 页数为 0：%s（文件疑似被截断，无法核对任何页）"
+                             % (fname or "?"))
+
+            # 2) 字节对不对
             if not want:
                 prov_issues.setdefault(sno, []).append(
                     "溯源缺失：sidecar 里 %s 没有 sha256，无法验哈希" % sno)
@@ -767,9 +799,13 @@ def _run(rows, csv_path, pdf_dir, pdf_explicit, sidecar_path, prov_path, no_sugg
         # F4：哈希不符的样本，页内文字一律不采信。
         # 必须在 page_text() 之前短路——文件都不是溯源记录里的那一份了，
         # 再去核"这一页面上有没有这个数"，核得再对也没有意义。
+        # 预检时若同时发现打不开，两条原因一起给出（同一份坏文件常两样都占）。
         if sno in hash_bad:
-            verdicts.append(("ERROR", idx, sno,
-                             list(prov_issues.get(sno) or ["PDF 哈希不符"])))
+            msgs = list(prov_issues.get(sno) or ["PDF 哈希不符"])
+            for m in pages.sample_errors.get(sno, []):
+                if m not in msgs:
+                    msgs.append(m)
+            verdicts.append(("ERROR", idx, sno, msgs))
             continue
 
         # F3：PDF 缺失/打不开/算不了哈希的样本，同样是整批 ERROR，不降级。
@@ -788,7 +824,17 @@ def _run(rows, csv_path, pdf_dir, pdf_explicit, sidecar_path, prov_path, no_sugg
             continue
 
         pc = pages.page_count(sno, fname)
-        if pc and page > pc:
+        # 兜底：page_count() 内部会 open_doc()，打开失败才在这里首次暴露。
+        # 预检已经拦过一轮，但样本级错误不该指望"预检一定覆盖到"。
+        if pages.sample_errors.get(sno):
+            msgs = list(pages.sample_errors[sno])
+            for m in prov_issues.get(sno, []):
+                if m not in msgs:
+                    msgs.append(m)
+            verdicts.append(("ERROR", idx, sno, msgs))
+            continue
+        # 注意是 is not None：pc=0（被截断的 PDF）也要判越界，不能因为 0 是 falsy 就跳过
+        if pc is not None and page > pc:
             verdicts.append(("ERROR", idx, sno,
                              ["evidence_page=%d 超出该 PDF 页数 %d" % (page, pc)]))
             continue

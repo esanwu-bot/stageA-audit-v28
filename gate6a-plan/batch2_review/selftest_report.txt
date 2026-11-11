@@ -32,5 +32,7 @@ N5 --pdf-dir 目录不存在                               退出码2 + ERROR �
 N6 PDF 文件缺失                                      ERROR    ERROR    PASS（不是 CANNOT_VERIFY）
 N7 PDF 无法计算哈希                                    ERROR    ERROR    PASS（打不开=ERROR）
 N8 哈希不符不读页文本                                     page_text=0次 page_text=0次 PASS（哈希门禁生效）
+N9 损坏 PDF（哈希对得上）                                 ERROR    ERROR    PASS（预检 open+page_count 生效）
 ============================================================================================
-用例 30（真实页文本 16 + 合成页文本 5 + 篡改场景 1 + Fail-Open 负面 8），通过 30，失败 0
+用例 31（真实页文本 16 + 合成页文本 5 + 篡改场景 1 + Fail-Open 负面 9）
+PASS=31, FAIL=0, SKIP=0

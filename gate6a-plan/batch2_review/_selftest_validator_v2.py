@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""validate_annotation.py 自测（配合 v1.5）：30 个用例。
+"""validate_annotation.py 自测（配合 v1.6）：31 个用例。
 
 为什么要自测
 ------------
@@ -14,10 +14,16 @@
   但脚本必须能拦住——这几例就是审稿人要求的反例。
 * 1 个**篡改 PDF** 场景：复制一份真 PDF、在末尾追加字节改变哈希，
   再用 PDF 模式跑，要求判 ERROR（溯源哈希不符）。
-* 8 个 **Fail-Open 负面用例**（v1.5 新增）：溯源表缺失、空字段跳过互校、
-  --pdf-dir 不存在、PDF 缺失、PDF 算不了哈希、哈希不符仍读文本。
-  最后一例在同一进程里把 Pages.page_text 换成计数器，断言调用次数为 0——
+* 9 个 **Fail-Open 负面用例**：溯源表缺失、空字段跳过互校、--pdf-dir 不存在、
+  PDF 缺失、PDF 算不了哈希、哈希不符仍读文本（N1–N8），以及 v1.6 补的
+  N9「内容损坏但哈希对得上」。
+  N8 在同一进程里把 Pages.page_text 换成计数器，断言调用次数为 0——
   "哈希不符就不读页文本"这句话，只有数出来才算数。
+
+关于 SKIP
+---------
+N8/N9 必须用真实 PDF，所以本脚本**要求** ICPDF_PDF_DIR。没给就直接失败退出，
+不把"没跑"当"通过"：SKIP 单独计数，永不计入 PASS。
 """
 import copy
 import csv
@@ -156,7 +162,7 @@ def tamper_test():
     pdf_dir = os.environ.get("ICPDF_PDF_DIR")
     src = Path(pdf_dir) / "CD74HCT574EE4__schs183c.pdf" if pdf_dir else None
     if not src or not src.exists():
-        return ("篡改 PDF 后哈希不符", "ERROR", "跳过（未设 ICPDF_PDF_DIR）", "SKIP",
+        return ("篡改 PDF 后哈希不符", "ERROR", "跳过（PDF 不可用）", "SKIP",
                 "需提供 PDF 目录")
 
     cols, gold_rows = load_gold()
@@ -238,7 +244,7 @@ def _label(code, cond):
 
 
 def neg_tests():
-    """v1.5 的 8 个 Fail-Open 负面测试。
+    """Fail-Open 负面测试：N1–N9。
 
     每一例都构造"本该报错"的输入，断言它确实报错；只看退出码不看提示文字是不够的——
     还要断言输出里没有那句"跳过/降级"的自我安慰。
@@ -331,6 +337,8 @@ def neg_tests():
 
     # ---- N8：哈希不符 → 该样本全部行 ERROR，且 page_text() 一次都不调用
     res.append(hash_shortcircuit_test())
+    # ---- N9：损坏 PDF（哈希对得上）→ 必须 ERROR，不能退化成 CANNOT_VERIFY
+    res.append(corrupt_pdf_test())
     return res
 
 
@@ -348,7 +356,7 @@ def hash_shortcircuit_test():
     pdf_dir = os.environ.get("ICPDF_PDF_DIR")
     src = Path(pdf_dir) / "CD74HCT574EE4__schs183c.pdf" if pdf_dir else None
     if not src or not src.exists():
-        return ("N8 哈希不符不读页文本", "page_text=0次", "跳过（未设 ICPDF_PDF_DIR）",
+        return ("N8 哈希不符不读页文本", "page_text=0次", "跳过（PDF 不可用）",
                 "SKIP", "需提供 PDF 目录")
 
     cols, gold_rows = load_gold()
@@ -399,7 +407,81 @@ def hash_shortcircuit_test():
             "哈希门禁生效" if ok else "调用点: %s" % calls[:3])
 
 
+def corrupt_pdf_test():
+    """N9：内容损坏、但哈希算得出且对得上的 PDF。
+
+    构造方式最狠的一步是"把哈希改成损坏文件的哈希"——这样哈希校验、三处互校全都通过，
+    唯独 PDF 本身已经是残的（截断后 fitz 能打开，但 page_count=0）。
+
+    这一例专治"只算哈希不打开文件"：
+      v1.5 在这里落到 CANNOT_VERIFY、退出码 0（报告写"无 ERROR"）；
+      v1.6 预检执行 open_doc()+page_count()，判样本级 ERROR、退出码 1。
+    """
+    import hashlib
+    import shutil
+
+    pdf_dir = os.environ.get("ICPDF_PDF_DIR")
+    src = Path(pdf_dir) / "CD74HCT574EE4__schs183c.pdf" if pdf_dir else None
+    if not src or not src.exists():
+        return ("N9 损坏 PDF（哈希对得上）", "ERROR", "跳过（PDF 不可用）",
+                "SKIP", "需提供 PDF 目录")
+
+    cols, gold_rows = load_gold()
+    prov_cols, prov_rows = _read_prov()
+    v101 = [r for r in gold_rows if r["sample_no"] == "V101"]
+
+    raw = src.read_bytes()
+    broken = raw[: int(len(raw) * 0.30)]        # 截断：能打开，但没有一页
+    digest = hashlib.sha256(broken).hexdigest()
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        pd = td / "pdfs"
+        pd.mkdir()
+        (pd / src.name).write_bytes(broken)
+
+        # sidecar 与 provenance 的 sha256 都改成"坏文件的哈希"，
+        # 让溯源检查全部通过——只剩"文件到底能不能读"这一件事没被覆盖
+        (td / "pt.json").write_text(
+            json.dumps(_side_with_sha("V101", digest), ensure_ascii=False), encoding="utf-8")
+        rows2 = [dict(r) for r in prov_rows]
+        for r in rows2:
+            if r["sample_no"] == "V101":
+                r["sha256"] = digest
+        _write_prov(td / "prov.csv", rows2, prov_cols)
+
+        csv_path = td / "v101.csv"
+        _write_csv(csv_path, v101, cols)
+
+        out, code = _run_cli(["--csv", str(csv_path), "--pdf-dir", str(pd),
+                              "--page-text", str(td / "pt.json"),
+                              "--provenance", str(td / "prov.csv")])
+
+    opened_bad = ("页数为 0" in out) or ("PDF 打不开" in out)
+    no_cannot = "CANNOT_VERIFY" not in out
+    no_fallback = "使用随包的 page_text.json" not in out
+    ok = code == 1 and opened_bad and no_cannot and no_fallback
+    note = "预检 open+page_count 生效" if ok else (
+        "退出码%s 打不开=%s 无CANNOT=%s 未降级=%s"
+        % (code, opened_bad, no_cannot, no_fallback))
+    return ("N9 损坏 PDF（哈希对得上）", "ERROR", _label(code, ok), _v(ok), note)
+
+
+def _side_with_sha(sno, digest):
+    data = copy.deepcopy(json.loads(PAGE_TEXT.read_text(encoding="utf-8")))
+    data["samples"][sno]["sha256"] = digest
+    return data
+
+
 def main():
+    # ---- 环境门槛：N8/N9 必须用真实 PDF。没有就直说"没跑完"，不拿 SKIP 充 PASS。
+    pdf_dir = os.environ.get("ICPDF_PDF_DIR")
+    if not pdf_dir or not Path(pdf_dir).is_dir():
+        print("FAIL: 缺少 PDF 测试环境，测试不完整")
+        print("      需要 ICPDF_PDF_DIR 指向 PDF 语料目录（N8/N9 依赖真实 PDF）。")
+        print("      例：ICPDF_PDF_DIR=/path/to/pdfs python %s" % Path(__file__).name)
+        return 2
+
     cols, gold_rows = load_gold()
     rows, expects = build_rows(cols, gold_rows)
 
@@ -447,39 +529,59 @@ def main():
     print("=" * 92)
     print("%-48s %-8s %-8s %s" % ("用例", "期望", "实测", "结果"))
     print("=" * 92)
-    bad = 0
+
+    # 三种结果分开计数。SKIP 永远不进 PASS——"没跑"和"通过"是两件事，
+    # 混在一起就是变相的 fail-open：环境缺失时报告依然一片绿。
+    n_pass = n_fail = n_skip = 0
+    skipped = []
+
     for i, (name, want) in enumerate(expects, start=2):
-        have = got.get(i, "缺失")
+        have = got[i] if i in got else "缺失"
         ok = have == want
-        bad += 0 if ok else 1
+        if ok:
+            n_pass += 1
+        else:
+            n_fail += 1
         print("%-48s %-8s %-8s %s" % (name[:48], want, have, "PASS" if ok else "FAIL"))
+
     name, want, have, verdict, note = tamper_test()
     print("%-48s %-8s %-8s %s（%s）" % (name[:48], want, have, verdict, note))
-    if verdict == "FAIL":
-        bad += 1
+    if verdict == "PASS":
+        n_pass += 1
     elif verdict == "SKIP":
-        print("   （要跑这一项：ICPDF_PDF_DIR=/path/to/pdfs python %s）"
-              % Path(__file__).name)
+        n_skip += 1
+        skipped.append(name)
+    else:
+        n_fail += 1
 
     negs = neg_tests()
     print("-" * 92)
     for name, want, have, verdict, note in negs:
         print("%-48s %-8s %-8s %s（%s）" % (name[:48], want, have, verdict, note))
-        if verdict == "FAIL":
-            bad += 1
+        if verdict == "PASS":
+            n_pass += 1
         elif verdict == "SKIP":
-            print("   （要跑这一项：ICPDF_PDF_DIR=/path/to/pdfs python %s）"
-                  % Path(__file__).name)
+            n_skip += 1
+            skipped.append(name)
+        else:
+            n_fail += 1
 
     total = len(expects) + 1 + len(negs)
     print("=" * 92)
-    print("用例 %d（真实页文本 %d + 合成页文本 %d + 篡改场景 1 + Fail-Open 负面 %d），"
-          "通过 %d，失败 %d"
-          % (total, len(CASES), len(SYN_CASES), len(negs), total - bad, bad))
-    if bad:
+    print("用例 %d（真实页文本 %d + 合成页文本 %d + 篡改场景 1 + Fail-Open 负面 %d）"
+          % (total, len(CASES), len(SYN_CASES), len(negs)))
+    print("PASS=%d, FAIL=%d, SKIP=%d" % (n_pass, n_fail, n_skip))
+
+    if n_skip:
+        # SKIP 不计入 PASS，而且整体判失败：测试不完整 = 不能签字
+        print("FAIL: 缺少 PDF 测试环境，测试不完整")
+        print("      跳过 %d 项：%s" % (n_skip, "、".join(skipped)))
+        print("      这些项依赖真实 PDF，没跑就等于没验。")
+    if n_fail:
         print()
         print("---- 机检原始输出 ----")
         print(out)
+    if n_skip or n_fail:
         return 1
     return 0
 

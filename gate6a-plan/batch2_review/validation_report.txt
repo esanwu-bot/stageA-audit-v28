@@ -1,12 +1,14 @@
-标注机检报告 v1.5  ——  Batch2 Gold（24 行 / 6 样本）
-生成时间：2026-11-11 21:44:08
+标注机检报告 v1.6  ——  Batch2 Gold（24 行 / 6 样本）
+生成时间：2026-11-11 21:59:27
 
-v1.5 相对 v1.4 只改判定强度，不改数据：修掉 4 处 Fail-Open（本该报错却放行）。
+v1.6 相对 v1.5 只改判定强度，不改数据：
+  · PDF 预检从"只算哈希"改为"算哈希 + 必开一次"，坏 PDF 不再能落成 CANNOT_VERIFY；
+  · page_count=0（被截断）也判 ERROR，不再因为 0 是 falsy 而跳过越界判断。
 
 本次报告含三段：
-  A. PDF 模式：页文本从 PDF 原件现抽，并现场重算 SHA-256 与 sidecar 比对
+  A. PDF 模式：页文本从 PDF 原件现抽，现场重算 SHA-256 与 sidecar 比对
   B. 离线模式：只用随包 page_text.json，不碰 PDF 原件
-  C. Fail-Open 关闭证据：两类致命输入的实际输出（必须拒绝出报告，退出码 2）
+  C. Fail-Open 实证记录：历史版本（v1.4 / v1.5）与当前版本的同命令对照，含原始输出与退出码
 
 ##############################################################################
 # A. PDF 模式（--pdf-dir <PDF 目录>）
@@ -22,7 +24,7 @@ v1.5 相对 v1.4 只改判定强度，不改数据：修掉 4 处 Fail-Open（�
   结论：三处溯源一致
 
 ==============================================================================
-标注机检 v1.5  Batch2_GOLD_v1.csv   行数 24   样本 6
+标注机检 v1.6  Batch2_GOLD_v1.csv   行数 24   样本 6
 页文本来源: PDF 原件
 ==============================================================================
 [OK      ] 行2    V101  
@@ -76,7 +78,7 @@ v1.5 相对 v1.4 只改判定强度，不改数据：修掉 4 处 Fail-Open（�
   结论：三处溯源一致
 
 ==============================================================================
-标注机检 v1.5  Batch2_GOLD_v1.csv   行数 24   样本 6
+标注机检 v1.6  Batch2_GOLD_v1.csv   行数 24   样本 6
 页文本来源: page_text.json
 ==============================================================================
 [OK      ] 行2    V101  
@@ -115,11 +117,83 @@ v1.5 相对 v1.4 只改判定强度，不改数据：修掉 4 处 Fail-Open（�
 无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
 
 ##############################################################################
-# C. Fail-Open 关闭证据（v1.5）
-#    v1.4 遇到这两种输入都是"提示一句就继续"，现在必须拒绝出报告。
+# C. Fail-Open 实证记录（不是代码路径分析，是实际跑出来的）
 ##############################################################################
 
-$ python validate_annotation.py --provenance E:/nonexistent/prov.csv
+两件事先说清：
+  1. 下面每段的"旧版"脚本都是从 Git 里按提交号取出的历史文件，未改动当前工作区；
+  2. 每条命令的终端输出与退出码原样粘贴，没有删行、没有改写。
+
+---- C.0 取回历史版本 ----
+
+$ git -C /e/workspace/icpdf-extractor show a87ba4a:workbench/_gate6a_prep/validate_annotation.py > /tmp/va_v14.py
+$ git -C /e/workspace/icpdf-extractor show 0e0af78:workbench/_gate6a_prep/validate_annotation.py > /tmp/va_v15.py
+$ ls -l /tmp/va_v14.py /tmp/va_v15.py
+31367	Nov 11 21:59	/tmp/va_v14.py
+40088	Nov 11 21:56	/tmp/va_v15.py
+
+(a87ba4a = v1.4 分支提交；0e0af78 = v1.5 数据提交。两个文件字节数不同，确认取到的是不同版本。)
+
+==============================================================================
+C.1  F1：溯源表读不到
+==============================================================================
+
+输入：--provenance E:/nonexistent/prov.csv（该文件确实不存在）
+
+$ python /tmp/va_v14.py --csv Batch2_GOLD_v1.csv --page-text page_text.json --provenance E:/nonexistent/prov.csv
+-------------------------------------------------------------------
+提示: 使用随包的 page_text.json（只含证据页，无法给出建议页）
+
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：未提供
+  sidecar：6 个样本
+  PDF 实算哈希：跳过（非 PDF 模式）
+  结论：三处溯源一致
+  [提示] 未找到 Batch2_PDF_PROVENANCE.csv，跳过三处互校（只做 CSV ↔ sidecar）
+
+==============================================================================
+标注机检 v1.4  Batch2_GOLD_v1.csv   行数 24   样本 6
+页文本来源: page_text.json
+==============================================================================
+[OK      ] 行2    V101  
+[OK      ] 行3    V101  
+[OK      ] 行4    V101  
+[OK      ] 行5    V101  
+[OK      ] 行6    V101  
+[OK      ] 行7    V101  
+[OK      ] 行8    V101  
+[OK      ] 行9    V101  
+[OK      ] 行10   V101  
+[OK      ] 行11   V097  
+[OK      ] 行12   V097  
+[OK      ] 行13   V097  
+[OK      ] 行14   V162  
+[OK      ] 行15   V162  
+[OK      ] 行16   V162  
+[OK      ] 行17   V349  
+[OK      ] 行18   V349  
+[OK      ] 行19   V349  
+[OK      ] 行20   V145  
+[OK      ] 行21   V145  
+[OK      ] 行22   V145  
+[OK      ] 行23   V111  
+[OK      ] 行24   V111  
+[OK      ] 行25   V111  
+
+人工裁定（human_adjudication）：
+  行12   V097   Slew rate                                ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行13   V097   Settling time to 0.1%                    ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V145   Current Flowing into VSENSEP             ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=33  正负值=1
+统计: OK=24
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+[退出码 0]
+
+$ python validate_annotation.py --csv Batch2_GOLD_v1.csv --page-text page_text.json --provenance E:/nonexistent/prov.csv
 -------------------------------------------------------------------
 ==============================================================================
 [ERROR] 拒绝出报告：溯源表不存在：E:\nonexistent\prov.csv（它是第三方参照，缺了就只能自己跟自己对账）
@@ -128,7 +202,68 @@ $ python validate_annotation.py --provenance E:/nonexistent/prov.csv
 继续跑只会产出一份看起来全绿、实际没有证据支撑的报告，所以直接退出（退出码 2）。
 [退出码 2]
 
-$ python validate_annotation.py --pdf-dir E:/nonexistent/pdfs
+结论：v1.4 提示一句"跳过三处互校"，继续跑出 OK=24、退出码 0；v1.6 直接拒绝出报告、退出码 2。
+
+==============================================================================
+C.2  F3：--pdf-dir 指向不存在的目录
+==============================================================================
+
+输入：--pdf-dir E:/nonexistent/pdfs（目录确实不存在），同时明确给出 sidecar 与溯源表，
+      这样旧版一定会"顺利"降级到离线模式，缺口看得最清楚。
+
+$ python /tmp/va_v14.py --csv Batch2_GOLD_v1.csv --page-text page_text.json --provenance Batch2_PDF_PROVENANCE.csv --pdf-dir E:/nonexistent/pdfs
+-------------------------------------------------------------------
+提示: 使用随包的 page_text.json（只含证据页，无法给出建议页）
+
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  PDF 实算哈希：跳过（非 PDF 模式）
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.4  Batch2_GOLD_v1.csv   行数 24   样本 6
+页文本来源: page_text.json
+==============================================================================
+[OK      ] 行2    V101  
+[OK      ] 行3    V101  
+[OK      ] 行4    V101  
+[OK      ] 行5    V101  
+[OK      ] 行6    V101  
+[OK      ] 行7    V101  
+[OK      ] 行8    V101  
+[OK      ] 行9    V101  
+[OK      ] 行10   V101  
+[OK      ] 行11   V097  
+[OK      ] 行12   V097  
+[OK      ] 行13   V097  
+[OK      ] 行14   V162  
+[OK      ] 行15   V162  
+[OK      ] 行16   V162  
+[OK      ] 行17   V349  
+[OK      ] 行18   V349  
+[OK      ] 行19   V349  
+[OK      ] 行20   V145  
+[OK      ] 行21   V145  
+[OK      ] 行22   V145  
+[OK      ] 行23   V111  
+[OK      ] 行24   V111  
+[OK      ] 行25   V111  
+
+人工裁定（human_adjudication）：
+  行12   V097   Slew rate                                ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行13   V097   Settling time to 0.1%                    ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V145   Current Flowing into VSENSEP             ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=33  正负值=1
+统计: OK=24
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+[退出码 0]
+
+$ python validate_annotation.py --csv Batch2_GOLD_v1.csv --page-text page_text.json --provenance Batch2_PDF_PROVENANCE.csv --pdf-dir E:/nonexistent/pdfs
 -------------------------------------------------------------------
 ==============================================================================
 [ERROR] 拒绝出报告：--pdf-dir 指定的目录不存在: E:\nonexistent\pdfs
@@ -136,3 +271,134 @@ $ python validate_annotation.py --pdf-dir E:/nonexistent/pdfs
 这是判据/环境层面的错误，不是某一行的数据问题。
 继续跑只会产出一份看起来全绿、实际没有证据支撑的报告，所以直接退出（退出码 2）。
 [退出码 2]
+
+结论：v1.4 打了行"提示: 使用随包的 page_text.json"，然后拿离线数据凑出 OK=24、退出码 0——
+      我要验的是 PDF 原件，它验的是随包文本，报告上看不出区别。v1.6 退出码 2。
+
+==============================================================================
+C.3  F3：PDF 已损坏，但哈希算得出且对得上（v1.5 的真缺口）
+==============================================================================
+
+构造（用随包脚本复现，不手改任何共享文件）：
+
+$ python _mk_corrupt_pdf_fixture.py --pdf-dir <PDF 目录> --out /tmp/corrupt_case
+-------------------------------------------------------------------
+样本 V101 / 文件 CD74HCT574EE4__schs183c.pdf
+原文件 1224626 字节 → 残文件 367387 字节（截 30%）
+残文件 SHA-256: 53218a10a1172c3a73830ae269739b6993bdb63b1caf401edf9e86450f3c0f41
+已写入 sidecar 与 provenance 的 sha256 字段（刻意让它们对得上）
+产物目录: C:\Users\Administrator\AppData\Local\Temp\corrupt_case
+
+复现命令：
+  python validate_annotation.py --csv C:\Users\Administrator\AppData\Local\Temp\corrupt_case\v101.csv --pdf-dir C:\Users\Administrator\AppData\Local\Temp\corrupt_case\pdfs \
+         --page-text C:\Users\Administrator\AppData\Local\Temp\corrupt_case\page_text.json --provenance C:\Users\Administrator\AppData\Local\Temp\corrupt_case\provenance.csv
+[退出码 0]
+
+关键点：残文件的 SHA-256 被写进了 sidecar 与 provenance。于是三处互校全过、哈希全对，
+        唯一不对的是——这个 PDF 已经一页都没有了。只算哈希的检查在这里什么都看不出来。
+
+$ python /tmp/va_v15.py --csv <case>/v101.csv --pdf-dir <case>/pdfs --page-text <case>/page_text.json --provenance <case>/provenance.csv
+-------------------------------------------------------------------
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：已比对
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.5  v101.csv   行数 9   样本 1
+页文本来源: PDF 原件
+==============================================================================
+[CANNOT_VERIFY] 行2    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行3    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行4    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行5    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行6    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行7    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行8    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行9    V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+[CANNOT_VERIFY] 行10   V101  
+            - 没有 p3 的页文本（JSON 未收录或页号超出）
+
+统计: CANNOT_VERIFY=9
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+[退出码 0]
+
+$ python validate_annotation.py --csv <case>/v101.csv --pdf-dir <case>/pdfs --page-text <case>/page_text.json --provenance <case>/provenance.csv
+-------------------------------------------------------------------
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：已比对
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.6  v101.csv   行数 9   样本 1
+页文本来源: PDF 原件
+==============================================================================
+[ERROR    ] 行2    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行3    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行4    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行5    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行6    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行7    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行8    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行9    V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+[ERROR    ] 行10   V101  
+            - PDF 页数为 0：CD74HCT574EE4__schs183c.pdf（文件疑似被截断，无法核对任何页）
+
+统计: ERROR=9
+
+有 ERROR，先修这些再谈 CONFIRMED。
+[退出码 1]
+
+结论：v1.5 判 CANNOT_VERIFY=9、结论"无 ERROR"、退出码 0；v1.6 判 ERROR=9、退出码 1。
+      差别只有一处——v1.6 的预检真的把 PDF 打开了一次（open_doc + page_count）。
+
+==============================================================================
+C.4  SKIP 口径：不做一次"缺环境"的演示，就等于没验这条规则
+==============================================================================
+
+$ env -u ICPDF_PDF_DIR python _selftest_validator_v2.py
+-------------------------------------------------------------------
+FAIL: 缺少 PDF 测试环境，测试不完整
+      需要 ICPDF_PDF_DIR 指向 PDF 语料目录（N8/N9 依赖真实 PDF）。
+      例：ICPDF_PDF_DIR=/path/to/pdfs python _selftest_validator_v2.py
+[退出码 2]
+
+$ ICPDF_PDF_DIR=<空目录> python _selftest_validator_v2.py | tail -6
+-------------------------------------------------------------------
+============================================================================================
+用例 31（真实页文本 16 + 合成页文本 5 + 篡改场景 1 + Fail-Open 负面 9）
+PASS=28, FAIL=0, SKIP=3
+FAIL: 缺少 PDF 测试环境，测试不完整
+      跳过 3 项：篡改 PDF 后哈希不符、N8 哈希不符不读页文本、N9 损坏 PDF（哈希对得上）
+      这些项依赖真实 PDF，没跑就等于没验。
+[退出码 1]
+
+结论：缺环境直接退出码 2；环境在但 PDF 不在则 SKIP=3、PASS=28，SKIP 不计入 PASS，整体退出码 1。
