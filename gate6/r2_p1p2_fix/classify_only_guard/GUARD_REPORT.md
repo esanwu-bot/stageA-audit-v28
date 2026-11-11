@@ -316,6 +316,9 @@ async def _fake_run_child(script, spec, timeout):
 | `SHA256SUMS.txt` | 本目录文件校验和 |
 
 > 父目录 `gate6/r2_p1p2_fix/` 的 `SHA256SUMS.txt` **保持不变**——它描述的是 Reviewer 已审阅的冻结快照。本目录是**增量**，自带 manifest。
+>
+> 本地工作区 `workbench/SHA256SUMS.txt` 已同步为 guard **后**状态。相对冻结快照共有 3 个文件变化，这是预期差异，不是篡改：
+> `serve_parser.py`、`parse_worker.py`、`_verify_p1p2_static.py`（53 项 → 61 项）。其余 10 个文件哈希与冻结快照逐字节相同。
 
 ---
 
