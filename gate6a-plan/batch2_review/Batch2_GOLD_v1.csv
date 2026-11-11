@@ -13,7 +13,7 @@ V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,8,Electrical Characteristics,,Slew rat
 V097,DEM-OPA-MSOP-2A__opa2830.pdf,OPA2830,8,Electrical Characteristics,,Settling time to 0.1%,,46,73,ns,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 8 页；已剔除残词/非数值/重复行,ACCEPTED_SOURCE_HAS_NO_SYMBOL,wuxiaoxian,0.85
 V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,VCC,"Supply voltage range, VCC",-0.5,,4.6,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.85
 V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,VI,"Input voltage range, VI",-0.5,,7,V,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.85
-V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,IO,"Current into any output in the low state, IO",,,96,mA,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.85
+V162,74LVTH182504APMG4__sn74lvth18504a.pdf,SN74LVTH182504A,25,Absolute Maximum Ratings,IO,"Current into any output in the low state, IO",,,128,mA,"SN74LVTH182504A, A port or TDO",CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 25 页；原 96 mA 是 SN54LVTH182504A(A port/TDO) 的值，本行器件为 SN74，改取 128 mA；B 端口另印 30 mA，未单列,,wuxiaoxian,0.85
 V349,ADC3544IRSBT__adc3544.pdf,ADC3544,5,Absolute Maximum Ratings,TJ,Junction temperature,,,105,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 5 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
 V349,ADC3544IRSBT__adc3544.pdf,ADC3544,5,Absolute Maximum Ratings,Tstg,Storage temperature,-65,,150,°C,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 5 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95
 V349,ADC3544IRSBT__adc3544.pdf,ADC3544,9,Electrical Characteristics,NSD,Noise Spectral Density,,-153,,dBFS/Hz,,CONFIRMED,Batch2 精简 Gold：人工核对 PDF 第 9 页；已剔除残词/非数值/重复行,,wuxiaoxian,0.95

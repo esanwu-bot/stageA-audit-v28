@@ -9,16 +9,17 @@
 只抽需要的页：第 1 页（核对型号）+ CSV 里出现的 evidence_page。
 不整本抄，一是包体积，二是没必要——机检只对这几页负责。
 """
+import argparse
 import csv
 import datetime
 import hashlib
 import json
+import os
 from pathlib import Path
 
 import fitz
 
 PREP = Path(__file__).resolve().parent
-PDF_DIR = Path(r"E:\workspace\IcPdfParser\data\pdfs")
 GS = PREP / "Batch2_GOLD_v1.csv"
 OUT = PREP / "page_text.json"
 
@@ -32,7 +33,16 @@ def sha256_of(path, chunk=1 << 20):
 
 
 def main():
-    with open(GS, encoding="utf-8-sig", newline="") as fh:
+    ap = argparse.ArgumentParser(description="抽证据页原文 + 溯源字段 → page_text.json")
+    ap.add_argument("--pdf-dir", default=os.environ.get("ICPDF_PDF_DIR"),
+                    help="PDF 目录；也可用环境变量 ICPDF_PDF_DIR")
+    ap.add_argument("--csv", default=str(GS))
+    args = ap.parse_args()
+    if not args.pdf_dir:
+        raise SystemExit("必须给 --pdf-dir 或设 ICPDF_PDF_DIR（本脚本要读 PDF 原文）")
+    pdf_dir = Path(args.pdf_dir)
+
+    with open(args.csv, encoding="utf-8-sig", newline="") as fh:
         rows = list(csv.DictReader(fh))
 
     need = {}
@@ -45,12 +55,12 @@ def main():
            "extractor": "PyMuPDF page.get_text('text')",
            "note": "只含第 1 页与 CSV 中出现的 evidence_page，供 validate_annotation.py 离线核对；"
                    "sha256/page_count/size_bytes 用于溯源",
-           "corpus_dir_at_build": str(PDF_DIR),
+           "corpus_dir_at_build": str(pdf_dir),
            "samples": {}}
 
     for sno in sorted(need):
         meta = need[sno]
-        path = PDF_DIR / meta["file"]
+        path = pdf_dir / meta["file"]
         digest = sha256_of(path)
         doc = fitz.open(str(path))
         pages = {}

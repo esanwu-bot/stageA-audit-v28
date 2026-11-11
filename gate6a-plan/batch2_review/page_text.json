@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-11 21:17:58",
+ "generated_at": "2026-11-11 21:29:54",
  "extractor": "PyMuPDF page.get_text('text')",
  "note": "只含第 1 页与 CSV 中出现的 evidence_page，供 validate_annotation.py 离线核对；sha256/page_count/size_bytes 用于溯源",
  "corpus_dir_at_build": "E:\\workspace\\IcPdfParser\\data\\pdfs",

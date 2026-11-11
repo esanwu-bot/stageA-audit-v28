@@ -1,0 +1,155 @@
+# Gate 6A Batch 2 v1.4 —— Git 证据
+# 采集时间: 2026-11-11 21:33:14 +0800   主机: PC-20260409SKMJ
+# 采集目录: 独立 worktree（--detach origin/feat/gate6a-annotation）
+# 本文件记录两件事：
+#   A. 审稿人指定的 4 条命令，对象 = 数据提交 9097ed6（v1.4 的数据就在这个提交里）
+#   B. v1.4 修正提交 9097ed658da0952e6596e5078b68f9ac9cc5ef7f 的元数据与干净工作区
+
+##################################################################
+# A. 4 条指定命令（对象：9097ed6）
+##################################################################
+
+$ git show -s --format=fuller 9097ed6
+==================================================================
+commit 9097ed658da0952e6596e5078b68f9ac9cc5ef7f
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 21:32:58 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 21:32:58 2026 +0800
+
+    Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
+    
+    数据修正（Reviewer 指出）：
+    - V162 `Current into any output in the low state, IO`：96 mA 是 SN54LVTH182504A（军温档）的值，
+      本批样本为 SN74LVTH182504A（商用档），改取 128 mA（A port or TDO）；
+      condition 明确标注 `SN74LVTH182504A, A port or TDO`，B 端口另印 30 mA 在 notes 记录、不单列。
+    - 影响面：仅此 1 行。其余 23 行未动。
+    
+    机检升 v1.4：
+    - 新增 check_provenance()：CSV / sidecar(page_text.json) / provenance 三处的
+      file_name、device_model、sha256、page_count 逐字互校，缺条目即 ERROR。
+    - PDF 模式新增 pages.pdf_sha256()：从原件现场重算 SHA-256 与 sidecar 比对，
+      不符直接 ERROR，不再继续核页内文字（哈希是门禁，不是注释）。
+    - 移除全部硬编码绝对路径（E:\workspace\...），改为 --csv / --pdf-dir / --page-text /
+      --provenance，PDF 目录支持 ICPDF_PDF_DIR 环境变量与 ./pdfs 回退。
+    - 型号与 provenance 不一致由「封面找不到」升级为 ERROR（更严重的一类）。
+    - 自测扩到 22 例：16 例真实 Gold/真实页文本 + 5 例合成页文本（V900）+ 1 例篡改 PDF，
+      22/22 通过；其中「页面只有 -2.5 却验 ±2.5」与「篡改 PDF 哈希不符」两个负面用例为 Reviewer 指定。
+    
+    _freeze_gold.py 改为单向派生：
+    - 只读 Batch2_GOLD_v1.csv，不反向写回；据此生成 XLSX 后逐格比对，不一致即非零退出。
+    - README 措辞同步改为「CSV 为输入真源，脚本据此生成 XLSX 并逐格比对」，不再称唯一真源。
+    
+    报告：
+    - validation_report.txt 改为双模式一份（PDF 模式 + 离线模式），两模式结论必须一致：
+      OK=24 / SUSPECT=0 / ERROR=0，三处溯源一致。
+    - selftest_report.txt 为 22 例明细。
+
+$ git diff-tree --no-commit-id --name-status -r 9097ed6
+==================================================================
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+M	workbench/_gate6a_prep/_build_page_text.py
+M	workbench/_gate6a_prep/_freeze_gold.py
+M	workbench/_gate6a_prep/_selftest_validator_v2.py
+M	workbench/_gate6a_prep/_shots_batch2.py
+M	workbench/_gate6a_prep/page_text.json
+M	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
+
+$ git merge-base origin/main 9097ed6
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+(上面这个 SHA 是 origin/main 的 tip 或分叉点；9097ed6 不在 main 上，
+ 故 merge-base 结果不等于 9097ed6，可据此证明没有碰 main)
+
+$ git status --porcelain=v1
+==================================================================
+(输出为空 = 工作区 clean。本文件写在 worktree 之外，所以不会把自己算进未跟踪)
+
+##################################################################
+# B. v1.4 数据提交 9097ed658da0952e6596e5078b68f9ac9cc5ef7f 的元数据与干净工作区
+##################################################################
+
+$ git show -s --format=fuller 9097ed658da0952e6596e5078b68f9ac9cc5ef7f
+==================================================================
+commit 9097ed658da0952e6596e5078b68f9ac9cc5ef7f
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 21:32:58 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 21:32:58 2026 +0800
+
+    Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
+    
+    数据修正（Reviewer 指出）：
+    - V162 `Current into any output in the low state, IO`：96 mA 是 SN54LVTH182504A（军温档）的值，
+      本批样本为 SN74LVTH182504A（商用档），改取 128 mA（A port or TDO）；
+      condition 明确标注 `SN74LVTH182504A, A port or TDO`，B 端口另印 30 mA 在 notes 记录、不单列。
+    - 影响面：仅此 1 行。其余 23 行未动。
+    
+    机检升 v1.4：
+    - 新增 check_provenance()：CSV / sidecar(page_text.json) / provenance 三处的
+      file_name、device_model、sha256、page_count 逐字互校，缺条目即 ERROR。
+    - PDF 模式新增 pages.pdf_sha256()：从原件现场重算 SHA-256 与 sidecar 比对，
+      不符直接 ERROR，不再继续核页内文字（哈希是门禁，不是注释）。
+    - 移除全部硬编码绝对路径（E:\workspace\...），改为 --csv / --pdf-dir / --page-text /
+      --provenance，PDF 目录支持 ICPDF_PDF_DIR 环境变量与 ./pdfs 回退。
+    - 型号与 provenance 不一致由「封面找不到」升级为 ERROR（更严重的一类）。
+    - 自测扩到 22 例：16 例真实 Gold/真实页文本 + 5 例合成页文本（V900）+ 1 例篡改 PDF，
+      22/22 通过；其中「页面只有 -2.5 却验 ±2.5」与「篡改 PDF 哈希不符」两个负面用例为 Reviewer 指定。
+    
+    _freeze_gold.py 改为单向派生：
+    - 只读 Batch2_GOLD_v1.csv，不反向写回；据此生成 XLSX 后逐格比对，不一致即非零退出。
+    - README 措辞同步改为「CSV 为输入真源，脚本据此生成 XLSX 并逐格比对」，不再称唯一真源。
+    
+    报告：
+    - validation_report.txt 改为双模式一份（PDF 模式 + 离线模式），两模式结论必须一致：
+      OK=24 / SUSPECT=0 / ERROR=0，三处溯源一致。
+    - selftest_report.txt 为 22 例明细。
+
+$ git diff-tree --no-commit-id --name-status -r 9097ed658da0952e6596e5078b68f9ac9cc5ef7f
+==================================================================
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.csv
+M	workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+M	workbench/_gate6a_prep/_build_page_text.py
+M	workbench/_gate6a_prep/_freeze_gold.py
+M	workbench/_gate6a_prep/_selftest_validator_v2.py
+M	workbench/_gate6a_prep/_shots_batch2.py
+M	workbench/_gate6a_prep/page_text.json
+M	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
+
+$ git merge-base origin/main 9097ed658da0952e6596e5078b68f9ac9cc5ef7f
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+（结果 != 9097ed6，说明本提交不在 main 上）
+
+$ git log --format='%h  父=%p  %s' -4 9097ed6
+==================================================================
+9097ed6  父=db785b7  Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
+db785b7  父=5f5cc29  Gate 6A：补入 v1.3 的 Git 证据（对应提交 5f5cc29）
+5f5cc29  父=2c7881b  Gate 6A Batch 2 v1.3：机检补 PM/RANGE 反例、PDF 溯源留痕、空符号人工裁定
+2c7881b  父=2725f90  Gate 6A：补入 v1.2 的 Git 证据（对应提交 2725f90）
+
+$ git status --porcelain=v1
+==================================================================
+(输出为空 = 工作区 clean)
+
+$ git diff --stat origin/feat/gate6a-annotation 9097ed6
+==================================================================
+ workbench/_gate6a_prep/Batch2_GOLD_v1.csv        |   2 +-
+ workbench/_gate6a_prep/Batch2_GOLD_v1.xlsx       | Bin 10150 -> 10356 bytes
+ workbench/_gate6a_prep/Batch2_Gate6A_README.md   | 126 +++++++++-----
+ workbench/_gate6a_prep/_build_page_text.py       |  18 +-
+ workbench/_gate6a_prep/_freeze_gold.py           | 208 ++++++++++++-----------
+ workbench/_gate6a_prep/_selftest_validator_v2.py |  91 +++++++++-
+ workbench/_gate6a_prep/_shots_batch2.py          |  11 +-
+ workbench/_gate6a_prep/page_text.json            |   2 +-
+ workbench/_gate6a_prep/selftest_report.txt       |  12 +-
+ workbench/_gate6a_prep/validate_annotation.py    | 155 ++++++++++++++++-
+ workbench/_gate6a_prep/validation_report.txt     |  59 ++++++-
+ 11 files changed, 504 insertions(+), 180 deletions(-)

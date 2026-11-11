@@ -6,6 +6,8 @@
   1. 坐标全部取自 PDF 词表/命中框，再乘缩放倍数映射到像素，不手写像素值；
   2. 说明文字一律放在图片下方的白条里，不往页面上叠字——叠字会盖住被证明的东西。
 """
+import argparse
+import os
 from pathlib import Path
 
 import fitz
@@ -14,7 +16,7 @@ from PIL import Image, ImageDraw, ImageFont
 PREP = Path(__file__).resolve().parent
 OUT = PREP / "screenshots"
 OUT.mkdir(exist_ok=True)
-PDF_DIR = Path(r"E:\workspace\IcPdfParser\data\pdfs")
+PDF_DIR = None      # 由入口按 --pdf-dir / ICPDF_PDF_DIR 赋值，脚本内不留绝对路径
 
 RED = (198, 28, 28)
 BLUE = (20, 80, 190)
@@ -118,6 +120,13 @@ def v101_page3():
 
 
 if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description="生成 Batch 2 证据截图")
+    ap.add_argument("--pdf-dir", default=os.environ.get("ICPDF_PDF_DIR"))
+    a = ap.parse_args()
+    if not a.pdf_dir:
+        raise SystemExit("必须给 --pdf-dir 或设 ICPDF_PDF_DIR")
+    PDF_DIR = Path(a.pdf_dir)
+
     v101_page3()
     cover_shot("ADC3544IRSBT__adc3544.pdf", "ADC3544", "V349_cover_ADC3544.png",
                "V349 实际型号 ADC3544（README 曾误写 ADC3541）")

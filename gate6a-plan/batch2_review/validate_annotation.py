@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""标注机检 v2 —— 核对"这一行填的东西，是不是真印在你说的那一页上"。
+"""标注机检 v1.4 —— 核对"这一行填的东西，是不是真印在你说的那一页上"。
 
 v1 的三个漏洞，v2 逐个补上
 --------------------------
@@ -13,6 +13,16 @@ v1 的三个漏洞，v2 逐个补上
    v2 只认 --csv 里的 file_name，PDF 目录按 `--pdf-dir` → 环境变量 → 同目录 `pdfs/` 依次找；
    全都没有就退到同目录的 `page_text.json`（证据页原文，随包分发），此时脚本**不依赖 PyMuPDF**。
 
+v1.4 新增
+---------
+* 版本号统一为 1.4（脚本、报告、README、提交信息同号）；
+* **溯源一致性检查**：CSV、page_text.json、Batch2_PDF_PROVENANCE.csv 三处的
+  file_name / device_model / sha256 / page_count 必须完全一致，不一致直接 ERROR；
+* **PDF 模式重算哈希**：给了 --pdf-dir 就现场算每个 PDF 的 SHA-256 与 sidecar 比对，
+  文件被换过就报 ERROR（反例见 _selftest_validator_v2.py 的篡改用例）；
+* 不再有任何绝对路径：PDF 目录走 --pdf-dir / ICPDF_PDF_DIR / ./pdfs，
+  溯源表走 --provenance / ./Batch2_PDF_PROVENANCE.csv。
+
 它不是什么
 ----------
 * 不是 Parser，不 import icpdf.*。
@@ -23,6 +33,7 @@ v1 的三个漏洞，v2 逐个补上
 ----
   python validate_annotation.py                          # 默认 Batch2_GOLD_v1.csv
   python validate_annotation.py --csv X.csv --pdf-dir /path/to/pdfs
+  ICPDF_PDF_DIR=/path/to/pdfs python validate_annotation.py
   python validate_annotation.py --no-suggest              # 不做全文找页，快
 退出码：0 无 ERROR，1 有 ERROR，2 输入有问题。
 """
@@ -36,9 +47,12 @@ import re
 import sys
 from pathlib import Path
 
+VERSION = "1.4"
+
 HERE = Path(__file__).resolve().parent
 DEFAULT_CSV = HERE / "Batch2_GOLD_v1.csv"
 SIDECAR = HERE / "page_text.json"
+PROVENANCE = HERE / "Batch2_PDF_PROVENANCE.csv"
 
 MINUS = "-\u2212\u2013\u2014"          # 连字符/数学减号/短横/长横
 SPACE_RE = re.compile(r"\s+")
@@ -140,6 +154,15 @@ def pm_pattern(num):
     return re.compile(r"[±]\s*" + body + r"0*(?![\d.])")
 
 
+def sha256_file(path):
+    import hashlib
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for blk in iter(lambda: fh.read(1 << 20), b""):
+            h.update(blk)
+    return h.hexdigest()
+
+
 # ---------------------------------------------------------------- 页文本来源
 
 
@@ -153,8 +176,19 @@ class Pages(object):
         self.no_suggest = no_suggest
         self.docs = {}
         self.cache = {}
+        self.pdf_sha = {}
         self.json = None
         self.error = ""
+
+        # sidecar 里的 sha256/page_count 是"期望值"，两种模式都要读——所以放在最前面，
+        # 不能等 PDF 分支 return 之后才加载（那样 PDF 模式下就没有期望值可对）。
+        self.expected = {}
+        if sidecar and sidecar.exists():
+            try:
+                self.expected = (json.loads(sidecar.read_text(encoding="utf-8"))
+                                 .get("samples") or {})
+            except Exception as e:
+                self.error = "page_text.json 解析失败: %s" % e
 
         if pdf_dir and pdf_dir.exists():
             try:
@@ -182,7 +216,11 @@ class Pages(object):
         if self.mode == "pdf":
             import fitz
             if sno not in self.docs:
-                self.docs[sno] = fitz.open(str(self.pdf_dir / file_name))
+                path = self.pdf_dir / file_name
+                if not path.exists():
+                    self.cache[key] = None       # 文件不在，交给上层判 CANNOT_VERIFY
+                    return None
+                self.docs[sno] = fitz.open(str(path))
             doc = self.docs[sno]
             if 1 <= page_no <= doc.page_count:
                 text = doc.load_page(page_no - 1).get_text("text") or ""
@@ -206,6 +244,17 @@ class Pages(object):
             node = (self.json.get("samples") or {}).get(sno) or {}
             return node.get("page_count")
         return None
+
+    def pdf_sha256(self, sno, file_name):
+        """PDF 模式下现场算哈希；非 PDF 模式返回 None。"""
+        if self.mode != "pdf":
+            return None
+        if sno in self.pdf_sha:
+            return self.pdf_sha[sno]
+        path = self.pdf_dir / file_name
+        val = sha256_file(path) if path.exists() else None
+        self.pdf_sha[sno] = val
+        return val
 
     def suggest(self, sno, file_name, rx):
         """值不在本页时，扫描全文找它出现在哪几页。只有 PDF 模式能做。"""
@@ -407,6 +456,64 @@ def check_model(model, ptext1):
     return "SUSPECT", "型号 %s 未在封面原文找到（可能只印族名或订购码）" % model
 
 
+def load_provenance(path):
+    """读 Batch2_PDF_PROVENANCE.csv，返回 {sample_no: row}。文件不存在返回 None。"""
+    if not path or not path.exists():
+        return None
+    with open(path, encoding="utf-8-sig", newline="") as fh:
+        return {r["sample_no"]: r for r in csv.DictReader(fh)}
+
+
+def check_provenance(rows, pages, prov):
+    """三处溯源必须一致：CSV 行、page_text.json（sidecar）、provenance 表。
+
+    返回 (按样本归集的错误 dict, 全局提示 list)。
+    设计上"不一致就 ERROR"：溯源对不上时，后面所有页内核对都失去意义。
+    """
+    issues, notes = {}, []
+    side = pages.expected or {}
+    csv_meta = {}
+    for r in rows:
+        csv_meta.setdefault(r["sample_no"], (r.get("file_name") or "",
+                                             r.get("device_model") or ""))
+
+    def add(sno, msg):
+        issues.setdefault(sno, []).append(msg)
+
+    for sno, (fname, model) in sorted(csv_meta.items()):
+        node = side.get(sno)
+        if not node:
+            add(sno, "溯源缺失：page_text.json 里没有 %s 的条目" % sno)
+            continue
+        if fname and node.get("file_name") and fname != node["file_name"]:
+            add(sno, "溯源不一致：CSV file_name=%s ≠ sidecar %s" % (fname, node["file_name"]))
+        if model and node.get("device_model") and model != node["device_model"]:
+            add(sno, "溯源不一致：CSV device_model=%s ≠ sidecar %s"
+                % (model, node["device_model"]))
+        if not node.get("sha256"):
+            add(sno, "溯源缺失：sidecar 里 %s 没有 sha256" % sno)
+
+    if prov is None:
+        notes.append("未找到 Batch2_PDF_PROVENANCE.csv，跳过三处互校（只做 CSV ↔ sidecar）")
+    else:
+        for sno, node in sorted(side.items()):
+            pr = prov.get(sno)
+            if not pr:
+                add(sno, "溯源不一致：provenance 表缺 %s" % sno)
+                continue
+            for key in ("file_name", "device_model", "sha256", "page_count"):
+                a = str(node.get(key, ""))
+                b = str(pr.get(key, ""))
+                if a and b and a != b:
+                    add(sno, "溯源不一致：%s 的 %s，sidecar=%s ≠ provenance=%s"
+                        % (sno, key, a, b))
+        for sno in prov:
+            if sno not in side:
+                notes.append("provenance 表里有 %s，但 sidecar 没有对应条目" % sno)
+
+    return issues, notes
+
+
 # ---------------------------------------------------------------- 主流程
 
 
@@ -414,7 +521,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--csv", default=str(DEFAULT_CSV))
     ap.add_argument("--pdf-dir", default=None, help="PDF 目录；不给则按环境变量/同目录 pdfs 找")
-    ap.add_argument("--page-text", default=str(SIDECAR), help="离线页文本 JSON")
+    ap.add_argument("--page-text", default=str(SIDECAR), help="离线页文本 JSON（含溯源期望值）")
+    ap.add_argument("--provenance", default=str(PROVENANCE),
+                    help="PDF 溯源表（默认同目录 Batch2_PDF_PROVENANCE.csv）")
     ap.add_argument("--no-suggest", action="store_true")
     args = ap.parse_args()
 
@@ -444,6 +553,42 @@ def main():
         print("提示: %s" % pages.error)
         print()
 
+    # 溯源一致性：CSV ↔ sidecar ↔ provenance 表，PDF 模式下再加"实算哈希"
+    prov = load_provenance(Path(args.provenance))
+    prov_issues, prov_notes = check_provenance(rows, pages, prov)
+    if pages.mode == "pdf":
+        for sno in sorted({(r.get("sample_no") or "").strip() for r in rows}):
+            node = (pages.expected or {}).get(sno) or {}
+            want = node.get("sha256")
+            if not want:
+                continue
+            fname = next((r.get("file_name") for r in rows
+                          if (r.get("sample_no") or "").strip() == sno), None)
+            got = pages.pdf_sha256(sno, fname) if fname else None
+            if got and got != want:
+                prov_issues.setdefault(sno, []).append(
+                    "PDF 哈希不符：磁盘文件 sha256=%s… ≠ 溯源期望=%s…（文件被替换或改动过）"
+                    % (got[:16], want[:16]))
+
+    print("=" * 78)
+    print("溯源一致性检查")
+    print("=" * 78)
+    if prov is None:
+        print("  provenance 表：未提供")
+    else:
+        print("  provenance 表：%d 个样本" % len(prov))
+    print("  sidecar：%d 个样本" % len(pages.expected or {}))
+    print("  PDF 实算哈希：%s" % ("已比对" if pages.mode == "pdf" else "跳过（非 PDF 模式）"))
+    if prov_issues:
+        for sno in sorted(prov_issues):
+            for m in prov_issues[sno]:
+                print("  [ERROR] %s %s" % (sno, m))
+    else:
+        print("  结论：三处溯源一致")
+    for m in prov_notes:
+        print("  [提示] %s" % m)
+    print()
+
     verdicts = []
     kinds = {}
     model_seen = {}
@@ -453,6 +598,8 @@ def main():
         sno = (r.get("sample_no") or "").strip()
         problems, notes = [], []
         fname = (r.get("file_name") or "").strip()
+        if sno in prov_issues:
+            problems.extend(prov_issues[sno])
 
         if not sno or not fname:
             verdicts.append(("ERROR", idx, sno, ["sample_no 或 file_name 为空"]))
@@ -568,7 +715,7 @@ def main():
         counts[v] = counts.get(v, 0) + 1
 
     print("=" * 78)
-    print("标注机检 v2  %s   行数 %d   样本 %d" % (csv_path.name, len(rows),
+    print("标注机检 v%s  %s   行数 %d   样本 %d" % (VERSION, csv_path.name, len(rows),
                                               len({r.get("sample_no") for r in rows})))
     print("页文本来源: %s" % {"pdf": "PDF 原件", "json": "page_text.json",
                           "none": "无"}[pages.mode])
