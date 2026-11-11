@@ -23,5 +23,14 @@ CONFIRMED 却没签名                                   ERROR    ERROR    PASS
 反例：两端点分列、没有 to 结构，验范围必须报错                        ERROR    ERROR    PASS
 正例：页面写着 -0.5 to 7                                OK       OK       PASS
 篡改 PDF 后哈希不符                                     ERROR    ERROR    PASS（已提示哈希不符）
+--------------------------------------------------------------------------------------------
+N1 provenance 表读不到                               退出码2 + ERROR 退出码2 + ERROR PASS（不再 notes 跳过）
+N2 sidecar file_name 空                           ERROR    ERROR    PASS（空字段=ERROR）
+N3 CSV device_model 空                            ERROR    ERROR    PASS（空字段=ERROR）
+N4 provenance page_count 空                       ERROR    ERROR    PASS（空字段=ERROR）
+N5 --pdf-dir 目录不存在                               退出码2 + ERROR 退出码2 + ERROR PASS（不降级到离线）
+N6 PDF 文件缺失                                      ERROR    ERROR    PASS（不是 CANNOT_VERIFY）
+N7 PDF 无法计算哈希                                    ERROR    ERROR    PASS（打不开=ERROR）
+N8 哈希不符不读页文本                                     page_text=0次 page_text=0次 PASS（哈希门禁生效）
 ============================================================================================
-用例 22（真实页文本 16 + 合成页文本 5 + 篡改场景 1），通过 22，失败 0
+用例 30（真实页文本 16 + 合成页文本 5 + 篡改场景 1 + Fail-Open 负面 8），通过 30，失败 0

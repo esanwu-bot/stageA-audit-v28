@@ -1,20 +1,25 @@
 # Gate 6A 分支提交链证据：为什么每轮都是两个 SHA
-# 采集时间: 2026-11-11 21:33:37 +0800   主机: PC-20260409SKMJ
+# 采集时间: 2026-11-11 21:47:16 +0800   主机: PC-20260409SKMJ
 # 仓库: [REDACTED-INTERNAL-REPO]
 #
 # 结论先说（每轮都成对）：
-#   v1.2: 2725f90 = 数据提交    →  2c7881b = 其子提交，只加 git_evidence_gate6a.txt
-#   v1.3: 5f5cc29 = 数据提交    →  db785b7 = 其子提交，只加 git_evidence_v13.txt
-#   v1.4: 9097ed6 = 数据提交    →  证据子提交 = 本文件所在的提交（只加 git_evidence_v14.txt）
+#   v1.2: 2725f90 = 数据 → 2c7881b = 子提交，只加 git_evidence_gate6a.txt
+#   v1.3: 5f5cc29 = 数据 → db785b7 = 子提交，只加 git_evidence_v13.txt
+#   v1.4: 9097ed6 = 数据 → a87ba4a = 子提交，只加 git_evidence_v14.txt
+#   v1.5: 0e0af78 = 数据 → 证据子提交 = 本文件所在的提交（只加 git_evidence_v15.txt）
 #
 # 为什么拆两个：4 条指定命令里有一条是 git status --porcelain=v1。
 # 若把证据文件写进工作区再采集，status 会显示未跟踪的 git_evidence_*.txt，
 # 等于自己把自己忽略掉。所以先在数据提交上把工作区清干净、把证据写到 worktree 之外，
 # 采到真正的空 status，再单独提交这个证据文件。
+#
+# 自证方法：证据子提交的 parent 必须等于同轮的数据提交，且两者 diff 只含证据文件。
 
 ==================================================================
-$ git log --graph --oneline -7 9097ed6
+$ git log --graph --oneline -9 0e0af78
 ==================================================================
+* 0e0af78 Gate 6A Batch 2 v1.5：修掉验证器 4 处 Fail-Open，补 8 个负面测试
+* a87ba4a Gate 6A：补入 v1.4 的 Git 证据（对应提交 9097ed6）
 * 9097ed6 Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
 * db785b7 Gate 6A：补入 v1.3 的 Git 证据（对应提交 5f5cc29）
 * 5f5cc29 Gate 6A Batch 2 v1.3：机检补 PM/RANGE 反例、PDF 溯源留痕、空符号人工裁定
@@ -24,41 +29,42 @@ $ git log --graph --oneline -7 9097ed6
 * a633bf4 Gate 6A: Batch 2 精简 Gold（6 件 18 行，机检 18/18 OK）
 
 ==================================================================
-$ git cat-file -p db785b7 | head -4          # v1.3 子提交的 parent
+$ git cat-file -p a87ba4a | head -4          # v1.4 证据子提交的 parent
 ==================================================================
-tree 073918490246c91096ac69b354be42bbfa98985e
-parent 5f5cc29525860ef3038a65155f0c5d0db0b317dd
-author esan <esan.wu@gmail.com> 1794403255 +0800
-committer esan <esan.wu@gmail.com> 1794403255 +0800
+tree b8d515f25ec12b5d813f49c5c22a60752979a701
+parent 9097ed658da0952e6596e5078b68f9ac9cc5ef7f
+author esan <esan.wu@gmail.com> 1794404027 +0800
+committer esan <esan.wu@gmail.com> 1794404027 +0800
 
 ==================================================================
-$ git rev-parse db785b7^                     # 应为 5f5cc29
+$ git rev-parse a87ba4a^                     # 应为 9097ed6
 ==================================================================
-5f5cc29525860ef3038a65155f0c5d0db0b317dd
+9097ed658da0952e6596e5078b68f9ac9cc5ef7f
 
 ==================================================================
-$ git merge-base --is-ancestor 5f5cc29 db785b7 && echo YES
+$ git merge-base --is-ancestor 9097ed6 a87ba4a && echo YES
 ==================================================================
-YES: 5f5cc29 是 db785b7 的祖先
+YES: 9097ed6 是 a87ba4a 的祖先
 
 ==================================================================
-$ git diff --stat 5f5cc29 db785b7            # 只加一个证据文件
+$ git diff --stat 9097ed6 a87ba4a            # 只加证据文件
 ==================================================================
- workbench/_gate6a_prep/git_evidence_v13.txt | 226 ++++++++++++++++++++++++++++
- 1 file changed, 226 insertions(+)
+ .../_gate6a_prep/git_evidence_commit_chain.txt     |  69 ++++-----
+ workbench/_gate6a_prep/git_evidence_v14.txt        | 155 +++++++++++++++++++++
+ 2 files changed, 192 insertions(+), 32 deletions(-)
 
 ==================================================================
-$ git cat-file -p 9097ed6 | head -4          # v1.4 数据提交的 parent
+$ git cat-file -p 0e0af78 | head -4          # v1.5 数据提交的 parent
 ==================================================================
-tree 4831a12893f6ea6ea1ea3fdd86e4d7cdff26d6a5
-parent db785b7c1d210b3c8f7cbe58cd47c1576d223dfc
-author esan <esan.wu@gmail.com> 1794403978 +0800
-committer esan <esan.wu@gmail.com> 1794403978 +0800
+tree f368e06533d33681fdeffe6f9e8b50d8e172cf29
+parent a87ba4aa622a54639b31da33bd7f970007141f57
+author esan <esan.wu@gmail.com> 1794404819 +0800
+committer esan <esan.wu@gmail.com> 1794404819 +0800
 
 ==================================================================
-$ git log --format='%h  父=%p  %s' -4 9097ed6
+$ git log --format='%h  父=%p  %s' -4 0e0af78
 ==================================================================
+0e0af78  父=a87ba4a  Gate 6A Batch 2 v1.5：修掉验证器 4 处 Fail-Open，补 8 个负面测试
+a87ba4a  父=9097ed6  Gate 6A：补入 v1.4 的 Git 证据（对应提交 9097ed6）
 9097ed6  父=db785b7  Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
 db785b7  父=5f5cc29  Gate 6A：补入 v1.3 的 Git 证据（对应提交 5f5cc29）
-5f5cc29  父=2c7881b  Gate 6A Batch 2 v1.3：机检补 PM/RANGE 反例、PDF 溯源留痕、空符号人工裁定
-2c7881b  父=2725f90  Gate 6A：补入 v1.2 的 Git 证据（对应提交 2725f90）

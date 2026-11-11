@@ -1,4 +1,4 @@
-# Gate 6A · Batch 2 Gold Set（v1.4）
+# Gate 6A · Batch 2 Gold Set（v1.5）
 
 ## 这批是什么
 
@@ -6,10 +6,10 @@
 （`row_status=CONFIRMED`，`reviewer=wuxiaoxian`）。
 PDF 原件另有 SHA-256 与页数留痕，见 `Batch2_PDF_PROVENANCE.csv`。
 
-v1.4 相对 v1.3 的改动只有一件事：**把"数据自己说的身份"和"PDF 原件"绑死**。
-V162 的 `96 mA` 是一处真实错配（那是 SN54 系列的值），已改；同时机检新增溯源一致性检查，
-CSV / sidecar / provenance 三处的 `file_name`、`device_model`、`sha256` 必须逐字相同，
-PDF 模式下还要现场重算哈希——对不上直接 ERROR，不再"照常核对页内文字"。
+v1.4 把"数据自己说的身份"和"PDF 原件"绑死了；v1.5 修的是另一类问题：
+**该报错的地方没报错**。四处 Fail-Open——溯源表读不到只提示一句、空字段直接跳过互校、
+`--pdf-dir` 指不到就悄悄换数据源、哈希不符还接着核页内文字——全部改成硬失败。
+数据一行没动，24 行结论仍是 OK=24。
 
 ## 一、样本身份：以 PDF 封面为准，不看文件名
 
@@ -65,12 +65,12 @@ PDF 模式下还要现场重算哈希——对不上直接 ERROR，不再"照常
 这也说明一件事：数值在页面上出现，不等于它是**这一行**的值——同一个数字可能属于邻列、邻档、
 邻型号。机检能验"存在"，验不了"归属"，所以 `condition` 必须写清。
 
-## 四、机检脚本 v1.4：把"只查了一半"和"查错了对象"都堵上
+## 四、机检脚本 v1.5：把"只查了一半"和"查错了对象"都堵上
 
-| 检查 | 旧行为 | 现在（v1.4） |
+| 检查 | 旧行为 | 现在（v1.5） |
 | --- | --- | --- |
-| **溯源一致性** | 无 | CSV / sidecar / provenance 的 `file_name`、`device_model`、`sha256`、`page_count` **逐字三方互校**；缺条目即 ERROR |
-| **PDF 实算哈希** | 无 | PDF 模式从原件重算 SHA-256，与 sidecar 不符 → **ERROR**（不再继续核页内文字） |
+| **溯源一致性** | 无 | CSV ↔ sidecar 比 `file_name`/`device_model`；sidecar ↔ provenance 比 `file_name`/`device_model`/`sha256`/`page_count`。**任一侧为空或两侧不等都算 ERROR** |
+| **PDF 实算哈希** | 无 | PDF 模式从原件重算 SHA-256，与 sidecar 不符 → **ERROR**，且该样本**不再读页内文字** |
 | 参数名 | 不验 | 必须在本页原文出现；整串→去空白→逐词三级，**带字母边界**（`Input volta` 是 `...input voltage...` 的子串，只用 `in` 会放过去） |
 | 数值类型 | 只认第一个数 | 先分类：NUMBER / ±PM / RANGE / FORMULA / WITH_UNIT / TEXT，公式与文字直接 ERROR |
 | **±PM** | `±2.5` 只验 `2.5` 出现过；页面上只有 `-2.5` 也能过 | **正负号都要真出现**：要么页面印 `±2.5`，要么 `+2.5` 与 `-2.5` 都在。用带符号的正则，不再复用不限符号的 `num_pattern`（它会把 `-2.5` 里的 `2.5` 当成正数） |
@@ -78,8 +78,31 @@ PDF 模式下还要现场重算哈希——对不上直接 ERROR，不再"照常
 | 路径 | 写死绝对路径 `E:\workspace\...` | 零硬编码：CSV 走 `--csv`，PDF 目录按 `--pdf-dir`→`ICPDF_PDF_DIR`→`./pdfs` 三级回退，sidecar/provenance 也都能 `--page-text` / `--provenance` 指定。干净解压包直接能跑 |
 | 其他 | — | 型号在第 1 页核对、单位需独立出现（`µA` 里的 A 不算）、整行重复、`CONFIRMED` 必须有签名、页码不得超过 PDF 页数 |
 
-**自测 22 例，22/22 通过**（`_selftest_validator_v2.py`）：16 例跑真实 Gold 行与真实页文本，
-5 例跑**合成页文本**（样本 V900）专造"页面只印了一半"的反例，1 例篡改 PDF 验哈希门禁。
+### v1.5 修的 4 处 Fail-Open
+
+Fail-Open 是"本该报错却没报错"，比"漏查一项"更危险：报告还是绿的，人却以为查过了。
+
+| # | 漏洞 | v1.4 的表现 | v1.5 的做法 |
+| --- | --- | --- | --- |
+| F1 | 溯源表读不到 | `notes.append` 一句"跳过三处互校"就继续，等于第三方参照丢了还照常出 OK=24 | 抛 `FatalInput` → `[ERROR]` + **退出码 2**，拒绝出报告 |
+| F2 | 空字段跳过互校 | `if a and b and a != b`：任一侧为空就整条跳过，"缺"被当成"无所谓" | 统一成 `if not a or not b or a != b → ERROR`，并写死字段对应关系 |
+| F3 | PDF 缺失静默降级 | `--pdf-dir` 不存在 / 文件不在 / 打不开，都掉头去读 sidecar，只多一行提示 | 显式给了 `--pdf-dir`（或 `ICPDF_PDF_DIR`）却不可用 → 退出码 2；目录在但文件缺/打不开/算不了哈希 → 该样本 ERROR。**任何情况下不再自动换源** |
+| F4 | 哈希不符仍读文本 | 哈希不符混进 `prov_issues` 后，行循环照样调 `page_text()` | 发现不符即入 `hash_bad`，该样本所有行 ERROR 并 `continue`，**在 `page_text()` 之前短路** |
+
+F4 的自证方式值得单独说：自测最后一例把 `Pages.page_text` 换成计数器，在同一进程里跑
+`main()`，断言调用次数为 **0**。否则"哈希不符就不读页文本"只是一句承诺，没人能验。
+
+另外，字段对应关系在报告里直接印出来，不用读者猜：
+
+```
+字段对应：CSV↔sidecar 比 file_name/device_model；
+          sidecar↔provenance 比 file_name/device_model/sha256/page_count
+判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+```
+
+**自测 30 例，30/30 通过**（`_selftest_validator_v2.py`）：16 例跑真实 Gold 行与真实页文本，
+5 例跑**合成页文本**（样本 V900）专造"页面只印了一半"的反例，1 例篡改 PDF 验哈希门禁，
+8 例是 v1.5 新增的 Fail-Open 负面用例。
 
 | 用例 | 标注 | 期望 | 实测 |
 | --- | --- | --- | --- |
@@ -92,6 +115,22 @@ PDF 模式下还要现场重算哈希——对不上直接 ERROR，不再"照常
 
 第 6 例是关键：它证明溯源检查是**门禁**而不是注释——PDF 被动过一个字节，整批行立刻落 ERROR，
 哪怕页内文字一个都没变。
+
+8 个 Fail-Open 负面用例（`N1`–`N8`），每一例都断言"报错"，而且还要断言输出里没有那句自我安慰：
+
+| # | 构造的坏输入 | 期望 | 实测 |
+| --- | --- | --- | --- |
+| N1 | `--provenance` 指向不存在的文件 | 退出码 2 + `[ERROR]`，且**不含**"跳过三处互校" | 达标 |
+| N2 | sidecar 的 `file_name` 置空 | ERROR（空字段不再跳过） | ERROR |
+| N3 | CSV 的 `device_model` 置空 | ERROR | ERROR |
+| N4 | provenance 的 `page_count` 置空 | ERROR | ERROR |
+| N5 | `--pdf-dir` 指向不存在的目录 | 退出码 2 + `[ERROR]`，且**不含**"使用随包的 page_text.json" | 达标 |
+| N6 | PDF 模式 + 目录里没有该样本的 PDF | ERROR（不是 `CANNOT_VERIFY`） | ERROR |
+| N7 | 同名路径是目录，哈希算不出来 | ERROR（"无法计算哈希"） | ERROR |
+| N8 | 篡改 PDF 触发哈希不符 | 该样本全行 ERROR，且 `page_text()` 调用 **0 次** | 0 次 |
+
+N1、N5 特意加了"不含某句话"的断言——只验"有 ERROR"不够，还要证明它没有再悄悄绕过去。
+N8 是唯一跑在同一进程里的用例（换成计数器才能数调用次数），其余都走子进程，看的是真实退出码。
 
 ## 五、人工裁定：3 条空 symbol 已定性，不再是 SUSPECT
 
@@ -125,27 +164,42 @@ human_adjudication = ACCEPTED_SOURCE_HAS_NO_SYMBOL
 status 会显示 `?? git_evidence_*.txt`，等于自己把自己忽略掉。所以先在数据提交上清空工作区、
 把证据写到 worktree 之外，采到真正的空 status，再单独提交证据文件。
 
-本轮两个 SHA 见 `git_evidence_commit_chain.txt`：`git cat-file -p <子提交>` 的 `parent` 行、
-`git rev-parse <子提交>^`、`git merge-base --is-ancestor` 三条互为印证。
-v1.3 那一对是 `5f5cc29`（数据）→ `db785b7`（证据），也在同一份文件里留了记录。
+每轮的父子关系见 `git_evidence_commit_chain.txt`：`git cat-file -p <子提交>` 的 `parent` 行、
+`git rev-parse <子提交>^`、`git merge-base --is-ancestor` 三条互为印证。已留证的：
+
+| 轮次 | 数据提交 | 证据子提交 |
+| --- | --- | --- |
+| v1.2 | `2725f90` | `2c7881b` |
+| v1.3 | `5f5cc29` | `db785b7` |
+| v1.4 | `9097ed6` | `a87ba4a` |
+| v1.5 | 见 `git_evidence_commit_chain.txt` | 见 `git_evidence_commit_chain.txt` |
+
+v1.5 这一对不在这里写死：数据提交的 SHA 要在提交之后才知道，而证据子提交的 SHA
+又要等它提交之后才知道——写进同一份文档就会指向一个不存在的对象。
+所以改由 `git_evidence_commit_chain.txt`（提交时用 `parent` 行自证）与
+审计仓 `INDEX.md`（提交后在仓外补登）分别留证。
 
 ## 八、跑一遍
 
 ```bash
-python validate_annotation.py --csv Batch2_GOLD_v1.csv          # 离线：OK=24
+python validate_annotation.py --csv Batch2_GOLD_v1.csv          # 离线：OK=24，退出码 0
 python validate_annotation.py --csv Batch2_GOLD_v1.csv --pdf-dir /path/to/pdfs
-python _selftest_validator_v2.py                                # 自测：22/22
-ICPDF_PDF_DIR=/path/to/pdfs python _selftest_validator_v2.py    # 含篡改 PDF 那一例
+python _selftest_validator_v2.py                                # 自测：30/30
+ICPDF_PDF_DIR=/path/to/pdfs python _selftest_validator_v2.py    # 含篡改 PDF 与 N8 计数断言
 python _freeze_gold.py                                          # CSV → XLSX 并逐格比对
 ```
 
 `--pdf-dir` 只影响"页文本从哪来"和"哈希能不能实算"，不影响 CSV 读取；
 不带 PDF 也能把 24 行全部核完（用随包 `page_text.json`）。
 
+但有一条不一样了：**给了 `--pdf-dir` 就必须能用**。路径不存在、文件不在、打不开、
+哈希算不了，一律报错退出，不会再悄悄换成 `page_text.json` 把结论凑绿。
+退出码：`0` 无 ERROR，`1` 有 ERROR 行，`2` 判据/环境不可用（拒绝出报告）。
+
 ## 九、已知局限
 
 1. **型号核对只判"封面上有没有这串字"**。ADC3541 就印在 ADC3544 手册里，拦不住近亲型号，
-   必须看图（`screenshots/` 六张封面）。v1.4 的溯源一致性只保证"三处写的是同一个型号"，
+   必须看图（`screenshots/` 六张封面）。溯源一致性只保证"三处写的是同一个型号"，
    不保证"这个型号是对的"。
 2. **单位核对是"出现在页面上"级别**。`A` 这种单字母单位，正文里随便一个 "a" 就能命中。
 3. **参数名的语义判断不了**。`VNEG_IN_x` 这类引脚名，机检只能提示"全大写带下划线、疑似引脚名"。
@@ -153,6 +207,9 @@ python _freeze_gold.py                                          # CSV → XLSX �
 5. `confidence_score` 是纯 det 分（VLM 自报恒为 1.00），未校准，不能当准确率上界。
 6. 分母口径未变：准确率 = Gold `CONFIRMED` 行；漏提取分母 = Gold 应有总数；
    错提取分母 = Parser 输出候选总数。本批不得外推到 28 件全集。
+7. **"关掉 Fail-Open"不等于"全覆盖"**。v1.5 关门的是我们**想到**的四条路径，
+   自测只能证明这四条被关上；没被想到的 fail-open 仍然存在。真正的判据是
+   每次新增检查时都问一句"它失败的时候，报告会不会还是绿的"。
 
 ## 十、文件
 
@@ -162,8 +219,8 @@ python _freeze_gold.py                                          # CSV → XLSX �
 | `Batch2_GOLD_v1.xlsx` | 由 CSV 派生：`Gold` + `meta` + `pdf_provenance` 三页 |
 | `Batch2_PDF_PROVENANCE.csv` | 6 件 PDF 的 SHA-256 / 页数 / 大小 |
 | `page_text.json` | 第 1 页 + 证据页原文 + 溯源字段，供离线机检 |
-| `validate_annotation.py` | 机检 v1.4（含溯源三方互校 + PDF 实算哈希） |
-| `_selftest_validator_v2.py` | 自测 22 例（16 真实 + 5 合成反例 + 1 篡改 PDF） |
+| `validate_annotation.py` | 机检 v1.5（含溯源三方互校、PDF 实算哈希、4 处 Fail-Open 收紧） |
+| `_selftest_validator_v2.py` | 自测 30 例（16 真实 + 5 合成反例 + 1 篡改 PDF + 8 Fail-Open 负面） |
 | `_freeze_gold.py` | 读 CSV → 生成 XLSX → 逐格比对 |
 | `_build_page_text.py` / `_build_provenance.py` | 抽页原文 / 生成溯源表 |
 | `_shots_batch2.py` + `screenshots/` | 8 张证据图（6 封面 + V101 5.9） |

@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
-"""validate_annotation.py 自测（配合 v1.4）：21 行故意做坏的标注 + 1 个篡改场景。
+"""validate_annotation.py 自测（配合 v1.5）：30 个用例。
 
 为什么要自测
 ------------
 机检脚本最怕"全都 OK"——那可能是检查根本没生效。这里每一行都埋一个已知的错，
 期望值与实测值不一致就退出码 1。
 
-两类用例
+四类用例
 --------
-* 前 14 例跑真实页文本（page_text.json），覆盖改名、改值、改单位、改型号；
-* 后 5 例用一份**合成页文本**（样本 V900），专治"页面上只印了一半"这种情形：
+* 16 例跑真实页文本（page_text.json），覆盖改名、改值、改单位、改型号；
+* 5 例用一份**合成页文本**（样本 V900），专治"页面上只印了一半"这种情形：
   只有 -2.5 却没有 +2.5、两个端点分列但没有 to 结构。真实语料里未必有人这么写，
   但脚本必须能拦住——这几例就是审稿人要求的反例。
-* 最后一个场景是**篡改 PDF**：复制一份真 PDF、在末尾追加字节改变哈希，
-  再用 PDF 模式跑，要求判 ERROR（溯源哈希不符）。这一项单跑，因为要独立的 PDF 目录。
+* 1 个**篡改 PDF** 场景：复制一份真 PDF、在末尾追加字节改变哈希，
+  再用 PDF 模式跑，要求判 ERROR（溯源哈希不符）。
+* 8 个 **Fail-Open 负面用例**（v1.5 新增）：溯源表缺失、空字段跳过互校、
+  --pdf-dir 不存在、PDF 缺失、PDF 算不了哈希、哈希不符仍读文本。
+  最后一例在同一进程里把 Pages.page_text 换成计数器，断言调用次数为 0——
+  "哈希不符就不读页文本"这句话，只有数出来才算数。
 """
 import copy
 import csv
@@ -188,6 +192,213 @@ def tamper_test():
             "PASS" if got == "ERROR" and hit else "FAIL", note)
 
 
+def _read_prov():
+    with open(PROVENANCE, encoding="utf-8-sig", newline="") as fh:
+        rd = csv.DictReader(fh)
+        return rd.fieldnames, list(rd)
+
+
+def _write_prov(path, rows, cols):
+    with open(path, "w", encoding="utf-8-sig", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+
+
+def _write_csv(path, rows, cols):
+    with open(path, "w", encoding="utf-8-sig", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols, lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
+
+
+def _write_sidecar(path, mutate):
+    data = copy.deepcopy(json.loads(PAGE_TEXT.read_text(encoding="utf-8")))
+    mutate(data)
+    path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+
+
+def _run_cli(args):
+    """跑验证器。强制清掉 ICPDF_PDF_DIR，免得环境变量把离线用例改成 PDF 模式。"""
+    env = {k: v for k, v in os.environ.items() if k != "ICPDF_PDF_DIR"}
+    proc = subprocess.run([sys.executable, str(SCRIPT)] + args,
+                          capture_output=True, text=True, encoding="utf-8", env=env)
+    return (proc.stdout or "") + (proc.stderr or ""), proc.returncode
+
+
+def _v(ok):
+    return "PASS" if ok else "FAIL"
+
+
+def _label(code, cond):
+    """实测列的写法：达标就写判定，没达标才写退出码，别让"期望 ERROR / 实测 退出码1"看着像没对上。"""
+    if not cond:
+        return "退出码%d（未达预期）" % code
+    return "退出码2 + ERROR" if code == 2 else "ERROR"
+
+
+def neg_tests():
+    """v1.5 的 8 个 Fail-Open 负面测试。
+
+    每一例都构造"本该报错"的输入，断言它确实报错；只看退出码不看提示文字是不够的——
+    还要断言输出里没有那句"跳过/降级"的自我安慰。
+    """
+    cols, gold_rows = load_gold()
+    prov_cols, prov_rows = _read_prov()
+    v101 = [r for r in gold_rows if r["sample_no"] == "V101"]
+    res = []
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+
+        # ---- N1：provenance 表读不到 → 退出码 2，且不许出现"跳过三处互校"
+        out, code = _run_cli(["--csv", str(GOLD), "--page-text", str(PAGE_TEXT),
+                              "--provenance", str(td / "no_such_prov.csv")])
+        cond1 = (code == 2 and "[ERROR]" in out and "溯源表不存在" in out
+                 and "跳过三处互校" not in out)
+        res.append(("N1 provenance 表读不到", "退出码2 + ERROR", _label(code, cond1),
+                    _v(cond1), "不再 notes 跳过"))
+
+        # ---- N2：sidecar 的 file_name 为空（CSV 有值）→ 空字段必须报错，不能跳过
+        sc2 = td / "sidecar_no_fname.json"
+
+        def m2(d):
+            d["samples"]["V101"]["file_name"] = ""
+
+        _write_sidecar(sc2, m2)
+        out, code = _run_cli(["--csv", str(GOLD), "--page-text", str(sc2),
+                              "--provenance", str(PROVENANCE)])
+        cond2 = code == 1 and "溯源不一致/缺失" in out and "file_name" in out
+        res.append(("N2 sidecar file_name 空", "ERROR", _label(code, cond2),
+                    _v(cond2), "空字段=ERROR"))
+
+        # ---- N3：CSV 的 device_model 为空（sidecar 有值）→ 同样是 ERROR
+        rows3 = [dict(r) for r in gold_rows]
+        for r in rows3:
+            if r["sample_no"] == "V101":
+                r["device_model"] = ""
+                break
+        c3 = td / "gold_no_model.csv"
+        _write_csv(c3, rows3, cols)
+        out, code = _run_cli(["--csv", str(c3), "--page-text", str(PAGE_TEXT),
+                              "--provenance", str(PROVENANCE)])
+        cond3 = code == 1 and "溯源不一致/缺失" in out and "device_model" in out
+        res.append(("N3 CSV device_model 空", "ERROR", _label(code, cond3),
+                    _v(cond3), "空字段=ERROR"))
+
+        # ---- N4：provenance 的 page_count 为空（sidecar 有值）→ 同样是 ERROR
+        rows4 = [dict(r) for r in prov_rows]
+        for r in rows4:
+            if r["sample_no"] == "V101":
+                r["page_count"] = ""
+        p4 = td / "prov_no_pc.csv"
+        _write_prov(p4, rows4, prov_cols)
+        out, code = _run_cli(["--csv", str(GOLD), "--page-text", str(PAGE_TEXT),
+                              "--provenance", str(p4)])
+        cond4 = code == 1 and "溯源不一致/缺失" in out and "page_count" in out
+        res.append(("N4 provenance page_count 空", "ERROR", _label(code, cond4),
+                    _v(cond4), "空字段=ERROR"))
+
+        # ---- N5：--pdf-dir 指向不存在的目录 → 退出码 2，绝不回落离线模式
+        out, code = _run_cli(["--csv", str(GOLD), "--page-text", str(PAGE_TEXT),
+                              "--provenance", str(PROVENANCE),
+                              "--pdf-dir", str(td / "no_such_pdf_dir")])
+        cond5 = (code == 2 and "[ERROR]" in out and "不存在" in out
+                 and "使用随包的 page_text.json" not in out)
+        res.append(("N5 --pdf-dir 目录不存在", "退出码2 + ERROR", _label(code, cond5),
+                    _v(cond5), "不降级到离线"))
+
+        # ---- N6：PDF 模式但目录里没有该样本的 PDF → ERROR，不是 CANNOT_VERIFY
+        empty = td / "empty_pdfs"
+        empty.mkdir()
+        c6 = td / "v101_only.csv"
+        _write_csv(c6, v101, cols)
+        out, code = _run_cli(["--csv", str(c6), "--pdf-dir", str(empty),
+                              "--page-text", str(PAGE_TEXT), "--provenance", str(PROVENANCE)])
+        cond6 = code == 1 and "PDF 缺失" in out and "CANNOT_VERIFY" not in out
+        res.append(("N6 PDF 文件缺失", "ERROR", _label(code, cond6),
+                    _v(cond6), "不是 CANNOT_VERIFY"))
+
+        # ---- N7：同名路径是目录，哈希算不出来 → ERROR
+        conflict = td / "pdf_dir_conflict"
+        conflict.mkdir()
+        (conflict / v101[0]["file_name"]).mkdir()
+        out, code = _run_cli(["--csv", str(c6), "--pdf-dir", str(conflict),
+                              "--page-text", str(PAGE_TEXT), "--provenance", str(PROVENANCE)])
+        cond7 = code == 1 and "无法计算哈希" in out
+        res.append(("N7 PDF 无法计算哈希", "ERROR", _label(code, cond7),
+                    _v(cond7), "打不开=ERROR"))
+
+    # ---- N8：哈希不符 → 该样本全部行 ERROR，且 page_text() 一次都不调用
+    res.append(hash_shortcircuit_test())
+    return res
+
+
+def hash_shortcircuit_test():
+    """N8：哈希不符时，page_text() 必须一次都不被调用。
+
+    这条只能在同一进程里做——把 Pages.page_text 换成计数器再跑 main()，
+    子进程里的调用次数没法从外面观测。断言 calls == []，就是"没读页文本"的硬证据。
+    """
+    import contextlib
+    import importlib.util
+    import io
+    import shutil
+
+    pdf_dir = os.environ.get("ICPDF_PDF_DIR")
+    src = Path(pdf_dir) / "CD74HCT574EE4__schs183c.pdf" if pdf_dir else None
+    if not src or not src.exists():
+        return ("N8 哈希不符不读页文本", "page_text=0次", "跳过（未设 ICPDF_PDF_DIR）",
+                "SKIP", "需提供 PDF 目录")
+
+    cols, gold_rows = load_gold()
+    v101 = [r for r in gold_rows if r["sample_no"] == "V101"]
+
+    spec = importlib.util.spec_from_file_location("va_under_test", str(SCRIPT))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+
+    calls = []
+    orig = mod.Pages.page_text
+
+    def spy(self, sno, file_name, page_no):
+        calls.append((sno, page_no))
+        return orig(self, sno, file_name, page_no)
+
+    mod.Pages.page_text = spy
+
+    with tempfile.TemporaryDirectory() as td:
+        td = Path(td)
+        tmp_pdf_dir = td / "pdfs"
+        tmp_pdf_dir.mkdir()
+        dst = tmp_pdf_dir / src.name
+        shutil.copyfile(src, dst)
+        with open(dst, "ab") as fh:
+            fh.write(b"\n% tampered for selftest\n")   # 哈希必变，PDF 仍可解析
+
+        tmp_csv = td / "v101.csv"
+        _write_csv(tmp_csv, v101, cols)
+
+        argv = ["validate_annotation.py", "--csv", str(tmp_csv),
+                "--pdf-dir", str(tmp_pdf_dir), "--page-text", str(PAGE_TEXT),
+                "--provenance", str(PROVENANCE)]
+        old_argv = sys.argv
+        sys.argv = argv
+        buf = io.StringIO()
+        try:
+            with contextlib.redirect_stdout(buf):
+                code = mod.main()
+        finally:
+            sys.argv = old_argv
+            mod.Pages.page_text = orig
+
+    out = buf.getvalue()
+    ok = code == 1 and "哈希不符" in out and not calls
+    return ("N8 哈希不符不读页文本", "page_text=0次",
+            "page_text=%d次" % len(calls), _v(ok),
+            "哈希门禁生效" if ok else "调用点: %s" % calls[:3])
+
+
 def main():
     cols, gold_rows = load_gold()
     rows, expects = build_rows(cols, gold_rows)
@@ -249,10 +460,22 @@ def main():
     elif verdict == "SKIP":
         print("   （要跑这一项：ICPDF_PDF_DIR=/path/to/pdfs python %s）"
               % Path(__file__).name)
-    total = len(expects) + 1
+
+    negs = neg_tests()
+    print("-" * 92)
+    for name, want, have, verdict, note in negs:
+        print("%-48s %-8s %-8s %s（%s）" % (name[:48], want, have, verdict, note))
+        if verdict == "FAIL":
+            bad += 1
+        elif verdict == "SKIP":
+            print("   （要跑这一项：ICPDF_PDF_DIR=/path/to/pdfs python %s）"
+                  % Path(__file__).name)
+
+    total = len(expects) + 1 + len(negs)
     print("=" * 92)
-    print("用例 %d（真实页文本 %d + 合成页文本 %d + 篡改场景 1），通过 %d，失败 %d"
-          % (total, len(CASES), len(SYN_CASES), total - bad, bad))
+    print("用例 %d（真实页文本 %d + 合成页文本 %d + 篡改场景 1 + Fail-Open 负面 %d），"
+          "通过 %d，失败 %d"
+          % (total, len(CASES), len(SYN_CASES), len(negs), total - bad, bad))
     if bad:
         print()
         print("---- 机检原始输出 ----")

@@ -1,0 +1,97 @@
+# Gate 6A Batch 2 v1.5 —— Git 证据
+# 采集时间: 2026-11-11 21:47:07 +0800   主机: PC-20260409SKMJ
+# 采集目录: 独立 worktree（--detach origin/feat/gate6a-annotation）
+# 本文件记录两件事：
+#   A. 审稿人指定的 4 条命令，对象 = 数据提交 0e0af78（v1.5 的改动都在这个提交里）
+#   B. v1.5 数据提交 0e0af789e48ed83ae4b9d84a83fc08aa6e1c3b56 的元数据与干净工作区
+
+##################################################################
+# A. 4 条指定命令（对象：0e0af78）
+##################################################################
+
+$ git show -s --format=fuller 0e0af78
+==================================================================
+commit 0e0af789e48ed83ae4b9d84a83fc08aa6e1c3b56
+Author:     esan <esan.wu@gmail.com>
+AuthorDate: Wed Nov 11 21:46:59 2026 +0800
+Commit:     esan <esan.wu@gmail.com>
+CommitDate: Wed Nov 11 21:46:59 2026 +0800
+
+    Gate 6A Batch 2 v1.5：修掉验证器 4 处 Fail-Open，补 8 个负面测试
+    
+    数据未改（24 行 / 6 样本，结论仍 OK=24 / SUSPECT=0 / ERROR=0）。本轮只收紧判定。
+    
+    F1 溯源表读不到不再只提示：
+    - load_provenance() 文件不存在/读不了/为空 → 抛 FatalInput；
+      check_provenance() 拿到 None 也抛，双重保险。
+    - 表现：打印 [ERROR] 拒绝出报告，退出码 2，不再出现「跳过三处互校」。
+    
+    F2 空字段不再跳过互校：
+    - 原 `if a and b and a != b` 改为 `if not a or not b or a != b`，缺字段即 ERROR。
+    - 字段对应关系写死并在报告里印出：CSV ↔ sidecar 只比 file_name / device_model
+      （CSV 无 sha256、page_count 列）；sidecar ↔ provenance 比全部四项。
+    - provenance 有、sidecar 无的条目，也从「提示」升级为 ERROR。
+    
+    F3 PDF 缺失不再静默降级：
+    - 显式给 --pdf-dir 或 ICPDF_PDF_DIR 而目录不存在/不是目录/缺 PyMuPDF → FatalInput（退出码 2），
+      不再掉头读 page_text.json。
+    - 目录在但样本 PDF 不在、PDF 打不开、哈希算不了 → 该样本 ERROR（不再是 CANNOT_VERIFY）。
+    - 自动探测的 ./pdfs 不存在不算错，那只是「没提供 PDF」。
+    
+    F4 哈希不符不再继续读文本：
+    - 发现不符即入 hash_bad，该样本所有行直接 ERROR 并 continue，
+      短路点在 page_text() 之前，页内文字一律不采信。
+    
+    自测从 22 例扩到 30 例，新增 N1–N8：
+    - N1 provenance 缺失 → 退出码 2 + ERROR，且断言输出不含「跳过三处互校」
+    - N2 sidecar file_name 置空 → ERROR
+    - N3 CSV device_model 置空 → ERROR
+    - N4 provenance page_count 置空 → ERROR
+    - N5 --pdf-dir 目录不存在 → 退出码 2 + ERROR，且断言不含「使用随包的 page_text.json」
+    - N6 PDF 模式 + 文件缺失 → ERROR（断言不是 CANNOT_VERIFY）
+    - N7 同名路径为目录、哈希算不出 → ERROR
+    - N8 篡改 PDF → 全行 ERROR，并在同进程内把 Pages.page_text 换成计数器，
+      断言调用次数为 0
+    
+    报告：
+    - validation_report.txt 增 C 段「Fail-Open 关闭证据」，收录两类致命输入的实际输出与退出码。
+    - 判定顺序调整：先校验判据（溯源表、页源），再打印模式提示，避免致命错误前面先冒无关提示。
+
+$ git diff-tree --no-commit-id --name-status -r 0e0af78
+==================================================================
+M	workbench/_gate6a_prep/Batch2_Gate6A_README.md
+M	workbench/_gate6a_prep/_selftest_validator_v2.py
+M	workbench/_gate6a_prep/selftest_report.txt
+M	workbench/_gate6a_prep/validate_annotation.py
+M	workbench/_gate6a_prep/validation_report.txt
+
+$ git merge-base origin/main 0e0af78
+==================================================================
+853a80dd664c79ef90baaac53eefb9bbc2155dde
+(上面这个 SHA 是 origin/main 的 tip 或分叉点；0e0af78 不在 main 上，
+ 故 merge-base 结果不等于 0e0af78，可据此证明没有碰 main)
+
+$ git status --porcelain=v1
+==================================================================
+(输出为空 = 工作区 clean。本文件写在 worktree 之外，所以不会把自己算进未跟踪)
+
+##################################################################
+# B. v1.5 数据提交 0e0af789e48ed83ae4b9d84a83fc08aa6e1c3b56 的元数据
+##################################################################
+
+$ git log --format='%h  父=%p  %s' -5 0e0af78
+==================================================================
+0e0af78  父=a87ba4a  Gate 6A Batch 2 v1.5：修掉验证器 4 处 Fail-Open，补 8 个负面测试
+a87ba4a  父=9097ed6  Gate 6A：补入 v1.4 的 Git 证据（对应提交 9097ed6）
+9097ed6  父=db785b7  Gate 6A Batch 2 v1.4：修正 V162 96mA 错配、机检加溯源三方互校与 PDF 实算哈希
+db785b7  父=5f5cc29  Gate 6A：补入 v1.3 的 Git 证据（对应提交 5f5cc29）
+5f5cc29  父=2c7881b  Gate 6A Batch 2 v1.3：机检补 PM/RANGE 反例、PDF 溯源留痕、空符号人工裁定
+
+$ git diff --stat origin/feat/gate6a-annotation 0e0af78
+==================================================================
+ workbench/_gate6a_prep/Batch2_Gate6A_README.md   |  97 +++++--
+ workbench/_gate6a_prep/_selftest_validator_v2.py | 241 +++++++++++++++-
+ workbench/_gate6a_prep/selftest_report.txt       |  11 +-
+ workbench/_gate6a_prep/validate_annotation.py    | 348 +++++++++++++++++------
+ workbench/_gate6a_prep/validation_report.txt     |  40 ++-
+ 5 files changed, 616 insertions(+), 121 deletions(-)
