@@ -1,0 +1,32 @@
+{
+  "check": "explain git diff --check exit code 2",
+  "generated_at": "2026-11-11T12:03:42+08:00",
+  "repo": "E:\\workspace\\icpdf-extractor",
+  "commit_range": "60a503c^..60a503c",
+  "file": "src/icpdf/classification/classifier.py",
+  "blob": {
+    "bytes": 53510,
+    "cr_count": 1084,
+    "lf_count": 1084,
+    "line_ending": "CRLF"
+  },
+  "git_diff_check": {
+    "exit_code": 2,
+    "reported_trailing_whitespace_lines": 42,
+    "note": "git diff --check 把行尾 \\r 视为尾随空白，故对每条 CRLF 新增行都报一次警告"
+  },
+  "real_trailing_whitespace": {
+    "added_lines_total": 42,
+    "added_lines_ending_with_cr": 42,
+    "added_lines_with_real_ws_after_stripping_cr": 0,
+    "added_line_numbers_with_real_ws": [],
+    "whole_file_lines_with_real_ws": 0,
+    "whole_file_line_numbers_with_real_ws": []
+  },
+  "conclusion": "EXIT=2 是 CRLF 行尾 CR 导致的假阳性；剥掉 CR 后新增行与整份文件均无真实尾随空白",
+  "how_to_reproduce": [
+    "git -C <repo> diff --check 60a503c^ 60a503c   # 观察 EXIT=2 与大量提示",
+    "git -C <repo> cat-file -p 60a503c:src/icpdf/classification/classifier.py | tr -dc '\\r' | wc -c   # 1084，说明 blob 为 CRLF",
+    "本脚本：逐行剥 CR 后判定 ' ' 或 '\\t' 结尾"
+  ]
+}

@@ -1,0 +1,261 @@
+# GATE 6A 准备方案 · Parser-only 质量基线
+
+- 版本：`gate6a-plan/v1.0`
+- 日期：2026-11-11
+- 状态：**待 Reviewer 批准，未执行任何解析**
+- 权威仓库：`E:\workspace\icpdf-extractor`，HEAD `60a503cc8015ef9bfb27ddef1685e41593f3a75f`
+- 承载代码：`src/icpdf/classification/classifier.py` sha256 `28b9f0bf…`（G7b / D' 已获技术批准）
+- 对照文档：`runs/stage_a_350/gate6_r2/GATE6A_PARSER_BENCHMARK.md`（写于 HEAD `3ed22a4`、D' 之前）
+
+> **本文与该文档的关系**：`GATE6A_PARSER_BENCHMARK.md` 的字段对齐、`ic-ex` 对比方法、
+> 评估脚本契约仍然有效，本文**不重复**它们。本文只做三件事：
+> ① 把基线更新到 G7b 之后；② 补上 D' 带来的交叉验证与三处口径缺口；
+> ③ 把「分母怎么定」写成可直接执行的定义。两者冲突时以本文为准。
+
+---
+
+## 1. 样本方案：从 350 候选池选 30 件
+
+### 1.1 池的来源与既有配额
+
+| 项 | 值 |
+|---|---|
+| 源文件 | `runs/stage_a_350/ds_parse_candidates_350_v2.csv` |
+| 源文件 SHA-256 | `040a0e78322089387f3237c0db2f487d37cd17d9de887ec9d5e647345ae05839` |
+| 池规模 | **350** |
+| 建议样本量 | **30** |
+| 清单 | `runs/stage_a_350/gate6_r2/GATE6A_SAMPLE_PROPOSAL.csv`（30 行 × 12 列） |
+| 统计 | `runs/stage_a_350/gate6_r2/GATE6A_SAMPLE_STATS.json` |
+
+七层配额：6 + 6 + 5 + 4 + 4 + 3 + 2 = **30**。
+
+### 1.2 池的真实构成（本轮实测，用于判断配额是否合理）
+
+| 维度 | 分布 |
+|---|---|
+| `v2_predicted_class` | `DS_STRONG` **350 / 350（100%）** |
+| `v2_predicted_route` | `IC_PARSE` **350 / 350（100%）** |
+| `has_text_layer` | `TRUE` **350 / 350** |
+| `is_encrypted` | `FALSE` **350 / 350** |
+| `evidence_page_no` | 有证据页 324，`NONE` 26 |
+| `page_count` | 5–10：13（3.7%）；11–30：191（54.6%）；31–100：125（35.7%）；>100：21（6.0%）；范围 5–454 |
+
+**这条结论要写进 Gate 6A 的前提**：池是**已经通过分类门禁**的纯 `DS_STRONG / IC_PARSE`
+集合。因此 Gate 6A 测的是「分类器已经放行的文档，Parser 读得好不好」，
+**不测分类准确率**——分类由 `runs/stage_a_350/classifier_audit_*.csv` 那条线单独负责。
+
+### 1.3 分层标准（按池内可观测字段定义，全部只读清单）
+
+| 层 | 池内候选数 | 配额 | 配额占比 | 抽样依据 |
+|---|---|---|---|---|
+| 普通文本型 Datasheet | 171 | 6 | 3.5% | `page_count` 11–30 且 `evidence_page_no != NONE` |
+| 复杂参数表 | 125 | 6 | 4.8% | `page_count` 31–100 |
+| 多级表头 / 合并单元格 | 21（与下行共用） | 5 | — | `page_count > 100` 前 5（SHA 定序） |
+| 跨页表格 | 21（与上行共用） | 4 | — | `page_count > 100` 随后 4（SHA 定序） |
+| 多封装或多型号 | 292 | 4 | 1.4% | 文件名含 `__` 双段命名线索 |
+| 扫描型或复杂版面 | 13 | 3 | 23.1% | `page_count` 5–10 |
+| 边界或异常文档 | 26 | 2 | 7.7% | 1 件 `evidence_page_no = NONE` + 指定检查点 V022 |
+
+**这是目的性抽样（痛点放大），不是比例抽样。** 证据：`>100` 页在池中仅占 6.0%（21 件），
+却拿走 30 席中的 9 席（占配额 30%）；该层 21 件里有 9 件入选，**抽样率 42.9%**。
+反观占池 83.4% 的「文件名含 `__`」共 292 件，只给 4 席，**抽样率 1.4%**。
+两者抽样率相差约 30 倍，等概率假设不成立。因此：
+
+> **Gate 6A 的产出只能表述为「痛点放大后的 Parser 能力基线」，
+> 不得乘 350/30 或 11355/30 去推算总体准确率。** 详见 §3.4。
+
+### 1.4 三个必须先裁定、否则样本无效的缺口（本轮实测发现）
+
+**缺口 1：所谓「扫描型」层里没有扫描件。**
+该层 3 件（V130 / V290 / V347）的 `has_text_layer` 实测**全部为 TRUE**，
+`is_encrypted` 全部 FALSE，页数 9–10。它们只是**短文档**，不是扫描件。
+清单字段本身无法判定扫描/无文本层，原提案已注明「待人工确认」。
+
+后果：**PAIN-08（文本层缺失或乱码）在当前 30 件里完全没有被覆盖。**
+处理方式（三选一，需 Reviewer 定）：
+1. 把该层改名为「短文档（9–10 页）」，诚实承认 PAIN-08 未覆盖，另立后续批次；
+2. 在 350 池外补充 1–3 件真实扫描件（**会突破「从 350 池抽样」的约束**，需批准）；
+3. 保留 3 件但把该层指标标注为 `N/A`，不进任何分母。
+
+**缺口 2：指定检查点 V022 的类别自相矛盾。**
+`CC2500EMK__cc2500.pdf`（99 页）在清单里被标为「边界或异常文档」，备注「疑似 EVM，
+检查是否含板载阻容参数」；但池中 `v2_predicted_class = DS_STRONG`、
+`route = IC_PARSE`，即分类器认为它是 Datasheet。
+
+这正是**分类器与人工怀疑不一致**的样本。它在 Gate 6A 里的作用应明确为
+「检验 Parser 在一个可能本不该被解析的文档上是否会产生看似合理的垃圾结果」，
+而**不是**用来给 Parser 打质量分。建议：该件单列 `diagnostic_only`，不计入任何指标分母。
+
+**缺口 3：30 件与 D' 变化集无交集——这是好消息，需留证。**
+把 30 件的文件名与 `_d_prime/regression.jsonl`（D' 引起的 193 条变化）逐条比对：
+**命中 0 件**。即 D' 不改变这 30 件中任何一件的分类结论，
+GATE6A 样本集**不会因为 D' 上线而失效或需要重选**。
+
+但要注意边界：30 件的 `v2_predicted_class` 是**D' 之前**的预测值。
+「不在 193 条变化集」等价于「分类结论不变」，所以样本有效；
+但若将来再改分类规则，必须重跑这一步比对。
+
+### 1.5 可复现性与替换规则
+
+- 各层内部按 `pdf_sha256` 确定性升序取前 N 件，**可盲复现**。
+- SHA **只用于排序**；执行阶段严格用清单里的 `file_path` 原文寻址，
+  禁止按 SHA 全盘搜索（Gate 1 `G1-P2-001` 硬约束）。
+- `baseline_5 = TRUE` 共 5 件（V097 / V003 / V011 / V077 / V022），
+  跨 5 个不同层各 1 件，用于跨口径对照。
+- `legacy_reference = TRUE` 仅 V003；旧项目 `V001–V030` 的成绩**不混合**。
+- 替换必须走 `sample_substitution.csv`（原编号 / 新编号 / 理由），
+  **经 Reviewer 批准后**生效，禁止静默改写清单。
+
+---
+
+## 2. Gold Set 设计
+
+### 2.1 人工确认流程（五步，每步留痕）
+
+| 步 | 动作 | 产出 | 禁止事项 |
+|---|---|---|---|
+| 1 | 打开 PDF 原始页面，确认该件是否属于其被分配的层 | `stratum_confirmed = TRUE/FALSE` | 不得只看文件名下结论 |
+| 2 | 框定目标参数表：页码、bbox、表格类型 | `target_tables[]` | 不得把「整页正文」当表格 |
+| 3 | 逐单元格填写文本与列角色（symbol / min / typ / max / unit / condition / other） | `rows[].cells[]` | 列角色**必须逐格给**，不能整列推断 |
+| 4 | 填写期望候选（`expected_candidates`）与证据锚点（页码 + bbox + 原文） | `expected_candidates[]`、`evidence_anchors[]` | 不得用 Parser 输出反填（会自我印证） |
+| 5 | 复核并置 `status = CONFIRMED`，记 `reviewer` / `reviewed_at` | 冻结条目 | 未 CONFIRMED 的一律不进指标 |
+
+**双人复核建议**：`status` 从 `DRAFT` 升 `CONFIRMED` 需第二人签字
+（`reviewer_2` 字段），至少对 `baseline_5` 这 5 件强制双人。
+
+### 2.2 字段
+
+沿用 `GATE6A_PARSER_BENCHMARK.md` §5 的 JSON 结构，本轮**只增补 4 个字段**：
+
+| 新增字段 | 类型 | 用途 |
+|---|---|---|
+| `reviewer_2` | string | 第二复核人，双人签字留痕 |
+| `diagnostic_only` | bool | 为 V022 这类「不参与打分、只作诊断」的样本设开关 |
+| `text_layer_verified` | bool | 该件是否**实际打开确认**有无文本层（针对「扫描型」层） |
+| `pain_coverage` | string[] | 该件实际覆盖到的痛点编号，用于事后统计「哪些 PAIN 真的被测了」 |
+
+原有字段（`gold_version` / `document_sha256` / `file_path` / `page_count` /
+`target_tables` / `expected_candidates` / `evidence_anchors` / `pain_tags`）保持不变。
+
+### 2.3 证据页要求（Gold 侧）
+
+1. **每个 `target_tables` 条目必须能定位到具体页 + bbox**，不接受「大概在第 10 页」。
+2. **每个 `evidence_anchors` 必须能在 PDF 上原样找到 `raw_text`**，
+   由 `tools/validate_evidence.py` 机检；检不过的条目不得 CONFIRMED。
+3. `bbox` 一律用 `docs/DATA_CONTRACT.md` 冻结的 **PDF page display 空间（pt，左上原点）**，
+   不得混用其他坐标系。
+4. 跨页表格必须给 `cross_page_group_id`；无跨页填 `null`，不得留空。
+5. 表格文本若含 `±` `µ` `Ω` `Rθ(JA)` 这类特殊字形/上划线，
+   **必须逐字抄录**，不得规范化或替换成 ASCII——Cell Text Accuracy 直接依赖这一条。
+
+### 2.4 冻结与版本
+
+- `gold_version` 格式：`gate6a-gold/v<major>.<minor>`；一旦有 CONFIRMED 条目即冻结。
+- 任何变更必须升版本号 + 保留 diff，写入 `GOLD_MANIFEST.json` 与 `SHA256SUMS.txt`。
+- **本轮不设通过阈值**：先建 Gold、先出基线分布，阈值由 Reviewer 在看到分布后确定。
+
+---
+
+## 3. 评测口径（分母怎么定）
+
+### 3.1 三个分母，互不代入
+
+这是本方案最容易被含糊掉的部分，逐条钉死：
+
+| 术语 | 分子 | 分母 | 分母的边界 |
+|---|---|---|---|
+| **准确率**（逐项） | 与 Gold 判定一致的条目数 | **Gold 中 `status = CONFIRMED` 的条目数** | 不是文件数（30），不是候选总数，不是 Parser 输出条数 |
+| **漏提取**（对应 Recall 的补数） | Gold 有、Parser 没给出的条目数 | **Gold 应有条目总数**（同上，CONFIRMED） | 只统计「Gold 明确写了但没有」的，不含 Gold 自己漏标的 |
+| **错提取**（对应 Precision 的补数） | Parser 给出、Gold 没有对应项且人工判定为错的条目数 | **Parser 实际输出的候选总数**（含无 Gold 对应项者） | **分母必须含 Parser 多吐的那部分**，否则错提取永远算不出来 |
+
+三条硬约束：
+
+1. **准确率与错提取的分母不同源**，不可互相代入，也不可合并成「加权总分」。
+2. `unresolved`（人工也判不了）**单列一栏，不进任何分母**，但在报告里必须出现其数量。
+3. **失败件不剔除**：崩溃、超时、读不出文本的件，**留在分母里**，该项记 0 并写 `error_reason`。
+   把失败件剔出分母是粉饰，直接违反 Gate 1 硬条件。
+
+### 3.2 与既有多项指标的映射
+
+沿用 `GATE6A_PARSER_BENCHMARK.md` §6 的 7 项指标，与上述三分母的对应关系：
+
+| 既有指标 | 分母归属 | 与本方案三分母的关系 |
+|---|---|---|
+| Table Recall | Gold 目标表总数 | 漏提取（表级） |
+| Table Structure Accuracy | 已匹配表数 | 准确率（表级） |
+| Cell Text Accuracy | Gold cell 总数 | 准确率（格级） |
+| Column Alignment Accuracy | Gold 标注列总数 | 准确率（列级） |
+| Candidate Recall | Gold 候选总数 | 漏提取（候选级） |
+| Evidence Localization Accuracy | 抽检 candidate 数 | 准确率（证据级） |
+| Cross-page Continuity | 跨页组总数 | 准确率（组级） |
+
+### 3.3 报表形式
+
+- 每项必须报 `numerator / denominator / value` 三元组，**不给加权总分**。
+- 逐件结果落 `per_item_metrics.csv`；`metrics.json` 的每个汇总数字
+  必须能**只读逐件 CSV 盲重算**复现（Gate 1 硬条件 4）。
+- 匹配判定阈值（bbox IoU、文本相似度容差）**本轮不给数值**，
+  等 Reviewer 看到基线分布后再定。
+
+### 3.4 禁止外推
+
+30 件是**目的性抽样**（见 §1.3），且样本与总体非等概率。
+因此：
+
+- **不得**用 `样本准确率 × 350` 或 `× 11355` 推算「总体正确提取了多少条参数」；
+- **不得**给总体准确率配 Clopper-Pearson 之类区间——概率抽样的前提不成立；
+- 允许的表述只有：「在这 30 件上（`>100` 页占池 6% 却拿走 9 席，抽样率 42.9%；
+  文件名含 `__` 占池 83% 只给 4 席，抽样率 1.4%），Cell Text Accuracy 为 x/y」。
+
+---
+
+## 4. 风险与停止条件
+
+### 4.1 风险清单
+
+| # | 风险 | 触发信号 | 缓解 |
+|---|---|---|---|
+| R1 | Parser 在长文档上崩溃或超时 | 单件耗时 > 180s，或进程非零退出 | Parser 逐件独立子进程 + 超时强杀；崩溃件记 `error_reason` 不剔除 |
+| R2 | Gold 被 Parser 输出污染（自我印证） | Gold 条目文本与 Parser 输出逐字相同率异常高 | 强制「先填 Gold、后跑 Parser」；`reviewer` 与跑批人分离 |
+| R3 | 「扫描型」层无扫描件，PAIN-08 假覆盖 | `text_layer_verified = false` 却有该层条目 | 按 §1.4 缺口 1 处理，未裁定前该层指标标 `N/A` |
+| R4 | V022 类别自相矛盾污染指标 | 该件分数与其余 29 件显著背离 | 置 `diagnostic_only = true`，不进分母 |
+| R5 | 分层名与实际内容不符（换层） | `stratum_confirmed = FALSE` | 走 `sample_substitution.csv` 审批替换 |
+| R6 | 分母被静默缩水 | 某项 denominator 小于 Gold CONFIRMED 数 | 报表必须同时打印两者，不等即报警 |
+| R7 | 分类规则再变导致样本失效 | `classifier.py` sha256 ≠ `28b9f0bf…` | 跑批前校验哈希；不符则重新执行 §1.4 缺口 3 的比对 |
+
+### 4.2 停止条件
+
+**硬停止（出现即中止，报告现状，不等跑完）：**
+
+1. `classifier.py` 实际加载哈希 ≠ `28b9f0bf…`（说明代码已漂移，样本有效性失去前提）。
+2. 任一件触发了本不该发生的写库 / 调 LLM / 调用外部网络
+   （Gate 6A 是 Parser-only，`ICPDF_EXTRACTOR_LLM_READY = false`）。
+3. Gold 尚未 CONFIRMED 就开跑 Parser——**顺序颠倒即无效**，必须停。
+4. 崩溃率 > 3 件（30 件的 10%）：说明是系统性问题，继续跑只是烧时间。
+5. 发现 Parser 输出被写入 `gold/` 目录（污染真值），立即停并作废该批 Gold。
+
+**软停止（记录后继续，但必须在报告显著位置说明）：**
+
+1. 单件耗时 > 120s（未超时）——记 `slow_case`，累计 > 5 件则升级为硬停止复核。
+2. `unresolved` 条目占比 > 20%——说明 Gold 质量不足以支撑指标。
+3. 出现「同页同表两次跑出不同结果」——记不确定性，提示非确定性来源需排查。
+
+### 4.3 只读边界（沿用并强化）
+
+- 本轮**只制定方案，不执行解析**：不调用 `parse_pdf()`、不启动 `serve_parser.py`、
+  不打开任何 PDF 正文。
+- 不修改 `classifier.py` / `rules.py` / `serve_parser.py` / `parse_worker.py`。
+- 不创建任何 `gold/*.json`（Gold Set 由人工在批准后建立）。
+- 不写 PostgreSQL、不接入任何 LLM。
+- 所有产出限于 `runs/stage_a_350/gate6a/`（批准后新建）。
+
+---
+
+## 5. 待 Reviewer 裁定的事项
+
+1. **§1.4 缺口 1**：「扫描型」层三选一（改名为短文档 / 池外补扫描件 / 标 `N/A`）。
+2. **§1.4 缺口 2**：V022 是否同意设 `diagnostic_only`、不进分母。
+3. **§2.1**：`baseline_5` 是否强制双人复核。
+4. **§3.1**：`unresolved` 单列不进分母，是否认可。
+5. **§3.4**：禁止外推总体准确率，是否认可（这会让报告显得「不够漂亮」，但它是诚实的）。
+6. 是否批准进入「建 Gold Set」阶段（本方案批准后的下一步，仍不跑 Parser）。
