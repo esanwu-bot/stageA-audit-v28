@@ -259,8 +259,16 @@ def score_rows3(doc, rows):
     return rows
 
 
-def build_js(rows):
-    return I2.build_js(rows)
+def build_js(rows, export_name):
+    """把批次名注入前端，导出文件不再一律叫 Batch2_ANNOTATED.csv。
+
+    I2.build_js() 会把 _b2_app.js 里的 __DRAFT__/__THRESH__ 换成实值；
+    这里在它前面加一行 window.B3_EXPORT_NAME，前端的 EXPORT_NAME 就会用它。
+    不改 I2 本身，Batch 2 生成器的行为完全不变（读不到这个变量时退回默认名）。
+    """
+    import json
+    return ("window.B3_EXPORT_NAME=%s;\n" % json.dumps(export_name)
+            + I2.build_js(rows))
 
 
 def one_sample(meta, args):
@@ -502,7 +510,8 @@ def main():
              '<span id="msg" class="msg"></span></div>')
     p.append('<textarea id="out" readonly></textarea>')
     p.append("</div>")
-    p.append("</div><script>%s</script></body></html>" % build_js(rows_out))
+    p.append("</div><script>%s</script></body></html>"
+             % build_js(rows_out, args.out_prefix + "_ANNOTATED"))
     out_html.write_text("".join(p), encoding="utf-8", newline="\n")
 
     print("\n圈选台: %s (%.1f KB, %d 件)"

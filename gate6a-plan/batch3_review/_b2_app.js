@@ -10,6 +10,11 @@
 const DRAFT = __DRAFT__;
 const THRESH = __THRESH__;   // 由生成器注入，与 Python 侧的 THRESH 同源
 
+// 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
+// 这里退回原来的默认名，保证它的行为一字不变；Batch 3 生成器按 --out-prefix
+// 注入，例如 Batch3_B2_ANNOTATED.csv，避免六件草稿都顶着 Batch2 的名字。
+const EXPORT_NAME = window.B3_EXPORT_NAME || "Batch2_ANNOTATED";
+
 const FIELDS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
   "parameter_name", "min_value", "typ_value", "max_value", "unit", "condition",
   "row_status", "notes", "reviewer", "confidence_score"];
@@ -281,12 +286,12 @@ function downloadCSV() {
   const blob = new Blob(["\ufeff" + text], {type: "text/csv;charset=utf-8"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "Batch2_ANNOTATED.csv";
+  a.download = EXPORT_NAME + ".csv";
   document.body.appendChild(a);
   a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
   document.getElementById("msg").textContent =
-    "已下载 Batch2_ANNOTATED.csv（" + n + " 行，UTF-8 带 BOM，Excel 直接打开不乱码）";
+    "已下载 " + EXPORT_NAME + ".csv（" + n + " 行，UTF-8 带 BOM，Excel 直接打开不乱码）";
 }
 
 function copyOut() {

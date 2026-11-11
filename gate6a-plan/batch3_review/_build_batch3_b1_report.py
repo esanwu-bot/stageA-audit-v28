@@ -33,6 +33,19 @@ CASES = [
      "b1_suggested_sidecar_mode.txt", 0),
 ]
 
+# PM 2026-11-12 07:28 授权代签后的重跑（3 行恢复 CONFIRMED + reviewer 签名）
+RESIGNED = [
+    ("F.1 重签版 · PDF 模式（实算哈希）",
+     "python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
+     "--page-text page_text_batch3_b1.json "
+     "--provenance Batch3_B1_PDF_PROVENANCE.csv --pdf-dir <PDF>",
+     "b1_resigned_pdf_mode.txt", 0),
+    ("F.2 重签版 · 离线模式（sidecar）",
+     "env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
+     "--page-text page_text_batch3_b1.json --provenance Batch3_B1_PDF_PROVENANCE.csv",
+     "b1_resigned_sidecar_mode.txt", 0),
+]
+
 
 def main():
     L = []
@@ -108,13 +121,29 @@ def main():
     A("  建议修正版（23 行，3 行未签字）  OK=23  ERROR=0              退出码 0")
     A("")
     A("两种页源（PDF 原件 / sidecar）结果一致。")
-    A("ERROR=0 的那一版有 3 行是机器改的、没有签名，")
-    A("不能当作已确认的 Gold；这 3 行需要 PM 重新核一遍并签字。")
+    A("ERROR=0 的那一版有 3 行是机器改的、没有签名，当时不能当作已确认的 Gold。")
     A("")
     A("待签 3 行：")
     A("  行8  V304  p4 / IIK / Control input clamp current / VIN < 0 / -50 mA")
     A("  行20 V173  p4 / IO / Continuous output current / condition=VO = 0 to VCC / min 空")
     A("  行22 V345  p4 / 空 symbol / human_adjudication=ACCEPTED_SOURCE_HAS_NO_SYMBOL")
+    A("")
+    A("F. 重签后复跑（PM 授权代签，2026-11-12 07:28）")
+    A("-" * 78)
+    A("_make_b1_resigned.py 把上述 3 行 row_status 恢复 CONFIRMED、")
+    A("reviewer 重新签 wuxiaoxian，其余数据格一律未动；")
+    A("V345 的 ACCEPTED_SOURCE_HAS_NO_SYMBOL 在建议版里已填，重签时再断言一次。")
+    A("产物 Batch3_B1_RESIGNED.csv / .xlsx 逐格一致，23 行全部有签名。")
+    for title, cmd, fn, code in RESIGNED:
+        A("")
+        A("### " + title)
+        A("$ " + cmd)
+        A("-" * 78)
+        A((RAW / fn).read_text(encoding="utf-8").rstrip())
+        A("-" * 78)
+        A("[退出码 %d]" % code)
+    A("")
+    A("最终结论：重签版 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
     A("=" * 78)
 
     OUT.write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")
