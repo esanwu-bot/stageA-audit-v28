@@ -245,3 +245,43 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 | V256 修得对不对、有没有伤到别人 | 23 件 115 个文件逐字节不变；2701 表里只有 1 表受影响；最大边界位移 +33.663pt 但单元格位移 0 | [`v256_crash_evidence.md`](v256_crash_evidence.md) |
 | 有没有偷偷联网 | 出网事件 0 次；16 向量全拦；对照组能出网 | [`network_guard_proof.md`](network_guard_proof.md) |
 | 你们声明的夹紧公式是真代码吗 | 是，diff 逐行可核，且新增行里没有排序、没有下拉 | [`monotonic_lattice.diff`](monotonic_lattice.diff) |
+
+---
+
+## Security Note
+
+**本次推送触发了 GitGuardian 针对 `@` 符号与内网 URL 的规则告警。经排查无真实凭据泄露，已剔除内网域名的历史记录。保留的 40 位 commit SHA 为代码溯源锚点，非敏感信息。**
+
+### 告警定位
+
+| 触发位置 | 原始形态 | 命中规则 | 性质 |
+| --- | --- | --- | --- |
+| `audit/pip_freeze.txt:20` | 可编辑安装行：`-e git+<内网主机>/<组织ID>/<repo>.git@<40位SHA>#egg=<包名>` | Generic Password（`.git` 后的 `@` 被解析为 userinfo 分隔符）、High Entropy Secret | 误报：`@` 后是 commit SHA，不是密码；该 URL 无 userinfo 段 |
+| `gate6/r2/GIT_BASELINE.json`、`gate6/r2/*.md`、`git_verify_raw.log`、`gate6a-plan/**` 等 13 个文件 | 裸 remote URL：`<内网主机>/<组织ID>/<repo>.git` | High Entropy Secret（24 位组织 ID） | 真实的信息暴露：泄露内网仓库主机名与组织 ID，但**不含凭据** |
+
+### 排查结论：无真实凭据
+
+- **全历史 blob 逐字节扫描**（1247 个 blob，111 个提交，非浅克隆）：AWS `AKIA` / GitHub `gh[pousr]_` / OpenAI `sk-` / Slack `xox` / 阿里云 `LTAI` / URL 内嵌凭据（userinfo 段）/ 赋值型 `password`、`secret`、`api_key` —— **命中 0 条**。
+- **环境快照**：`v1_env_snapshot.json`、`v2_env_snapshot.json` 的 `llm.env_vars_present` 均为 `[]`，无 env 字典、无凭据键。
+- **本地残留**：`~/.git-credentials`、`~/.netrc` 均不存在；git 凭据走 Windows 凭据管理器；`~/.npmrc` 仅含 registry 地址，无 token。
+- **推送脚本** `gate6/r2/_push_r2_github.py`：token 由 `git credential fill` 运行时取得，无硬编码。
+
+### 已执行的清理
+
+1. **内网地址脱敏**：全历史将内网 Git 主机的完整仓库地址（`<内网主机>/<组织ID>/<repo>.git`）替换为 `[REDACTED-INTERNAL-REPO]`；`pip_freeze.txt` 该行改为 `icpdf-extractor==[REDACTED-LOCAL-VCS]`。
+2. **高熵噪声剔除**：`r3/b64_parts_r3/` 的 3 个 Base64 分卷（`audit_minimal_v28_r3.zip` 的分片，45.8 KB）已从历史移除。还原后 SHA-256 `866cc36f6dc263e3efa89869a251957a77b2fd30f72ce916aa0b3df8faf65f9e`、34049 字节、6 个文件，与本包无关的重复副本。
+3. **历史重写**：`git filter-repo` 重写全部 111 个提交与 4 个分支，旧 commit SHA 全部失效，已强推。
+
+### 保留项与理由
+
+`parser_commit.txt`、`source_fingerprint.md`、`monotonic_lattice.diff` 中保留 40 位 commit SHA。理由：这是审计溯源的锚点——「本包产物出自哪个 commit」是本包可复算性的前提。commit hash 是 git 对象标识符，不含任何凭据，脱离仓库不可反推内容。纯十六进制串理论熵上限为 4.0 bit/char，低于高熵检测阈值。
+
+### 推送前脱敏关卡
+
+此后每次推送前固定执行：
+
+```bash
+grep -rn "key\|token\|password\|secret" --include='*.md' --include='*.txt' --include='*.json' --include='*.py' .
+git grep -n -E '://[^/[:space:]]+:[^/[:space:]]+@'   # 内嵌凭据 URL
+git grep -n -E '(AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9]{36}|sk-[A-Za-z0-9]{20,}|LTAI[0-9A-Za-z]{12,})'
+```
