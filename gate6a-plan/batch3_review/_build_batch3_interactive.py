@@ -72,9 +72,21 @@ CONDITION_BACKFILL = {
     # DVDD 在原表里有两行（1.8V I/O 与 3.3V I/O），草稿只留了 1.8V 那行，
     # 用原表的行标题把适用范围钉住，免得跟 3.3V 那行的 3.0/3.3/3.45 混起来。
     ("V077", "38", "DVDD"): ["Supply voltage, I/O, 1.8V"],
+    # B4 V130：CSD17505Q5A p2 ELECTRICAL CHARACTERISTICS 表，五行各有 TEST CONDITIONS。
+    # 逐字照录，不做同义改写；运行时还会回原文核一遍。
+    ("V130", "2", "BVDSS"): ["VGS = 0V, IDS = 250μA"],
+    ("V130", "2", "IDSS"): ["VGS = 0V, VDS = 24V"],
+    ("V130", "2", "IGSS"): ["VDS = 0V, VGS = 20V"],
+    ("V130", "2", "VGS(th)"): ["VDS = VGS, IDS = 250μA"],
+    ("V130", "2", "RDS(on)"): ["VGS = 4.5V, IDS = 20A"],
     # B4 V290：VIL 两行按温度档区分，0.8 V 对应 0°C to +70°C，
     # 0.5 V 对应 −55°C to +125°C（注意原文用的是 U+2212 减号）。
     ("V290", "3", "VIL"): ["0°C to +70°C", "−55°C to +125°C"],
+    # II（Input Current at Maximum Input Voltage）原表 Conditions 列写着
+    # 「VCC = Max, VI Max = 5.5V」，VLM 漏抄。文本层把下标拆成「V CC」，
+    # 原文断言靠去空白形态核过。同表的 VIH 原表本来就没给条件，保持为空，
+    # 不臆造 —— 两行的差别在 WARN_BANNER 里写清楚，由 PM 定夺。
+    ("V290", "3", "II"): ["VCC = Max, VI Max = 5.5V"],
     ("V256", "13", "V(MAIN-AUX)"): [
         "2V<VCELL<4.5V; TA=25°C",
         "2V<VCELL<4.5V; -20°C<TA<65°C",
@@ -82,6 +94,13 @@ CONDITION_BACKFILL = {
         "2V<VCELL<4.5V; -40°C<TA<125°C",
         "1V<VCELL< 5V; -40°C<TA<125°C",
     ],
+}
+
+
+# 这些样本的指定符号**必须**有 condition，缺一条就不许出草稿。
+# 依据：Reviewer 指出 V130 条件缺失属 P0 —— 没有测试条件的电气参数不能进 Gold。
+MUST_HAVE_COND = {
+    "V130": {"BVDSS", "IDSS", "IGSS", "VGS(th)", "RDS(on)"},
 }
 
 
@@ -1057,8 +1076,17 @@ WARN_BANNER = {
              "不要只看数值。"),
     "V290": ("VIL 两行按温度档区分，数值不同、适用温度不同："
              "0.8 V 对应 0°C to +70°C，0.5 V 对应 −55°C to +125°C。"
-             "本件 II（输入电流）原文条件是 VCC = Max、VI = 5.5V，"
-             "文本层抽成 “V CC = Max, VI Max = 5.5V”，是否补录请 PM 定夺。"),
+             "另：II（输入电流）原表 Conditions 列写着 "
+             "<code>VCC = Max, VI Max = 5.5V</code>，VLM 漏抄，已按原文补录；"
+             "VIH（Input Voltage HIGH）原表本来就没给条件，"
+             "保持为空<strong>不是漏填</strong>，请勿臆造。"),
+}
+
+# 原表有、但受 5 行预算限制没收进来的，必须说清楚，不能让人以为只有这些。
+EXTRA_ROWS_NOTE = {
+    "V130": ("本表 RDS(on) 在原图里有**两行**：VGS = 4.5V, IDS = 20A → 3.7/4.6 mΩ；"
+             "VGS = 10V, IDS = 20A → 2.9/3.5 mΩ。草稿只收了 4.5V 那行（5 行预算）。"
+             "若要收 10V 那行，请用「新增空行」补，或告诉我改上限。"),
 }
 
 REVIEW_HINTS = {
@@ -1182,15 +1210,30 @@ def one_sample(meta, args):
                               + (r.get("notes", "") + "；" + EXT_NOTE).strip("；"))
     # VLM 不抄 TEST CONDITIONS：按参数块内出现顺序从原图回填（Fail-Closed）
     apply_condition_backfill(keep, sno)
+    # 强断言：规定符号缺 condition 直接退出，绝不带着空条件出草稿
+    need = MUST_HAVE_COND.get(sno)
+    if need and keep:
+        missing = [r.get("symbol") for r in keep
+                   if (r.get("symbol") or "").strip() in need
+                   and not (r.get("condition") or "").strip()]
+        had = {((r.get("symbol") or "").strip()) for r in keep}
+        if missing or not need <= had:
+            raise SystemExit(
+                "FAIL %s 的条件缺失：%s；缺 condition 的行 %s。"
+                "没有 TEST CONDITIONS 的电气参数不能进 Gold"
+                % (sno, sorted(need - had) or "-", missing or "-"))
     # 回填完必须回原文核一遍：条件在原页文本里找不到，就是绑错了页或错了行。
     # 归一化只做 °→o（PDF 文本层常把度数符号抽成 o）与空白折叠，不做同义改写。
+    # 第二道兜底：文本层会把下标拆开印成「V CC = Max」而原表是「VCC = Max」，
+    # 这种纯排版空隙不算差异，故并列一版「去掉全部空白」的比较形态。
     for r in keep:
         cond = (r.get("condition") or "").strip()
         if not cond:
             continue
         _p = doc.load_page(int(r["evidence_page"]) - 1).get_text("text")
         _norm = lambda x: " ".join(x.replace("\u00b0", "o").split())
-        if _norm(cond) not in _norm(_p):
+        _norm_ns = lambda x: "".join(x.replace("\u00b0", "o").split())
+        if _norm(cond) not in _norm(_p) and _norm_ns(cond) not in _norm_ns(_p):
             raise SystemExit(
                 "FAIL %s p%s %s 的 condition %r 在原页文本里核不到，"
                 "拒绝交付未经验证的条件" % (sno, r["evidence_page"],
@@ -1269,6 +1312,7 @@ def one_sample(meta, args):
             "dropped": len(drop), "nlow": nlow, "ext": ext_used,
             "hint": REVIEW_HINTS.get(sno, ""),
             "warn": WARN_BANNER.get(sno, ""),
+            "extra": EXTRA_ROWS_NOTE.get(sno, ""),
             "stratum": meta.get("stratum_proposed", "")}
     doc.close()
     return keep, card
@@ -1369,6 +1413,9 @@ def main():
         if c.get("hint"):
             p.append('<div class="hint hint-review"><b>核查提示</b>　%s</div>'
                      % B.esc(c["hint"]))
+        if c.get("extra"):
+            p.append('<div class="hint hint-review"><b>未收进草稿的行</b>　%s</div>'
+                     % c["extra"])
         p.append('</div><div class="body">')
 
         if c["quality"] == "无文本层":

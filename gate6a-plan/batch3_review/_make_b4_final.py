@@ -27,6 +27,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 import _make_b3_final as B3
+from _build_batch3_interactive import CONDITION_BACKFILL, MUST_HAVE_COND
 
 HERE = Path(__file__).resolve().parent
 SIGNED = HERE / "Batch3_B4_ANNOTATED.xlsx"
@@ -42,25 +43,36 @@ DEVICE_MODEL = {"V077": "AM1707", "V130": "CSD17505Q5A", "V290": "DS9638"}
 SAMPLES = ["V077", "V130", "V290"]
 EXPECT_ROWS = 14
 FINAL_NOTE = "人工已核对 PDF 原图并确认"
+WB_FILL_PREFIX = "【condition 由 WB 按原图补录，待 PM 复核】"
 
 SIGNED_COLS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
                "parameter_name", "min_value", "typ_value", "max_value", "unit",
                "condition", "row_status", "notes", "reviewer", "confidence_score"]
 
-# 本轮封卷登记。首次生成时为空 -> guard 返回 write；生成后把哈希填进来再跑一次，
-# 必须全部 skip。之后任何字节变化都会被拦下。
+# 第二轮修订：V130 的 5 条 condition 由 WB 按原图补录，尚未经 PM 复核，
+# 因此 FINAL 三件**暂不登记**封卷哈希（上一轮的登记已撤销），等补签后再登记。
+# 签字源仍然登记 —— 它一变就必须停下来，不许拿被改过的签字件往下跑。
 SEALED_SHA_B4 = {
+    "Batch3_B4_ANNOTATED.xlsx":
+        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
+}
+# 上一轮登记过、本轮主动撤销的三件：留档备查，不再作为放行依据。
+NO_LONGER_SEALED = {
     "Batch3_B4_FINAL.csv":
         "2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d",
     "Batch3_B4_FINAL.xlsx":
         "972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1",
     "page_text_batch3_b4.json":
         "43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef",
-    "Batch3_B4_ANNOTATED.xlsx":
-        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
 }
 
 PREFIX_RX = re.compile(r"^【[^】]*】")
+
+# 第十三轮：PM 2026-11-12 15:32 直接在 19 列定稿件上删行并逐格补签，
+# 定稿的事实源已由 Batch3_B4_ANNOTATED.xlsx 变为 Batch3_B4_FINAL.xlsx 本身。
+# 本生成器按 ANNOTATED 的 14 行重造，会把 PM 的删除与签名一起覆盖掉，
+# 因此永久停用；下游派生改由 _final_from_signed_xlsx.py 负责。
+SUPERSEDED_BY = "_final_from_signed_xlsx.py"
 
 
 def cell_str(v):
@@ -93,6 +105,68 @@ def load_signed(path):
     who = {r["reviewer"] for r in rows}
     if who != {"wuxiaoxian"}:
         raise SystemExit("签字人不是 PM 本人：%s" % who)
+    return rows
+
+
+def fill_missing_conditions(rows):
+    """签字件里 condition 为空的行，按原图 TEST CONDITIONS 回填。
+
+    粒度是「符号块」而非「整件」：同一样本里 V290 的 VIL 有温度档、
+    II / VIH 原表本来就没给测试条件，不能因为整件里有一块空就一律判定失败。
+
+    三条 Fail-Closed：
+      · 同一符号块里部分有值、部分为空 → 不猜顺序，直接退出；
+      · 回填表条数与实际行数不符 → 退出（不按顺序盲配）；
+      · 回填后 MUST_HAVE_COND 规定的符号仍缺 condition → 退出。
+        P0：没有测试条件的电气参数不能进 Gold。
+    """
+    filled_cnt = 0
+    for sno in SAMPLES:
+        here = [r for r in rows if r["sample_no"] == sno]
+        if not here:
+            continue
+        for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
+            if bsno != sno:
+                continue
+            hit = [r for r in here
+                   if str(r["evidence_page"]) == page
+                   and (r["symbol"] or "").strip() == sym]
+            if not hit:
+                continue
+            has = [r for r in hit if (r["condition"] or "").strip()]
+            if len(has) == len(hit):
+                continue                      # PM 已填，原样保留，不覆盖
+            if has:
+                raise SystemExit(
+                    "%s p%s %s 的 condition 部分有值（%d/%d），"
+                    "拒绝按顺序盲填" % (sno, page, sym, len(has), len(hit)))
+            if len(hit) != len(conds):
+                raise SystemExit(
+                    "%s p%s %s 保留 %d 行，与回填表 %d 条不一致，拒绝盲配"
+                    % (sno, page, sym, len(hit), len(conds)))
+            for r, c in zip(hit, conds):
+                r["condition"] = c
+                r["entered_by"] = "WB_Agent"
+                r["notes"] = WB_FILL_PREFIX + r["notes"]
+                filled_cnt += 1
+
+    for sno, syms in MUST_HAVE_COND.items():
+        here = [r for r in rows if r["sample_no"] == sno]
+        if not here:
+            continue
+        lack = [(r["symbol"], r["condition"]) for r in here
+                if r["symbol"].strip() in syms
+                and not (r["condition"] or "").strip()]
+        if lack:
+            raise SystemExit(
+                "FAIL %s 条件缺失：%s 没有 TEST CONDITIONS，拒绝出定稿"
+                % (sno, [x[0] for x in lack]))
+        had = {r["symbol"].strip() for r in here}
+        miss = sorted(syms - had)
+        if miss:
+            raise SystemExit("FAIL %s 缺少必需符号：%s" % (sno, miss))
+    print("  condition 回填：%d 格（标 entered_by=WB_Agent，待 PM 复核）"
+          % filled_cnt)
     return rows
 
 
@@ -196,6 +270,39 @@ def write_json(path, obj):
     return "已改写"
 
 
+TO_SIGN = HERE / "Batch3_B4_DRAFT_TO_SIGN.xlsx"
+
+
+def write_to_sign(path, rows):
+    """导出 15 列签字表，供 PM 在带 condition 的版本上重新签字。
+
+    只在文件不存在时写：PM 一旦签过就保存成这个文件，重跑不许覆盖签名。
+    """
+    if path.exists():
+        print("  TO_SIGN 已存在，保留原字节（避免覆盖 PM 已签内容）：%s" % path.name)
+        return "未改写"
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = "B4_TO_SIGN"
+    ws.append(SIGNED_COLS)
+    for c in ws[1]:
+        c.font = Font(bold=True, color="FFFFFF")
+        c.fill = PatternFill("solid", fgColor="C00000")
+        c.alignment = Alignment(horizontal="center")
+    for r in rows:
+        ws.append([r.get(k, "") for k in SIGNED_COLS])
+    for ci, k in enumerate(SIGNED_COLS, 1):
+        width = {"parameter_name": 46, "notes": 40, "file_name": 34,
+                 "condition": 32, "table_title": 28, "row_status": 14}.get(k, 14)
+        ws.column_dimensions[get_column_letter(ci)].width = width
+    ws.freeze_panes = "A2"
+    ws.auto_filter.ref = ws.dimensions
+    tmp = path.with_name(path.name + ".wb_tmp.xlsx")
+    wb.save(str(tmp))
+    B3.atomic_replace(tmp, path)
+    return "已改写"
+
+
 def write_prov(path, side):
     rows = [{"sample_no": s, "file_name": v["file_name"],
              "device_model": v["device_model"], "sha256": v["sha256"],
@@ -210,12 +317,24 @@ def write_prov(path, side):
 
 
 def main():
+    if SUPERSEDED_BY:
+        raise SystemExit(
+            "本生成器已停用：定稿事实源改为 PM 签字后的 Batch3_B4_FINAL.xlsx。\n"
+            "  按 ANNOTATED 重造会覆盖 PM 的删行与逐格签名。\n"
+            "  需要重出定稿下游（CSV / sidecar / provenance）请跑：%s"
+            % SUPERSEDED_BY)
+    # 签字源入口闸门：先验哈希，再读内容。被改过就直接停，绝不允许继续。
+    try:
+        B3.guard_sealed(SIGNED, SEALED_SHA_B4)
+    except SystemExit as exc:
+        raise SystemExit("签字源校验失败，拒绝继续：%s" % exc)
     if not SIGNED.exists():
         raise SystemExit("找不到签字件：%s" % SIGNED)
     signed_sha = B3.sha(SIGNED)
     rows_signed = load_signed(SIGNED)
     work, _ = disk_info(None)
     rows, side = build_rows(rows_signed, work)
+    rows = fill_missing_conditions(rows)
 
     for r in rows:
         print("  %-5s p%-3s %-9s %-6s/%-6s/%-6s %-5s cond=%-30s notes=%s" % (
@@ -223,6 +342,7 @@ def main():
             r["typ_value"], r["max_value"], r["unit"], r["condition"][:30],
             r["notes"][:34]))
 
+    s_sign = write_to_sign(TO_SIGN, rows)
     s_csv = write_csv(OUT_CSV, rows)
     s_xlsx = write_xlsx(OUT_XLSX, rows)
     write_prov(OUT_PROV, side)
@@ -255,12 +375,41 @@ def main():
         if not r["device_model"]:
             raise SystemExit("device_model 为空：%s" % r["sample_no"])
 
+    # P0-1 硬断言：MUST_HAVE_COND 的符号落盘后必须有 condition，且与回填表逐字一致。
+    for sno, syms in MUST_HAVE_COND.items():
+        got = [r for r in csv2 if r["sample_no"] == sno]
+        lack = [r["symbol"] for r in got
+                if r["symbol"].strip() in syms and not r["condition"].strip()]
+        if lack:
+            raise SystemExit("落盘后 %s 仍缺 condition：%s" % (sno, lack))
+        for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
+            if bsno != sno:
+                continue
+            hit = [r for r in got
+                   if r["evidence_page"] == page and r["symbol"].strip() == sym]
+            if not hit:
+                continue
+            if [r["condition"] for r in hit] != conds:
+                raise SystemExit(
+                    "落盘后 %s %s 的 condition 与回填表不一致：%s"
+                    % (sno, sym, [r["condition"] for r in hit]))
+            wb_marks = [r["entered_by"] for r in hit]
+            if any(w != "WB_Agent" for w in wb_marks):
+                raise SystemExit(
+                    "落盘后 %s %s 的 entered_by 未标 WB_Agent：%s"
+                    % (sno, sym, wb_marks))
+            if any(not r["notes"].startswith(WB_FILL_PREFIX) for r in hit):
+                raise SystemExit(
+                    "落盘后 %s %s 的 notes 缺补录前缀" % (sno, sym))
+
+
     print()
     print("B4 定稿：%d 行 / %d 样本 / %d 列" % (len(csv2), len(side), len(FINAL_COLS)))
     print("  签字件：%s（SHA-256 %s…）" % (SIGNED.name, signed_sha[:16]))
     print("  device_model：" + "，".join("%s=%s" % kv for kv in DEVICE_MODEL.items()))
     print("  notes：" + "；".join(sorted({r["notes"] for r in csv2})))
     print("  approved_by / entered_by / human_adjudication 全空（不代签）")
+    print("  TO_SIGN 写入：%s" % s_sign)
     print("  CSV 写入：%s" % s_csv)
     print("  xlsx 写入：%s" % s_xlsx)
     print("  sidecar 写入：%s" % s_side)

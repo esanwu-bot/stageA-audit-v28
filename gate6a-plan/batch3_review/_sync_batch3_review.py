@@ -160,6 +160,14 @@ SYNC = [
     "Batch3_B4_approval_record.txt",
     "b4_validation_raw/b4_final_pdf_mode.txt",
     "b4_validation_raw/b4_final_sidecar_mode.txt",
+    # 第十三轮：Reviewer 三处 P0
+    "_patch_b4_v2.py",                  # 签字源闸门 + condition 按符号块回填
+    "_test_b4_signed_gate.py",          # 闸门正/负向回归（15 项断言）
+    "Batch3_b4_signed_gate_test.txt",
+    # 第十三轮：PM 在签字件上手改后，定稿事实源改为签字 xlsx 本身
+    "_final_from_signed_xlsx.py",       # 签字 xlsx -> CSV / sidecar / provenance
+    "_diff_pm_edit.py",                 # PM 手改与上一版定稿的逐格差异（留证）
+    "Batch3_B4_approval_record_r13.txt",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
 B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}

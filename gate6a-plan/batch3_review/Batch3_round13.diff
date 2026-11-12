@@ -1,0 +1,2177 @@
+# Batch 3 第十三轮：Reviewer 三处 P0 + PM 签字件改稿（B4 8 行定稿）
+# 覆盖范围：469396a..工作区
+# 排除：ZIP / SHA256SUMS / png / xlsx / *.diff 自身（二进制或自引用）
+# 说明：ZIP 与 SHA256SUMS.txt 是同步脚本的派生产物，diff 生成后还会重打包一次，
+#       故此处不收录其字节内容，以 SHA256SUMS.txt 的逐条校验为准。
+
+## git status --short
+M  gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
+M  gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
+M  gate6a-plan/batch3_review/Batch3_B4_FINAL.xlsx
+M  gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
+M  gate6a-plan/batch3_review/Batch3_B4_Viewer.html
+A  gate6a-plan/batch3_review/Batch3_B4_approval_record_r13.txt
+M  gate6a-plan/batch3_review/Batch3_B4_generation.txt
+M  gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
+M  gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
+A  gate6a-plan/batch3_review/Batch3_b4_signed_gate_test.txt
+M  gate6a-plan/batch3_review/Batch3_review.zip
+M  gate6a-plan/batch3_review/INDEX.md
+M  gate6a-plan/batch3_review/SHA256SUMS.txt
+M  gate6a-plan/batch3_review/_build_batch3_interactive.py
+A  gate6a-plan/batch3_review/_diff_pm_edit.py
+A  gate6a-plan/batch3_review/_final_from_signed_xlsx.py
+M  gate6a-plan/batch3_review/_make_b4_final.py
+M  gate6a-plan/batch3_review/_make_master_inventory.py
+A  gate6a-plan/batch3_review/_patch_b4_v2.py
+M  gate6a-plan/batch3_review/_sync_batch3_review.py
+A  gate6a-plan/batch3_review/_test_b4_signed_gate.py
+M  gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
+M  gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
+M  gate6a-plan/batch3_review/page_text_batch3_b4.json
+?? gate6a-plan/batch3_review/Batch3_round13.diff
+
+## git diff --cached 469396a
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv b/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
+index 68ebd94..9ccf892 100644
+--- a/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
++++ b/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
+@@ -4,12 +4,12 @@ V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, C
+ V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.14,1.2,1.32,V,375 MHz version,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行,,0.95
+ V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.25,1.3,1.35,V,456 MHz version,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行,,0.95
+ V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,DVDD,"Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)",1.71,1.8,1.89,V,"Supply voltage, I/O, 1.8V",DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,BVDSS,Drain to Source Voltage,30,,,V,,DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,VGS(th),Gate to Source Threshold Voltage,1,1.3,1.8,V,,DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,RDS(on),Drain to Source On Resistance,,3.7,4.6,mΩ,,DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IDSS,Drain to Source Leakage Current,,,1,μA,,DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IGSS,Gate to Source Leakage Current,,,100,nA,,DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
+-V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,II,Input Current at Maximum Input Voltage,,,50,μA,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,BVDSS,Drain to Source Voltage,30,,,V,"VGS = 0V, IDS = 250μA",DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,VGS(th),Gate to Source Threshold Voltage,1,1.3,1.8,V,"VDS = VGS, IDS = 250μA",DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,RDS(on),Drain to Source On Resistance,,3.7,4.6,mΩ,"VGS = 4.5V, IDS = 20A",DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IDSS,Drain to Source Leakage Current,,,1,μA,"VGS = 0V, VDS = 24V",DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IGSS,Gate to Source Leakage Current,,,100,nA,"VDS = 0V, VGS = 20V",DRAFT_AWAITING_HUMAN_CONFIRM,【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,II,Input Current at Maximum Input Voltage,,,50,μA,"VCC = Max, VI Max = 5.5V",DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
+ V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIH,Input Voltage HIGH,2.0,,,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
+ V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.8,V,0°C to +70°C,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行,,0.95
+ V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.5,V,−55°C to +125°C,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行,,0.95
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv b/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
+index a00d18b..43d1b3e 100644
+--- a/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
++++ b/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
+@@ -1,15 +1,9 @@
+ ﻿sample_no,file_name,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,approved_by,entered_by,confidence_score,device_model,human_adjudication
+-V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.14,1.2,1.32,V,375 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
+-V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.25,1.3,1.35,V,456 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
+-V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.14,1.2,1.32,V,375 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
+-V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.25,1.3,1.35,V,456 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
+-V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,DVDD,"Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)",1.71,1.8,1.89,V,"Supply voltage, I/O, 1.8V",CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,BVDSS,Drain to Source Voltage,30,,,V,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,VGS(th),Gate to Source Threshold Voltage,1,1.3,1.8,V,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,RDS(on),Drain to Source On Resistance,,3.7,4.6,mΩ,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IDSS,Drain to Source Leakage Current,,,1,μA,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
+-V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IGSS,Gate to Source Leakage Current,,,100,nA,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
+-V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,II,Input Current at Maximum Input Voltage,,,50,μA,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
+-V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIH,Input Voltage HIGH,2,,,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
+-V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.8,V,0°C to +70°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
+-V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.5,V,−55°C to +125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.14,1.2,1.32,V,375 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.25,1.3,1.35,V,456 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.14,1.2,1.32,V,375 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.25,1.3,1.35,V,456 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,DVDD,"Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)",1.71,1.8,1.89,V,"Supply voltage, I/O, 1.8V",CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,AM1707,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIH,Input Voltage HIGH,2,,,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,DS9638,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.8,V,0°C to +70°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,DS9638,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.5,V,−55°C to +125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,,0.95,DS9638,
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv b/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
+index 27e3d76..5296c0c 100644
+--- a/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
++++ b/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
+@@ -1,4 +1,3 @@
+ ﻿sample_no,file_name,device_model,sha256,page_count,size_bytes
+ V077,AM1707DZKB4.pdf,AM1707,86441d0065e94257724cdd3e99e05a841a3ddfd7ec49c59852445c73138739a5,201,1661407
+-V130,CSD17505Q5A__csd17505q5a.pdf,CSD17505Q5A,12a24b54b5edb4497c7a9ca297943d3121a89da5771adccdb70f76720e020307,10,251252
+ V290,DS9638CMX_NOPB__DS9638.pdf,DS9638,239dd12d525f93240413e3b5a6f174dae4c19fe97a81394d068060b2c9f45b9b,10,282139
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_Viewer.html b/gate6a-plan/batch3_review/Batch3_B4_Viewer.html
+index 0b0249a..e14df83 100644
+--- a/gate6a-plan/batch3_review/Batch3_B4_Viewer.html
++++ b/gate6a-plan/batch3_review/Batch3_B4_Viewer.html
+@@ -87,7 +87,7 @@ table.rows td.num input{text-align:right;font-family:Consolas,monospace}
+ .msg{margin-left:10px;font-size:12px;color:#2c6b34}
+ #out{width:100%;height:110px;font-family:Consolas,monospace;font-size:11.5px;
+  border:1px solid #dfe3e8;border-radius:4px;padding:8px;background:#fbfcfd}
+-.hint-review{background:#fff4ce;border-left:4px solid #d68b00;padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}.hint-warn{background:#fdecea;border-left:4px solid #c0392b;padding:9px 11px;margin:8px 0;border-radius:4px;font-size:13px;color:#7b1a12}</style></head><body><header><h1>B4 圈选台 · 5 件 · 核心参数草稿</h1><p>左边是原图，右边是同区域抓出的纯文本。页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；红底行是 <code>low_confidence</code>，请优先对图。</p></header><div class="wrap"><div class="note"><h2>怎么用</h2><ul><li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li><li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；不是参数（表头、注释）直接删。</li><li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、或模型自报很低。这些行最可能有错。</li><li>草稿没覆盖的核心参数，用「新增空行」自己补。</li><li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li></ul><div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、既无参数名又无符号的行。</div></div><div class="card"><div class="head"><span class="sn">V077</span><span class="fn">AM1707DZKB4.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/batch1000_v3/pdfs_flat/AM1707DZKB4.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 201 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ROC = p38/160</span><span class="tag t-elc">ELC = p40</span></div><div class="meta">核心 5 行置信度均 ≥0.85</div><div class="hint hint-warn"><b>必须核对</b>　本件原文同一张 Recommended Operating Conditions 里同时给出 <b>375 MHz version</b> 与 <b>456 MHz version</b> 两套条件：CVDD 与 RVDD 各两组值已分别绑定 —— 375 MHz → 1.14 / 1.2 / 1.32 V，456 MHz → 1.25 / 1.3 / 1.35 V。签字前请重点核对这两组 <code>condition</code> 是否落在正确的行上，不要只看数值。</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：请核实表格类型。该件 201 页、章节极多，先确认裁到的是电气特性表，而不是时序/引脚/封装表。</div></div><div class="body"><div class="pane" data-sno="V077" data-fn="AM1707DZKB4.pdf" data-page="38" data-title="Recommended Operating Conditions"><div class="cols"><div class="left"><a href="annotation_reports/V077/b3_ROC_p0038.png" target="_blank"><img src="annotation_reports/V077/b3_ROC_p0038.png" alt="V077 p38"></a><div class="cap">Recommended Operating Conditions · 第 38 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">85 行</span></div><ol class="lines"><li class="line" data-t="5.3">5.3</li><li class="line" data-t="Recommended Operating Conditions">Recommended Operating Conditions</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="NOM">NOM</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="375 MHz version">375 MHz version</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="Supply voltage, Core">Supply voltage, Core</li><li class="line" data-t="CVDD">CVDD</li><li class="line" data-t="(CVDD, RTC_CVDD, PLL0_VDDA)">(CVDD, RTC_CVDD, PLL0_VDDA)</li><li class="line" data-t="456 MHz version">456 MHz version</li><li class="line" data-t="1.25">1.25</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.35">1.35</li><li class="line" data-t="375 MHz version">375 MHz version</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="RVDD">RVDD</li><li class="line" data-t="Supply Voltage, Internal RAM">Supply Voltage, Internal RAM</li><li class="line" data-t="456 MHz version">456 MHz version</li><li class="line" data-t="1.25">1.25</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.35">1.35</li><li class="line" data-t="Supply voltage, I/O, 1.8V">Supply voltage, I/O, 1.8V</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="(USB0_VDDA18, USB1_VDDA18)">(USB0_VDDA18, USB1_VDDA18)</li><li class="line" data-t="DVDD">DVDD</li><li class="line" data-t="Supply voltage, I/O, 3.3V">Supply voltage, I/O, 3.3V</li><li class="line" data-t="3.0">3.0</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="(DVDD, USB0_VDDA33, USB1_VDDA33)">(DVDD, USB0_VDDA33, USB1_VDDA33)</li><li class="line" data-t="Supply ground">Supply ground</li><li class="line" data-t="VSS">VSS</li><li class="line" data-t="(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))">(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="High-level input voltage, I/O, 3.3V">High-level input voltage, I/O, 3.3V</li><li class="line" data-t="High-level input voltage, OSCIN">High-level input voltage, OSCIN</li><li class="line" data-t="0.7*CVDD">0.7*CVDD</li><li class="line" data-t="High-level input voltage, RTC_XI">High-level input voltage, RTC_XI</li><li class="line" data-t="0.7*RTC_CVDD">0.7*RTC_CVDD</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Low-level input voltage, I/O, 3.3V">Low-level input voltage, I/O, 3.3V</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Low-level input voltage, OSCIN">Low-level input voltage, OSCIN</li><li class="line" data-t="0.3*CVDD">0.3*CVDD</li><li class="line" data-t="Low-level input voltage, RTC_XI">Low-level input voltage, RTC_XI</li><li class="line" data-t="0.3*RTC_CVDD">0.3*RTC_CVDD</li><li class="line" data-t="VHYS">VHYS</li><li class="line" data-t="Input Hysteresis">Input Hysteresis</li><li class="line" data-t="160">160</li><li class="line" data-t="mV">mV</li><li class="line" data-t="USB">USB</li><li class="line" data-t="USB0_VBUS">USB0_VBUS</li><li class="line" data-t="4.75">4.75</li><li class="line" data-t="5.25">5.25</li><li class="line" data-t="Transition time, 10%-90%, All Inputs (unless otherwise specified in">Transition time, 10%-90%, All Inputs (unless otherwise specified in</li><li class="line" data-t="0.25P or 10 (3)">0.25P or 10 (3)</li><li class="line" data-t="ns">ns</li><li class="line" data-t="the electrical data sections)">the electrical data sections)</li><li class="line" data-t="375 (1.2V)">375 (1.2V)</li><li class="line" data-t="Commercial (default)">Commercial (default)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="456 (1.3V)">456 (1.3V)</li><li class="line" data-t="FSYSCLK6">FSYSCLK6</li><li class="line" data-t="ARM Operating Frequency (SYSCLK6)">ARM Operating Frequency (SYSCLK6)</li><li class="line" data-t="Industrial (D suffix)">Industrial (D suffix)</li><li class="line" data-t="456 (1.3V)">456 (1.3V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="Extended (A suffix)">Extended (A suffix)</li><li class="line" data-t="375(1.2V)">375(1.2V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="Automotive (T suffix)">Automotive (T suffix)</li><li class="line" data-t="375 (1.2V)">375 (1.2V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="When an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected">When an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected</li></ol></div></div></div><div class="pane" data-sno="V077" data-fn="AM1707DZKB4.pdf" data-page="40" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V077/b3_ELC_p0040.png" target="_blank"><img src="annotation_reports/V077/b3_ELC_p0040.png" alt="V077 p40"></a><div class="cap">Electrical Characteristics · 第 40 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">68 行</span></div><ol class="lines"><li class="line" data-t="5.5">5.5</li><li class="line" data-t="Electrical Characteristics Over Recommended Ranges of Supply Voltage and">Electrical Characteristics Over Recommended Ranges of Supply Voltage and</li><li class="line" data-t="Operating Junction Temperature (Unless Otherwise Noted)">Operating Junction Temperature (Unless Otherwise Noted)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="DVDD= 3.15V, IOH = -4 mA">DVDD= 3.15V, IOH = -4 mA</li><li class="line" data-t="2.4">2.4</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="High-level output voltage (3.3V I/O)">High-level output voltage (3.3V I/O)</li><li class="line" data-t="DVDD= 3.15V, IOH = 100 μA">DVDD= 3.15V, IOH = 100 μA</li><li class="line" data-t="2.95">2.95</li><li class="line" data-t="DVDD= 3.15V, IOL = 4mA">DVDD= 3.15V, IOL = 4mA</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage (3.3V I/O)">Low-level output voltage (3.3V I/O)</li><li class="line" data-t="DVDD= 3.15V, IOL = -100 μA">DVDD= 3.15V, IOL = -100 μA</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="VI = VSS to DVDD without opposing">VI = VSS to DVDD without opposing</li><li class="line" data-t="±35">±35</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal resistor">internal resistor</li><li class="line" data-t="(2) (1)">(2) (1)</li><li class="line" data-t="Input current">Input current</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="-30">-30</li><li class="line" data-t="-200">-200</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pullup resistor (3)">internal pullup resistor (3)</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="50">50</li><li class="line" data-t="300">300</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pulldown resistor (3)">internal pulldown resistor (3)</li><li class="line" data-t="VI = VSS to USB1_VDDA33 -">VI = VSS to USB1_VDDA33 -</li><li class="line" data-t="±40">±40</li><li class="line" data-t="μA">μA</li><li class="line" data-t="USB1_DM and USB1_DP">USB1_DM and USB1_DP</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="IOH">IOH</li><li class="line" data-t="High-level output current">High-level output current</li><li class="line" data-t="-4">-4</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="IOL">IOL</li><li class="line" data-t="Low-level output current">Low-level output current</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(4)">(4)</li><li class="line" data-t="IOZ">IOZ</li><li class="line" data-t="I/O Off-state output current">I/O Off-state output current</li><li class="line" data-t="VO = VDD or VSS; Internal pull disabled">VO = VDD or VSS; Internal pull disabled</li><li class="line" data-t="±35">±35</li><li class="line" data-t="μA">μA</li><li class="line" data-t="LVCMOS signals">LVCMOS signals</li><li class="line" data-t="pF">pF</li><li class="line" data-t="CI">CI</li><li class="line" data-t="Input capacitance">Input capacitance</li><li class="line" data-t="OSCIN and RTC_XI">OSCIN and RTC_XI</li><li class="line" data-t="pF">pF</li><li class="line" data-t="CO">CO</li><li class="line" data-t="Output capacitance">Output capacitance</li><li class="line" data-t="LVCMOS signals">LVCMOS signals</li><li class="line" data-t="pF">pF</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 11 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V130</span><span class="fn">CSD17505Q5A__csd17505q5a.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CSD17505Q5A__csd17505q5a.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 10 页 　<span class="tag t-warn">草稿：需重点核（二轮兜底）</span><span class="tag t-warn">二轮兜底：非白名单</span><span class="tag t-elc">ELC = p2</span></div><div class="meta">白名单核心参数 0 行，改按一等电气特性兜底选出 5 行（非白名单口径，须逐行对图核）</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：短文档不代表没有有效参数表。p2 是标准 ELECTRICAL CHARACTERISTICS 表（PARAMETER / TEST CONDITIONS / MIN / TYP / MAX / UNIT），参数名属 MOSFET 类，不在既有白名单里。</div></div><div class="body"><div class="pane" data-sno="V130" data-fn="CSD17505Q5A__csd17505q5a.pdf" data-page="2" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V130/b3_ELC_p0002.png" target="_blank"><img src="annotation_reports/V130/b3_ELC_p0002.png" alt="V130 p2"></a><div class="cap">Electrical Characteristics · 第 2 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">116 行</span></div><ol class="lines"><li class="line" data-t="ELECTRICAL CHARACTERISTICS">ELECTRICAL CHARACTERISTICS</li><li class="line" data-t="(TA = 25°C unless otherwise stated)">(TA = 25°C unless otherwise stated)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="Static Characteristics">Static Characteristics</li><li class="line" data-t="BVDSS">BVDSS</li><li class="line" data-t="Drain to Source Voltage">Drain to Source Voltage</li><li class="line" data-t="VGS = 0V, IDS = 250μA">VGS = 0V, IDS = 250μA</li><li class="line" data-t="30">30</li><li class="line" data-t="IDSS">IDSS</li><li class="line" data-t="Drain to Source Leakage Current">Drain to Source Leakage Current</li><li class="line" data-t="VGS = 0V, VDS = 24V">VGS = 0V, VDS = 24V</li><li class="line" data-t="μA">μA</li><li class="line" data-t="IGSS">IGSS</li><li class="line" data-t="Gate to Source Leakage Current">Gate to Source Leakage Current</li><li class="line" data-t="VDS = 0V, VGS = 20V">VDS = 0V, VGS = 20V</li><li class="line" data-t="100">100</li><li class="line" data-t="nA">nA</li><li class="line" data-t="VGS(th)">VGS(th)</li><li class="line" data-t="Gate to Source Threshold Voltage">Gate to Source Threshold Voltage</li><li class="line" data-t="VDS = VGS, IDS = 250μA">VDS = VGS, IDS = 250μA</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="VGS = 4.5V, IDS = 20A">VGS = 4.5V, IDS = 20A</li><li class="line" data-t="3.7">3.7</li><li class="line" data-t="4.6">4.6</li><li class="line" data-t="mΩ">mΩ</li><li class="line" data-t="RDS(on)">RDS(on)</li><li class="line" data-t="Drain to Source On Resistance">Drain to Source On Resistance</li><li class="line" data-t="VGS = 10V, IDS = 20A">VGS = 10V, IDS = 20A</li><li class="line" data-t="2.9">2.9</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="mΩ">mΩ</li><li class="line" data-t="gfs">gfs</li><li class="line" data-t="Transconductance">Transconductance</li><li class="line" data-t="VDS = 15V, IDS = 20A">VDS = 15V, IDS = 20A</li><li class="line" data-t="82">82</li><li class="line" data-t="Dynamic Characteristics">Dynamic Characteristics</li><li class="line" data-t="Ciss">Ciss</li><li class="line" data-t="Input Capacitance">Input Capacitance</li><li class="line" data-t="1560">1560</li><li class="line" data-t="1980">1980</li><li class="line" data-t="pF">pF</li><li class="line" data-t="VGS = 0V, VDS = 15V,">VGS = 0V, VDS = 15V,</li><li class="line" data-t="Coss">Coss</li><li class="line" data-t="Output Capacitance">Output Capacitance</li><li class="line" data-t="1030">1030</li><li class="line" data-t="1330">1330</li><li class="line" data-t="pF">pF</li><li class="line" data-t="f = 1MHz">f = 1MHz</li><li class="line" data-t="Crss">Crss</li><li class="line" data-t="Reverse Transfer Capacitance">Reverse Transfer Capacitance</li><li class="line" data-t="65">65</li><li class="line" data-t="85">85</li><li class="line" data-t="pF">pF</li><li class="line" data-t="RG">RG</li><li class="line" data-t="Series Gate Resistance">Series Gate Resistance</li><li class="line" data-t="Qg">Qg</li><li class="line" data-t="Gate Charge Total (4.5V)">Gate Charge Total (4.5V)</li><li class="line" data-t="10">10</li><li class="line" data-t="13">13</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qgd">Qgd</li><li class="line" data-t="Gate Charge Gate to Drain">Gate Charge Gate to Drain</li><li class="line" data-t="2.7">2.7</li><li class="line" data-t="nC">nC</li><li class="line" data-t="VDS = 15V, IDS = 20A">VDS = 15V, IDS = 20A</li><li class="line" data-t="Qgs">Qgs</li><li class="line" data-t="Gate Charge Gate to Source">Gate Charge Gate to Source</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qg(th)">Qg(th)</li><li class="line" data-t="Gate Charge at Vth">Gate Charge at Vth</li><li class="line" data-t="1.9">1.9</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qoss">Qoss</li><li class="line" data-t="Output Charge">Output Charge</li><li class="line" data-t="VDS = 13.7V, VGS = 0V">VDS = 13.7V, VGS = 0V</li><li class="line" data-t="26">26</li><li class="line" data-t="nC">nC</li><li class="line" data-t="td(on)">td(on)</li><li class="line" data-t="Turn On Delay Time">Turn On Delay Time</li><li class="line" data-t="8.3">8.3</li><li class="line" data-t="ns">ns</li><li class="line" data-t="tr">tr</li><li class="line" data-t="Rise Time">Rise Time</li><li class="line" data-t="11.5">11.5</li><li class="line" data-t="ns">ns</li><li class="line" data-t="VDS = 15V, VGS = 4.5V,">VDS = 15V, VGS = 4.5V,</li><li class="line" data-t="IDS = 20A,RG = 2Ω">IDS = 20A,RG = 2Ω</li><li class="line" data-t="td(off)">td(off)</li><li class="line" data-t="Turn Off Delay Time">Turn Off Delay Time</li><li class="line" data-t="15">15</li><li class="line" data-t="ns">ns</li><li class="line" data-t="tf">tf</li><li class="line" data-t="Fall Time">Fall Time</li><li class="line" data-t="6.1">6.1</li><li class="line" data-t="ns">ns</li><li class="line" data-t="Diode Characteristics">Diode Characteristics</li><li class="line" data-t="VSD">VSD</li><li class="line" data-t="Diode Forward Voltage">Diode Forward Voltage</li><li class="line" data-t="ISD = 20A, VGS = 0V">ISD = 20A, VGS = 0V</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Qrr">Qrr</li><li class="line" data-t="Reverse Recovery Charge">Reverse Recovery Charge</li><li class="line" data-t="30">30</li><li class="line" data-t="nC">nC</li><li class="line" data-t="VDD= 13.7V, IF = 20A, di/dt = 300A/μs">VDD= 13.7V, IF = 20A, di/dt = 300A/μs</li><li class="line" data-t="trr">trr</li><li class="line" data-t="Reverse Recovery Time">Reverse Recovery Time</li><li class="line" data-t="28">28</li><li class="line" data-t="ns">ns</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 3 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V290</span><span class="fn">DS9638CMX_NOPB__DS9638.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/DS9638CMX_NOPB__DS9638.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 10 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ELC = p3</span></div><div class="meta">核心 4 行置信度均 ≥0.85</div><div class="hint hint-warn"><b>必须核对</b>　VIL 两行按温度档区分，数值不同、适用温度不同：0.8 V 对应 0°C to +70°C，0.5 V 对应 −55°C to +125°C。本件 II（输入电流）原文条件是 VCC = Max、VI = 5.5V，文本层抽成 “V CC = Max, VI Max = 5.5V”，是否补录请 PM 定夺。</div></div><div class="body"><div class="pane" data-sno="V290" data-fn="DS9638CMX_NOPB__DS9638.pdf" data-page="3" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V290/b3_ELC_p0003.png" target="_blank"><img src="annotation_reports/V290/b3_ELC_p0003.png" alt="V290 p3"></a><div class="cap">Electrical Characteristics · 第 3 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">88 行</span></div><ol class="lines"><li class="line" data-t="Electrical Characteristics(1)(2)">Electrical Characteristics(1)(2)</li><li class="line" data-t="Over recommended operating temperature and supply voltage ranges, unless otherwise specified">Over recommended operating temperature and supply voltage ranges, unless otherwise specified</li><li class="line" data-t="Symbol">Symbol</li><li class="line" data-t="Parameter">Parameter</li><li class="line" data-t="Conditions">Conditions</li><li class="line" data-t="Min">Min</li><li class="line" data-t="Typ">Typ</li><li class="line" data-t="Max">Max</li><li class="line" data-t="Units">Units</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="Input Voltage HIGH">Input Voltage HIGH</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Input Voltage LOW">Input Voltage LOW</li><li class="line" data-t="0°C to +70°C">0°C to +70°C</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="−55°C to +125°C">−55°C to +125°C</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="VIC">VIC</li><li class="line" data-t="Input Clamp Voltage">Input Clamp Voltage</li><li class="line" data-t="V CC = Min, II = −18 mA">V CC = Min, II = −18 mA</li><li class="line" data-t="−1.0">−1.0</li><li class="line" data-t="−1.2">−1.2</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="Output Voltage HIGH">Output Voltage HIGH</li><li class="line" data-t="VCC = Min,">VCC = Min,</li><li class="line" data-t="IOH = −10 mA">IOH = −10 mA</li><li class="line" data-t="2.5">2.5</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="VIH = VIH Min,">VIH = VIH Min,</li><li class="line" data-t="IOH = −40 mA">IOH = −40 mA</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VIL = VIL Max">VIL = VIL Max</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Output Voltage LOW">Output Voltage LOW</li><li class="line" data-t="V CC = Min, VIH = VIH Min,">V CC = Min, VIH = VIH Min,</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="V IL = VIL Max, IOL = 40 mA">V IL = VIL Max, IOL = 40 mA</li><li class="line" data-t="Input Current at Maximum Input">Input Current at Maximum Input</li><li class="line" data-t="V CC = Max, VI Max = 5.5V">V CC = Max, VI Max = 5.5V</li><li class="line" data-t="50">50</li><li class="line" data-t="μA">μA</li><li class="line" data-t="Voltage">Voltage</li><li class="line" data-t="IIH">IIH</li><li class="line" data-t="Input Current HIGH">Input Current HIGH</li><li class="line" data-t="V CC = Max, VIH = 2.7V">V CC = Max, VIH = 2.7V</li><li class="line" data-t="25">25</li><li class="line" data-t="μA">μA</li><li class="line" data-t="IIL">IIL</li><li class="line" data-t="Input Current LOW">Input Current LOW</li><li class="line" data-t="V CC = Max, VIL = 0.5V">V CC = Max, VIL = 0.5V</li><li class="line" data-t="−200">−200</li><li class="line" data-t="μA">μA</li><li class="line" data-t="V CC = Max, VO = 0V(2)">V CC = Max, VO = 0V(2)</li><li class="line" data-t="IOS">IOS</li><li class="line" data-t="Output Short Circuit Current">Output Short Circuit Current</li><li class="line" data-t="−50">−50</li><li class="line" data-t="−150">−150</li><li class="line" data-t="mA">mA</li><li class="line" data-t="VT, V T">VT, V T</li><li class="line" data-t="Terminated Output Voltage">Terminated Output Voltage</li><li class="line" data-t="See Figure 2">See Figure 2</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VT–V T">VT–V T</li><li class="line" data-t="Output Balance">Output Balance</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="VOS, V OS">VOS, V OS</li><li class="line" data-t="Output Offset Voltage">Output Offset Voltage</li><li class="line" data-t="3.0">3.0</li><li class="line" data-t="VOS–V OS">VOS–V OS</li><li class="line" data-t="Output Offset Balance">Output Offset Balance</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="IX">IX</li><li class="line" data-t="Output Leakage Current">Output Leakage Current</li><li class="line" data-t="T A = 25°C">T A = 25°C</li><li class="line" data-t="100">100</li><li class="line" data-t="μA">μA</li><li class="line" data-t="−0.25V &lt; VX &lt; 5.5V">−0.25V &lt; VX &lt; 5.5V</li><li class="line" data-t="ICC">ICC</li><li class="line" data-t="Supply Current (Both Drivers)">Supply Current (Both Drivers)</li><li class="line" data-t="VCC = 5.5V,">VCC = 5.5V,</li><li class="line" data-t="45">45</li><li class="line" data-t="65">65</li><li class="line" data-t="mA">mA</li><li class="line" data-t="All input at 0V,">All input at 0V,</li><li class="line" data-t="No Load">No Load</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="Unless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to">Unless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to</li></ol></div></div></div><div class="dh">本件核心草稿 4 行（另有 4 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V347</span><span class="fn">8418501HA__84185D.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/8418501HA__84185D.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 9 页 　<span class="tag t-warn">草稿：无电气参数表</span></div><div class="meta">确为目标器件数据（DSCC 标准微电路图纸 84185，TABLE I 即该器件本身的电气性能表，不是引用别处资料）；但该表同一符号按 Group A subgroup / Device type 拆成 2~4 行（例：IIO 上限按 01,02 / 03 分别为 3、5、6、20、30、40 μA），且 find_tables 在该页探不到边框表格（0 张）。VLM 实测只能给出「每符号一行」的合并值，并固定取 01,02 那一行，会掩盖器件类型差异 —— 属硬凑，故不进点选。EXCLUDED: 版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：核实是否为目标器件数据，而非引用资料。本件是 DSCC 军标 SMD（84185），TABLE I 即该器件本身的电气性能表，不是引用别处的资料；但只有 Min/Max 两列且带测试分组，行序需人工判读。</div></div><div class="body"></div></div><div class="card"><div class="head"><span class="sn">V041</span><span class="fn">CD4015BEE4__cd4015b.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CD4015BEE4__cd4015b.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 16 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 PACKAGE OPTION ADDENDUM / PACKAGE MATERIALS / PACKAGE OUTLINE / LAND PATTERN / STENCIL DESIGN / 免责声明，其中的 MIN/MAX 是机械尺寸公差，不是电气参数。EXCLUDED: 电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。排除话术请按事实选：全书确实无文本层用 <code>EXCLUDED: 全书无文本层；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold</code>；只有电气特性页是扫描图则用 <code>EXCLUDED: 电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold</code>，不要一刀切。</div></div></div><div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2><div class="filter"><label>样本 <select id="fsample"></select></label><label><input type="checkbox" id="fnum"> 只看有数值的行</label><label><input type="checkbox" id="ftodo"> 只看未确认的行</label><button class="ghost" onclick="addBlank()">新增空行</button><button class="ghost" onclick="dropNoName()">删掉无参数名的行</button><button class="ghost" onclick="resetDraft()">恢复机器草稿</button><label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label></div><div id="stat" class="stat"></div><table class="rows" id="tbl"><thead><tr><th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th><th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th><th></th></tr></thead><tbody id="tbody"></tbody></table><div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button><button onclick="copyOut()" class="dl">复制 CSV</button> <label style="font-size:12.5px;margin-left:8px"><input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label><span id="msg" class="msg"></span></div><textarea id="out" readonly></textarea></div></div><script>window.B3_EXPORT_NAME="Batch3_B4_ANNOTATED";
++.hint-review{background:#fff4ce;border-left:4px solid #d68b00;padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}.hint-warn{background:#fdecea;border-left:4px solid #c0392b;padding:9px 11px;margin:8px 0;border-radius:4px;font-size:13px;color:#7b1a12}</style></head><body><header><h1>B4 圈选台 · 5 件 · 核心参数草稿</h1><p>左边是原图，右边是同区域抓出的纯文本。页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；红底行是 <code>low_confidence</code>，请优先对图。</p></header><div class="wrap"><div class="note"><h2>怎么用</h2><ul><li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li><li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；不是参数（表头、注释）直接删。</li><li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、或模型自报很低。这些行最可能有错。</li><li>草稿没覆盖的核心参数，用「新增空行」自己补。</li><li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li></ul><div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、既无参数名又无符号的行。</div></div><div class="card"><div class="head"><span class="sn">V077</span><span class="fn">AM1707DZKB4.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/batch1000_v3/pdfs_flat/AM1707DZKB4.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 201 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ROC = p38/160</span><span class="tag t-elc">ELC = p40</span></div><div class="meta">核心 5 行置信度均 ≥0.85</div><div class="hint hint-warn"><b>必须核对</b>　本件原文同一张 Recommended Operating Conditions 里同时给出 <b>375 MHz version</b> 与 <b>456 MHz version</b> 两套条件：CVDD 与 RVDD 各两组值已分别绑定 —— 375 MHz → 1.14 / 1.2 / 1.32 V，456 MHz → 1.25 / 1.3 / 1.35 V。签字前请重点核对这两组 <code>condition</code> 是否落在正确的行上，不要只看数值。</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：请核实表格类型。该件 201 页、章节极多，先确认裁到的是电气特性表，而不是时序/引脚/封装表。</div></div><div class="body"><div class="pane" data-sno="V077" data-fn="AM1707DZKB4.pdf" data-page="38" data-title="Recommended Operating Conditions"><div class="cols"><div class="left"><a href="annotation_reports/V077/b3_ROC_p0038.png" target="_blank"><img src="annotation_reports/V077/b3_ROC_p0038.png" alt="V077 p38"></a><div class="cap">Recommended Operating Conditions · 第 38 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">85 行</span></div><ol class="lines"><li class="line" data-t="5.3">5.3</li><li class="line" data-t="Recommended Operating Conditions">Recommended Operating Conditions</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="NOM">NOM</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="375 MHz version">375 MHz version</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="Supply voltage, Core">Supply voltage, Core</li><li class="line" data-t="CVDD">CVDD</li><li class="line" data-t="(CVDD, RTC_CVDD, PLL0_VDDA)">(CVDD, RTC_CVDD, PLL0_VDDA)</li><li class="line" data-t="456 MHz version">456 MHz version</li><li class="line" data-t="1.25">1.25</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.35">1.35</li><li class="line" data-t="375 MHz version">375 MHz version</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="RVDD">RVDD</li><li class="line" data-t="Supply Voltage, Internal RAM">Supply Voltage, Internal RAM</li><li class="line" data-t="456 MHz version">456 MHz version</li><li class="line" data-t="1.25">1.25</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.35">1.35</li><li class="line" data-t="Supply voltage, I/O, 1.8V">Supply voltage, I/O, 1.8V</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="(USB0_VDDA18, USB1_VDDA18)">(USB0_VDDA18, USB1_VDDA18)</li><li class="line" data-t="DVDD">DVDD</li><li class="line" data-t="Supply voltage, I/O, 3.3V">Supply voltage, I/O, 3.3V</li><li class="line" data-t="3.0">3.0</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="(DVDD, USB0_VDDA33, USB1_VDDA33)">(DVDD, USB0_VDDA33, USB1_VDDA33)</li><li class="line" data-t="Supply ground">Supply ground</li><li class="line" data-t="VSS">VSS</li><li class="line" data-t="(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))">(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="High-level input voltage, I/O, 3.3V">High-level input voltage, I/O, 3.3V</li><li class="line" data-t="High-level input voltage, OSCIN">High-level input voltage, OSCIN</li><li class="line" data-t="0.7*CVDD">0.7*CVDD</li><li class="line" data-t="High-level input voltage, RTC_XI">High-level input voltage, RTC_XI</li><li class="line" data-t="0.7*RTC_CVDD">0.7*RTC_CVDD</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Low-level input voltage, I/O, 3.3V">Low-level input voltage, I/O, 3.3V</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Low-level input voltage, OSCIN">Low-level input voltage, OSCIN</li><li class="line" data-t="0.3*CVDD">0.3*CVDD</li><li class="line" data-t="Low-level input voltage, RTC_XI">Low-level input voltage, RTC_XI</li><li class="line" data-t="0.3*RTC_CVDD">0.3*RTC_CVDD</li><li class="line" data-t="VHYS">VHYS</li><li class="line" data-t="Input Hysteresis">Input Hysteresis</li><li class="line" data-t="160">160</li><li class="line" data-t="mV">mV</li><li class="line" data-t="USB">USB</li><li class="line" data-t="USB0_VBUS">USB0_VBUS</li><li class="line" data-t="4.75">4.75</li><li class="line" data-t="5.25">5.25</li><li class="line" data-t="Transition time, 10%-90%, All Inputs (unless otherwise specified in">Transition time, 10%-90%, All Inputs (unless otherwise specified in</li><li class="line" data-t="0.25P or 10 (3)">0.25P or 10 (3)</li><li class="line" data-t="ns">ns</li><li class="line" data-t="the electrical data sections)">the electrical data sections)</li><li class="line" data-t="375 (1.2V)">375 (1.2V)</li><li class="line" data-t="Commercial (default)">Commercial (default)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="456 (1.3V)">456 (1.3V)</li><li class="line" data-t="FSYSCLK6">FSYSCLK6</li><li class="line" data-t="ARM Operating Frequency (SYSCLK6)">ARM Operating Frequency (SYSCLK6)</li><li class="line" data-t="Industrial (D suffix)">Industrial (D suffix)</li><li class="line" data-t="456 (1.3V)">456 (1.3V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="Extended (A suffix)">Extended (A suffix)</li><li class="line" data-t="375(1.2V)">375(1.2V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="Automotive (T suffix)">Automotive (T suffix)</li><li class="line" data-t="375 (1.2V)">375 (1.2V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="When an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected">When an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected</li></ol></div></div></div><div class="pane" data-sno="V077" data-fn="AM1707DZKB4.pdf" data-page="40" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V077/b3_ELC_p0040.png" target="_blank"><img src="annotation_reports/V077/b3_ELC_p0040.png" alt="V077 p40"></a><div class="cap">Electrical Characteristics · 第 40 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">68 行</span></div><ol class="lines"><li class="line" data-t="5.5">5.5</li><li class="line" data-t="Electrical Characteristics Over Recommended Ranges of Supply Voltage and">Electrical Characteristics Over Recommended Ranges of Supply Voltage and</li><li class="line" data-t="Operating Junction Temperature (Unless Otherwise Noted)">Operating Junction Temperature (Unless Otherwise Noted)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="DVDD= 3.15V, IOH = -4 mA">DVDD= 3.15V, IOH = -4 mA</li><li class="line" data-t="2.4">2.4</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="High-level output voltage (3.3V I/O)">High-level output voltage (3.3V I/O)</li><li class="line" data-t="DVDD= 3.15V, IOH = 100 μA">DVDD= 3.15V, IOH = 100 μA</li><li class="line" data-t="2.95">2.95</li><li class="line" data-t="DVDD= 3.15V, IOL = 4mA">DVDD= 3.15V, IOL = 4mA</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage (3.3V I/O)">Low-level output voltage (3.3V I/O)</li><li class="line" data-t="DVDD= 3.15V, IOL = -100 μA">DVDD= 3.15V, IOL = -100 μA</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="VI = VSS to DVDD without opposing">VI = VSS to DVDD without opposing</li><li class="line" data-t="±35">±35</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal resistor">internal resistor</li><li class="line" data-t="(2) (1)">(2) (1)</li><li class="line" data-t="Input current">Input current</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="-30">-30</li><li class="line" data-t="-200">-200</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pullup resistor (3)">internal pullup resistor (3)</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="50">50</li><li class="line" data-t="300">300</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pulldown resistor (3)">internal pulldown resistor (3)</li><li class="line" data-t="VI = VSS to USB1_VDDA33 -">VI = VSS to USB1_VDDA33 -</li><li class="line" data-t="±40">±40</li><li class="line" data-t="μA">μA</li><li class="line" data-t="USB1_DM and USB1_DP">USB1_DM and USB1_DP</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="IOH">IOH</li><li class="line" data-t="High-level output current">High-level output current</li><li class="line" data-t="-4">-4</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="IOL">IOL</li><li class="line" data-t="Low-level output current">Low-level output current</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(4)">(4)</li><li class="line" data-t="IOZ">IOZ</li><li class="line" data-t="I/O Off-state output current">I/O Off-state output current</li><li class="line" data-t="VO = VDD or VSS; Internal pull disabled">VO = VDD or VSS; Internal pull disabled</li><li class="line" data-t="±35">±35</li><li class="line" data-t="μA">μA</li><li class="line" data-t="LVCMOS signals">LVCMOS signals</li><li class="line" data-t="pF">pF</li><li class="line" data-t="CI">CI</li><li class="line" data-t="Input capacitance">Input capacitance</li><li class="line" data-t="OSCIN and RTC_XI">OSCIN and RTC_XI</li><li class="line" data-t="pF">pF</li><li class="line" data-t="CO">CO</li><li class="line" data-t="Output capacitance">Output capacitance</li><li class="line" data-t="LVCMOS signals">LVCMOS signals</li><li class="line" data-t="pF">pF</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 11 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V130</span><span class="fn">CSD17505Q5A__csd17505q5a.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CSD17505Q5A__csd17505q5a.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 10 页 　<span class="tag t-warn">草稿：需重点核（二轮兜底）</span><span class="tag t-warn">二轮兜底：非白名单</span><span class="tag t-elc">ELC = p2</span></div><div class="meta">白名单核心参数 0 行，改按一等电气特性兜底选出 5 行（非白名单口径，须逐行对图核）</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：短文档不代表没有有效参数表。p2 是标准 ELECTRICAL CHARACTERISTICS 表（PARAMETER / TEST CONDITIONS / MIN / TYP / MAX / UNIT），参数名属 MOSFET 类，不在既有白名单里。</div><div class="hint hint-review"><b>未收进草稿的行</b>　本表 RDS(on) 在原图里有**两行**：VGS = 4.5V, IDS = 20A → 3.7/4.6 mΩ；VGS = 10V, IDS = 20A → 2.9/3.5 mΩ。草稿只收了 4.5V 那行（5 行预算）。若要收 10V 那行，请用「新增空行」补，或告诉我改上限。</div></div><div class="body"><div class="pane" data-sno="V130" data-fn="CSD17505Q5A__csd17505q5a.pdf" data-page="2" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V130/b3_ELC_p0002.png" target="_blank"><img src="annotation_reports/V130/b3_ELC_p0002.png" alt="V130 p2"></a><div class="cap">Electrical Characteristics · 第 2 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">116 行</span></div><ol class="lines"><li class="line" data-t="ELECTRICAL CHARACTERISTICS">ELECTRICAL CHARACTERISTICS</li><li class="line" data-t="(TA = 25°C unless otherwise stated)">(TA = 25°C unless otherwise stated)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="Static Characteristics">Static Characteristics</li><li class="line" data-t="BVDSS">BVDSS</li><li class="line" data-t="Drain to Source Voltage">Drain to Source Voltage</li><li class="line" data-t="VGS = 0V, IDS = 250μA">VGS = 0V, IDS = 250μA</li><li class="line" data-t="30">30</li><li class="line" data-t="IDSS">IDSS</li><li class="line" data-t="Drain to Source Leakage Current">Drain to Source Leakage Current</li><li class="line" data-t="VGS = 0V, VDS = 24V">VGS = 0V, VDS = 24V</li><li class="line" data-t="μA">μA</li><li class="line" data-t="IGSS">IGSS</li><li class="line" data-t="Gate to Source Leakage Current">Gate to Source Leakage Current</li><li class="line" data-t="VDS = 0V, VGS = 20V">VDS = 0V, VGS = 20V</li><li class="line" data-t="100">100</li><li class="line" data-t="nA">nA</li><li class="line" data-t="VGS(th)">VGS(th)</li><li class="line" data-t="Gate to Source Threshold Voltage">Gate to Source Threshold Voltage</li><li class="line" data-t="VDS = VGS, IDS = 250μA">VDS = VGS, IDS = 250μA</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="VGS = 4.5V, IDS = 20A">VGS = 4.5V, IDS = 20A</li><li class="line" data-t="3.7">3.7</li><li class="line" data-t="4.6">4.6</li><li class="line" data-t="mΩ">mΩ</li><li class="line" data-t="RDS(on)">RDS(on)</li><li class="line" data-t="Drain to Source On Resistance">Drain to Source On Resistance</li><li class="line" data-t="VGS = 10V, IDS = 20A">VGS = 10V, IDS = 20A</li><li class="line" data-t="2.9">2.9</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="mΩ">mΩ</li><li class="line" data-t="gfs">gfs</li><li class="line" data-t="Transconductance">Transconductance</li><li class="line" data-t="VDS = 15V, IDS = 20A">VDS = 15V, IDS = 20A</li><li class="line" data-t="82">82</li><li class="line" data-t="Dynamic Characteristics">Dynamic Characteristics</li><li class="line" data-t="Ciss">Ciss</li><li class="line" data-t="Input Capacitance">Input Capacitance</li><li class="line" data-t="1560">1560</li><li class="line" data-t="1980">1980</li><li class="line" data-t="pF">pF</li><li class="line" data-t="VGS = 0V, VDS = 15V,">VGS = 0V, VDS = 15V,</li><li class="line" data-t="Coss">Coss</li><li class="line" data-t="Output Capacitance">Output Capacitance</li><li class="line" data-t="1030">1030</li><li class="line" data-t="1330">1330</li><li class="line" data-t="pF">pF</li><li class="line" data-t="f = 1MHz">f = 1MHz</li><li class="line" data-t="Crss">Crss</li><li class="line" data-t="Reverse Transfer Capacitance">Reverse Transfer Capacitance</li><li class="line" data-t="65">65</li><li class="line" data-t="85">85</li><li class="line" data-t="pF">pF</li><li class="line" data-t="RG">RG</li><li class="line" data-t="Series Gate Resistance">Series Gate Resistance</li><li class="line" data-t="Qg">Qg</li><li class="line" data-t="Gate Charge Total (4.5V)">Gate Charge Total (4.5V)</li><li class="line" data-t="10">10</li><li class="line" data-t="13">13</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qgd">Qgd</li><li class="line" data-t="Gate Charge Gate to Drain">Gate Charge Gate to Drain</li><li class="line" data-t="2.7">2.7</li><li class="line" data-t="nC">nC</li><li class="line" data-t="VDS = 15V, IDS = 20A">VDS = 15V, IDS = 20A</li><li class="line" data-t="Qgs">Qgs</li><li class="line" data-t="Gate Charge Gate to Source">Gate Charge Gate to Source</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qg(th)">Qg(th)</li><li class="line" data-t="Gate Charge at Vth">Gate Charge at Vth</li><li class="line" data-t="1.9">1.9</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qoss">Qoss</li><li class="line" data-t="Output Charge">Output Charge</li><li class="line" data-t="VDS = 13.7V, VGS = 0V">VDS = 13.7V, VGS = 0V</li><li class="line" data-t="26">26</li><li class="line" data-t="nC">nC</li><li class="line" data-t="td(on)">td(on)</li><li class="line" data-t="Turn On Delay Time">Turn On Delay Time</li><li class="line" data-t="8.3">8.3</li><li class="line" data-t="ns">ns</li><li class="line" data-t="tr">tr</li><li class="line" data-t="Rise Time">Rise Time</li><li class="line" data-t="11.5">11.5</li><li class="line" data-t="ns">ns</li><li class="line" data-t="VDS = 15V, VGS = 4.5V,">VDS = 15V, VGS = 4.5V,</li><li class="line" data-t="IDS = 20A,RG = 2Ω">IDS = 20A,RG = 2Ω</li><li class="line" data-t="td(off)">td(off)</li><li class="line" data-t="Turn Off Delay Time">Turn Off Delay Time</li><li class="line" data-t="15">15</li><li class="line" data-t="ns">ns</li><li class="line" data-t="tf">tf</li><li class="line" data-t="Fall Time">Fall Time</li><li class="line" data-t="6.1">6.1</li><li class="line" data-t="ns">ns</li><li class="line" data-t="Diode Characteristics">Diode Characteristics</li><li class="line" data-t="VSD">VSD</li><li class="line" data-t="Diode Forward Voltage">Diode Forward Voltage</li><li class="line" data-t="ISD = 20A, VGS = 0V">ISD = 20A, VGS = 0V</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Qrr">Qrr</li><li class="line" data-t="Reverse Recovery Charge">Reverse Recovery Charge</li><li class="line" data-t="30">30</li><li class="line" data-t="nC">nC</li><li class="line" data-t="VDD= 13.7V, IF = 20A, di/dt = 300A/μs">VDD= 13.7V, IF = 20A, di/dt = 300A/μs</li><li class="line" data-t="trr">trr</li><li class="line" data-t="Reverse Recovery Time">Reverse Recovery Time</li><li class="line" data-t="28">28</li><li class="line" data-t="ns">ns</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 3 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V290</span><span class="fn">DS9638CMX_NOPB__DS9638.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/DS9638CMX_NOPB__DS9638.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 10 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ELC = p3</span></div><div class="meta">核心 4 行置信度均 ≥0.85</div><div class="hint hint-warn"><b>必须核对</b>　VIL 两行按温度档区分，数值不同、适用温度不同：0.8 V 对应 0°C to +70°C，0.5 V 对应 −55°C to +125°C。另：II（输入电流）原表 Conditions 列写着 <code>VCC = Max, VI Max = 5.5V</code>，VLM 漏抄，已按原文补录；VIH（Input Voltage HIGH）原表本来就没给条件，保持为空<strong>不是漏填</strong>，请勿臆造。</div></div><div class="body"><div class="pane" data-sno="V290" data-fn="DS9638CMX_NOPB__DS9638.pdf" data-page="3" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V290/b3_ELC_p0003.png" target="_blank"><img src="annotation_reports/V290/b3_ELC_p0003.png" alt="V290 p3"></a><div class="cap">Electrical Characteristics · 第 3 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">88 行</span></div><ol class="lines"><li class="line" data-t="Electrical Characteristics(1)(2)">Electrical Characteristics(1)(2)</li><li class="line" data-t="Over recommended operating temperature and supply voltage ranges, unless otherwise specified">Over recommended operating temperature and supply voltage ranges, unless otherwise specified</li><li class="line" data-t="Symbol">Symbol</li><li class="line" data-t="Parameter">Parameter</li><li class="line" data-t="Conditions">Conditions</li><li class="line" data-t="Min">Min</li><li class="line" data-t="Typ">Typ</li><li class="line" data-t="Max">Max</li><li class="line" data-t="Units">Units</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="Input Voltage HIGH">Input Voltage HIGH</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Input Voltage LOW">Input Voltage LOW</li><li class="line" data-t="0°C to +70°C">0°C to +70°C</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="−55°C to +125°C">−55°C to +125°C</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="VIC">VIC</li><li class="line" data-t="Input Clamp Voltage">Input Clamp Voltage</li><li class="line" data-t="V CC = Min, II = −18 mA">V CC = Min, II = −18 mA</li><li class="line" data-t="−1.0">−1.0</li><li class="line" data-t="−1.2">−1.2</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="Output Voltage HIGH">Output Voltage HIGH</li><li class="line" data-t="VCC = Min,">VCC = Min,</li><li class="line" data-t="IOH = −10 mA">IOH = −10 mA</li><li class="line" data-t="2.5">2.5</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="VIH = VIH Min,">VIH = VIH Min,</li><li class="line" data-t="IOH = −40 mA">IOH = −40 mA</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VIL = VIL Max">VIL = VIL Max</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Output Voltage LOW">Output Voltage LOW</li><li class="line" data-t="V CC = Min, VIH = VIH Min,">V CC = Min, VIH = VIH Min,</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="V IL = VIL Max, IOL = 40 mA">V IL = VIL Max, IOL = 40 mA</li><li class="line" data-t="Input Current at Maximum Input">Input Current at Maximum Input</li><li class="line" data-t="V CC = Max, VI Max = 5.5V">V CC = Max, VI Max = 5.5V</li><li class="line" data-t="50">50</li><li class="line" data-t="μA">μA</li><li class="line" data-t="Voltage">Voltage</li><li class="line" data-t="IIH">IIH</li><li class="line" data-t="Input Current HIGH">Input Current HIGH</li><li class="line" data-t="V CC = Max, VIH = 2.7V">V CC = Max, VIH = 2.7V</li><li class="line" data-t="25">25</li><li class="line" data-t="μA">μA</li><li class="line" data-t="IIL">IIL</li><li class="line" data-t="Input Current LOW">Input Current LOW</li><li class="line" data-t="V CC = Max, VIL = 0.5V">V CC = Max, VIL = 0.5V</li><li class="line" data-t="−200">−200</li><li class="line" data-t="μA">μA</li><li class="line" data-t="V CC = Max, VO = 0V(2)">V CC = Max, VO = 0V(2)</li><li class="line" data-t="IOS">IOS</li><li class="line" data-t="Output Short Circuit Current">Output Short Circuit Current</li><li class="line" data-t="−50">−50</li><li class="line" data-t="−150">−150</li><li class="line" data-t="mA">mA</li><li class="line" data-t="VT, V T">VT, V T</li><li class="line" data-t="Terminated Output Voltage">Terminated Output Voltage</li><li class="line" data-t="See Figure 2">See Figure 2</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VT–V T">VT–V T</li><li class="line" data-t="Output Balance">Output Balance</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="VOS, V OS">VOS, V OS</li><li class="line" data-t="Output Offset Voltage">Output Offset Voltage</li><li class="line" data-t="3.0">3.0</li><li class="line" data-t="VOS–V OS">VOS–V OS</li><li class="line" data-t="Output Offset Balance">Output Offset Balance</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="IX">IX</li><li class="line" data-t="Output Leakage Current">Output Leakage Current</li><li class="line" data-t="T A = 25°C">T A = 25°C</li><li class="line" data-t="100">100</li><li class="line" data-t="μA">μA</li><li class="line" data-t="−0.25V &lt; VX &lt; 5.5V">−0.25V &lt; VX &lt; 5.5V</li><li class="line" data-t="ICC">ICC</li><li class="line" data-t="Supply Current (Both Drivers)">Supply Current (Both Drivers)</li><li class="line" data-t="VCC = 5.5V,">VCC = 5.5V,</li><li class="line" data-t="45">45</li><li class="line" data-t="65">65</li><li class="line" data-t="mA">mA</li><li class="line" data-t="All input at 0V,">All input at 0V,</li><li class="line" data-t="No Load">No Load</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="Unless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to">Unless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to</li></ol></div></div></div><div class="dh">本件核心草稿 4 行（另有 4 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V347</span><span class="fn">8418501HA__84185D.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/8418501HA__84185D.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 9 页 　<span class="tag t-warn">草稿：无电气参数表</span></div><div class="meta">确为目标器件数据（DSCC 标准微电路图纸 84185，TABLE I 即该器件本身的电气性能表，不是引用别处资料）；但该表同一符号按 Group A subgroup / Device type 拆成 2~4 行（例：IIO 上限按 01,02 / 03 分别为 3、5、6、20、30、40 μA），且 find_tables 在该页探不到边框表格（0 张）。VLM 实测只能给出「每符号一行」的合并值，并固定取 01,02 那一行，会掩盖器件类型差异 —— 属硬凑，故不进点选。EXCLUDED: 版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：核实是否为目标器件数据，而非引用资料。本件是 DSCC 军标 SMD（84185），TABLE I 即该器件本身的电气性能表，不是引用别处的资料；但只有 Min/Max 两列且带测试分组，行序需人工判读。</div></div><div class="body"></div></div><div class="card"><div class="head"><span class="sn">V041</span><span class="fn">CD4015BEE4__cd4015b.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CD4015BEE4__cd4015b.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 16 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 PACKAGE OPTION ADDENDUM / PACKAGE MATERIALS / PACKAGE OUTLINE / LAND PATTERN / STENCIL DESIGN / 免责声明，其中的 MIN/MAX 是机械尺寸公差，不是电气参数。EXCLUDED: 电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。排除话术请按事实选：全书确实无文本层用 <code>EXCLUDED: 全书无文本层；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold</code>；只有电气特性页是扫描图则用 <code>EXCLUDED: 电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold</code>，不要一刀切。</div></div></div><div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2><div class="filter"><label>样本 <select id="fsample"></select></label><label><input type="checkbox" id="fnum"> 只看有数值的行</label><label><input type="checkbox" id="ftodo"> 只看未确认的行</label><button class="ghost" onclick="addBlank()">新增空行</button><button class="ghost" onclick="dropNoName()">删掉无参数名的行</button><button class="ghost" onclick="resetDraft()">恢复机器草稿</button><label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label></div><div id="stat" class="stat"></div><table class="rows" id="tbl"><thead><tr><th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th><th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th><th></th></tr></thead><tbody id="tbody"></tbody></table><div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button><button onclick="copyOut()" class="dl">复制 CSV</button> <label style="font-size:12.5px;margin-left:8px"><input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label><span id="msg" class="msg"></span></div><textarea id="out" readonly></textarea></div></div><script>window.B3_EXPORT_NAME="Batch3_B4_ANNOTATED";
+ /* Batch 2 圈选台前端。
+  *
+  * 设计要点（第二版）：
+@@ -97,7 +97,7 @@ table.rows td.num input{text-align:right;font-family:Consolas,monospace}
+  *   2) 点选文本行仍然保留，作为「草稿里漏了某个参数」时的补充手段，追加到末尾。
+  *   3) 导出前会拦：状态是 CONFIRMED 但 min/typ/max 全空的行不许悄悄混进去。
+  */
+-const DRAFT = [{"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "375 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)", "min_value": "1.25", "typ_value": "1.3", "max_value": "1.35", "unit": "V", "condition": "456 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Supply Voltage, Internal RAM", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "375 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Supply Voltage, Internal RAM", "min_value": "1.25", "typ_value": "1.3", "max_value": "1.35", "unit": "V", "condition": "456 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "DVDD", "parameter_name": "Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)", "min_value": "1.71", "typ_value": "1.8", "max_value": "1.89", "unit": "V", "condition": "Supply voltage, I/O, 1.8V", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "BVDSS", "parameter_name": "Drain to Source Voltage", "min_value": "30", "typ_value": "", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "VGS(th)", "parameter_name": "Gate to Source Threshold Voltage", "min_value": "1", "typ_value": "1.3", "max_value": "1.8", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "RDS(on)", "parameter_name": "Drain to Source On Resistance", "min_value": "", "typ_value": "3.7", "max_value": "4.6", "unit": "mΩ", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "IDSS", "parameter_name": "Drain to Source Leakage Current", "min_value": "", "typ_value": "", "max_value": "1", "unit": "μA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "IGSS", "parameter_name": "Gate to Source Leakage Current", "min_value": "", "typ_value": "", "max_value": "100", "unit": "nA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "II", "parameter_name": "Input Current at Maximum Input Voltage", "min_value": "", "typ_value": "", "max_value": "50", "unit": "μA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIH", "parameter_name": "Input Voltage HIGH", "min_value": "2.0", "typ_value": "", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIL", "parameter_name": "Input Voltage LOW", "min_value": "", "typ_value": "", "max_value": "0.8", "unit": "V", "condition": "0°C to +70°C", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIL", "parameter_name": "Input Voltage LOW", "min_value": "", "typ_value": "", "max_value": "0.5", "unit": "V", "condition": "−55°C to +125°C", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}];
++const DRAFT = [{"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "375 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)", "min_value": "1.25", "typ_value": "1.3", "max_value": "1.35", "unit": "V", "condition": "456 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Supply Voltage, Internal RAM", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "375 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Supply Voltage, Internal RAM", "min_value": "1.25", "typ_value": "1.3", "max_value": "1.35", "unit": "V", "condition": "456 MHz version", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "DVDD", "parameter_name": "Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)", "min_value": "1.71", "typ_value": "1.8", "max_value": "1.89", "unit": "V", "condition": "Supply voltage, I/O, 1.8V", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "BVDSS", "parameter_name": "Drain to Source Voltage", "min_value": "30", "typ_value": "", "max_value": "", "unit": "V", "condition": "VGS = 0V, IDS = 250μA", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "VGS(th)", "parameter_name": "Gate to Source Threshold Voltage", "min_value": "1", "typ_value": "1.3", "max_value": "1.8", "unit": "V", "condition": "VDS = VGS, IDS = 250μA", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "RDS(on)", "parameter_name": "Drain to Source On Resistance", "min_value": "", "typ_value": "3.7", "max_value": "4.6", "unit": "mΩ", "condition": "VGS = 4.5V, IDS = 20A", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "IDSS", "parameter_name": "Drain to Source Leakage Current", "min_value": "", "typ_value": "", "max_value": "1", "unit": "μA", "condition": "VGS = 0V, VDS = 24V", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "IGSS", "parameter_name": "Gate to Source Leakage Current", "min_value": "", "typ_value": "", "max_value": "100", "unit": "nA", "condition": "VDS = 0V, VGS = 20V", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "【非白名单参数·需 PM 决定是否纳入】VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "II", "parameter_name": "Input Current at Maximum Input Voltage", "min_value": "", "typ_value": "", "max_value": "50", "unit": "μA", "condition": "VCC = Max, VI Max = 5.5V", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIH", "parameter_name": "Input Voltage HIGH", "min_value": "2.0", "typ_value": "", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIL", "parameter_name": "Input Voltage LOW", "min_value": "", "typ_value": "", "max_value": "0.8", "unit": "V", "condition": "0°C to +70°C", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIL", "parameter_name": "Input Voltage LOW", "min_value": "", "typ_value": "", "max_value": "0.5", "unit": "V", "condition": "−55°C to +125°C", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；多组取值已按 condition 分行绑定，请核对是否落在该版本/温度档对应的那一行", "reviewer": "", "confidence_score": "0.95"}];
+ const THRESH = 0.85;   // 由生成器注入，与 Python 侧的 THRESH 同源
+ 
+ // 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_approval_record_r13.txt b/gate6a-plan/batch3_review/Batch3_B4_approval_record_r13.txt
+new file mode 100644
+index 0000000..24b1db9
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_approval_record_r13.txt
+@@ -0,0 +1,81 @@
++Gate 6A · Batch 3 · B4 定稿签字记录（第十三轮）
++================================================================================
++生成时间：2026-11-12 15:4x（北京时间）
++记录人：WB（代录，未经本人核准不得改动本文件结论）
++
++一、本轮发生了什么
++--------------------------------------------------------------------------------
++PM 在第十三轮收到 B4 草稿后，直接在 19 列定稿件上做了两件事，并自行签署：
++
++  1. 删除 6 行（保存于 15:30:11）
++       V130  BVDSS    30 / - / -      V
++       V130  VGS(th)  1 / 1.3 / 1.8  V
++       V130  RDS(on)  - / 3.7 / 4.6  mΩ
++       V130  IDSS     - / - / 1      μA
++       V130  IGSS     - / - / 100    nA
++       V290  II       - / - / 50     μA
++     这 6 行正是上一轮由 WB 按原图补录 condition 的行
++     （notes 前缀「【condition 由 WB 按原图补录，待 PM 复核】」，
++      entered_by = WB_Agent）。也就是说：PM 不接受由 WB 补录条件的行，
++     一律删除，而不是逐格复核后签字。
++
++  2. 逐格补签 approved_by（保存于 15:32:56）
++     剩余 8 行（V077 五行 + V290 VIH / VIL / VIL）全部填 wuxiaoxian。
++
++二、最终签字件
++--------------------------------------------------------------------------------
++  文件      Batch3_B4_FINAL.xlsx
++  保存时间  2026-11-12 15:32:56
++  SHA-256   685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e
++  字节      10616
++  结构      1 个工作表（B4_FINAL），19 列，表头 + 8 行数据，无隐藏行
++  行状态    8/8 CONFIRMED
++  签字      reviewer = approved_by = wuxiaoxian（8/8）
++  entered_by 全空（PM 亲手签，不经 WB 代录继承）
++
++  这份 xlsx 本身就是签字件本体。WB 只做下游派生，不回写它一个字节。
++
++三、定稿内容
++--------------------------------------------------------------------------------
++  V077  AM1707DZKB4.pdf        5 行  AM1707
++        CVDD/RVDD 各两行按 375 MHz / 456 MHz 绑定；DVDD 锚「Supply voltage, I/O, 1.8V」
++  V290  DS9638CMX_NOPB__DS9638.pdf  3 行  DS9638
++        VIH（min 2.0，原表无 conditions 列值，保持为空）
++        VIL 两行按温度档：0°C to +70°C → 0.8 V；−55°C to +125°C → 0.5 V
++
++四、由此产生的口径变化（须 Reviewer 知悉）
++--------------------------------------------------------------------------------
++  1. B4 由 14 行 3 件降为 8 行 2 件。
++  2. V130（CSD17505Q5A）在 Gold 里不再有任何行，整件移入「排除 Gold 候选」。
++     排除理由属**范围决定**而非流程能力不足，故新增第四类话术：
++       「PM 裁定不纳入（非白名单参数，签字件已删除该件全部行）」
++     这一条与 Reviewer 定稿的另三类（版式不支持 / 扫描图 / 无文本层）性质不同，
++     是否接受该分类由 Reviewer 判定。
++  3. 33 件四分法件数由 25 / 4 / 3 / 1 变为 24 / 5 / 3 / 1；
++     Gold 内部批次由 6+6+6+4+3 变为 6+6+6+4+2。
++  4. Gold 行数合计由 111 降为 105。
++
++五、产物与哈希
++--------------------------------------------------------------------------------
++  Batch3_B4_FINAL.csv           096ff7c068d01bbedeb0d392e1df9bad12e47baa0c45acfe3fe28ef2618927f9
++  Batch3_B4_FINAL.xlsx          685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e（签字件，未改写）
++  page_text_batch3_b4.json      见同步后 SHA256SUMS.txt
++  Batch3_B4_PDF_PROVENANCE.csv  2 个样本（V077 / V290）
++
++  CSV 由 _final_from_signed_xlsx.py 从签字 xlsx 逐格导出，落盘后回读断言：
++  19 列同序、8 行、每格与 xlsx 完全一致；换行统一 BOM + CRLF（与 B3/B4 历史定稿一致）。
++
++六、机检
++--------------------------------------------------------------------------------
++  v1.6 PDF 模式（--pdf-dir b4_pdfs，实算哈希）：OK=8，无 ERROR
++  v1.6 离线模式（不给 --pdf-dir，用随包 sidecar）：OK=8，无 ERROR
++  原始 stdout：b4_validation_raw/b4_final_pdf_mode.txt、b4_final_sidecar_mode.txt
++
++七、旧链路停用
++--------------------------------------------------------------------------------
++  _make_b4_final.py 顶部加 SUPERSEDED 停用闸：它按 Batch3_B4_ANNOTATED.xlsx
++  的 14 行重造，会把 PM 的删行与签名一起覆盖，因此现在一跑就 SystemExit。
++  需要重出定稿下游请跑 _final_from_signed_xlsx.py。
++
++  闸门回归 _test_b4_signed_gate.py 15 项断言全 PASS（报告
++  Batch3_b4_signed_gate_test.txt），其中用例 7/7a 专门验证停用闸生效且无产出。
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_generation.txt b/gate6a-plan/batch3_review/Batch3_B4_generation.txt
+index dc6736c..ea44aab 100644
+--- a/gate6a-plan/batch3_review/Batch3_B4_generation.txt
++++ b/gate6a-plan/batch3_review/Batch3_B4_generation.txt
+@@ -4,7 +4,7 @@
+   ... V347 → 核心 0 行（low=0，丢弃 0）
+   ... V041 → 核心 0 行（low=0，丢弃 0）
+ 
+-圈选台: Batch3_B4_Viewer.html (58.7 KB, 5 件)
++圈选台: Batch3_B4_Viewer.html (59.1 KB, 5 件)
+ 草稿  : Batch3_B4_DRAFT.csv (14 行)
+   V077  好      核心=5 low=0 丢弃=11  核心 5 行置信度均 ≥0.85
+   V130  需重点核（二轮兜底） 核心=5 low=0 丢弃=3  白名单核心参数 0 行，改按一等电气特性兜底选出 5 行（非白名单口径，
+diff --git a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
+index ebf8604..3e3a0d4 100644
+--- a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
++++ b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
+@@ -1,34 +1,34 @@
+-﻿batch,sample_no,file_name,role,status,gold_rows,evidence_source,reason_class,note
+-B1,V173,74AHCT1G04DBVRE4__sn74ahct1g04.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+-B1,V199,CSD18504Q5AT__csd18504q5a.pdf,Gold,已定稿,5,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+-B1,V304,74CB3T3306DCURE4__sn74cb3t3306.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+-B1,V319,5962-9688201Q2A__tlv2354.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+-B1,V336,DS96F173ME_883__ds96f175mqml.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+-B1,V345,DAC63202YBHR__dac63202w.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+-B2,V003,AM2431BSDFHIALXR__am2431.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+-B2,V011,CD54HC123F3A__cd54hc123.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+-B2,V038,ADC12QJ1600ALREP.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+-B2,V242,ADS131B26-Q1.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+-B2,V320,DAC3482IRKDR__slas748f.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+-B2,V346,ADS54J40IRMPT.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+-B3,V146,CY74FCT399ATSOCT__cy74fct399t.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+-B3,V222,AFE4462YBGR__afe4462.pdf,Gold,EXCLUDED,0,INDEX.md §15,文档内无标准参数表,9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气参数表
+-B3,V244,AM1802BZWTD3__am1802.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+-B3,V256,BQ79652PAPRQ1.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+-B3,V271,DM3725CBC100__dm3725.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+-B3,V328,CD4014BE__cd4014b.pdf,Gold,EXCLUDED,0,INDEX.md §15,电气特性页为扫描图,29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold
+-B4,V041,CD4015BEE4__cd4015b.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,电气特性页为扫描图,电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold
+-B4,V077,AM1707DZKB4.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；已封卷
+-B4,V130,CSD17505Q5A__csd17505q5a.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
+-B4,V290,DS9638CMX_NOPB__DS9638.pdf,Gold,已定稿,4,Batch3_B4_FINAL.csv,,VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
+-B4,V347,8418501HA__84185D.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,版式不支持稳定还原行序,版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评
+-DIAG,V022,CC2500EMK__cc2500.pdf,DIAGNOSTIC_ONLY,不参与 Gold,0,Gold_Set_v1.1_WORKING.csv,,指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
+-DONE,V097,DEM-OPA-MSOP-2A__opa2830.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+-DONE,V101,CD74HCT574EE4__schs183c.pdf,Gold,已完成,9,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+-DONE,V111,DS90C189TWRTDTQ1.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+-DONE,V145,DAC8775IRWFR.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+-DONE,V162,74LVTH182504APMG4__sn74lvth18504a.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+-DONE,V349,ADC3544IRSBT__adc3544.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+-SCAN,S01,CY74FCT162827CTPAC__CYPRS379-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,6 页，sha256=0e0ac847ab07cb91…
+-SCAN,S02,ATOPA4343NA_2K5__BURRS00055-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,11 页，sha256=055b0c8e47e82529…
+-SCAN,S03,32P4752-CGT__SISYD006-4-73.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,53 页，sha256=6712c9281cfe063b…
++﻿category,batch,sample_no,file_name,role,status,gold_rows,evidence_source,reason_class,note
++已定稿 Gold,B1,V173,74AHCT1G04DBVRE4__sn74ahct1g04.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B1,V199,CSD18504Q5AT__csd18504q5a.pdf,Gold,已定稿,5,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B1,V304,74CB3T3306DCURE4__sn74cb3t3306.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B1,V319,5962-9688201Q2A__tlv2354.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B1,V336,DS96F173ME_883__ds96f175mqml.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B1,V345,DAC63202YBHR__dac63202w.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B2,V003,AM2431BSDFHIALXR__am2431.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B2,V011,CD54HC123F3A__cd54hc123.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B2,V038,ADC12QJ1600ALREP.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B2,V242,ADS131B26-Q1.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B2,V320,DAC3482IRKDR__slas748f.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B2,V346,ADS54J40IRMPT.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
++已定稿 Gold,B3,V146,CY74FCT399ATSOCT__cy74fct399t.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
++已定稿 Gold,B3,V244,AM1802BZWTD3__am1802.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
++已定稿 Gold,B3,V256,BQ79652PAPRQ1.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
++已定稿 Gold,B3,V271,DM3725CBC100__dm3725.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
++已定稿 Gold,B4,V077,AM1707DZKB4.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,5 行；CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；PM 2026-11-12 15:32 逐格补签 approved_by
++已定稿 Gold,B4,V290,DS9638CMX_NOPB__DS9638.pdf,Gold,已定稿,3,Batch3_B4_FINAL.csv,,3 行（VIH / VIL×2）；VIL 两行按温度档绑定；II 一行由 PM 在签字件上删除，VIH 原表本就无条件是事实
++已定稿 Gold,DONE,V097,DEM-OPA-MSOP-2A__opa2830.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
++已定稿 Gold,DONE,V101,CD74HCT574EE4__schs183c.pdf,Gold,已完成,9,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
++已定稿 Gold,DONE,V111,DS90C189TWRTDTQ1.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
++已定稿 Gold,DONE,V145,DAC8775IRWFR.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
++已定稿 Gold,DONE,V162,74LVTH182504APMG4__sn74lvth18504a.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
++已定稿 Gold,DONE,V349,ADC3544IRSBT__adc3544.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
++排除 Gold 候选,B3,V222,AFE4462YBGR__afe4462.pdf,Gold,EXCLUDED,0,INDEX.md §15,文档内无标准参数表,9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气参数表
++排除 Gold 候选,B3,V328,CD4014BE__cd4014b.pdf,Gold,EXCLUDED,0,INDEX.md §15,电气特性页为扫描图,29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold
++排除 Gold 候选,B4,V041,CD4015BEE4__cd4015b.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,电气特性页为扫描图,电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold
++排除 Gold 候选,B4,V130,CSD17505Q5A__csd17505q5a.pdf,Gold,EXCLUDED,0,Batch3_B4_FINAL.xlsx,PM 裁定不纳入（非白名单参数，签字件已删除该件全部行）,PM 2026-11-12 15:32 在签字定稿件上删除该件全部 5 行：BVDSS / VGS(th) / RDS(on) / IDSS / IGSS 均为非白名单参数，不作 Gold 背书
++排除 Gold 候选,B4,V347,8418501HA__84185D.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,版式不支持稳定还原行序,版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评
++SCAN 排除,SCAN,S01,CY74FCT162827CTPAC__CYPRS379-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,6 页，sha256=0e0ac847ab07cb91…
++SCAN 排除,SCAN,S02,ATOPA4343NA_2K5__BURRS00055-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,11 页，sha256=055b0c8e47e82529…
++SCAN 排除,SCAN,S03,32P4752-CGT__SISYD006-4-73.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,53 页，sha256=6712c9281cfe063b…
++诊断件,DIAG,V022,CC2500EMK__cc2500.pdf,DIAGNOSTIC_ONLY,不参与 Gold,0,Gold_Set_v1.1_WORKING.csv,,指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
+diff --git a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
+index 72f545b..272ae1d 100644
+--- a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
++++ b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
+@@ -1,58 +1,57 @@
+-Gate 6A · 33 件总清单（Batch 1–4 + SCAN + 诊断件）
+-========================================================================
+-
+-[B1]
+-  V173  74AHCT1G04DBVRE4__sn74ahct1g04.pdf 已定稿          3    PM 签字定稿，v1.6 机检通过
+-  V199  CSD18504Q5AT__csd18504q5a.pdf      已定稿          5    PM 签字定稿，v1.6 机检通过
+-  V304  74CB3T3306DCURE4__sn74cb3t3306.pdf 已定稿          3    PM 签字定稿，v1.6 机检通过
+-  V319  5962-9688201Q2A__tlv2354.pdf       已定稿          4    PM 签字定稿，v1.6 机检通过
+-  V336  DS96F173ME_883__ds96f175mqml.pdf   已定稿          4    PM 签字定稿，v1.6 机检通过
+-  V345  DAC63202YBHR__dac63202w.pdf        已定稿          4    PM 签字定稿，v1.6 机检通过
+-
+-[B2]
+-  V003  AM2431BSDFHIALXR__am2431.pdf       已定稿          5    PM 签字定稿，v1.6 机检通过
+-  V011  CD54HC123F3A__cd54hc123.pdf        已定稿          5    PM 签字定稿，v1.6 机检通过
+-  V038  ADC12QJ1600ALREP.pdf               已定稿          5    PM 签字定稿，v1.6 机检通过
+-  V242  ADS131B26-Q1.pdf                   已定稿          5    PM 签字定稿，v1.6 机检通过
+-  V320  DAC3482IRKDR__slas748f.pdf         已定稿          5    PM 签字定稿，v1.6 机检通过
+-  V346  ADS54J40IRMPT.pdf                  已定稿          5    PM 签字定稿，v1.6 机检通过
+-
+-[B3]
+-  V146  CY74FCT399ATSOCT__cy74fct399t.pdf  已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
+-  V222  AFE4462YBGR__afe4462.pdf           EXCLUDED     -    9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气
+-  V244  AM1802BZWTD3__am1802.pdf           已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
+-  V256  BQ79652PAPRQ1.pdf                  已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
+-  V271  DM3725CBC100__dm3725.pdf           已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
+-  V328  CD4014BE__cd4014b.pdf              EXCLUDED     -    29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，
+-
+-[B4]
+-  V041  CD4015BEE4__cd4015b.pdf            EXCLUDED     -    电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可
+-  V077  AM1707DZKB4.pdf                    已定稿          5    CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V
+-  V130  CSD17505Q5A__csd17505q5a.pdf       已定稿          5    5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
+-  V290  DS9638CMX_NOPB__DS9638.pdf         已定稿          4    VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
+-  V347  8418501HA__84185D.pdf              EXCLUDED     -    版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后
+-
+-[DIAG]
+-  V022  CC2500EMK__cc2500.pdf              不参与 Gold     -    指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
+-
+-[DONE]
+-  V097  DEM-OPA-MSOP-2A__opa2830.pdf       已完成          3    Batch 2 已定稿（24 行 Gold）
+-  V101  CD74HCT574EE4__schs183c.pdf        已完成          9    Batch 2 已定稿（24 行 Gold）
+-  V111  DS90C189TWRTDTQ1.pdf               已完成          3    Batch 2 已定稿（24 行 Gold）
+-  V145  DAC8775IRWFR.pdf                   已完成          3    Batch 2 已定稿（24 行 Gold）
+-  V162  74LVTH182504APMG4__sn74lvth18504a. 已完成          3    Batch 2 已定稿（24 行 Gold）
+-  V349  ADC3544IRSBT__adc3544.pdf          已完成          3    Batch 2 已定稿（24 行 Gold）
+-
+-[SCAN]
+-  S01   CY74FCT162827CTPAC__CYPRS379-1.pdf EXCLUDED     -    6 页，sha256=0e0ac847ab07cb91…
+-  S02   ATOPA4343NA_2K5__BURRS00055-1.pdf  EXCLUDED     -    11 页，sha256=055b0c8e47e82529…
+-  S03   32P4752-CGT__SISYD006-4-73.pdf     EXCLUDED     -    53 页，sha256=6712c9281cfe063b…
+-
+-------------------------------------------------------------------------
+-件数：33（Gold 参与件 29 + SCAN 3 + 诊断件 1）
+-Gold 行数合计：111
++Gate 6A · 33 件总清单（四分类口径）
++============================================================================
++
++【已定稿 Gold】24 件
++----------------------------------------------------------------------------
++  V173  74AHCT1G04DBVRE4__sn74ahct1g04.p 已定稿      3    PM 签字定稿，v1.6 机检通过
++  V199  CSD18504Q5AT__csd18504q5a.pdf    已定稿      5    PM 签字定稿，v1.6 机检通过
++  V304  74CB3T3306DCURE4__sn74cb3t3306.p 已定稿      3    PM 签字定稿，v1.6 机检通过
++  V319  5962-9688201Q2A__tlv2354.pdf     已定稿      4    PM 签字定稿，v1.6 机检通过
++  V336  DS96F173ME_883__ds96f175mqml.pdf 已定稿      4    PM 签字定稿，v1.6 机检通过
++  V345  DAC63202YBHR__dac63202w.pdf      已定稿      4    PM 签字定稿，v1.6 机检通过
++  V003  AM2431BSDFHIALXR__am2431.pdf     已定稿      5    PM 签字定稿，v1.6 机检通过
++  V011  CD54HC123F3A__cd54hc123.pdf      已定稿      5    PM 签字定稿，v1.6 机检通过
++  V038  ADC12QJ1600ALREP.pdf             已定稿      5    PM 签字定稿，v1.6 机检通过
++  V242  ADS131B26-Q1.pdf                 已定稿      5    PM 签字定稿，v1.6 机检通过
++  V320  DAC3482IRKDR__slas748f.pdf       已定稿      5    PM 签字定稿，v1.6 机检通过
++  V346  ADS54J40IRMPT.pdf                已定稿      5    PM 签字定稿，v1.6 机检通过
++  V146  CY74FCT399ATSOCT__cy74fct399t.pd 已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
++  V244  AM1802BZWTD3__am1802.pdf         已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
++  V256  BQ79652PAPRQ1.pdf                已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
++  V271  DM3725CBC100__dm3725.pdf         已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
++  V077  AM1707DZKB4.pdf                  已定稿      5    5 行；CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 
++  V290  DS9638CMX_NOPB__DS9638.pdf       已定稿      3    3 行（VIH / VIL×2）；VIL 两行按温度档绑定；II 一行由 P
++  V097  DEM-OPA-MSOP-2A__opa2830.pdf     已完成      3    Batch 2 已定稿（24 行 Gold）
++  V101  CD74HCT574EE4__schs183c.pdf      已完成      9    Batch 2 已定稿（24 行 Gold）
++  V111  DS90C189TWRTDTQ1.pdf             已完成      3    Batch 2 已定稿（24 行 Gold）
++  V145  DAC8775IRWFR.pdf                 已完成      3    Batch 2 已定稿（24 行 Gold）
++  V162  74LVTH182504APMG4__sn74lvth18504 已完成      3    Batch 2 已定稿（24 行 Gold）
++  V349  ADC3544IRSBT__adc3544.pdf        已完成      3    Batch 2 已定稿（24 行 Gold）
++
++【排除 Gold 候选】5 件
++----------------------------------------------------------------------------
++  V222  AFE4462YBGR__afe4462.pdf         EXCLUDED -    9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无
++  V328  CD4014BE__cd4014b.pdf            EXCLUDED -    29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能
++  V041  CD4015BEE4__cd4015b.pdf          EXCLUDED -    电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建
++  V130  CSD17505Q5A__csd17505q5a.pdf     EXCLUDED -    PM 2026-11-12 15:32 在签字定稿件上删除该件全部 5 行：
++  V347  8418501HA__84185D.pdf            EXCLUDED -    版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规
++
++【SCAN 排除】3 件
++----------------------------------------------------------------------------
++  S01   CY74FCT162827CTPAC__CYPRS379-1.p EXCLUDED -    6 页，sha256=0e0ac847ab07cb91…
++  S02   ATOPA4343NA_2K5__BURRS00055-1.pd EXCLUDED -    11 页，sha256=055b0c8e47e82529…
++  S03   32P4752-CGT__SISYD006-4-73.pdf   EXCLUDED -    53 页，sha256=6712c9281cfe063b…
++
++【诊断件】1 件
++----------------------------------------------------------------------------
++  V022  CC2500EMK__cc2500.pdf            不参与 Gold -    指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
++
++----------------------------------------------------------------------------
++合计：33 件 = 已定稿 Gold 24 + 排除 Gold 候选 5 + SCAN 排除 3 + 诊断件 1
++Gold 内部批次：Batch2 6 + B1 6 + B2 6 + B3 4 + B4 2（合计 24）
++Gold 行数合计：105
+   B1                6 件  23 行
+   B2                6 件  30 行
+   B3                4 件  20 行
+-  B4                3 件  14 行
++  B4                2 件   8 行
+   Batch2 Gold v1    6 件  24 行
+diff --git a/gate6a-plan/batch3_review/Batch3_b4_signed_gate_test.txt b/gate6a-plan/batch3_review/Batch3_b4_signed_gate_test.txt
+new file mode 100644
+index 0000000..d7d79ea
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_b4_signed_gate_test.txt
+@@ -0,0 +1,20 @@
++  真实签字源：Batch3_B4_ANNOTATED.xlsx
++    sha256 = cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2
++  [PASS] 6 真实签字源与出厂登记一致                                 cc1b2ae030ee93ce…
++  [PASS] 1 登记一致 -> 放行并跑通 main()                         
++  [PASS] 1a V130 五行 condition 非空                        ['VGS = 0V, IDS = 250μA', 'VDS = VGS, IDS = 250μA', 'VGS = 4.5V, IDS = 20A', 'VG
++  [PASS] 1b V130 五行 entered_by=WB_Agent                 
++  [PASS] 1c V130 五行 notes 带补录前缀                         
++  [PASS] 1d V290 II 条件已补                                VCC = Max, VI Max = 5.5V
++  [PASS] 2  篡改后哈希确实变了                                   6e3b5e08728f1335…
++  [PASS] 2a 篡改签字源 -> 拦下                                 签字源校验失败，拒绝继续：封卷件字节与登记不一致，拒绝自动替换：C:\Users\ADMINI~1\AppData\Local\Temp\b
++  [PASS] 2b 是闸门拦的（先于内容校验）                               签字源校验失败，拒绝继续：封卷件字节与登记不一致，拒绝自动替换：C:\Users
++  [PASS] 2c 拦下后没有产出 FINAL                               
++  [PASS] 3  签字源缺失 -> 拦下                                 签字源校验失败，拒绝继续：封卷件缺失，不允许凭生成器重造：C:\Users\ADMINI~1\AppData\Local\Temp\b4ga
++  [PASS] 4  登记哈希为空 -> 拦下（不默认放行）                         签字源校验失败，拒绝继续：封卷登记缺哈希，拒绝默认放行：Batch3_B4_ANNOTATED.xlsx
++  [PASS] 5  未登记件 -> 放行（write）                           
++  [PASS] 7  停用闸生效（不再按 ANNOTATED 重造）                     本生成器已停用：定稿事实源改为 PM 签字后的 Batch3_B4_FINAL.xlsx。
++  按 ANNOTATED 
++  [PASS] 7a 停用后没有任何产出                                   
++
++PASS=15  FAIL=0
+diff --git a/gate6a-plan/batch3_review/INDEX.md b/gate6a-plan/batch3_review/INDEX.md
+index 68b5d7c..1d91547 100644
+--- a/gate6a-plan/batch3_review/INDEX.md
++++ b/gate6a-plan/batch3_review/INDEX.md
+@@ -1337,3 +1337,209 @@ B4 三件从「待签字」改为「已定稿」，数据源从 `Batch3_B4_DRAFT
+ 33 件里 29 件已定稿（含 4 件 EXCLUDED 与 3 件 SCAN、1 件诊断件不参与分母），
+ 没有未签的 Gold 行。Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
+ 更新并 push。两仓 main 本轮仍未动。
++
++---
++
++## 21. Reviewer 三处 P0 修复（第十三轮）
++
++复审给出三条 P0：V130 五行缺 TEST CONDITIONS、B4 签字源入口没走硬哈希闸门、
++33 件总清单把诊断件与排除件混在一张账上。本节记录修复与验证方式。
++
++### 21.1 P0-1：V130 五行的 TEST CONDITIONS
++
++原图 `CSD17505Q5A__csd17505q5a.pdf` 第 2 页 ELECTRICAL CHARACTERISTICS 表，
++Conditions 列逐字照录（不做同义改写）：
++
++| Symbol | TEST CONDITIONS |
++| --- | --- |
++| `BVDSS` | `VGS = 0V, IDS = 250μA` |
++| `IDSS` | `VGS = 0V, VDS = 24V` |
++| `IGSS` | `VDS = 0V, VGS = 20V` |
++| `VGS(th)` | `VDS = VGS, IDS = 250μA` |
++| `RDS(on)` | `VGS = 4.5V, IDS = 20A` |
++
++两道机械保证：
++
++* **`MUST_HAVE_COND`**：`{"V130": {BVDSS, IDSS, IGSS, VGS(th), RDS(on)}}`。
++  出草稿前，这五个符号缺任一 condition、或某个符号整行缺失，一律 `SystemExit`。
++* **回原文核断言**：condition 必须能在该证据页文本里找到。归一化只做
++  `°→o` 与空白折叠；本轮新增一道「去掉全部空白」的兜底 —— PDF 文本层会把下标
++  拆成 `V C C = Max`，这是排版空隙而非差异。
++
++顺带查出两件事，一并处置：
++
++1. **V130 的 RDS(on) 原表有两行**：`VGS = 4.5V, IDS = 20A` → 3.7 / 4.6 mΩ，
++   `VGS = 10V, IDS = 20A` → 2.9 / 3.5 mΩ。5 行预算只收了 4.5 V 那行，
++   已在圈选台 `EXTRA_ROWS_NOTE` 里写明未收进草稿的是哪一行，供 PM 决定是否补收。
++2. **V290 的 `II` 是同一类缺陷**：原表 Conditions 写着 `VCC = Max, VI Max = 5.5V`，
++   VLM 漏抄，已按原文补录；同表 `VIH`（Input Voltage HIGH）原表本来就没给条件，
++   保持为空**不是漏填**，`WARN_BANNER` 已写明，避免下次又被当成缺陷。
++
++### 21.2 P0-2：签字源入口闸门
++
++`_make_b4_final.main()` 的第一件事就是
++`B3.guard_sealed(SIGNED, SEALED_SHA_B4)`，通过之后才 `SIGNED.exists()` 与读内容。
++闸门失败包一层 `SystemExit("签字源校验失败，拒绝继续：…")`，错误前缀固定，便于断言。
++
++负向回归 `_test_b4_signed_gate.py`（报告 `Batch3_b4_signed_gate_test.txt`），
++**13 项断言全 PASS**：
++
++| 用例 | 期望 | 结果 |
++| --- | --- | --- |
++| 1 登记一致 | 放行并跑通 `main()` | PASS |
++| 1a 放行后 V130 五行 condition 非空 | 5/5 | PASS |
++| 1b V130 五行 `entered_by=WB_Agent` | 5/5 | PASS |
++| 1c V130 五行 notes 带补录前缀 | 5/5 | PASS |
++| 1d V290 `II` 条件已补 | `VCC = Max, VI Max = 5.5V` | PASS |
++| 2 篡改后哈希确实变了 | 是 | PASS |
++| 2a 篡改签字源 | 拦下 | PASS |
++| 2b **是闸门拦的（先于内容校验）** | 错误以「签字源校验失败」开头 | PASS |
++| 2c 拦下后没有产出 FINAL | 无文件 | PASS |
++| 3 签字源缺失 | 拦下（不允许凭生成器重造） | PASS |
++| 4 登记里哈希为空 | 拦下（不默认放行） | PASS |
++| 5 未登记的文件名 | 放行（`write`） | PASS |
++| 6 真实签字源 vs 出厂登记 | 一致 | PASS |
++
++**2b 是这套测试的关键**：篡改的是 `confidence_score` 一个数值格，
++`load_signed()` 完全能通过 —— 如果报错来自内容校验而不是闸门，就说明闸门放得太晚。
++实测错误信息以「签字源校验失败」开头，证明闸门确实在读内容之前。
++
++### 21.3 P0-3：33 件总清单改四分法
++
++此前按 `batch` 分组，V022（诊断件）与 V328（排除件）落在同一张账上，
++Reviewer 判为分类错误。改为 Reviewer 定稿的四分法：
++
++| 分类 | 件数 | 成员 |
++| --- | --- | --- |
++| 已定稿 Gold | **25** | Batch2 6 + B1 6 + B2 6 + B3 4 + B4 3 |
++| 排除 Gold 候选 | **4** | V222 / V328 / V041 / V347 |
++| SCAN 排除 | **3** | S01 / S02 / S03 |
++| 诊断件 | **1** | V022 |
++| 合计 | **33** | |
++
++`_make_master_inventory.py` 加五条硬断言：
++
++1. 四类并集 = 全表，不允许出现四类之外的取值；
++2. 各类件数恰为 25 / 4 / 3 / 1，四类合计 33；
++3. 四类样本集合两两无交集（互不重叠）；
++4. 成员集合写死比对：排除候选 `{V222,V328,V041,V347}`、SCAN `{S01,S02,S03}`、
++   诊断 `{V022}` —— 分类再漂就直接报错；
++5. Gold 内部按批次 6+6+6+4+3。
++
++实跑结果：合计 33 件，Gold 行数 111，与各批 CSV 逐一相符。
++
++### 21.4 封卷登记主动撤销（如实记录）
++
++V130 的 5 条 condition 与 V290 的 `II` 是 **WB 按原图补录、PM 尚未复核**，
++不能当成「已签内容」登记哈希。处置：
++
++* `SEALED_SHA_B4` 只保留签字源一件
++  （`Batch3_B4_ANNOTATED.xlsx` = `cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2`）；
++* 上一轮登记的 FINAL 三件移入 `NO_LONGER_SEALED`，留档备查、不再作为放行依据；
++* 补录行标 `entered_by=WB_Agent`，notes 前置
++  `【condition 由 WB 按原图补录，待 PM 复核】`；
++* `approved_by` 仍整列为空 —— 不代签、也不假装签过。
++
++也就是说：**本轮定稿处于「已修复、待重签」状态**，封卷要等 PM 在补录版上重新签字。
++
++### 21.5 与上一版定稿的逐格差异
++
++干跑比对新旧 19 列定稿：14 行结构不变，仅 6 行（V130 五行 + V290 `II`）
++各有 3 格变化，合计 **18 格**，全部落在 `condition` / `notes` / `entered_by`：
++
++| 行 | condition | notes | entered_by |
++| --- | --- | --- | --- |
++| V130 BVDSS | `'' → VGS = 0V, IDS = 250μA` | 前置补录前缀 | `'' → WB_Agent` |
++| V130 VGS(th) | `'' → VDS = VGS, IDS = 250μA` | 同上 | 同上 |
++| V130 RDS(on) | `'' → VGS = 4.5V, IDS = 20A` | 同上 | 同上 |
++| V130 IDSS | `'' → VGS = 0V, VDS = 24V` | 同上 | 同上 |
++| V130 IGSS | `'' → VDS = 0V, VGS = 20V` | 同上 | 同上 |
++| V290 II | `'' → VCC = Max, VI Max = 5.5V` | 同上 | 同上 |
++
++V077 五行、V290 `VIL` 两行与 `VIH`、以及所有 min/typ/max/unit 一格未动。
++
++### 21.6 PM 直接在签字件上改稿（15:30 / 15:32）
++
++21.5 之后，PM 没有在草稿上重签，而是**直接在 19 列定稿件上动手**，分两次保存：
++
++| 时间 | 动作 |
++| --- | --- |
++| 15:30:11 | 删除 6 行 |
++| 15:32:56 | 剩余 8 行逐格补签 `approved_by` |
++
++被删的 6 行，正是上一轮由 WB 按原图补录 condition 的那些行：
++
++| 样本 | Symbol | 值 | 删除前的 condition |
++| --- | --- | --- | --- |
++| V130 | `BVDSS` | 30 / – / – V | WB 补录 `VGS = 0V, IDS = 250μA` |
++| V130 | `VGS(th)` | 1 / 1.3 / 1.8 V | WB 补录 `VDS = VGS, IDS = 250μA` |
++| V130 | `RDS(on)` | – / 3.7 / 4.6 mΩ | WB 补录 `VGS = 4.5V, IDS = 20A` |
++| V130 | `IDSS` | – / – / 1 μA | WB 补录 `VGS = 0V, VDS = 24V` |
++| V130 | `IGSS` | – / – / 100 nA | WB 补录 `VDS = 0V, VGS = 20V` |
++| V290 | `II` | – / – / 50 μA | WB 补录 `VCC = Max, VI Max = 5.5V` |
++
++读法很清楚：PM 不接受「由 WB 补录条件」的行，直接删除，而不是逐格复核后签字。
++这是 PM 的处置权；WB 不做二次解释，只如实记录并让下游跟着变。
++
++签字件终态：
++
++| 项目 | 值 |
++| --- | --- |
++| 文件 | `Batch3_B4_FINAL.xlsx` |
++| 保存时间 | 2026-11-12 15:32:56 |
++| SHA-256 | `685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e` |
++| 字节 | 10616 |
++| 结构 | 1 个工作表、19 列、表头 + **8 行**、无隐藏行 |
++| 行状态 | 8/8 `CONFIRMED` |
++| 签字 | `reviewer` = `approved_by` = `wuxiaoxian`（8/8） |
++| `entered_by` | 全空（PM 亲手签，不经 WB 代录继承） |
++
++定稿内容：V077 五行（CVDD/RVDD 按 375·456 MHz 分行、DVDD 锚 1.8V I/O）+
++V290 三行（VIH、VIL 两档）。
++
++### 21.7 定稿事实源切换与旧链路停用
++
++签字件变成 `FINAL.xlsx` 本身之后，原链路（`ANNOTATED` → `FINAL`）会按 14 行重造，
++把 PM 的删行与签名一起覆盖。处置：
++
++* 新增 `_final_from_signed_xlsx.py`：以签字 xlsx 为唯一事实源，只向下游派生
++  `Batch3_B4_FINAL.csv` / `page_text_batch3_b4.json` / `Batch3_B4_PDF_PROVENANCE.csv`，
++  **不回写 xlsx 一个字节**；
++* 脚本内置 `SIGNED_SHA`：签字件字节一变就停，不许拿来历不明的定稿件派生；
++* `_make_b4_final.py` 顶部加 `SUPERSEDED` 停用闸，一跑就 `SystemExit` 并指向新脚本；
++* 落盘后回读断言：19 列同序、8 行、每格与 xlsx 完全一致；CSV 换行统一 BOM + CRLF
++  （与 B3/B4 历史定稿一致，不混裸 LF）。
++
++闸门回归 `_test_b4_signed_gate.py` 扩到 **15 项断言全 PASS**，新增用例 7/7a
++专门验证「停用闸生效、且不产出任何文件」。
++
++### 21.8 机检与产物哈希
++
++| 项目 | 结果 |
++| --- | --- |
++| v1.6 PDF 模式（`--pdf-dir b4_pdfs`，实算哈希） | **`OK=8`**，无 ERROR |
++| v1.6 离线模式（用随包 sidecar） | **`OK=8`**，无 ERROR |
++| 数值分类 | 数值 18 |
++
++| 产物 | SHA-256 |
++| --- | --- |
++| `Batch3_B4_FINAL.xlsx` | `685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e`（签字件，未改写） |
++| `Batch3_B4_FINAL.csv` | `096ff7c068d01bbedeb0d392e1df9bad12e47baa0c45acfe3fe28ef2618927f9` |
++
++### 21.9 由此产生的口径变化（须 Reviewer 判定）
++
++1. **B4 由 14 行 3 件降为 8 行 2 件。**
++2. **V130 在 Gold 里不再有任何行**，整件移入「排除 Gold 候选」。排除理由属
++   **范围决定**（PM 不纳入），不是流程能力不足，因此新增第四类话术：
++
++   ```
++   PM 裁定不纳入（非白名单参数，签字件已删除该件全部行）
++   ```
++
++   这与 Reviewer 定稿的三类（版式不支持 / 扫描图 / 无文本层）性质不同，
++   **是否接受该分类由 Reviewer 判定**，本轮不自行并入那三类。
++3. 33 件四分法件数由 **25 / 4 / 3 / 1 → 24 / 5 / 3 / 1**；
++   Gold 内部批次 6+6+6+4+3 → **6+6+6+4+2**。
++4. Gold 行数合计 **111 → 105**。
++5. `_make_master_inventory.py` 的断言同步改为 24/5/3/1 与 6+6+6+4+2，
++   并把 `V130` 写进 `EXPECT_EXCL` 固定集合 —— 分类再漂就直接报错。
+diff --git a/gate6a-plan/batch3_review/_build_batch3_interactive.py b/gate6a-plan/batch3_review/_build_batch3_interactive.py
+index 0d34367..9681968 100644
+--- a/gate6a-plan/batch3_review/_build_batch3_interactive.py
++++ b/gate6a-plan/batch3_review/_build_batch3_interactive.py
+@@ -72,9 +72,21 @@ CONDITION_BACKFILL = {
+     # DVDD 在原表里有两行（1.8V I/O 与 3.3V I/O），草稿只留了 1.8V 那行，
+     # 用原表的行标题把适用范围钉住，免得跟 3.3V 那行的 3.0/3.3/3.45 混起来。
+     ("V077", "38", "DVDD"): ["Supply voltage, I/O, 1.8V"],
++    # B4 V130：CSD17505Q5A p2 ELECTRICAL CHARACTERISTICS 表，五行各有 TEST CONDITIONS。
++    # 逐字照录，不做同义改写；运行时还会回原文核一遍。
++    ("V130", "2", "BVDSS"): ["VGS = 0V, IDS = 250μA"],
++    ("V130", "2", "IDSS"): ["VGS = 0V, VDS = 24V"],
++    ("V130", "2", "IGSS"): ["VDS = 0V, VGS = 20V"],
++    ("V130", "2", "VGS(th)"): ["VDS = VGS, IDS = 250μA"],
++    ("V130", "2", "RDS(on)"): ["VGS = 4.5V, IDS = 20A"],
+     # B4 V290：VIL 两行按温度档区分，0.8 V 对应 0°C to +70°C，
+     # 0.5 V 对应 −55°C to +125°C（注意原文用的是 U+2212 减号）。
+     ("V290", "3", "VIL"): ["0°C to +70°C", "−55°C to +125°C"],
++    # II（Input Current at Maximum Input Voltage）原表 Conditions 列写着
++    # 「VCC = Max, VI Max = 5.5V」，VLM 漏抄。文本层把下标拆成「V CC」，
++    # 原文断言靠去空白形态核过。同表的 VIH 原表本来就没给条件，保持为空，
++    # 不臆造 —— 两行的差别在 WARN_BANNER 里写清楚，由 PM 定夺。
++    ("V290", "3", "II"): ["VCC = Max, VI Max = 5.5V"],
+     ("V256", "13", "V(MAIN-AUX)"): [
+         "2V<VCELL<4.5V; TA=25°C",
+         "2V<VCELL<4.5V; -20°C<TA<65°C",
+@@ -85,6 +97,13 @@ CONDITION_BACKFILL = {
+ }
+ 
+ 
++# 这些样本的指定符号**必须**有 condition，缺一条就不许出草稿。
++# 依据：Reviewer 指出 V130 条件缺失属 P0 —— 没有测试条件的电气参数不能进 Gold。
++MUST_HAVE_COND = {
++    "V130": {"BVDSS", "IDSS", "IGSS", "VGS(th)", "RDS(on)"},
++}
++
++
+ def apply_condition_backfill(rows, sno):
+     """按参数块内出现顺序回填 condition；行数不符直接 Fail-Closed，绝不盲配。
+ 
+@@ -1057,8 +1076,17 @@ WARN_BANNER = {
+              "不要只看数值。"),
+     "V290": ("VIL 两行按温度档区分，数值不同、适用温度不同："
+              "0.8 V 对应 0°C to +70°C，0.5 V 对应 −55°C to +125°C。"
+-             "本件 II（输入电流）原文条件是 VCC = Max、VI = 5.5V，"
+-             "文本层抽成 “V CC = Max, VI Max = 5.5V”，是否补录请 PM 定夺。"),
++             "另：II（输入电流）原表 Conditions 列写着 "
++             "<code>VCC = Max, VI Max = 5.5V</code>，VLM 漏抄，已按原文补录；"
++             "VIH（Input Voltage HIGH）原表本来就没给条件，"
++             "保持为空<strong>不是漏填</strong>，请勿臆造。"),
++}
++
++# 原表有、但受 5 行预算限制没收进来的，必须说清楚，不能让人以为只有这些。
++EXTRA_ROWS_NOTE = {
++    "V130": ("本表 RDS(on) 在原图里有**两行**：VGS = 4.5V, IDS = 20A → 3.7/4.6 mΩ；"
++             "VGS = 10V, IDS = 20A → 2.9/3.5 mΩ。草稿只收了 4.5V 那行（5 行预算）。"
++             "若要收 10V 那行，请用「新增空行」补，或告诉我改上限。"),
+ }
+ 
+ REVIEW_HINTS = {
+@@ -1182,15 +1210,30 @@ def one_sample(meta, args):
+                               + (r.get("notes", "") + "；" + EXT_NOTE).strip("；"))
+     # VLM 不抄 TEST CONDITIONS：按参数块内出现顺序从原图回填（Fail-Closed）
+     apply_condition_backfill(keep, sno)
++    # 强断言：规定符号缺 condition 直接退出，绝不带着空条件出草稿
++    need = MUST_HAVE_COND.get(sno)
++    if need and keep:
++        missing = [r.get("symbol") for r in keep
++                   if (r.get("symbol") or "").strip() in need
++                   and not (r.get("condition") or "").strip()]
++        had = {((r.get("symbol") or "").strip()) for r in keep}
++        if missing or not need <= had:
++            raise SystemExit(
++                "FAIL %s 的条件缺失：%s；缺 condition 的行 %s。"
++                "没有 TEST CONDITIONS 的电气参数不能进 Gold"
++                % (sno, sorted(need - had) or "-", missing or "-"))
+     # 回填完必须回原文核一遍：条件在原页文本里找不到，就是绑错了页或错了行。
+     # 归一化只做 °→o（PDF 文本层常把度数符号抽成 o）与空白折叠，不做同义改写。
++    # 第二道兜底：文本层会把下标拆开印成「V CC = Max」而原表是「VCC = Max」，
++    # 这种纯排版空隙不算差异，故并列一版「去掉全部空白」的比较形态。
+     for r in keep:
+         cond = (r.get("condition") or "").strip()
+         if not cond:
+             continue
+         _p = doc.load_page(int(r["evidence_page"]) - 1).get_text("text")
+         _norm = lambda x: " ".join(x.replace("\u00b0", "o").split())
+-        if _norm(cond) not in _norm(_p):
++        _norm_ns = lambda x: "".join(x.replace("\u00b0", "o").split())
++        if _norm(cond) not in _norm(_p) and _norm_ns(cond) not in _norm_ns(_p):
+             raise SystemExit(
+                 "FAIL %s p%s %s 的 condition %r 在原页文本里核不到，"
+                 "拒绝交付未经验证的条件" % (sno, r["evidence_page"],
+@@ -1269,6 +1312,7 @@ def one_sample(meta, args):
+             "dropped": len(drop), "nlow": nlow, "ext": ext_used,
+             "hint": REVIEW_HINTS.get(sno, ""),
+             "warn": WARN_BANNER.get(sno, ""),
++            "extra": EXTRA_ROWS_NOTE.get(sno, ""),
+             "stratum": meta.get("stratum_proposed", "")}
+     doc.close()
+     return keep, card
+@@ -1369,6 +1413,9 @@ def main():
+         if c.get("hint"):
+             p.append('<div class="hint hint-review"><b>核查提示</b>　%s</div>'
+                      % B.esc(c["hint"]))
++        if c.get("extra"):
++            p.append('<div class="hint hint-review"><b>未收进草稿的行</b>　%s</div>'
++                     % c["extra"])
+         p.append('</div><div class="body">')
+ 
+         if c["quality"] == "无文本层":
+diff --git a/gate6a-plan/batch3_review/_diff_pm_edit.py b/gate6a-plan/batch3_review/_diff_pm_edit.py
+new file mode 100644
+index 0000000..a350ef5
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_diff_pm_edit.py
+@@ -0,0 +1,83 @@
++# -*- coding: utf-8 -*-
++"""比对 PM 手工编辑后的 Batch3_B4_FINAL.xlsx 与上一版 CSV（14 行）的差异。"""
++import csv
++import sys
++
++import openpyxl
++
++sys.stdout.reconfigure(encoding="utf-8")
++
++CSV = "Batch3_B4_FINAL.csv"
++XLSX = "Batch3_B4_FINAL.xlsx"
++
++
++def norm(v):
++    if v is None:
++        return ""
++    if isinstance(v, float):
++        return "%g" % v
++    if isinstance(v, int):
++        return "%g" % float(v)
++    return str(v).strip()
++
++
++def main():
++    old = list(csv.DictReader(open(CSV, encoding="utf-8-sig")))
++    ws = openpyxl.load_workbook(XLSX, data_only=True).active
++    vals = list(ws.values)
++    hdr = [str(x) for x in vals[0]]
++    new = [{h: norm(r[i]) for i, h in enumerate(hdr)} for r in vals[1:]]
++
++    print("CSV  %d 行 × %d 列" % (len(old), len(old[0])))
++    print("XLSX %d 行 × %d 列" % (len(new), len(hdr)))
++    print()
++
++    key = lambda r: (r["sample_no"], r["symbol"],
++                     norm(r["min_value"]), norm(r["typ_value"]),
++                     norm(r["max_value"]), r["unit"])
++    print("=== XLSX 保留的 8 行，与 CSV 同键行逐列比对 ===")
++    oldmap = {}
++    for r in old:
++        oldmap.setdefault(key(r), []).append(r)
++    diff = 0
++    for r in new:
++        k = key(r)
++        if k not in oldmap:
++            print("  !! 该行在 CSV 里找不到同键：%s" % (k,))
++            continue
++        o = oldmap[k].pop(0)
++        for c in hdr:
++            a, b = norm(o.get(c)), r.get(c, "")
++            if c in ("min_value", "typ_value", "max_value"):
++                if a.replace(" ", "") == b.replace(" ", ""):
++                    continue
++            if a != b:
++                diff += 1
++                print("  %-5s %-8s %-14s %r -> %r"
++                      % (r["sample_no"], r["symbol"], c, a, b))
++    print("差异格数：%d" % diff)
++    print()
++
++    print("=== CSV 里有、XLSX 里没有的行（= 被删掉的） ===")
++    left = [r for rs in oldmap.values() for r in rs]
++    seen = set()
++    for r in left:
++        k = key(r)
++        if k in seen:
++            continue
++        seen.add(k)
++        cnt = sum(1 for x in left if key(x) == k)
++        print("  删 %-5s %-8s %s/%s/%s %-3s ×%d  cond=%r"
++              % (r["sample_no"], r["symbol"], r["min_value"] or "-",
++                 r["typ_value"] or "-", r["max_value"] or "-", r["unit"],
++                 cnt, r["condition"]))
++    print()
++    print("=== 签字列 ===")
++    for c in ("reviewer", "approved_by", "entered_by", "row_status"):
++        vals_c = {r.get(c, "") for r in new}
++        print("  %-12s 取值集合=%s" % (c, sorted(vals_c)))
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/gate6a-plan/batch3_review/_final_from_signed_xlsx.py b/gate6a-plan/batch3_review/_final_from_signed_xlsx.py
+new file mode 100644
+index 0000000..6c6481f
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_final_from_signed_xlsx.py
+@@ -0,0 +1,227 @@
++# -*- coding: utf-8 -*-
++"""从 PM 手工签字后的 Batch3_B4_FINAL.xlsx 重建 B4 定稿的下游产物。
++
++为什么单独写这一版：
++  第十三轮 PM 直接在 19 列定稿件上删行并逐格补签 approved_by，
++  这份 xlsx 本身就是**签字件本体**。旧链路（ANNOTATED → FINAL）会按
++  ANNOTATED 的 14 行重造，把 PM 的删除与签名一起覆盖掉，因此不能再走。
++
++本脚本把已签 xlsx 当唯一事实源，只做「向下游派生」，绝不反向写回：
++  · 导出 Batch3_B4_FINAL.csv（19 列，与 xlsx 逐格同源）
++  · 重建 page_text_batch3_b4.json（只含仍在 Gold 里的样本）
++  · 重建 Batch3_B4_PDF_PROVENANCE.csv（实算 sha256 / 页数 / 字节）
++
++一切以断言收口：签名列、行数、样本集合、列序、CSV↔XLSX 同源。
++"""
++from __future__ import print_function
++
++import csv
++import json
++import sys
++from datetime import datetime
++from pathlib import Path
++
++import fitz
++import openpyxl
++
++import _make_b3_final as B3
++
++HERE = Path(__file__).resolve().parent
++SIGNED_XLSX = HERE / "Batch3_B4_FINAL.xlsx"
++WORKING = HERE / "Gold_Set_v1.1_WORKING.csv"
++
++OUT_CSV = HERE / "Batch3_B4_FINAL.csv"
++OUT_PROV = HERE / "Batch3_B4_PDF_PROVENANCE.csv"
++OUT_SIDE = HERE / "page_text_batch3_b4.json"
++
++# PM 2026-11-12 15:32:56 保存的签字件。此后只要字节再变，本脚本就停下，
++# 不许拿一份来历不明的定稿件往下派生。
++SIGNED_SHA = "685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e"
++
++EXPECT_ROWS = 8
++EXPECT_SAMPLES = {"V077", "V290"}
++DROPPED = {"V130"}          # 本轮被 PM 删除的样本，留档说明用
++DEVICE_MODEL = {"V077": "AM1707", "V290": "DS9638"}
++SIGNER = "wuxiaoxian"
++
++
++def cell(v):
++    if v is None:
++        return ""
++    if isinstance(v, float) and v.is_integer():
++        return str(int(v))
++    return str(v)
++
++
++def load_signed():
++    path = SIGNED_XLSX
++    if not path.is_file():
++        raise SystemExit("找不到定稿签字件：%s" % path)
++    got = B3.sha(path)
++    if got != SIGNED_SHA:
++        raise SystemExit(
++            "定稿签字件字节与登记不一致，拒绝派生：\n  登记 %s\n  实际 %s\n"
++            "（若 PM 又改过，请先确认改动内容并把新哈希登记到 SIGNED_SHA）"
++            % (SIGNED_SHA, got))
++    wb = openpyxl.load_workbook(str(path), data_only=True)
++    if len(wb.sheetnames) != 1:
++        raise SystemExit("签字件应只有 1 个工作表，实际 %s" % wb.sheetnames)
++    ws = wb.active
++    vals = list(ws.values)
++    hdr = [cell(x) for x in vals[0]]
++    if hdr != B3.FINAL_COLS:
++        raise SystemExit("签字件不是 19 列定稿结构：%s" % hdr)
++    rows = []
++    for r in vals[1:]:
++        if not any(x not in (None, "") for x in r):
++            continue
++        rows.append({k: cell(v) for k, v in zip(hdr, r)})
++    wb.close()
++
++    if len(rows) != EXPECT_ROWS:
++        raise SystemExit("签字件 %d 行，与预期 %d 不符" % (len(rows), EXPECT_ROWS))
++    snos = {r["sample_no"] for r in rows}
++    if snos != EXPECT_SAMPLES:
++        raise SystemExit("签字件样本集合不符：%s（应 %s）"
++                         % (sorted(snos), sorted(EXPECT_SAMPLES)))
++    if snos & DROPPED:
++        raise SystemExit("被 PM 删除的样本又出现在定稿件里：%s" % sorted(snos & DROPPED))
++
++    bad = [r["sample_no"] for r in rows if r["row_status"] != "CONFIRMED"]
++    if bad:
++        raise SystemExit("有行不是 CONFIRMED，不能定稿：%s" % bad)
++    for col in ("reviewer", "approved_by"):
++        wrong = [r["sample_no"] for r in rows if r[col] != SIGNER]
++        if wrong:
++            raise SystemExit("%s 不是 %s 本人签的：%s" % (col, SIGNER, wrong))
++    if any(r["entered_by"] for r in rows):
++        raise SystemExit("entered_by 非空：本轮 WB 未代录入任何行")
++
++    # 条件完整性：V077 五行与 V290 两行 VIL 必须有 condition；
++    # V290 VIH 原表本就没有条件，允许为空，但不是漏填。
++    lack = [r["symbol"] for r in rows
++            if r["sample_no"] in ("V077",) and not r["condition"].strip()]
++    if lack:
++        raise SystemExit("V077 有行缺 condition：%s" % lack)
++    vil = [r for r in rows if r["sample_no"] == "V290" and r["symbol"] == "VIL"]
++    if len(vil) != 2 or not all(r["condition"].strip() for r in vil):
++        raise SystemExit("V290 VIL 两行的温度档条件不全：%s"
++                         % [r["condition"] for r in vil])
++    return rows
++
++
++def build_side(rows):
++    work = {r["sample_no"]: r for r in
++            csv.DictReader(open(WORKING, encoding="utf-8-sig"))}
++    side = {}
++    for sno in sorted({r["sample_no"] for r in rows}):
++        meta = work.get(sno)
++        if not meta:
++            raise SystemExit("台账里找不到 %s" % sno)
++        path = Path(meta["file_path"])
++        if not path.is_file():
++            raise SystemExit("找不到 PDF：%s" % path)
++        names = {r["file_name"] for r in rows if r["sample_no"] == sno}
++        if len(names) != 1:
++            raise SystemExit("%s 的 file_name 在同一件里不一致：%s" % (sno, names))
++        fname = names.pop()
++        if path.name != fname:
++            raise SystemExit("台账文件名与定稿件不一致：%s ≠ %s" % (path.name, fname))
++        raw = path.read_bytes()
++        pages_needed = sorted({1} | {int(r["evidence_page"])
++                                     for r in rows if r["sample_no"] == sno})
++        doc = fitz.open(str(path))
++        npages = doc.page_count
++        if max(pages_needed) > npages:
++            raise SystemExit("%s 证据页超过总页数 %d" % (sno, npages))
++        pages = {str(n): doc.load_page(n - 1).get_text("text")
++                 for n in pages_needed}
++        doc.close()
++        side[sno] = {"sample_no": sno, "file_name": fname,
++                     "device_model": DEVICE_MODEL[sno],
++                     "sha256": B3.sha(path), "page_count": npages,
++                     "size_bytes": len(raw), "pages": pages}
++    return side
++
++
++def write_csv(path, rows):
++    tmp = path.with_name(path.name + ".wb_tmp")
++    with open(tmp, "w", encoding="utf-8-sig", newline="") as fh:
++        w = csv.DictWriter(fh, fieldnames=B3.FINAL_COLS)
++        w.writeheader()
++        w.writerows(rows)
++    data = tmp.read_bytes()
++    # 定稿 CSV 沿用既有口径：BOM + CRLF（与 B3/B4 历史定稿一致，Excel 直接双击可读）。
++    # 这里做正向校验：每个换行都必须是 CRLF，不允许混入裸 LF。
++    if data.count(b"\r\n") != data.count(b"\n"):
++        raise SystemExit("CSV 换行不统一（混有裸 LF），拒绝落盘")
++    B3.atomic_replace(tmp, path)
++
++
++def write_prov(path, side):
++    rows = [{"sample_no": s, "file_name": v["file_name"],
++             "device_model": v["device_model"], "sha256": v["sha256"],
++             "page_count": v["page_count"], "size_bytes": v["size_bytes"]}
++            for s, v in sorted(side.items())]
++    tmp = path.with_name(path.name + ".wb_tmp")
++    with open(tmp, "w", encoding="utf-8-sig", newline="") as fh:
++        w = csv.DictWriter(fh, fieldnames=list(rows[0]))
++        w.writeheader()
++        w.writerows(rows)
++    B3.atomic_replace(tmp, path)
++
++
++def write_json(path, obj):
++    tmp = path.with_name(path.name + ".wb_tmp")
++    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=2),
++                   encoding="utf-8", newline="\n")
++    B3.atomic_replace(tmp, path)
++
++
++def main():
++    rows = load_signed()
++    side = build_side(rows)
++
++    write_csv(OUT_CSV, rows)
++    write_prov(OUT_PROV, side)
++    obj = {"generated_at": datetime.now().astimezone().isoformat(),
++           "source_xlsx": SIGNED_XLSX.name,
++           "source_sha256": SIGNED_SHA,
++           "extractor": "_final_from_signed_xlsx.py",
++           "note": ("事实源为 PM 2026-11-12 15:32:56 手工签字定稿件："
++                    "删除 V130 全部 5 行与 V290 II 1 行，8 行逐格补签 approved_by"),
++           "samples": side}
++    write_json(OUT_SIDE, obj)
++
++    # ---- 落盘后逐格断言：CSV 必须与签字 xlsx 同源 ----
++    ws = openpyxl.load_workbook(str(SIGNED_XLSX), data_only=True).active
++    vals = list(ws.values)
++    with open(OUT_CSV, encoding="utf-8-sig", newline="") as fh:
++        back = list(csv.DictReader(fh))
++    if not len(back) == len(vals) - 1 == EXPECT_ROWS:
++        raise SystemExit("CSV/XLSX 行数不一致：%d / %d" % (len(back), len(vals) - 1))
++    for ri, r in enumerate(back, 1):
++        for ci, k in enumerate(B3.FINAL_COLS):
++            if cell(vals[ri][ci]) != (r.get(k) or ""):
++                raise SystemExit("CSV 与签字 xlsx 不同源：行%d 列%s" % (ri, k))
++
++    print("B4 定稿（以 PM 签字件为源）：%d 行 / %d 样本 / %d 列"
++          % (len(back), len(side), len(B3.FINAL_COLS)))
++    print("  签字件：%s（SHA-256 %s…，%d 字节）"
++          % (SIGNED_XLSX.name, SIGNED_SHA[:16], SIGNED_XLSX.stat().st_size))
++    for sno in sorted(side):
++        n = sum(1 for r in back if r["sample_no"] == sno)
++        print("    %-5s %-22s %d 行  %s" % (sno, side[sno]["file_name"], n,
++                                            side[sno]["device_model"]))
++    print("  已由 PM 删除：%s（V130 五行 + V290 II 一行，共 6 行）"
++          % "/".join(sorted(DROPPED)) + " + V290 II")
++    print("  approved_by：8/8 = %s" % SIGNER)
++    print("  CSV    %d 字节  %s" % (OUT_CSV.stat().st_size, B3.sha(OUT_CSV)))
++    print("  xlsx   %d 字节  %s（未改写，签字件原字节）"
++          % (SIGNED_XLSX.stat().st_size, SIGNED_SHA))
++    print("  sidecar %d 字节" % OUT_SIDE.stat().st_size)
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/gate6a-plan/batch3_review/_make_b4_final.py b/gate6a-plan/batch3_review/_make_b4_final.py
+index 2f89ff3..592bb95 100644
+--- a/gate6a-plan/batch3_review/_make_b4_final.py
++++ b/gate6a-plan/batch3_review/_make_b4_final.py
+@@ -27,6 +27,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
+ from openpyxl.utils import get_column_letter
+ 
+ import _make_b3_final as B3
++from _build_batch3_interactive import CONDITION_BACKFILL, MUST_HAVE_COND
+ 
+ HERE = Path(__file__).resolve().parent
+ SIGNED = HERE / "Batch3_B4_ANNOTATED.xlsx"
+@@ -42,26 +43,37 @@ DEVICE_MODEL = {"V077": "AM1707", "V130": "CSD17505Q5A", "V290": "DS9638"}
+ SAMPLES = ["V077", "V130", "V290"]
+ EXPECT_ROWS = 14
+ FINAL_NOTE = "人工已核对 PDF 原图并确认"
++WB_FILL_PREFIX = "【condition 由 WB 按原图补录，待 PM 复核】"
+ 
+ SIGNED_COLS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
+                "parameter_name", "min_value", "typ_value", "max_value", "unit",
+                "condition", "row_status", "notes", "reviewer", "confidence_score"]
+ 
+-# 本轮封卷登记。首次生成时为空 -> guard 返回 write；生成后把哈希填进来再跑一次，
+-# 必须全部 skip。之后任何字节变化都会被拦下。
++# 第二轮修订：V130 的 5 条 condition 由 WB 按原图补录，尚未经 PM 复核，
++# 因此 FINAL 三件**暂不登记**封卷哈希（上一轮的登记已撤销），等补签后再登记。
++# 签字源仍然登记 —— 它一变就必须停下来，不许拿被改过的签字件往下跑。
+ SEALED_SHA_B4 = {
++    "Batch3_B4_ANNOTATED.xlsx":
++        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
++}
++# 上一轮登记过、本轮主动撤销的三件：留档备查，不再作为放行依据。
++NO_LONGER_SEALED = {
+     "Batch3_B4_FINAL.csv":
+         "2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d",
+     "Batch3_B4_FINAL.xlsx":
+         "972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1",
+     "page_text_batch3_b4.json":
+         "43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef",
+-    "Batch3_B4_ANNOTATED.xlsx":
+-        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
+ }
+ 
+ PREFIX_RX = re.compile(r"^【[^】]*】")
+ 
++# 第十三轮：PM 2026-11-12 15:32 直接在 19 列定稿件上删行并逐格补签，
++# 定稿的事实源已由 Batch3_B4_ANNOTATED.xlsx 变为 Batch3_B4_FINAL.xlsx 本身。
++# 本生成器按 ANNOTATED 的 14 行重造，会把 PM 的删除与签名一起覆盖掉，
++# 因此永久停用；下游派生改由 _final_from_signed_xlsx.py 负责。
++SUPERSEDED_BY = "_final_from_signed_xlsx.py"
++
+ 
+ def cell_str(v):
+     if v is None:
+@@ -96,6 +108,68 @@ def load_signed(path):
+     return rows
+ 
+ 
++def fill_missing_conditions(rows):
++    """签字件里 condition 为空的行，按原图 TEST CONDITIONS 回填。
++
++    粒度是「符号块」而非「整件」：同一样本里 V290 的 VIL 有温度档、
++    II / VIH 原表本来就没给测试条件，不能因为整件里有一块空就一律判定失败。
++
++    三条 Fail-Closed：
++      · 同一符号块里部分有值、部分为空 → 不猜顺序，直接退出；
++      · 回填表条数与实际行数不符 → 退出（不按顺序盲配）；
++      · 回填后 MUST_HAVE_COND 规定的符号仍缺 condition → 退出。
++        P0：没有测试条件的电气参数不能进 Gold。
++    """
++    filled_cnt = 0
++    for sno in SAMPLES:
++        here = [r for r in rows if r["sample_no"] == sno]
++        if not here:
++            continue
++        for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
++            if bsno != sno:
++                continue
++            hit = [r for r in here
++                   if str(r["evidence_page"]) == page
++                   and (r["symbol"] or "").strip() == sym]
++            if not hit:
++                continue
++            has = [r for r in hit if (r["condition"] or "").strip()]
++            if len(has) == len(hit):
++                continue                      # PM 已填，原样保留，不覆盖
++            if has:
++                raise SystemExit(
++                    "%s p%s %s 的 condition 部分有值（%d/%d），"
++                    "拒绝按顺序盲填" % (sno, page, sym, len(has), len(hit)))
++            if len(hit) != len(conds):
++                raise SystemExit(
++                    "%s p%s %s 保留 %d 行，与回填表 %d 条不一致，拒绝盲配"
++                    % (sno, page, sym, len(hit), len(conds)))
++            for r, c in zip(hit, conds):
++                r["condition"] = c
++                r["entered_by"] = "WB_Agent"
++                r["notes"] = WB_FILL_PREFIX + r["notes"]
++                filled_cnt += 1
++
++    for sno, syms in MUST_HAVE_COND.items():
++        here = [r for r in rows if r["sample_no"] == sno]
++        if not here:
++            continue
++        lack = [(r["symbol"], r["condition"]) for r in here
++                if r["symbol"].strip() in syms
++                and not (r["condition"] or "").strip()]
++        if lack:
++            raise SystemExit(
++                "FAIL %s 条件缺失：%s 没有 TEST CONDITIONS，拒绝出定稿"
++                % (sno, [x[0] for x in lack]))
++        had = {r["symbol"].strip() for r in here}
++        miss = sorted(syms - had)
++        if miss:
++            raise SystemExit("FAIL %s 缺少必需符号：%s" % (sno, miss))
++    print("  condition 回填：%d 格（标 entered_by=WB_Agent，待 PM 复核）"
++          % filled_cnt)
++    return rows
++
++
+ def clean_notes(notes):
+     """只把模型话术换成人工核对声明，保留 PM 需要看的前缀。"""
+     m = PREFIX_RX.match(notes or "")
+@@ -196,6 +270,39 @@ def write_json(path, obj):
+     return "已改写"
+ 
+ 
++TO_SIGN = HERE / "Batch3_B4_DRAFT_TO_SIGN.xlsx"
++
++
++def write_to_sign(path, rows):
++    """导出 15 列签字表，供 PM 在带 condition 的版本上重新签字。
++
++    只在文件不存在时写：PM 一旦签过就保存成这个文件，重跑不许覆盖签名。
++    """
++    if path.exists():
++        print("  TO_SIGN 已存在，保留原字节（避免覆盖 PM 已签内容）：%s" % path.name)
++        return "未改写"
++    wb = openpyxl.Workbook()
++    ws = wb.active
++    ws.title = "B4_TO_SIGN"
++    ws.append(SIGNED_COLS)
++    for c in ws[1]:
++        c.font = Font(bold=True, color="FFFFFF")
++        c.fill = PatternFill("solid", fgColor="C00000")
++        c.alignment = Alignment(horizontal="center")
++    for r in rows:
++        ws.append([r.get(k, "") for k in SIGNED_COLS])
++    for ci, k in enumerate(SIGNED_COLS, 1):
++        width = {"parameter_name": 46, "notes": 40, "file_name": 34,
++                 "condition": 32, "table_title": 28, "row_status": 14}.get(k, 14)
++        ws.column_dimensions[get_column_letter(ci)].width = width
++    ws.freeze_panes = "A2"
++    ws.auto_filter.ref = ws.dimensions
++    tmp = path.with_name(path.name + ".wb_tmp.xlsx")
++    wb.save(str(tmp))
++    B3.atomic_replace(tmp, path)
++    return "已改写"
++
++
+ def write_prov(path, side):
+     rows = [{"sample_no": s, "file_name": v["file_name"],
+              "device_model": v["device_model"], "sha256": v["sha256"],
+@@ -210,12 +317,24 @@ def write_prov(path, side):
+ 
+ 
+ def main():
++    if SUPERSEDED_BY:
++        raise SystemExit(
++            "本生成器已停用：定稿事实源改为 PM 签字后的 Batch3_B4_FINAL.xlsx。\n"
++            "  按 ANNOTATED 重造会覆盖 PM 的删行与逐格签名。\n"
++            "  需要重出定稿下游（CSV / sidecar / provenance）请跑：%s"
++            % SUPERSEDED_BY)
++    # 签字源入口闸门：先验哈希，再读内容。被改过就直接停，绝不允许继续。
++    try:
++        B3.guard_sealed(SIGNED, SEALED_SHA_B4)
++    except SystemExit as exc:
++        raise SystemExit("签字源校验失败，拒绝继续：%s" % exc)
+     if not SIGNED.exists():
+         raise SystemExit("找不到签字件：%s" % SIGNED)
+     signed_sha = B3.sha(SIGNED)
+     rows_signed = load_signed(SIGNED)
+     work, _ = disk_info(None)
+     rows, side = build_rows(rows_signed, work)
++    rows = fill_missing_conditions(rows)
+ 
+     for r in rows:
+         print("  %-5s p%-3s %-9s %-6s/%-6s/%-6s %-5s cond=%-30s notes=%s" % (
+@@ -223,6 +342,7 @@ def main():
+             r["typ_value"], r["max_value"], r["unit"], r["condition"][:30],
+             r["notes"][:34]))
+ 
++    s_sign = write_to_sign(TO_SIGN, rows)
+     s_csv = write_csv(OUT_CSV, rows)
+     s_xlsx = write_xlsx(OUT_XLSX, rows)
+     write_prov(OUT_PROV, side)
+@@ -255,12 +375,41 @@ def main():
+         if not r["device_model"]:
+             raise SystemExit("device_model 为空：%s" % r["sample_no"])
+ 
++    # P0-1 硬断言：MUST_HAVE_COND 的符号落盘后必须有 condition，且与回填表逐字一致。
++    for sno, syms in MUST_HAVE_COND.items():
++        got = [r for r in csv2 if r["sample_no"] == sno]
++        lack = [r["symbol"] for r in got
++                if r["symbol"].strip() in syms and not r["condition"].strip()]
++        if lack:
++            raise SystemExit("落盘后 %s 仍缺 condition：%s" % (sno, lack))
++        for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
++            if bsno != sno:
++                continue
++            hit = [r for r in got
++                   if r["evidence_page"] == page and r["symbol"].strip() == sym]
++            if not hit:
++                continue
++            if [r["condition"] for r in hit] != conds:
++                raise SystemExit(
++                    "落盘后 %s %s 的 condition 与回填表不一致：%s"
++                    % (sno, sym, [r["condition"] for r in hit]))
++            wb_marks = [r["entered_by"] for r in hit]
++            if any(w != "WB_Agent" for w in wb_marks):
++                raise SystemExit(
++                    "落盘后 %s %s 的 entered_by 未标 WB_Agent：%s"
++                    % (sno, sym, wb_marks))
++            if any(not r["notes"].startswith(WB_FILL_PREFIX) for r in hit):
++                raise SystemExit(
++                    "落盘后 %s %s 的 notes 缺补录前缀" % (sno, sym))
++
++
+     print()
+     print("B4 定稿：%d 行 / %d 样本 / %d 列" % (len(csv2), len(side), len(FINAL_COLS)))
+     print("  签字件：%s（SHA-256 %s…）" % (SIGNED.name, signed_sha[:16]))
+     print("  device_model：" + "，".join("%s=%s" % kv for kv in DEVICE_MODEL.items()))
+     print("  notes：" + "；".join(sorted({r["notes"] for r in csv2})))
+     print("  approved_by / entered_by / human_adjudication 全空（不代签）")
++    print("  TO_SIGN 写入：%s" % s_sign)
+     print("  CSV 写入：%s" % s_csv)
+     print("  xlsx 写入：%s" % s_xlsx)
+     print("  sidecar 写入：%s" % s_side)
+diff --git a/gate6a-plan/batch3_review/_make_master_inventory.py b/gate6a-plan/batch3_review/_make_master_inventory.py
+index 247b0eb..8e03929 100644
+--- a/gate6a-plan/batch3_review/_make_master_inventory.py
++++ b/gate6a-plan/batch3_review/_make_master_inventory.py
+@@ -5,11 +5,21 @@
+   · 每件的状态、Gold 行数一律从既有 CSV 实算，不手填；
+   · 排除理由照录原始记录，另用 reason_class 标注现行三类话术口径，
+     避免"为了统一话术而改写历史记录"；
+-  · 末尾做三条硬断言：33 件各出现一次、行数合计、无未归类项。
++  · 分类口径按 Reviewer 2026-11-12 定稿的四分法（此前按 batch 分组，
++    导致 V022 诊断件与 V328 排除件混在一张总账里对不上）：
++        已定稿 Gold   24 件 = Batch2 6 + B1 6 + B2 6 + B3 4 + B4 2
++        排除 Gold 候选 5 件 = V222 / V328 / V041 / V347 / V130
++        SCAN 排除      3 件 = S01 / S02 / S03
++        诊断件         1 件 = V022
++    其中 V130 由 25 件口径移入排除候选：PM 2026-11-12 15:32 在签字定稿件上
++    删除了该件全部 5 行（均为非白名单参数），B4 因此由 3 件降为 2 件。
++  · 末尾硬断言：四类并集 = 33、各类件数 = 24/5/3/1、互不重叠、
++    Gold 内部按批次拆分的件数也与 6+6+6+4+2 一致。
+ """
+ from __future__ import print_function
+ 
+ import csv
++from collections import Counter
+ from pathlib import Path
+ 
+ HERE = Path(__file__).resolve().parent
+@@ -24,29 +34,52 @@ B4 = HERE / "Batch3_B4_FINAL.csv"
+ B2G = HERE / "Batch2_GOLD_v1.csv"
+ SCAN = HERE / "Batch3_SCAN_MANIFEST.csv"
+ 
+-COLS = ["batch", "sample_no", "file_name", "role", "status",
++COLS = ["category", "batch", "sample_no", "file_name", "role", "status",
+         "gold_rows", "evidence_source", "reason_class", "note"]
+ 
++# 四个分类（顺序即打印顺序，也是断言比对顺序）
++CAT_GOLD = "已定稿 Gold"
++CAT_EXCL = "排除 Gold 候选"
++CAT_SCAN = "SCAN 排除"
++CAT_DIAG = "诊断件"
++CATEGORIES = [CAT_GOLD, CAT_EXCL, CAT_SCAN, CAT_DIAG]
++EXPECT_COUNT = {CAT_GOLD: 24, CAT_EXCL: 5, CAT_SCAN: 3, CAT_DIAG: 1}
++# Gold 内部按批次拆分，Reviewer 给的口径是 6+6+6+4+3；
++# 第十三轮 PM 在签字件上删掉 V130 全部行，B4 由 3 件降为 2 件 → 6+6+6+4+2。
++EXPECT_GOLD_BATCH = {"Batch2": 6, "B1": 6, "B2": 6, "B3": 4, "B4": 2}
++# 排除候选必须是这五件，SCAN 必须是这三件 —— 写死以防分类又漂
++EXPECT_EXCL = {"V222", "V328", "V041", "V347", "V130"}
++EXPECT_SCAN = {"S01", "S02", "S03"}
++EXPECT_DIAG = {"V022"}
++
+ # 现行三类排除话术（Reviewer 2026-11-12 定稿）
+ CLS_SMD = "版式不支持稳定还原行序"
+ CLS_SCAN = "电气特性页为扫描图"
+ CLS_NOLAYER = "全书无文本层"
+ CLS_NOTABLE = "文档内无标准参数表"
++# 第四类：不是技术做不到，而是 PM 裁定不纳入（属范围决定，与上面三类不同）。
++# 单列出来，免得跟「流程无能力」混为一谈，也免得下次又被当成漏件重提。
++CLS_PM_CUT = "PM 裁定不纳入（非白名单参数，签字件已删除该件全部行）"
+ 
+ # 已封卷件里记录的原始理由，照录不改写
+ B3_REASON = {
+     "V328": "29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold",
+     "V222": "9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气参数表",
+ }
+-# 各件在本轮的实情不同，备注不能一句话套三件
++# 各件在本轮的实情不同，备注不能一句话套三件。
++# 注意：V130 的 5 条 condition 与 V290 的 II 条件是 WB 按原图补录、PM 尚未复核，
++# 所以这里不能再写"已封卷"——封卷登记已撤销，等补签后重新登记。
+ B4_NOTE = {
+-    "V077": "CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；已封卷",
+-    "V130": "5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入",
+-    "V290": "VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷",
++    "V077": ("5 行；CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；"
++             "PM 2026-11-12 15:32 逐格补签 approved_by"),
++    "V290": ("3 行（VIH / VIL×2）；VIL 两行按温度档绑定；"
++             "II 一行由 PM 在签字件上删除，VIH 原表本就无条件是事实"),
+ }
+ B4_REASON = {
+     "V347": "版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评",
+     "V041": "电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold",
++    "V130": ("PM 2026-11-12 15:32 在签字定稿件上删除该件全部 5 行："
++             "BVDSS / VGS(th) / RDS(on) / IDSS / IGSS 均为非白名单参数，不作 Gold 背书"),
+ }
+ 
+ 
+@@ -66,7 +99,6 @@ def count_by_sample(rows):
+ 
+ def main():
+     plan = rows_of(PLAN)
+-    plan_by = {r["sample_no"]: r for r in plan}
+     c1, c2, c3, c4 = (count_by_sample(rows_of(p)) for p in (B1, B2, B3, B4))
+     cdone = count_by_sample(rows_of(B2G))
+     scan = {r["sample_no"]: r for r in rows_of(SCAN)}
+@@ -79,61 +111,71 @@ def main():
+                     "file_name": r["file_name"], "gold_rows": 0})
+ 
+         if batch == "B1":
+-            rec.update(role="Gold", status="已定稿",
++            rec.update(category=CAT_GOLD, role="Gold", status="已定稿",
+                        gold_rows=c1.get(sno, 0),
+                        evidence_source="Batch3_B1_RESIGNED.csv",
+                        note="PM 签字定稿，v1.6 机检通过")
+         elif batch == "B2":
+-            rec.update(role="Gold", status="已定稿",
++            rec.update(category=CAT_GOLD, role="Gold", status="已定稿",
+                        gold_rows=c2.get(sno, 0),
+                        evidence_source="Batch3_B2_FINAL.csv",
+                        note="PM 签字定稿，v1.6 机检通过")
+         elif batch == "B3":
+             if sno in c3:
+-                rec.update(role="Gold", status="已定稿",
++                rec.update(category=CAT_GOLD, role="Gold", status="已定稿",
+                            gold_rows=c3[sno],
+                            evidence_source="Batch3_B3_FINAL.csv",
+                            note="PM 补签 5 处，已封卷（commit 92f170c）")
+             else:
+-                rec.update(role="Gold", status="EXCLUDED", gold_rows=0,
++                rec.update(category=CAT_EXCL, role="Gold", status="EXCLUDED",
++                           gold_rows=0,
+                            evidence_source="INDEX.md §15",
+                            reason_class=CLS_SCAN if sno == "V328" else CLS_NOTABLE,
+                            note=B3_REASON.get(sno, "未进 Gold"))
+         elif batch == "B4":
+             if sno in c4:
+-                rec.update(role="Gold", status="已定稿",
++                rec.update(category=CAT_GOLD, role="Gold", status="已定稿",
+                            gold_rows=c4[sno],
+                            evidence_source="Batch3_B4_FINAL.csv",
+                            note=B4_NOTE.get(sno, "PM 已签字，v1.6 机检 OK=14"))
+             else:
+-                rec.update(role="Gold", status="EXCLUDED", gold_rows=0,
+-                           evidence_source="Batch3_B4_Viewer.html",
+-                           reason_class=CLS_SMD if sno == "V347" else CLS_SCAN,
++                rec.update(category=CAT_EXCL, role="Gold", status="EXCLUDED",
++                           gold_rows=0,
++                           evidence_source="Batch3_B4_Viewer.html"
++                                           if sno != "V130"
++                                           else "Batch3_B4_FINAL.xlsx",
++                           reason_class=(CLS_SMD if sno == "V347"
++                                         else CLS_PM_CUT if sno == "V130"
++                                         else CLS_SCAN),
+                            note=B4_REASON.get(sno, "未进 Gold"))
+         elif batch == "SCAN":
+             s = scan.get(sno, {})
+-            rec.update(role="SCAN", status="EXCLUDED", gold_rows=0,
++            rec.update(category=CAT_SCAN, role="SCAN", status="EXCLUDED",
++                       gold_rows=0,
+                        evidence_source="Batch3_SCAN_MANIFEST.csv",
+                        reason_class=CLS_NOLAYER,
+                        note="%s 页，sha256=%s…" % (s.get("page_count", "?"),
+                                                   (s.get("sha256") or "")[:16]))
+         elif batch == "DONE":
+-            rec.update(role="Gold", status="已完成", gold_rows=cdone.get(sno, 0),
++            rec.update(category=CAT_GOLD, role="Gold", status="已完成",
++                       gold_rows=cdone.get(sno, 0),
+                        evidence_source="Batch2_GOLD_v1.csv",
+                        note="Batch 2 已定稿（24 行 Gold）")
+         else:
+-            rec.update(role="?", status="未归类")
++            rec.update(category="", role="?", status="未归类")
+         out.append(rec)
+ 
+     # 第 33 件：V022 是 Gate 6A 指定检查点，不参与 Gold 分母
+-    out.append({"batch": "DIAG", "sample_no": "V022",
++    out.append({"category": CAT_DIAG, "batch": "DIAG", "sample_no": "V022",
+                 "file_name": "CC2500EMK__cc2500.pdf",
+                 "role": "DIAGNOSTIC_ONLY", "status": "不参与 Gold",
+                 "gold_rows": 0, "evidence_source": "Gold_Set_v1.1_WORKING.csv",
+                 "reason_class": "",
+                 "note": "指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出"})
+ 
+-    out.sort(key=lambda r: (r["batch"], r["sample_no"]))
++    out.sort(key=lambda r: (CATEGORIES.index(r["category"])
++                            if r["category"] in CATEGORIES else 99,
++                            r["batch"], r["sample_no"]))
+ 
+     with open(OUT_CSV, "w", encoding="utf-8-sig", newline="") as fh:
+         w = csv.DictWriter(fh, fieldnames=COLS)
+@@ -146,26 +188,63 @@ def main():
+     assert len(set(snos)) == 33, "样本号重复：%s" % (
+         [x for x in set(snos) if snos.count(x) > 1])
+     assert not any(r["status"] == "未归类" for r in out), "有未归类项"
++
++    # 断言 1：每件都必须落在四个分类之一，四类并集 = 全表
++    bad_cat = [r["sample_no"] for r in out if r["category"] not in CATEGORIES]
++    assert not bad_cat, "存在四类之外的分类：%s" % bad_cat
++    cnt = Counter(r["category"] for r in out)
++    assert set(cnt) == set(CATEGORIES), "四类没有同时出现：%s" % dict(cnt)
++    for cat in CATEGORIES:
++        assert cnt[cat] == EXPECT_COUNT[cat], (
++            "分类「%s」件数 %d，与预期 %d 不符"
++            % (cat, cnt[cat], EXPECT_COUNT[cat]))
++    assert sum(cnt.values()) == 33, "四类合计不是 33：%d" % sum(cnt.values())
++
++    # 断言 2：互不重叠（每件只能有一个分类，靠唯一性 + 单值字段保证，
++    # 这里显式再核一遍四类的样本集合两两无交集）
++    sets = {c: {r["sample_no"] for r in out if r["category"] == c}
++            for c in CATEGORIES}
++    for i, a in enumerate(CATEGORIES):
++        for b in CATEGORIES[i + 1:]:
++            dup = sets[a] & sets[b]
++            assert not dup, "分类「%s」与「%s」重叠：%s" % (a, b, sorted(dup))
++
++    # 断言 3：具体到件，分类不能漂
++    assert sets[CAT_EXCL] == EXPECT_EXCL, "排除候选集合不符：%s" % sorted(sets[CAT_EXCL])
++    assert sets[CAT_SCAN] == EXPECT_SCAN, "SCAN 排除集合不符：%s" % sorted(sets[CAT_SCAN])
++    assert sets[CAT_DIAG] == EXPECT_DIAG, "诊断件集合不符：%s" % sorted(sets[CAT_DIAG])
++
++    # 断言 4：Gold 内部按批次 6+6+6+4+3
++    gold_batch = Counter(("Batch2" if r["batch"] == "DONE" else r["batch"])
++                         for r in out if r["category"] == CAT_GOLD)
++    for b, n in EXPECT_GOLD_BATCH.items():
++        assert gold_batch.get(b, 0) == n, (
++            "Gold 里 %s 批次 %d 件，与预期 %d 不符" % (b, gold_batch.get(b, 0), n))
++
+     total = sum(int(r["gold_rows"]) for r in out)
+     assert total == sum(c1.values()) + sum(c2.values()) + sum(c3.values()) \
+         + sum(c4.values()) + sum(cdone.values()), "行数合计与各批 CSV 不符"
+ 
+     lines = []
+-    lines.append("Gate 6A · 33 件总清单（Batch 1–4 + SCAN + 诊断件）")
+-    lines.append("=" * 72)
+-    cur = None
+-    for r in out:
+-        if r["batch"] != cur:
+-            cur = r["batch"]
+-            lines.append("")
+-            lines.append("[%s]" % cur)
+-        lines.append("  %-5s %-34s %-12s %-4s %s" % (
+-            r["sample_no"], r["file_name"][:34], r["status"],
+-            r["gold_rows"] if r["gold_rows"] else "-", r["note"][:40]))
++    lines.append("Gate 6A · 33 件总清单（四分类口径）")
++    lines.append("=" * 76)
++    for cat in CATEGORIES:
++        lines.append("")
++        lines.append("【%s】%d 件" % (cat, cnt[cat]))
++        lines.append("-" * 76)
++        for r in out:
++            if r["category"] != cat:
++                continue
++            lines.append("  %-5s %-32s %-8s %-4s %s" % (
++                r["sample_no"], r["file_name"][:32], r["status"],
++                r["gold_rows"] if r["gold_rows"] else "-", r["note"][:38]))
+     lines.append("")
+-    lines.append("-" * 72)
+-    lines.append("件数：%d（Gold 参与件 %d + SCAN 3 + 诊断件 1）"
+-                 % (len(out), len(out) - 4))
++    lines.append("-" * 76)
++    lines.append("合计：%d 件 = %s" % (
++        sum(cnt.values()), " + ".join("%s %d" % (c, cnt[c]) for c in CATEGORIES)))
++    lines.append("Gold 内部批次：%s（合计 %d）" % (
++        " + ".join("%s %d" % (b, gold_batch[b]) for b in
++                   ["Batch2", "B1", "B2", "B3", "B4"]), cnt[CAT_GOLD]))
+     lines.append("Gold 行数合计：%d" % total)
+     for name, d in (("B1", c1), ("B2", c2), ("B3", c3), ("B4", c4),
+                     ("Batch2 Gold v1", cdone)):
+@@ -175,7 +254,8 @@ def main():
+     print("\n".join(lines))
+     print()
+     print("清单：%s（%d 字节）" % (OUT_CSV.name, OUT_CSV.stat().st_size))
+-    print("断言：33 件唯一、无未归类、行数合计 %d 与各批 CSV 一致" % total)
++    print("断言：四类并集 33、24/5/3/1、互不重叠、Gold 批次 6+6+6+4+2、"
++          "行数合计 %d 与各批 CSV 一致" % total)
+     return 0
+ 
+ 
+diff --git a/gate6a-plan/batch3_review/_patch_b4_v2.py b/gate6a-plan/batch3_review/_patch_b4_v2.py
+new file mode 100644
+index 0000000..34639f4
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_patch_b4_v2.py
+@@ -0,0 +1,254 @@
++# -*- coding: utf-8 -*-
++"""B4 定稿生成器第二轮修订（P0-1 / P0-2）。
++
++四处改动：
++
++1. **签字源入口闸门**（P0-2）：`main()` 在读 `Batch3_B4_ANNOTATED.xlsx` 之前
++   先过 `B3.guard_sealed(SIGNED, SEALED_SHA_B4)`。哈希与登记不符、登记缺哈希、
++   文件缺失、文件读不出 —— 一律 `SystemExit`，绝不继续。
++2. **condition 按符号块回填**（P0-1）：签字件里 V130 五行 condition 为空，
++   按原图 TEST CONDITIONS 逐字回填；回填只发生在「该符号块整块为空」时，
++   部分有值部分为空一律 `SystemExit`，不按顺序盲填。
++3. **回填留痕**：回填行 `entered_by=WB_Agent`，notes 前置
++   `【condition 由 WB 按原图补录，待 PM 复核】` —— 不冒充 PM 已核。
++4. **撤销 FINAL 三件的封卷登记**：条件尚未经 PM 复核，不能按已签内容登记哈希。
++   签字源仍登记（它一变就必须停）。等 PM 补签后再重新登记。
++"""
++import pathlib
++
++P = pathlib.Path(__file__).with_name("_make_b4_final.py")
++s = P.read_text(encoding="utf-8")
++
++# ---------------------------------------------------------------- 1. 引入回填表
++OLD_IMP = "import _make_b3_final as B3"
++NEW_IMP = """import _make_b3_final as B3
++from _build_batch3_interactive import CONDITION_BACKFILL, MUST_HAVE_COND"""
++assert s.count(OLD_IMP) == 1
++s = s.replace(OLD_IMP, NEW_IMP, 1)
++
++# ---------------------------------------------------------------- 2. 撤销封卷登记
++OLD_SEAL = '''# 本轮封卷登记。首次生成时为空 -> guard 返回 write；生成后把哈希填进来再跑一次，
++# 必须全部 skip。之后任何字节变化都会被拦下。
++SEALED_SHA_B4 = {
++    "Batch3_B4_FINAL.csv":
++        "2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d",
++    "Batch3_B4_FINAL.xlsx":
++        "972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1",
++    "page_text_batch3_b4.json":
++        "43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef",
++    "Batch3_B4_ANNOTATED.xlsx":
++        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
++}'''
++NEW_SEAL = '''# 第二轮修订：V130 的 5 条 condition 由 WB 按原图补录，尚未经 PM 复核，
++# 因此 FINAL 三件**暂不登记**封卷哈希（上一轮的登记已撤销），等补签后再登记。
++# 签字源仍然登记 —— 它一变就必须停下来，不许拿被改过的签字件往下跑。
++SEALED_SHA_B4 = {
++    "Batch3_B4_ANNOTATED.xlsx":
++        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
++}
++# 上一轮登记过、本轮主动撤销的三件：留档备查，不再作为放行依据。
++NO_LONGER_SEALED = {
++    "Batch3_B4_FINAL.csv":
++        "2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d",
++    "Batch3_B4_FINAL.xlsx":
++        "972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1",
++    "page_text_batch3_b4.json":
++        "43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef",
++}'''
++assert s.count(OLD_SEAL) == 1
++s = s.replace(OLD_SEAL, NEW_SEAL, 1)
++
++# ---------------------------------------------------------------- 3. 常量与回填
++OLD_NOTE = 'FINAL_NOTE = "人工已核对 PDF 原图并确认"'
++NEW_NOTE = ('FINAL_NOTE = "人工已核对 PDF 原图并确认"\n'
++            'WB_FILL_PREFIX = "【condition 由 WB 按原图补录，待 PM 复核】"')
++assert s.count(OLD_NOTE) == 1
++s = s.replace(OLD_NOTE, NEW_NOTE, 1)
++
++OLD_CLEAN = '''def clean_notes(notes):'''
++NEW_CLEAN = '''def fill_missing_conditions(rows):
++    """签字件里 condition 为空的行，按原图 TEST CONDITIONS 回填。
++
++    粒度是「符号块」而非「整件」：同一样本里 V290 的 VIL 有温度档、
++    II / VIH 原表本来就没给测试条件，不能因为整件里有一块空就一律判定失败。
++
++    三条 Fail-Closed：
++      · 同一符号块里部分有值、部分为空 → 不猜顺序，直接退出；
++      · 回填表条数与实际行数不符 → 退出（不按顺序盲配）；
++      · 回填后 MUST_HAVE_COND 规定的符号仍缺 condition → 退出。
++        P0：没有测试条件的电气参数不能进 Gold。
++    """
++    filled_cnt = 0
++    for sno in SAMPLES:
++        here = [r for r in rows if r["sample_no"] == sno]
++        if not here:
++            continue
++        for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
++            if bsno != sno:
++                continue
++            hit = [r for r in here
++                   if str(r["evidence_page"]) == page
++                   and (r["symbol"] or "").strip() == sym]
++            if not hit:
++                continue
++            has = [r for r in hit if (r["condition"] or "").strip()]
++            if len(has) == len(hit):
++                continue                      # PM 已填，原样保留，不覆盖
++            if has:
++                raise SystemExit(
++                    "%s p%s %s 的 condition 部分有值（%d/%d），"
++                    "拒绝按顺序盲填" % (sno, page, sym, len(has), len(hit)))
++            if len(hit) != len(conds):
++                raise SystemExit(
++                    "%s p%s %s 保留 %d 行，与回填表 %d 条不一致，拒绝盲配"
++                    % (sno, page, sym, len(hit), len(conds)))
++            for r, c in zip(hit, conds):
++                r["condition"] = c
++                r["entered_by"] = "WB_Agent"
++                r["notes"] = WB_FILL_PREFIX + r["notes"]
++                filled_cnt += 1
++
++    for sno, syms in MUST_HAVE_COND.items():
++        here = [r for r in rows if r["sample_no"] == sno]
++        if not here:
++            continue
++        lack = [(r["symbol"], r["condition"]) for r in here
++                if r["symbol"].strip() in syms
++                and not (r["condition"] or "").strip()]
++        if lack:
++            raise SystemExit(
++                "FAIL %s 条件缺失：%s 没有 TEST CONDITIONS，拒绝出定稿"
++                % (sno, [x[0] for x in lack]))
++        had = {r["symbol"].strip() for r in here}
++        miss = sorted(syms - had)
++        if miss:
++            raise SystemExit("FAIL %s 缺少必需符号：%s" % (sno, miss))
++    print("  condition 回填：%d 格（标 entered_by=WB_Agent，待 PM 复核）"
++          % filled_cnt)
++    return rows
++
++
++def clean_notes(notes):'''
++assert s.count(OLD_CLEAN) == 1
++s = s.replace(OLD_CLEAN, NEW_CLEAN, 1)
++
++# ---------------------------------------------------------------- 4. TO_SIGN 导出
++OLD_PROV = '''def write_prov(path, side):'''
++NEW_PROV = '''TO_SIGN = HERE / "Batch3_B4_DRAFT_TO_SIGN.xlsx"
++
++
++def write_to_sign(path, rows):
++    """导出 15 列签字表，供 PM 在带 condition 的版本上重新签字。
++
++    只在文件不存在时写：PM 一旦签过就保存成这个文件，重跑不许覆盖签名。
++    """
++    if path.exists():
++        print("  TO_SIGN 已存在，保留原字节（避免覆盖 PM 已签内容）：%s" % path.name)
++        return "未改写"
++    wb = openpyxl.Workbook()
++    ws = wb.active
++    ws.title = "B4_TO_SIGN"
++    ws.append(SIGNED_COLS)
++    for c in ws[1]:
++        c.font = Font(bold=True, color="FFFFFF")
++        c.fill = PatternFill("solid", fgColor="C00000")
++        c.alignment = Alignment(horizontal="center")
++    for r in rows:
++        ws.append([r.get(k, "") for k in SIGNED_COLS])
++    for ci, k in enumerate(SIGNED_COLS, 1):
++        width = {"parameter_name": 46, "notes": 40, "file_name": 34,
++                 "condition": 32, "table_title": 28, "row_status": 14}.get(k, 14)
++        ws.column_dimensions[get_column_letter(ci)].width = width
++    ws.freeze_panes = "A2"
++    ws.auto_filter.ref = ws.dimensions
++    tmp = path.with_name(path.name + ".wb_tmp.xlsx")
++    wb.save(str(tmp))
++    B3.atomic_replace(tmp, path)
++    return "已改写"
++
++
++def write_prov(path, side):'''
++assert s.count(OLD_PROV) == 1
++s = s.replace(OLD_PROV, NEW_PROV, 1)
++
++# ---------------------------------------------------------------- 5. main 闸门
++OLD_MAIN = '''def main():
++    if not SIGNED.exists():
++        raise SystemExit("找不到签字件：%s" % SIGNED)
++    signed_sha = B3.sha(SIGNED)'''
++NEW_MAIN = '''def main():
++    # 签字源入口闸门：先验哈希，再读内容。被改过就直接停，绝不允许继续。
++    try:
++        B3.guard_sealed(SIGNED, SEALED_SHA_B4)
++    except SystemExit as exc:
++        raise SystemExit("签字源校验失败，拒绝继续：%s" % exc)
++    if not SIGNED.exists():
++        raise SystemExit("找不到签字件：%s" % SIGNED)
++    signed_sha = B3.sha(SIGNED)'''
++assert s.count(OLD_MAIN) == 1
++s = s.replace(OLD_MAIN, NEW_MAIN, 1)
++
++OLD_BUILD = '''    rows, side = build_rows(rows_signed, work)
++'''
++NEW_BUILD = '''    rows, side = build_rows(rows_signed, work)
++    rows = fill_missing_conditions(rows)
++'''
++assert s.count(OLD_BUILD) == 1
++s = s.replace(OLD_BUILD, NEW_BUILD, 1)
++
++# ---------------------------------------------------------------- 6. 落盘后断言
++OLD_ASSERT = '''    for r in csv2:
++        if not r["notes"].endswith(FINAL_NOTE) or "VLM" in r["notes"]:
++            raise SystemExit("notes 未清理干净：%s %r" % (r["sample_no"], r["notes"]))
++        if not r["device_model"]:
++            raise SystemExit("device_model 为空：%s" % r["sample_no"])'''
++NEW_ASSERT = '''    for r in csv2:
++        if not r["notes"].endswith(FINAL_NOTE) or "VLM" in r["notes"]:
++            raise SystemExit("notes 未清理干净：%s %r" % (r["sample_no"], r["notes"]))
++        if not r["device_model"]:
++            raise SystemExit("device_model 为空：%s" % r["sample_no"])
++
++    # P0-1 硬断言：MUST_HAVE_COND 的符号落盘后必须有 condition，且与回填表逐字一致。
++    for sno, syms in MUST_HAVE_COND.items():
++        got = [r for r in csv2 if r["sample_no"] == sno]
++        lack = [r["symbol"] for r in got
++                if r["symbol"].strip() in syms and not r["condition"].strip()]
++        if lack:
++            raise SystemExit("落盘后 %s 仍缺 condition：%s" % (sno, lack))
++        for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
++            if bsno != sno:
++                continue
++            hit = [r for r in got
++                   if r["evidence_page"] == page and r["symbol"].strip() == sym]
++            if not hit:
++                continue
++            if [r["condition"] for r in hit] != conds:
++                raise SystemExit(
++                    "落盘后 %s %s 的 condition 与回填表不一致：%s"
++                    % (sno, sym, [r["condition"] for r in hit]))
++            wb_marks = [r["entered_by"] for r in hit]
++            if any(w != "WB_Agent" for w in wb_marks):
++                raise SystemExit(
++                    "落盘后 %s %s 的 entered_by 未标 WB_Agent：%s"
++                    % (sno, sym, wb_marks))
++            if any(not r["notes"].startswith(WB_FILL_PREFIX) for r in hit):
++                raise SystemExit(
++                    "落盘后 %s %s 的 notes 缺补录前缀" % (sno, sym))
++'''
++assert s.count(OLD_ASSERT) == 1
++s = s.replace(OLD_ASSERT, NEW_ASSERT, 1)
++
++OLD_TAIL = '''    s_csv = write_csv(OUT_CSV, rows)'''
++NEW_TAIL = '''    s_sign = write_to_sign(TO_SIGN, rows)
++    s_csv = write_csv(OUT_CSV, rows)'''
++assert s.count(OLD_TAIL) == 1
++s = s.replace(OLD_TAIL, NEW_TAIL, 1)
++
++OLD_PRINT = '''    print("  CSV 写入：%s" % s_csv)'''
++NEW_PRINT = '''    print("  TO_SIGN 写入：%s" % s_sign)
++    print("  CSV 写入：%s" % s_csv)'''
++assert s.count(OLD_PRINT) == 1
++s = s.replace(OLD_PRINT, NEW_PRINT, 1)
++
++P.write_bytes(s.encode("utf-8"))
++print("ok lines", s.count("\n"))
+diff --git a/gate6a-plan/batch3_review/_sync_batch3_review.py b/gate6a-plan/batch3_review/_sync_batch3_review.py
+index bc307f2..15badc0 100644
+--- a/gate6a-plan/batch3_review/_sync_batch3_review.py
++++ b/gate6a-plan/batch3_review/_sync_batch3_review.py
+@@ -160,6 +160,14 @@ SYNC = [
+     "Batch3_B4_approval_record.txt",
+     "b4_validation_raw/b4_final_pdf_mode.txt",
+     "b4_validation_raw/b4_final_sidecar_mode.txt",
++    # 第十三轮：Reviewer 三处 P0
++    "_patch_b4_v2.py",                  # 签字源闸门 + condition 按符号块回填
++    "_test_b4_signed_gate.py",          # 闸门正/负向回归（15 项断言）
++    "Batch3_b4_signed_gate_test.txt",
++    # 第十三轮：PM 在签字件上手改后，定稿事实源改为签字 xlsx 本身
++    "_final_from_signed_xlsx.py",       # 签字 xlsx -> CSV / sidecar / provenance
++    "_diff_pm_edit.py",                 # PM 手改与上一版定稿的逐格差异（留证）
++    "Batch3_B4_approval_record_r13.txt",
+ ]
+ DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
+ B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
+diff --git a/gate6a-plan/batch3_review/_test_b4_signed_gate.py b/gate6a-plan/batch3_review/_test_b4_signed_gate.py
+new file mode 100644
+index 0000000..5171608
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_test_b4_signed_gate.py
+@@ -0,0 +1,181 @@
++# -*- coding: utf-8 -*-
++"""B4 签字源入口闸门的正/负向回归（Reviewer P0-2）。
++
++要证明的不是「guard_sealed 能用」，而是 **`_make_b4_final.main()` 在读签字件
++内容之前就先验了字节哈希**。所以负向用例刻意只改一个数值单元格 ——
++这种改动 `load_signed()` 是能通过的，如果报错来自内容校验而不是闸门，
++就说明闸门放得太晚。断言错误信息必须以「签字源校验失败」开头。
++
++用例：
++  1  登记哈希一致            -> 放行，main() 跑通，5 行 V130 都带 condition
++  2  只改一个数值单元格      -> 拦（且必须是闸门拦，不是内容校验拦）
++  3  签字源文件缺失          -> 拦
++  4  登记里哈希为空          -> 拦（拒绝默认放行）
++  5  未登记的文件名          -> 放行（write），说明闸门只锁登记过的件
++  6  真实签字源 vs 出厂登记   -> 一致
++"""
++from __future__ import print_function
++
++import contextlib
++import hashlib
++import io
++import shutil
++import sys
++import tempfile
++from pathlib import Path
++
++import openpyxl
++
++import _make_b4_final as M
++
++HERE = Path(__file__).resolve().parent
++REAL = HERE / "Batch3_B4_ANNOTATED.xlsx"
++GATE_MSG = "签字源校验失败"
++
++PASS, FAIL = [], []
++
++
++def sha(p):
++    h = hashlib.sha256()
++    h.update(Path(p).read_bytes())
++    return h.hexdigest()
++
++
++def check(name, ok, detail=""):
++    (PASS if ok else FAIL).append(name)
++    print("  [%s] %-46s %s" % ("PASS" if ok else "FAIL", name, detail))
++
++
++def run_main(signed, registry, outdir, honour_superseded=False):
++    """把生成器的路径全指向临时目录后跑一遍 main()，返回 (ok, 错误信息)。
++
++    第十三轮起 `_make_b4_final.py` 顶部有 SUPERSEDED 停用闸（定稿事实源已改为
++    PM 签字的 FINAL.xlsx）。这里默认临时解除它，好让闸门逻辑本身被测到；
++    `honour_superseded=True` 时保留，用来验证停用闸确实生效。
++    """
++    saved = {k: getattr(M, k) for k in
++             ("SIGNED", "SEALED_SHA_B4", "OUT_CSV", "OUT_XLSX", "OUT_PROV",
++              "OUT_SIDE", "TO_SIGN", "SUPERSEDED_BY")}
++    M.SIGNED = Path(signed)
++    M.SEALED_SHA_B4 = registry
++    if not honour_superseded:
++        M.SUPERSEDED_BY = None
++    M.OUT_CSV = outdir / "Batch3_B4_FINAL.csv"
++    M.OUT_XLSX = outdir / "Batch3_B4_FINAL.xlsx"
++    M.OUT_PROV = outdir / "Batch3_B4_PDF_PROVENANCE.csv"
++    M.OUT_SIDE = outdir / "page_text_batch3_b4.json"
++    M.TO_SIGN = outdir / "Batch3_B4_DRAFT_TO_SIGN.xlsx"
++    buf = io.StringIO()
++    try:
++        with contextlib.redirect_stdout(buf):
++            rc = M.main()
++        return rc == 0, ""
++    except SystemExit as exc:
++        return False, str(exc)
++    finally:
++        for k, v in saved.items():
++            setattr(M, k, v)
++
++
++def main():
++    tmp = Path(tempfile.mkdtemp(prefix="b4gate_"))
++    try:
++        # ---------- 6. 出厂登记与真实签字源一致 ----------
++        print("  真实签字源：%s" % REAL.name)
++        print("    sha256 = %s" % sha(REAL))
++        check("6 真实签字源与出厂登记一致",
++              M.SEALED_SHA_B4.get(REAL.name) == sha(REAL),
++              M.SEALED_SHA_B4.get(REAL.name, "")[:16] + "…")
++
++        # ---------- 1. 正向：登记一致 -> 放行 ----------
++        d1 = tmp / "ok"
++        d1.mkdir()
++        src = d1 / REAL.name
++        shutil.copy2(REAL, src)
++        reg_ok = {REAL.name: sha(src)}
++        ok, err = run_main(src, reg_ok, d1)
++        check("1 登记一致 -> 放行并跑通 main()", ok, err[:70])
++        if ok:
++            import csv
++            rows = list(csv.DictReader(open(d1 / "Batch3_B4_FINAL.csv",
++                                            encoding="utf-8-sig")))
++            v130 = [r for r in rows if r["sample_no"] == "V130"]
++            cond_ok = all(r["condition"].strip() for r in v130)
++            mark_ok = all(r["entered_by"] == "WB_Agent" for r in v130)
++            pref_ok = all(r["notes"].startswith(M.WB_FILL_PREFIX) for r in v130)
++            check("1a V130 五行 condition 非空", cond_ok,
++                  str([r["condition"] for r in v130])[:80])
++            check("1b V130 五行 entered_by=WB_Agent", mark_ok)
++            check("1c V130 五行 notes 带补录前缀", pref_ok)
++            v290 = [r for r in rows if r["sample_no"] == "V290"
++                    and r["symbol"] == "II"]
++            check("1d V290 II 条件已补",
++                  bool(v290) and v290[0]["condition"] == "VCC = Max, VI Max = 5.5V",
++                  v290[0]["condition"] if v290 else "-")
++
++        # ---------- 2. 负向：只改一个数值单元格 ----------
++        d2 = tmp / "tamper"
++        d2.mkdir()
++        src2 = d2 / REAL.name
++        shutil.copy2(REAL, src2)
++        reg2 = {REAL.name: sha(src2)}          # 先按原样登记
++        wb = openpyxl.load_workbook(str(src2))
++        ws = wb.active
++        hdr = [c.value for c in ws[1]]
++        col = hdr.index("confidence_score") + 1
++        ws.cell(row=2, column=col).value = 0.01   # 结构仍合法，load_signed 能过
++        wb.save(str(src2))
++        wb.close()
++        check("2  篡改后哈希确实变了", sha(src2) != reg2[REAL.name],
++              sha(src2)[:16] + "…")
++        ok2, err2 = run_main(src2, reg2, d2)
++        check("2a 篡改签字源 -> 拦下", not ok2, err2[:70])
++        check("2b 是闸门拦的（先于内容校验）", err2.startswith(GATE_MSG), err2[:40])
++        check("2c 拦下后没有产出 FINAL",
++              not (d2 / "Batch3_B4_FINAL.csv").exists())
++
++        # ---------- 3. 签字源缺失 ----------
++        d3 = tmp / "missing"
++        d3.mkdir()
++        ok3, err3 = run_main(d3 / REAL.name, {REAL.name: "deadbeef"}, d3)
++        check("3  签字源缺失 -> 拦下",
++              not ok3 and err3.startswith(GATE_MSG), err3[:70])
++
++        # ---------- 4. 登记缺哈希 ----------
++        d4 = tmp / "nohash"
++        d4.mkdir()
++        src4 = d4 / REAL.name
++        shutil.copy2(REAL, src4)
++        ok4, err4 = run_main(src4, {REAL.name: ""}, d4)
++        check("4  登记哈希为空 -> 拦下（不默认放行）",
++              not ok4 and err4.startswith(GATE_MSG), err4[:70])
++
++        # ---------- 5. 未登记的文件名 -> write ----------
++        d5 = tmp / "unreg"
++        d5.mkdir()
++        src5 = d5 / "Batch3_B4_ANNOTATED_copy.xlsx"
++        shutil.copy2(REAL, src5)
++        ok5, err5 = run_main(src5, M.SEALED_SHA_B4, d5)
++        check("5  未登记件 -> 放行（write）", ok5, err5[:70])
++
++        # ---------- 7. 停用闸：默认状态下必须拒绝运行 ----------
++        d7 = tmp / "superseded"
++        d7.mkdir()
++        ok7, err7 = run_main(REAL, M.SEALED_SHA_B4, d7, honour_superseded=True)
++        check("7  停用闸生效（不再按 ANNOTATED 重造）",
++              not ok7 and "已停用" in err7, err7[:60])
++        check("7a 停用后没有任何产出",
++              not (d7 / "Batch3_B4_FINAL.csv").exists())
++    finally:
++        shutil.rmtree(str(tmp), ignore_errors=True)
++
++    print()
++    print("PASS=%d  FAIL=%d" % (len(PASS), len(FAIL)))
++    if FAIL:
++        print("失败用例：%s" % FAIL)
++        return 1
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
+index e255c1d..e8043b1 100644
+--- a/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
++++ b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
+@@ -1,15 +1,15 @@
+ ==============================================================================
+ 溯源一致性检查
+ ==============================================================================
+-  provenance 表：3 个样本
+-  sidecar：3 个样本
++  provenance 表：2 个样本
++  sidecar：2 个样本
+   字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+   判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+   PDF 实算哈希：已比对
+   结论：三处溯源一致
+ 
+ ==============================================================================
+-标注机检 v1.6  Batch3_B4_FINAL.csv   行数 14   样本 3
++标注机检 v1.6  Batch3_B4_FINAL.csv   行数 8   样本 2
+ 页文本来源: PDF 原件
+ ==============================================================================
+ [OK      ] 行2    V077  
+@@ -17,17 +17,11 @@
+ [OK      ] 行4    V077  
+ [OK      ] 行5    V077  
+ [OK      ] 行6    V077  
+-[OK      ] 行7    V130  
+-[OK      ] 行8    V130  
+-[OK      ] 行9    V130  
+-[OK      ] 行10   V130  
+-[OK      ] 行11   V130  
+-[OK      ] 行12   V290  
+-[OK      ] 行13   V290  
+-[OK      ] 行14   V290  
+-[OK      ] 行15   V290  
++[OK      ] 行7    V290  
++[OK      ] 行8    V290  
++[OK      ] 行9    V290  
+ 
+-数值分类: 数值=27
+-统计: OK=14
++数值分类: 数值=18
++统计: OK=8
+ 
+ 无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+diff --git a/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
+index 507e314..2000817 100644
+--- a/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
++++ b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
+@@ -3,15 +3,15 @@
+ ==============================================================================
+ 溯源一致性检查
+ ==============================================================================
+-  provenance 表：3 个样本
+-  sidecar：3 个样本
++  provenance 表：2 个样本
++  sidecar：2 个样本
+   字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+   判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+   PDF 实算哈希：跳过（非 PDF 模式）
+   结论：三处溯源一致
+ 
+ ==============================================================================
+-标注机检 v1.6  Batch3_B4_FINAL.csv   行数 14   样本 3
++标注机检 v1.6  Batch3_B4_FINAL.csv   行数 8   样本 2
+ 页文本来源: page_text.json
+ ==============================================================================
+ [OK      ] 行2    V077  
+@@ -19,17 +19,11 @@
+ [OK      ] 行4    V077  
+ [OK      ] 行5    V077  
+ [OK      ] 行6    V077  
+-[OK      ] 行7    V130  
+-[OK      ] 行8    V130  
+-[OK      ] 行9    V130  
+-[OK      ] 行10   V130  
+-[OK      ] 行11   V130  
+-[OK      ] 行12   V290  
+-[OK      ] 行13   V290  
+-[OK      ] 行14   V290  
+-[OK      ] 行15   V290  
++[OK      ] 行7    V290  
++[OK      ] 行8    V290  
++[OK      ] 行9    V290  
+ 
+-数值分类: 数值=27
+-统计: OK=14
++数值分类: 数值=18
++统计: OK=8
+ 
+ 无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+diff --git a/gate6a-plan/batch3_review/page_text_batch3_b4.json b/gate6a-plan/batch3_review/page_text_batch3_b4.json
+index 7bb32ad..2f25c03 100644
+--- a/gate6a-plan/batch3_review/page_text_batch3_b4.json
++++ b/gate6a-plan/batch3_review/page_text_batch3_b4.json
+@@ -1,9 +1,9 @@
+ {
+-  "generated_at": "2026-11-12T14:08:56.132426+08:00",
+-  "source_xlsx": "Batch3_B4_ANNOTATED.xlsx",
+-  "source_sha256": "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
+-  "extractor": "_make_b4_final.py",
+-  "note": "notes 已清为「人工已核对 PDF 原图并确认」，保留【非白名单参数】前缀；approved_by 留空，签字凭据为签字件本身",
++  "generated_at": "2026-11-12T15:35:04.354460+08:00",
++  "source_xlsx": "Batch3_B4_FINAL.xlsx",
++  "source_sha256": "685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e",
++  "extractor": "_final_from_signed_xlsx.py",
++  "note": "事实源为 PM 2026-11-12 15:32:56 手工签字定稿件：删除 V130 全部 5 行与 V290 II 1 行，8 行逐格补签 approved_by",
+   "samples": {
+     "V077": {
+       "sample_no": "V077",
+@@ -17,18 +17,6 @@
+         "38": "AM1707\nSPRS637E –FEBRUARY 2010–REVISED JUNE 2014\nwww.ti.com\n5.3\nRecommended Operating Conditions\nMIN\nNOM\nMAX\nUNIT\n375 MHz version\n1.14\n1.2\n1.32\nV\nSupply voltage, Core\nCVDD\n(CVDD, RTC_CVDD, PLL0_VDDA)\n456 MHz version\n1.25\n1.3\n1.35\nV\n375 MHz version\n1.14\n1.2\n1.32\nV\nRVDD\nSupply Voltage, Internal RAM\n456 MHz version\n1.25\n1.3\n1.35\nV\nSupply voltage, I/O, 1.8V\n1.71\n1.8\n1.89\nV\n(USB0_VDDA18, USB1_VDDA18)\nDVDD\nSupply voltage, I/O, 3.3V\n3.0\n3.3\n3.45\nV\n(DVDD, USB0_VDDA33, USB1_VDDA33)\nSupply ground\nVSS\n0\n0\n0\nV\n(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))\nVIH\n(2)\nHigh-level input voltage, I/O, 3.3V\n2\nV\nHigh-level input voltage, OSCIN\n0.7*CVDD\nV\nHigh-level input voltage, RTC_XI\n0.7*RTC_CVDD\nV\nVIL\n(2)\nLow-level input voltage, I/O, 3.3V\n0.8\nV\nLow-level input voltage, OSCIN\n0.3*CVDD\nV\nLow-level input voltage, RTC_XI\n0.3*RTC_CVDD\nV\nVHYS\nInput Hysteresis\n160\nmV\nUSB\nUSB0_VBUS\n4.75\n5\n5.25\nV\nTransition time, 10%-90%, All Inputs (unless otherwise specified in\ntt\n0.25P or 10 (3)\nns\nthe electrical data sections)\n375 (1.2V)\nCommercial (default)\n0\nMHz\n456 (1.3V)\nFSYSCLK6\nARM Operating Frequency (SYSCLK6)\nIndustrial (D suffix)\n0\n456 (1.3V)\nMHz\nExtended (A suffix)\n0\n375(1.2V)\nMHz\nAutomotive (T suffix)\n0\n375 (1.2V)\nMHz\n(1)\nWhen an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected\ndirectly to the crystal load capacitor ground. These pins are shorted to VSS on the device itself and should not be connected to VSS on\nthe circuit board. If a crystal is not used and the clock input is driven directly, then the oscillator VSS may be connected to board ground.\n(2)\nUnless specifically indicated, these I/O specifications do not apply to USB I/Os. USB0 I/Os adhere to USB2.0 specification. USB1 I/Os\nadhere to USB1.1 specification.\n(3)\nWhichever is smaller. P = the period of the applied signal. Maintaining transition times as fast as possible is recommended to improve\nnoise immunity on input signals.\n38\nDevice Operating Conditions\nCopyright © 2010–2014, Texas Instruments Incorporated\nSubmit Documentation Feedback\nProduct Folder Links: AM1707\n"
+       }
+     },
+-    "V130": {
+-      "sample_no": "V130",
+-      "file_name": "CSD17505Q5A__csd17505q5a.pdf",
+-      "device_model": "CSD17505Q5A",
+-      "sha256": "12a24b54b5edb4497c7a9ca297943d3121a89da5771adccdb70f76720e020307",
+-      "page_count": 10,
+-      "size_bytes": 251252,
+-      "pages": {
+-        "1": "1\nD\n2\nD\n3\nD\n4\nD\nD\n5\nG\n6\nS\n7\nS\n8\nS\nP0093-01\n0\n2\n4\n6\n8\n10\n12\n14\n16\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\nVGS - Gate-to- Source Voltage - V\nRDS(on) - On-State Resistance - mΩ\nTC = 25°C\nTC = 125ºC\nID = 20A\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n0\n2\n4\n6\n8\n10\n12\n14\n16\n18\n20\nQg - Gate Charge - nC (nC)\nVGS - Gate-to-Source Voltage (V)\nID = 20A\nVDD = 15V\nCSD17505Q5A\nwww.ti.com\nSLPS301A –DECEMBER 2010–REVISED JULY 2011\n30V, N-Channel NexFET™Power MOSFETs\nCheck for Samples: CSD17505Q5A\nPRODUCT SUMMARY\n1FEATURES\nTA = 25°C unless otherwise stated\nTYPICAL VALUE\nUNIT\n2•\nUltralow Qg and Qgd\nVDS\nDrain to Source Voltage\n30\nV\n•\nLow Thermal Resistance\nQg\nGate Charge Total (4.5V)\n10\nnC\n•\nAvalanche Rated\nQgd\nGate Charge Gate to Drain\n2.7\nnC\n•\nPb Free Terminal Plating\nVGS = 4.5V\n3.7\nmΩ\nRDS(on)\nDrain to Source On Resistance\n•\nRoHS Compliant\nVGS = 10V\n2.9\nmΩ\n•\nHalogen Free\nVGS(th)\nThreshold Voltage\n1.3\nV\n•\nSON 5-mm × 6-mm Plastic Package\nORDERING INFORMATION\nAPPLICATIONS\nDevice\nPackage\nMedia\nQty\nShip\nSON 5-mm × 6-mm\n13-Inch\nTape and\n•\nPoint-of-Load Synchronous Buck in\nCSD17505Q5A\n2500\nPlastic Package\nReel\nReel\nNetworking, Telecom, and Computing Systems\n•\nOptimized for Control and Synchronous FET\nABSOLUTE MAXIMUM RATINGS\nApplications\nTA = 25°C unless otherwise stated\nVALUE\nUNIT\nVDS\nDrain to Source Voltage\n30\nV\nDESCRIPTION\nVGS\nGate to Source Voltage\n±20\nV\nThe NexFET™power MOSFET has been designed\nContinuous Drain Current, TC = 25°C\n100\nA\nto minimize losses in power conversion applications.\nID\nContinuous Drain Current(1)\n24\nA\nTop View\nIDM\nPulsed Drain Current, TA = 25°C(2)\n153\nA\nPD\nPower Dissipation(1)\n3.2\nW\nTJ,\nOperating Junction and Storage\n–55 to 150\n°C\nTSTG\nTemperature Range\nAvalanche Energy, single pulse\nEAS\n290\nmJ\nID = 76A, L = 0.1mH, RG = 25Ω\n(1) Typical\nRθJA\n=\n39°C/W\non\n1-inch2\n(6.45-cm2),\n2-oz.\n(0.071-mm thick) Cu pad on a 0.06-inch (1.52-mm) thick FR4\nPCB.\n(2) Pulse duration ≤300μs, duty cycle ≤2%\nSPACE\nSPACE\nRDS(on) vs VGS\nGATE CHARGE\n1\nPlease be aware that an important notice concerning availability, standard warranty, and use in critical applications of Texas\nInstruments semiconductor products and disclaimers thereto appears at the end of this data sheet.\n2NexFET is a trademark of Texas Instruments.\nPRODUCTION DATA information is current as of publication date.\nCopyright © 2010–2011, Texas Instruments Incorporated\nProducts conform to specifications per the terms of the Texas\nInstruments standard warranty. Production processing does not\nnecessarily include testing of all parameters.\n",
+-        "2": "CSD17505Q5A\nSLPS301A –DECEMBER 2010–REVISED JULY 2011\nwww.ti.com\nThese devices have limited built-in ESD protection. The leads should be shorted together or the device placed in conductive foam\nduring storage or handling to prevent electrostatic damage to the MOS gates.\nELECTRICAL CHARACTERISTICS\n(TA = 25°C unless otherwise stated)\nPARAMETER\nTEST CONDITIONS\nMIN\nTYP\nMAX\nUNIT\nStatic Characteristics\nBVDSS\nDrain to Source Voltage\nVGS = 0V, IDS = 250μA\n30\nV\nIDSS\nDrain to Source Leakage Current\nVGS = 0V, VDS = 24V\n1\nμA\nIGSS\nGate to Source Leakage Current\nVDS = 0V, VGS = 20V\n100\nnA\nVGS(th)\nGate to Source Threshold Voltage\nVDS = VGS, IDS = 250μA\n1\n1.3\n1.8\nV\nVGS = 4.5V, IDS = 20A\n3.7\n4.6\nmΩ\nRDS(on)\nDrain to Source On Resistance\nVGS = 10V, IDS = 20A\n2.9\n3.5\nmΩ\ngfs\nTransconductance\nVDS = 15V, IDS = 20A\n82\nS\nDynamic Characteristics\nCiss\nInput Capacitance\n1560\n1980\npF\nVGS = 0V, VDS = 15V,\nCoss\nOutput Capacitance\n1030\n1330\npF\nf = 1MHz\nCrss\nReverse Transfer Capacitance\n65\n85\npF\nRG\nSeries Gate Resistance\n1\n2\nΩ\nQg\nGate Charge Total (4.5V)\n10\n13\nnC\nQgd\nGate Charge Gate to Drain\n2.7\nnC\nVDS = 15V, IDS = 20A\nQgs\nGate Charge Gate to Source\n3.5\nnC\nQg(th)\nGate Charge at Vth\n1.9\nnC\nQoss\nOutput Charge\nVDS = 13.7V, VGS = 0V\n26\nnC\ntd(on)\nTurn On Delay Time\n8.3\nns\ntr\nRise Time\n11.5\nns\nVDS = 15V, VGS = 4.5V,\nIDS = 20A,RG = 2Ω\ntd(off)\nTurn Off Delay Time\n15\nns\ntf\nFall Time\n6.1\nns\nDiode Characteristics\nVSD\nDiode Forward Voltage\nISD = 20A, VGS = 0V\n0.8\n1\nV\nQrr\nReverse Recovery Charge\n30\nnC\nVDD= 13.7V, IF = 20A, di/dt = 300A/μs\ntrr\nReverse Recovery Time\n28\nns\nTHERMAL CHARACTERISTICS\n(TA = 25°C unless otherwise stated)\nPARAMETER\nMIN\nTYP\nMAX\nUNIT\nRθJC\nThermal Resistance Junction to Case(1)\n1.3\n°C/W\nRθJA\nThermal Resistance Junction to Ambient(1)(2)\n50\n°C/W\n(1)\nRθJC is determined with the device mounted on a 1-inch2 (6.45-cm2), 2-oz. (0.071-mm thick) Cu pad on a 1.5-inch × 1.5-inch (3.81-cm ×\n3.81-cm), 0.06-inch (1.52-mm) thick FR4 PCB. RθJC is specified by design, whereas RθJA is determined by the user’s board design.\n(2)\nDevice mounted on FR4 material with 1-inch2 (6.45-cm2), 2-oz. (0.071-mm thick) Cu.\n2\nCopyright © 2010–2011, Texas Instruments Incorporated\n"
+-      }
+-    },
+     "V290": {
+       "sample_no": "V290",
+       "file_name": "DS9638CMX_NOPB__DS9638.pdf",

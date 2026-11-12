@@ -1,0 +1,20 @@
+  真实签字源：Batch3_B4_ANNOTATED.xlsx
+    sha256 = cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2
+  [PASS] 6 真实签字源与出厂登记一致                                 cc1b2ae030ee93ce…
+  [PASS] 1 登记一致 -> 放行并跑通 main()                         
+  [PASS] 1a V130 五行 condition 非空                        ['VGS = 0V, IDS = 250μA', 'VDS = VGS, IDS = 250μA', 'VGS = 4.5V, IDS = 20A', 'VG
+  [PASS] 1b V130 五行 entered_by=WB_Agent                 
+  [PASS] 1c V130 五行 notes 带补录前缀                         
+  [PASS] 1d V290 II 条件已补                                VCC = Max, VI Max = 5.5V
+  [PASS] 2  篡改后哈希确实变了                                   6e3b5e08728f1335…
+  [PASS] 2a 篡改签字源 -> 拦下                                 签字源校验失败，拒绝继续：封卷件字节与登记不一致，拒绝自动替换：C:\Users\ADMINI~1\AppData\Local\Temp\b
+  [PASS] 2b 是闸门拦的（先于内容校验）                               签字源校验失败，拒绝继续：封卷件字节与登记不一致，拒绝自动替换：C:\Users
+  [PASS] 2c 拦下后没有产出 FINAL                               
+  [PASS] 3  签字源缺失 -> 拦下                                 签字源校验失败，拒绝继续：封卷件缺失，不允许凭生成器重造：C:\Users\ADMINI~1\AppData\Local\Temp\b4ga
+  [PASS] 4  登记哈希为空 -> 拦下（不默认放行）                         签字源校验失败，拒绝继续：封卷登记缺哈希，拒绝默认放行：Batch3_B4_ANNOTATED.xlsx
+  [PASS] 5  未登记件 -> 放行（write）                           
+  [PASS] 7  停用闸生效（不再按 ANNOTATED 重造）                     本生成器已停用：定稿事实源改为 PM 签字后的 Batch3_B4_FINAL.xlsx。
+  按 ANNOTATED 
+  [PASS] 7a 停用后没有任何产出                                   
+
+PASS=15  FAIL=0

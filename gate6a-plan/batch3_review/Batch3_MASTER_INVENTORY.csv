@@ -1,34 +1,34 @@
-﻿batch,sample_no,file_name,role,status,gold_rows,evidence_source,reason_class,note
-B1,V173,74AHCT1G04DBVRE4__sn74ahct1g04.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
-B1,V199,CSD18504Q5AT__csd18504q5a.pdf,Gold,已定稿,5,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
-B1,V304,74CB3T3306DCURE4__sn74cb3t3306.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
-B1,V319,5962-9688201Q2A__tlv2354.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
-B1,V336,DS96F173ME_883__ds96f175mqml.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
-B1,V345,DAC63202YBHR__dac63202w.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
-B2,V003,AM2431BSDFHIALXR__am2431.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
-B2,V011,CD54HC123F3A__cd54hc123.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
-B2,V038,ADC12QJ1600ALREP.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
-B2,V242,ADS131B26-Q1.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
-B2,V320,DAC3482IRKDR__slas748f.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
-B2,V346,ADS54J40IRMPT.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
-B3,V146,CY74FCT399ATSOCT__cy74fct399t.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
-B3,V222,AFE4462YBGR__afe4462.pdf,Gold,EXCLUDED,0,INDEX.md §15,文档内无标准参数表,9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气参数表
-B3,V244,AM1802BZWTD3__am1802.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
-B3,V256,BQ79652PAPRQ1.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
-B3,V271,DM3725CBC100__dm3725.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
-B3,V328,CD4014BE__cd4014b.pdf,Gold,EXCLUDED,0,INDEX.md §15,电气特性页为扫描图,29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold
-B4,V041,CD4015BEE4__cd4015b.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,电气特性页为扫描图,电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold
-B4,V077,AM1707DZKB4.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；已封卷
-B4,V130,CSD17505Q5A__csd17505q5a.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
-B4,V290,DS9638CMX_NOPB__DS9638.pdf,Gold,已定稿,4,Batch3_B4_FINAL.csv,,VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
-B4,V347,8418501HA__84185D.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,版式不支持稳定还原行序,版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评
-DIAG,V022,CC2500EMK__cc2500.pdf,DIAGNOSTIC_ONLY,不参与 Gold,0,Gold_Set_v1.1_WORKING.csv,,指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
-DONE,V097,DEM-OPA-MSOP-2A__opa2830.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
-DONE,V101,CD74HCT574EE4__schs183c.pdf,Gold,已完成,9,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
-DONE,V111,DS90C189TWRTDTQ1.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
-DONE,V145,DAC8775IRWFR.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
-DONE,V162,74LVTH182504APMG4__sn74lvth18504a.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
-DONE,V349,ADC3544IRSBT__adc3544.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
-SCAN,S01,CY74FCT162827CTPAC__CYPRS379-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,6 页，sha256=0e0ac847ab07cb91…
-SCAN,S02,ATOPA4343NA_2K5__BURRS00055-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,11 页，sha256=055b0c8e47e82529…
-SCAN,S03,32P4752-CGT__SISYD006-4-73.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,53 页，sha256=6712c9281cfe063b…
+﻿category,batch,sample_no,file_name,role,status,gold_rows,evidence_source,reason_class,note
+已定稿 Gold,B1,V173,74AHCT1G04DBVRE4__sn74ahct1g04.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B1,V199,CSD18504Q5AT__csd18504q5a.pdf,Gold,已定稿,5,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B1,V304,74CB3T3306DCURE4__sn74cb3t3306.pdf,Gold,已定稿,3,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B1,V319,5962-9688201Q2A__tlv2354.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B1,V336,DS96F173ME_883__ds96f175mqml.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B1,V345,DAC63202YBHR__dac63202w.pdf,Gold,已定稿,4,Batch3_B1_RESIGNED.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B2,V003,AM2431BSDFHIALXR__am2431.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B2,V011,CD54HC123F3A__cd54hc123.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B2,V038,ADC12QJ1600ALREP.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B2,V242,ADS131B26-Q1.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B2,V320,DAC3482IRKDR__slas748f.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B2,V346,ADS54J40IRMPT.pdf,Gold,已定稿,5,Batch3_B2_FINAL.csv,,PM 签字定稿，v1.6 机检通过
+已定稿 Gold,B3,V146,CY74FCT399ATSOCT__cy74fct399t.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+已定稿 Gold,B3,V244,AM1802BZWTD3__am1802.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+已定稿 Gold,B3,V256,BQ79652PAPRQ1.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+已定稿 Gold,B3,V271,DM3725CBC100__dm3725.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+已定稿 Gold,B4,V077,AM1707DZKB4.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,5 行；CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；PM 2026-11-12 15:32 逐格补签 approved_by
+已定稿 Gold,B4,V290,DS9638CMX_NOPB__DS9638.pdf,Gold,已定稿,3,Batch3_B4_FINAL.csv,,3 行（VIH / VIL×2）；VIL 两行按温度档绑定；II 一行由 PM 在签字件上删除，VIH 原表本就无条件是事实
+已定稿 Gold,DONE,V097,DEM-OPA-MSOP-2A__opa2830.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+已定稿 Gold,DONE,V101,CD74HCT574EE4__schs183c.pdf,Gold,已完成,9,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+已定稿 Gold,DONE,V111,DS90C189TWRTDTQ1.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+已定稿 Gold,DONE,V145,DAC8775IRWFR.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+已定稿 Gold,DONE,V162,74LVTH182504APMG4__sn74lvth18504a.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+已定稿 Gold,DONE,V349,ADC3544IRSBT__adc3544.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+排除 Gold 候选,B3,V222,AFE4462YBGR__afe4462.pdf,Gold,EXCLUDED,0,INDEX.md §15,文档内无标准参数表,9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气参数表
+排除 Gold 候选,B3,V328,CD4014BE__cd4014b.pdf,Gold,EXCLUDED,0,INDEX.md §15,电气特性页为扫描图,29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold
+排除 Gold 候选,B4,V041,CD4015BEE4__cd4015b.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,电气特性页为扫描图,电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold
+排除 Gold 候选,B4,V130,CSD17505Q5A__csd17505q5a.pdf,Gold,EXCLUDED,0,Batch3_B4_FINAL.xlsx,PM 裁定不纳入（非白名单参数，签字件已删除该件全部行）,PM 2026-11-12 15:32 在签字定稿件上删除该件全部 5 行：BVDSS / VGS(th) / RDS(on) / IDSS / IGSS 均为非白名单参数，不作 Gold 背书
+排除 Gold 候选,B4,V347,8418501HA__84185D.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,版式不支持稳定还原行序,版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评
+SCAN 排除,SCAN,S01,CY74FCT162827CTPAC__CYPRS379-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,6 页，sha256=0e0ac847ab07cb91…
+SCAN 排除,SCAN,S02,ATOPA4343NA_2K5__BURRS00055-1.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,11 页，sha256=055b0c8e47e82529…
+SCAN 排除,SCAN,S03,32P4752-CGT__SISYD006-4-73.pdf,SCAN,EXCLUDED,0,Batch3_SCAN_MANIFEST.csv,全书无文本层,53 页，sha256=6712c9281cfe063b…
+诊断件,DIAG,V022,CC2500EMK__cc2500.pdf,DIAGNOSTIC_ONLY,不参与 Gold,0,Gold_Set_v1.1_WORKING.csv,,指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出

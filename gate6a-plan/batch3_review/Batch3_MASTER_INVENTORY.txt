@@ -1,58 +1,57 @@
-Gate 6A · 33 件总清单（Batch 1–4 + SCAN + 诊断件）
-========================================================================
+Gate 6A · 33 件总清单（四分类口径）
+============================================================================
 
-[B1]
-  V173  74AHCT1G04DBVRE4__sn74ahct1g04.pdf 已定稿          3    PM 签字定稿，v1.6 机检通过
-  V199  CSD18504Q5AT__csd18504q5a.pdf      已定稿          5    PM 签字定稿，v1.6 机检通过
-  V304  74CB3T3306DCURE4__sn74cb3t3306.pdf 已定稿          3    PM 签字定稿，v1.6 机检通过
-  V319  5962-9688201Q2A__tlv2354.pdf       已定稿          4    PM 签字定稿，v1.6 机检通过
-  V336  DS96F173ME_883__ds96f175mqml.pdf   已定稿          4    PM 签字定稿，v1.6 机检通过
-  V345  DAC63202YBHR__dac63202w.pdf        已定稿          4    PM 签字定稿，v1.6 机检通过
+【已定稿 Gold】24 件
+----------------------------------------------------------------------------
+  V173  74AHCT1G04DBVRE4__sn74ahct1g04.p 已定稿      3    PM 签字定稿，v1.6 机检通过
+  V199  CSD18504Q5AT__csd18504q5a.pdf    已定稿      5    PM 签字定稿，v1.6 机检通过
+  V304  74CB3T3306DCURE4__sn74cb3t3306.p 已定稿      3    PM 签字定稿，v1.6 机检通过
+  V319  5962-9688201Q2A__tlv2354.pdf     已定稿      4    PM 签字定稿，v1.6 机检通过
+  V336  DS96F173ME_883__ds96f175mqml.pdf 已定稿      4    PM 签字定稿，v1.6 机检通过
+  V345  DAC63202YBHR__dac63202w.pdf      已定稿      4    PM 签字定稿，v1.6 机检通过
+  V003  AM2431BSDFHIALXR__am2431.pdf     已定稿      5    PM 签字定稿，v1.6 机检通过
+  V011  CD54HC123F3A__cd54hc123.pdf      已定稿      5    PM 签字定稿，v1.6 机检通过
+  V038  ADC12QJ1600ALREP.pdf             已定稿      5    PM 签字定稿，v1.6 机检通过
+  V242  ADS131B26-Q1.pdf                 已定稿      5    PM 签字定稿，v1.6 机检通过
+  V320  DAC3482IRKDR__slas748f.pdf       已定稿      5    PM 签字定稿，v1.6 机检通过
+  V346  ADS54J40IRMPT.pdf                已定稿      5    PM 签字定稿，v1.6 机检通过
+  V146  CY74FCT399ATSOCT__cy74fct399t.pd 已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
+  V244  AM1802BZWTD3__am1802.pdf         已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
+  V256  BQ79652PAPRQ1.pdf                已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
+  V271  DM3725CBC100__dm3725.pdf         已定稿      5    PM 补签 5 处，已封卷（commit 92f170c）
+  V077  AM1707DZKB4.pdf                  已定稿      5    5 行；CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 
+  V290  DS9638CMX_NOPB__DS9638.pdf       已定稿      3    3 行（VIH / VIL×2）；VIL 两行按温度档绑定；II 一行由 P
+  V097  DEM-OPA-MSOP-2A__opa2830.pdf     已完成      3    Batch 2 已定稿（24 行 Gold）
+  V101  CD74HCT574EE4__schs183c.pdf      已完成      9    Batch 2 已定稿（24 行 Gold）
+  V111  DS90C189TWRTDTQ1.pdf             已完成      3    Batch 2 已定稿（24 行 Gold）
+  V145  DAC8775IRWFR.pdf                 已完成      3    Batch 2 已定稿（24 行 Gold）
+  V162  74LVTH182504APMG4__sn74lvth18504 已完成      3    Batch 2 已定稿（24 行 Gold）
+  V349  ADC3544IRSBT__adc3544.pdf        已完成      3    Batch 2 已定稿（24 行 Gold）
 
-[B2]
-  V003  AM2431BSDFHIALXR__am2431.pdf       已定稿          5    PM 签字定稿，v1.6 机检通过
-  V011  CD54HC123F3A__cd54hc123.pdf        已定稿          5    PM 签字定稿，v1.6 机检通过
-  V038  ADC12QJ1600ALREP.pdf               已定稿          5    PM 签字定稿，v1.6 机检通过
-  V242  ADS131B26-Q1.pdf                   已定稿          5    PM 签字定稿，v1.6 机检通过
-  V320  DAC3482IRKDR__slas748f.pdf         已定稿          5    PM 签字定稿，v1.6 机检通过
-  V346  ADS54J40IRMPT.pdf                  已定稿          5    PM 签字定稿，v1.6 机检通过
+【排除 Gold 候选】5 件
+----------------------------------------------------------------------------
+  V222  AFE4462YBGR__afe4462.pdf         EXCLUDED -    9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无
+  V328  CD4014BE__cd4014b.pdf            EXCLUDED -    29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能
+  V041  CD4015BEE4__cd4015b.pdf          EXCLUDED -    电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建
+  V130  CSD17505Q5A__csd17505q5a.pdf     EXCLUDED -    PM 2026-11-12 15:32 在签字定稿件上删除该件全部 5 行：
+  V347  8418501HA__84185D.pdf            EXCLUDED -    版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规
 
-[B3]
-  V146  CY74FCT399ATSOCT__cy74fct399t.pdf  已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
-  V222  AFE4462YBGR__afe4462.pdf           EXCLUDED     -    9 页全为封装/板图/卷带资料，0.05 MIN/MAX 是机械尺寸标注，无电气
-  V244  AM1802BZWTD3__am1802.pdf           已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
-  V256  BQ79652PAPRQ1.pdf                  已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
-  V271  DM3725CBC100__dm3725.pdf           已定稿          5    PM 补签 5 处，已封卷（commit 92f170c）
-  V328  CD4014BE__cd4014b.pdf              EXCLUDED     -    29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，
+【SCAN 排除】3 件
+----------------------------------------------------------------------------
+  S01   CY74FCT162827CTPAC__CYPRS379-1.p EXCLUDED -    6 页，sha256=0e0ac847ab07cb91…
+  S02   ATOPA4343NA_2K5__BURRS00055-1.pd EXCLUDED -    11 页，sha256=055b0c8e47e82529…
+  S03   32P4752-CGT__SISYD006-4-73.pdf   EXCLUDED -    53 页，sha256=6712c9281cfe063b…
 
-[B4]
-  V041  CD4015BEE4__cd4015b.pdf            EXCLUDED     -    电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可
-  V077  AM1707DZKB4.pdf                    已定稿          5    CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V
-  V130  CSD17505Q5A__csd17505q5a.pdf       已定稿          5    5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
-  V290  DS9638CMX_NOPB__DS9638.pdf         已定稿          4    VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
-  V347  8418501HA__84185D.pdf              EXCLUDED     -    版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后
+【诊断件】1 件
+----------------------------------------------------------------------------
+  V022  CC2500EMK__cc2500.pdf            不参与 Gold -    指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
 
-[DIAG]
-  V022  CC2500EMK__cc2500.pdf              不参与 Gold     -    指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
-
-[DONE]
-  V097  DEM-OPA-MSOP-2A__opa2830.pdf       已完成          3    Batch 2 已定稿（24 行 Gold）
-  V101  CD74HCT574EE4__schs183c.pdf        已完成          9    Batch 2 已定稿（24 行 Gold）
-  V111  DS90C189TWRTDTQ1.pdf               已完成          3    Batch 2 已定稿（24 行 Gold）
-  V145  DAC8775IRWFR.pdf                   已完成          3    Batch 2 已定稿（24 行 Gold）
-  V162  74LVTH182504APMG4__sn74lvth18504a. 已完成          3    Batch 2 已定稿（24 行 Gold）
-  V349  ADC3544IRSBT__adc3544.pdf          已完成          3    Batch 2 已定稿（24 行 Gold）
-
-[SCAN]
-  S01   CY74FCT162827CTPAC__CYPRS379-1.pdf EXCLUDED     -    6 页，sha256=0e0ac847ab07cb91…
-  S02   ATOPA4343NA_2K5__BURRS00055-1.pdf  EXCLUDED     -    11 页，sha256=055b0c8e47e82529…
-  S03   32P4752-CGT__SISYD006-4-73.pdf     EXCLUDED     -    53 页，sha256=6712c9281cfe063b…
-
-------------------------------------------------------------------------
-件数：33（Gold 参与件 29 + SCAN 3 + 诊断件 1）
-Gold 行数合计：111
+----------------------------------------------------------------------------
+合计：33 件 = 已定稿 Gold 24 + 排除 Gold 候选 5 + SCAN 排除 3 + 诊断件 1
+Gold 内部批次：Batch2 6 + B1 6 + B2 6 + B3 4 + B4 2（合计 24）
+Gold 行数合计：105
   B1                6 件  23 行
   B2                6 件  30 行
   B3                4 件  20 行
-  B4                3 件  14 行
+  B4                2 件   8 行
   Batch2 Gold v1    6 件  24 行

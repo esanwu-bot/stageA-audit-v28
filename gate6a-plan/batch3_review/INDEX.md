@@ -1337,3 +1337,209 @@ B4 三件从「待签字」改为「已定稿」，数据源从 `Batch3_B4_DRAFT
 33 件里 29 件已定稿（含 4 件 EXCLUDED 与 3 件 SCAN、1 件诊断件不参与分母），
 没有未签的 Gold 行。Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
 更新并 push。两仓 main 本轮仍未动。
+
+---
+
+## 21. Reviewer 三处 P0 修复（第十三轮）
+
+复审给出三条 P0：V130 五行缺 TEST CONDITIONS、B4 签字源入口没走硬哈希闸门、
+33 件总清单把诊断件与排除件混在一张账上。本节记录修复与验证方式。
+
+### 21.1 P0-1：V130 五行的 TEST CONDITIONS
+
+原图 `CSD17505Q5A__csd17505q5a.pdf` 第 2 页 ELECTRICAL CHARACTERISTICS 表，
+Conditions 列逐字照录（不做同义改写）：
+
+| Symbol | TEST CONDITIONS |
+| --- | --- |
+| `BVDSS` | `VGS = 0V, IDS = 250μA` |
+| `IDSS` | `VGS = 0V, VDS = 24V` |
+| `IGSS` | `VDS = 0V, VGS = 20V` |
+| `VGS(th)` | `VDS = VGS, IDS = 250μA` |
+| `RDS(on)` | `VGS = 4.5V, IDS = 20A` |
+
+两道机械保证：
+
+* **`MUST_HAVE_COND`**：`{"V130": {BVDSS, IDSS, IGSS, VGS(th), RDS(on)}}`。
+  出草稿前，这五个符号缺任一 condition、或某个符号整行缺失，一律 `SystemExit`。
+* **回原文核断言**：condition 必须能在该证据页文本里找到。归一化只做
+  `°→o` 与空白折叠；本轮新增一道「去掉全部空白」的兜底 —— PDF 文本层会把下标
+  拆成 `V C C = Max`，这是排版空隙而非差异。
+
+顺带查出两件事，一并处置：
+
+1. **V130 的 RDS(on) 原表有两行**：`VGS = 4.5V, IDS = 20A` → 3.7 / 4.6 mΩ，
+   `VGS = 10V, IDS = 20A` → 2.9 / 3.5 mΩ。5 行预算只收了 4.5 V 那行，
+   已在圈选台 `EXTRA_ROWS_NOTE` 里写明未收进草稿的是哪一行，供 PM 决定是否补收。
+2. **V290 的 `II` 是同一类缺陷**：原表 Conditions 写着 `VCC = Max, VI Max = 5.5V`，
+   VLM 漏抄，已按原文补录；同表 `VIH`（Input Voltage HIGH）原表本来就没给条件，
+   保持为空**不是漏填**，`WARN_BANNER` 已写明，避免下次又被当成缺陷。
+
+### 21.2 P0-2：签字源入口闸门
+
+`_make_b4_final.main()` 的第一件事就是
+`B3.guard_sealed(SIGNED, SEALED_SHA_B4)`，通过之后才 `SIGNED.exists()` 与读内容。
+闸门失败包一层 `SystemExit("签字源校验失败，拒绝继续：…")`，错误前缀固定，便于断言。
+
+负向回归 `_test_b4_signed_gate.py`（报告 `Batch3_b4_signed_gate_test.txt`），
+**13 项断言全 PASS**：
+
+| 用例 | 期望 | 结果 |
+| --- | --- | --- |
+| 1 登记一致 | 放行并跑通 `main()` | PASS |
+| 1a 放行后 V130 五行 condition 非空 | 5/5 | PASS |
+| 1b V130 五行 `entered_by=WB_Agent` | 5/5 | PASS |
+| 1c V130 五行 notes 带补录前缀 | 5/5 | PASS |
+| 1d V290 `II` 条件已补 | `VCC = Max, VI Max = 5.5V` | PASS |
+| 2 篡改后哈希确实变了 | 是 | PASS |
+| 2a 篡改签字源 | 拦下 | PASS |
+| 2b **是闸门拦的（先于内容校验）** | 错误以「签字源校验失败」开头 | PASS |
+| 2c 拦下后没有产出 FINAL | 无文件 | PASS |
+| 3 签字源缺失 | 拦下（不允许凭生成器重造） | PASS |
+| 4 登记里哈希为空 | 拦下（不默认放行） | PASS |
+| 5 未登记的文件名 | 放行（`write`） | PASS |
+| 6 真实签字源 vs 出厂登记 | 一致 | PASS |
+
+**2b 是这套测试的关键**：篡改的是 `confidence_score` 一个数值格，
+`load_signed()` 完全能通过 —— 如果报错来自内容校验而不是闸门，就说明闸门放得太晚。
+实测错误信息以「签字源校验失败」开头，证明闸门确实在读内容之前。
+
+### 21.3 P0-3：33 件总清单改四分法
+
+此前按 `batch` 分组，V022（诊断件）与 V328（排除件）落在同一张账上，
+Reviewer 判为分类错误。改为 Reviewer 定稿的四分法：
+
+| 分类 | 件数 | 成员 |
+| --- | --- | --- |
+| 已定稿 Gold | **25** | Batch2 6 + B1 6 + B2 6 + B3 4 + B4 3 |
+| 排除 Gold 候选 | **4** | V222 / V328 / V041 / V347 |
+| SCAN 排除 | **3** | S01 / S02 / S03 |
+| 诊断件 | **1** | V022 |
+| 合计 | **33** | |
+
+`_make_master_inventory.py` 加五条硬断言：
+
+1. 四类并集 = 全表，不允许出现四类之外的取值；
+2. 各类件数恰为 25 / 4 / 3 / 1，四类合计 33；
+3. 四类样本集合两两无交集（互不重叠）；
+4. 成员集合写死比对：排除候选 `{V222,V328,V041,V347}`、SCAN `{S01,S02,S03}`、
+   诊断 `{V022}` —— 分类再漂就直接报错；
+5. Gold 内部按批次 6+6+6+4+3。
+
+实跑结果：合计 33 件，Gold 行数 111，与各批 CSV 逐一相符。
+
+### 21.4 封卷登记主动撤销（如实记录）
+
+V130 的 5 条 condition 与 V290 的 `II` 是 **WB 按原图补录、PM 尚未复核**，
+不能当成「已签内容」登记哈希。处置：
+
+* `SEALED_SHA_B4` 只保留签字源一件
+  （`Batch3_B4_ANNOTATED.xlsx` = `cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2`）；
+* 上一轮登记的 FINAL 三件移入 `NO_LONGER_SEALED`，留档备查、不再作为放行依据；
+* 补录行标 `entered_by=WB_Agent`，notes 前置
+  `【condition 由 WB 按原图补录，待 PM 复核】`；
+* `approved_by` 仍整列为空 —— 不代签、也不假装签过。
+
+也就是说：**本轮定稿处于「已修复、待重签」状态**，封卷要等 PM 在补录版上重新签字。
+
+### 21.5 与上一版定稿的逐格差异
+
+干跑比对新旧 19 列定稿：14 行结构不变，仅 6 行（V130 五行 + V290 `II`）
+各有 3 格变化，合计 **18 格**，全部落在 `condition` / `notes` / `entered_by`：
+
+| 行 | condition | notes | entered_by |
+| --- | --- | --- | --- |
+| V130 BVDSS | `'' → VGS = 0V, IDS = 250μA` | 前置补录前缀 | `'' → WB_Agent` |
+| V130 VGS(th) | `'' → VDS = VGS, IDS = 250μA` | 同上 | 同上 |
+| V130 RDS(on) | `'' → VGS = 4.5V, IDS = 20A` | 同上 | 同上 |
+| V130 IDSS | `'' → VGS = 0V, VDS = 24V` | 同上 | 同上 |
+| V130 IGSS | `'' → VDS = 0V, VGS = 20V` | 同上 | 同上 |
+| V290 II | `'' → VCC = Max, VI Max = 5.5V` | 同上 | 同上 |
+
+V077 五行、V290 `VIL` 两行与 `VIH`、以及所有 min/typ/max/unit 一格未动。
+
+### 21.6 PM 直接在签字件上改稿（15:30 / 15:32）
+
+21.5 之后，PM 没有在草稿上重签，而是**直接在 19 列定稿件上动手**，分两次保存：
+
+| 时间 | 动作 |
+| --- | --- |
+| 15:30:11 | 删除 6 行 |
+| 15:32:56 | 剩余 8 行逐格补签 `approved_by` |
+
+被删的 6 行，正是上一轮由 WB 按原图补录 condition 的那些行：
+
+| 样本 | Symbol | 值 | 删除前的 condition |
+| --- | --- | --- | --- |
+| V130 | `BVDSS` | 30 / – / – V | WB 补录 `VGS = 0V, IDS = 250μA` |
+| V130 | `VGS(th)` | 1 / 1.3 / 1.8 V | WB 补录 `VDS = VGS, IDS = 250μA` |
+| V130 | `RDS(on)` | – / 3.7 / 4.6 mΩ | WB 补录 `VGS = 4.5V, IDS = 20A` |
+| V130 | `IDSS` | – / – / 1 μA | WB 补录 `VGS = 0V, VDS = 24V` |
+| V130 | `IGSS` | – / – / 100 nA | WB 补录 `VDS = 0V, VGS = 20V` |
+| V290 | `II` | – / – / 50 μA | WB 补录 `VCC = Max, VI Max = 5.5V` |
+
+读法很清楚：PM 不接受「由 WB 补录条件」的行，直接删除，而不是逐格复核后签字。
+这是 PM 的处置权；WB 不做二次解释，只如实记录并让下游跟着变。
+
+签字件终态：
+
+| 项目 | 值 |
+| --- | --- |
+| 文件 | `Batch3_B4_FINAL.xlsx` |
+| 保存时间 | 2026-11-12 15:32:56 |
+| SHA-256 | `685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e` |
+| 字节 | 10616 |
+| 结构 | 1 个工作表、19 列、表头 + **8 行**、无隐藏行 |
+| 行状态 | 8/8 `CONFIRMED` |
+| 签字 | `reviewer` = `approved_by` = `wuxiaoxian`（8/8） |
+| `entered_by` | 全空（PM 亲手签，不经 WB 代录继承） |
+
+定稿内容：V077 五行（CVDD/RVDD 按 375·456 MHz 分行、DVDD 锚 1.8V I/O）+
+V290 三行（VIH、VIL 两档）。
+
+### 21.7 定稿事实源切换与旧链路停用
+
+签字件变成 `FINAL.xlsx` 本身之后，原链路（`ANNOTATED` → `FINAL`）会按 14 行重造，
+把 PM 的删行与签名一起覆盖。处置：
+
+* 新增 `_final_from_signed_xlsx.py`：以签字 xlsx 为唯一事实源，只向下游派生
+  `Batch3_B4_FINAL.csv` / `page_text_batch3_b4.json` / `Batch3_B4_PDF_PROVENANCE.csv`，
+  **不回写 xlsx 一个字节**；
+* 脚本内置 `SIGNED_SHA`：签字件字节一变就停，不许拿来历不明的定稿件派生；
+* `_make_b4_final.py` 顶部加 `SUPERSEDED` 停用闸，一跑就 `SystemExit` 并指向新脚本；
+* 落盘后回读断言：19 列同序、8 行、每格与 xlsx 完全一致；CSV 换行统一 BOM + CRLF
+  （与 B3/B4 历史定稿一致，不混裸 LF）。
+
+闸门回归 `_test_b4_signed_gate.py` 扩到 **15 项断言全 PASS**，新增用例 7/7a
+专门验证「停用闸生效、且不产出任何文件」。
+
+### 21.8 机检与产物哈希
+
+| 项目 | 结果 |
+| --- | --- |
+| v1.6 PDF 模式（`--pdf-dir b4_pdfs`，实算哈希） | **`OK=8`**，无 ERROR |
+| v1.6 离线模式（用随包 sidecar） | **`OK=8`**，无 ERROR |
+| 数值分类 | 数值 18 |
+
+| 产物 | SHA-256 |
+| --- | --- |
+| `Batch3_B4_FINAL.xlsx` | `685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e`（签字件，未改写） |
+| `Batch3_B4_FINAL.csv` | `096ff7c068d01bbedeb0d392e1df9bad12e47baa0c45acfe3fe28ef2618927f9` |
+
+### 21.9 由此产生的口径变化（须 Reviewer 判定）
+
+1. **B4 由 14 行 3 件降为 8 行 2 件。**
+2. **V130 在 Gold 里不再有任何行**，整件移入「排除 Gold 候选」。排除理由属
+   **范围决定**（PM 不纳入），不是流程能力不足，因此新增第四类话术：
+
+   ```
+   PM 裁定不纳入（非白名单参数，签字件已删除该件全部行）
+   ```
+
+   这与 Reviewer 定稿的三类（版式不支持 / 扫描图 / 无文本层）性质不同，
+   **是否接受该分类由 Reviewer 判定**，本轮不自行并入那三类。
+3. 33 件四分法件数由 **25 / 4 / 3 / 1 → 24 / 5 / 3 / 1**；
+   Gold 内部批次 6+6+6+4+3 → **6+6+6+4+2**。
+4. Gold 行数合计 **111 → 105**。
+5. `_make_master_inventory.py` 的断言同步改为 24/5/3/1 与 6+6+6+4+2，
+   并把 `V130` 写进 `EXPECT_EXCL` 固定集合 —— 分类再漂就直接报错。
