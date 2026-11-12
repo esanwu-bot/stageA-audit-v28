@@ -60,6 +60,17 @@ SYNC = [
     "annotation_reports/V003/b3_AMR_p0101.png",
     "annotation_reports/V003/b3_ROC_p0105.png",
     "annotation_reports/V003/b3_ROC_p0106.png",
+    # 第六轮：B2 授权链封卷（错位撤销 → 正确补签 → 最终机检）
+    "Batch3_B2_FINAL_TO_SIGN.xlsx",
+    "Batch3_B2_FINAL_SIGNED_correct.xlsx",
+    "Batch3_B2_FINAL_SIGNED_approval.xlsx",
+    "Batch3_B2_FINAL_pre_approval.xlsx",
+    "Batch3_B2_APPROVAL_TARGETS.txt",
+    "Batch3_B2_approval_revoke_note.txt",
+    "Batch3_B2_approval_authorization.txt",
+    "_sync_b2_approval.py",
+    "_b2_approval_reset.py",
+    "_b2_final_seal.py",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
 EXCLUDE = {"SHA256SUMS.txt", "Batch3_review.zip"}

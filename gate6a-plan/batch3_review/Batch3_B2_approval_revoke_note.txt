@@ -1,0 +1,21 @@
+Batch 3 B2 授权链签字撤销留痕
+时间：2026-11-12 09:52（PM 主动发现并要求）
+原因：PM 09:48 在 approved_by 列签的 7 处 wuxiaoxian 落点错位。
+      实际签字行（数据行）：[8, 9, 22, 23, 24, 25, 26]
+      真正需要逐行复核的代录进行（数据行）：[8, 9, 16, 17, 18, 19, 20]
+      仅数据行 8/9 重合；数据行 22/23/24/25/26（V003 四行、V011 一行）并非 WB 代录入，数据行 16-20（V242 五行）反而漏签。
+处置：按 PM 指令把 7 处 approved_by 全部清空，恢复到封卷前状态；
+      PM 对照 PDF 原图重新核一遍后，在正确行号上补 approved_by=wuxiaoxian。
+留痕文件：Batch3_B2_FINAL_SIGNED_approval.xlsx（错签版原件，逐格未改）
+          Batch3_B2_FINAL_pre_approval.xlsx（封卷前无签名版，逐格未改）
+========================================================================
+被撤销的 7 处（数据行 / Excel 行 / 样本 / symbol / 原值）：
+  数据行8   Excel行9   V320  DACVDD, DIGVDD, CLKVDD          'wuxiaoxian' -> 空
+  数据行9   Excel行10  V320  AVDD, PLLAVDD                   'wuxiaoxian' -> 空
+  数据行22  Excel行23  V003  VDDR_CORE                       'wuxiaoxian' -> 空
+  数据行23  Excel行24  V003  VDDSHV5                         'wuxiaoxian' -> 空
+  数据行24  Excel行25  V003  TJ                              'wuxiaoxian' -> 空
+  数据行25  Excel行26  V003  VDD_CORE                        'wuxiaoxian' -> 空
+  数据行26  Excel行27  V011  VIH                             'wuxiaoxian' -> 空
+========================================================================
+待补签 7 行见 Batch3_B2_APPROVAL_TARGETS.txt / Batch3_B2_FINAL_TO_SIGN.xlsx

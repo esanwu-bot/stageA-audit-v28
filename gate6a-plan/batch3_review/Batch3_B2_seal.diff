@@ -1,0 +1,421 @@
+Batch 3 第六轮封卷真实代码 / 数据差异
+生成方式：git diff HEAD（HEAD 为封卷前提交 6107ab7ac488696e53e434ca2f3ceb48653a7c62）
+说明：只列文本文件的完整 diff；二进制 xlsx / PNG / ZIP 见下方变更清单。
+下方 stat / status 为生成时刻快照；SHA256SUMS.txt 与 Batch3_review.zip 在最终
+打包时会二次重建，其字节数以包内最终 SHA256SUMS.txt 为准。
+
+=== git diff --stat HEAD ===
+ gate6a-plan/batch3_review/Batch3_B2_FINAL.csv      |  14 ++--
+ gate6a-plan/batch3_review/Batch3_B2_FINAL.xlsx     | Bin 8326 -> 8339 bytes
+ .../batch3_review/Batch3_B2_validation_report.txt  |  35 +++++++--
+ gate6a-plan/batch3_review/Batch3_review.zip        | Bin 7695038 -> 7766496 bytes
+ gate6a-plan/batch3_review/INDEX.md                 |  86 +++++++++++++++++++--
+ gate6a-plan/batch3_review/SHA256SUMS.txt           |  25 ++++--
+ .../batch3_review/_build_batch3_b2_report.py       |  35 +++++++--
+ gate6a-plan/batch3_review/_make_b2_final.py        |  37 +++++++--
+ gate6a-plan/batch3_review/_sync_batch3_review.py   |  11 +++
+ 9 files changed, 206 insertions(+), 37 deletions(-)
+
+=== git status --porcelain=v1（全部变更文件，含新增） ===
+ M gate6a-plan/batch3_review/Batch3_B2_FINAL.csv
+ M gate6a-plan/batch3_review/Batch3_B2_FINAL.xlsx
+ M gate6a-plan/batch3_review/Batch3_B2_validation_report.txt
+ M gate6a-plan/batch3_review/Batch3_review.zip
+ M gate6a-plan/batch3_review/INDEX.md
+ M gate6a-plan/batch3_review/SHA256SUMS.txt
+ M gate6a-plan/batch3_review/_build_batch3_b2_report.py
+ M gate6a-plan/batch3_review/_make_b2_final.py
+ M gate6a-plan/batch3_review/_sync_batch3_review.py
+?? gate6a-plan/batch3_review/Batch3_B2_APPROVAL_TARGETS.txt
+?? gate6a-plan/batch3_review/Batch3_B2_FINAL_SIGNED_approval.xlsx
+?? gate6a-plan/batch3_review/Batch3_B2_FINAL_SIGNED_correct.xlsx
+?? gate6a-plan/batch3_review/Batch3_B2_FINAL_TO_SIGN.xlsx
+?? gate6a-plan/batch3_review/Batch3_B2_FINAL_pre_approval.xlsx
+?? gate6a-plan/batch3_review/Batch3_B2_approval_authorization.txt
+?? gate6a-plan/batch3_review/Batch3_B2_approval_revoke_note.txt
+?? gate6a-plan/batch3_review/Batch3_B2_seal.diff
+?? gate6a-plan/batch3_review/_b2_approval_reset.py
+?? gate6a-plan/batch3_review/_b2_final_seal.py
+?? gate6a-plan/batch3_review/_sync_b2_approval.py
+
+=== git diff HEAD（文本文件完整内容） ===
+diff --git a/gate6a-plan/batch3_review/Batch3_B2_FINAL.csv b/gate6a-plan/batch3_review/Batch3_B2_FINAL.csv
+index 8f14c84..150fe23 100644
+--- a/gate6a-plan/batch3_review/Batch3_B2_FINAL.csv
++++ b/gate6a-plan/batch3_review/Batch3_B2_FINAL.csv
+@@ -6,19 +6,19 @@ V038,ADC12QJ1600ALREP.pdf,9,Absolute Maximum Ratings,VTRIG,Supply voltage range,
+ V038,ADC12QJ1600ALREP.pdf,9,Absolute Maximum Ratings,VA11,Supply voltage range,-0.3,,1.32,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADC12QJ1600-EP,
+ V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,VFUSE,Supply voltage,-0.5,,1.5,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DAC3482,
+ V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,IOVDD,Supply voltage,-0.5,,4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DAC3482,
+-V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,"DACVDD, DIGVDD, CLKVDD",Supply voltage,-0.5,,1.5,V,over operating free-air temperature range (unless otherwise noted),CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,DAC3482,
+-V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,"AVDD, PLLAVDD",Supply voltage,-0.5,,4,V,over operating free-air temperature range (unless otherwise noted),CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,DAC3482,
++V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,"DACVDD, DIGVDD, CLKVDD",Supply voltage,-0.5,,1.5,V,over operating free-air temperature range (unless otherwise noted),CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,DAC3482,
++V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,"AVDD, PLLAVDD",Supply voltage,-0.5,,4,V,over operating free-air temperature range (unless otherwise noted),CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,DAC3482,
+ V320,DAC3482IRKDR__slas748f.pdf,12,Recommended Operating Conditions,V(ESD),Electrostatic discharge,,,±2000,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DAC3482,
+ V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,AVDD3V,Supply voltage range,-0.3,,3.6,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
+ V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,AVDD,Supply voltage range,-0.3,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
+ V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,DVDD,Supply voltage range,-0.3,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
+ V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,IOVDD,Supply voltage range,-0.2,,1.4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
+ V346,ADS54J40IRMPT.pdf,9,Recommended Operating Conditions,AVDD3V,Supply voltage range,2.85,3,3.6,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
+-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,APWR to AGND,Power-supply voltage,-0.3,,20,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,DPWR to DGND,Power-supply voltage,-0.3,,20,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,"AGND, AGNDy to DGND",Power-supply voltage,-0.3,,0.3,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,AVDD to AGND,Power-supply voltage,-0.3,,4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,IOVDD to DGND,Power-supply voltage,-0.3,,7,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
++V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,APWR to AGND,Power-supply voltage,-0.3,,20,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,
++V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,DPWR to DGND,Power-supply voltage,-0.3,,20,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,
++V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,"AGND, AGNDy to DGND",Power-supply voltage,-0.3,,0.3,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,
++V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,AVDD to AGND,Power-supply voltage,-0.3,,4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,
++V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,IOVDD to DGND,Power-supply voltage,-0.3,,7,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,
+ V003,AM2431BSDFHIALXR__am2431.pdf,105,Recommended Operating Conditions,VDD_CORE,Core supply,0.81,0.85,0.895,V,Recommended Operating Conditions,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.6,AM2431,
+ V003,AM2431BSDFHIALXR__am2431.pdf,105,Recommended Operating Conditions,VDDR_CORE,RAM supply,0.81,0.85,0.895,V,Recommended Operating Conditions,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.6,AM2431,
+ V003,AM2431BSDFHIALXR__am2431.pdf,106,Recommended Operating Conditions,VDDSHV5,Dual-voltage IO supply,1.71,1.8,1.89,V,1.8V Operation,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.6,AM2431,
+diff --git a/gate6a-plan/batch3_review/Batch3_B2_validation_report.txt b/gate6a-plan/batch3_review/Batch3_B2_validation_report.txt
+index 1073251..00e0df8 100644
+--- a/gate6a-plan/batch3_review/Batch3_B2_validation_report.txt
++++ b/gate6a-plan/batch3_review/Batch3_B2_validation_report.txt
+@@ -2,9 +2,10 @@
+ Batch 3 · B2 人工签字定稿 —— v1.6 验证器机检报告
+ ==============================================================================
+ 
+-真源：./Batch3_B2_SIGNED_original.xlsx（PM 签字的 xlsx 原件副本，30 行 × 15 列，逐格未改）
++签字真源（15 列原件）：./Batch3_B2_SIGNED_original.xlsx（PM 点选签字原件副本，逐格未改）
++授权真源（19 列补签）：./Batch3_B2_FINAL_TO_SIGN.xlsx（PM 在 7 个标红格补签 approved_by）
+       同目录 Excel 另存的 .csv 不作为真源（GBK 编码 / 导出格式）。
+-定稿：./Batch3_B2_FINAL.xlsx（30 行 × 19 列；同名 .csv 逐格同源，为验证器输入）
++封卷定稿：./Batch3_B2_FINAL.xlsx（30 行 × 19 列；同名 .csv 逐格同源，为验证器输入）
+ 签字：reviewer=wuxiaoxian，30 行全部 CONFIRMED，6 件 × 5 行
+       table_title 分布：Absolute Maximum Ratings 24 / Recommended Operating Conditions 6
+ 机检对象 = 定稿 30 行 / 6 样本（V038 V320 V346 V242 V003 V011）。
+@@ -34,10 +35,11 @@ A.3 7 行符号回填（Reviewer 第五轮，不再使用裁定码）
+     保留原表的逗号 / `to` 写法，不改成 `符号1; 符号2`：分号不在 PDF 原文里，
+     会让 v1.6 的 check_symbol() 找不到符号。7 个符号与 V320 的全表条件
+     都做了 nos(symbol) in nos(页文本) 原文断言后才允许落盘。
+-    授权链：这 7 行由 WB 按原文回填，尚未经 PM 逐行复核，故
+-    approved_by 留空、entered_by=WB_Agent；reviewer 仍是 PM 对整表的签字，
+-    不擅自撤销、也不冒充人工已逐行确认。human_adjudication 全表清空。
+-    ※ 请 PM 对这 7 行逐行复核后确认；如需改动可直接告知，不改动机检判据。
++    授权链（封卷状态）：7 行由 WB 按原文回填，entered_by=WB_Agent；
++    PM 2026-11-12 10:05 明确授权「在正确位置，签署 wuxiaoxian」，并已在
++    标红版 7 个红格补签 approved_by=wuxiaoxian（数据行 8/9/16/17/18/19/20，
++    与 entered_by=WB_Agent 的 7 行完全重合）。reviewer 仍是 PM 对整表签字，
++    其余 23 行 approved_by 保持空白；human_adjudication 全表清空。
+ A.4 3 件签字版 file_name 是简写，语料目录无同名文件：
+       ADC12QJ1600ALREP.pdf → ADC12QJ1600ALREP__adc12qj1600-ep.pdf
+       ADS54J40IRMPT.pdf    → ADS54J40IRMPT__ads54j40.pdf
+@@ -56,9 +58,28 @@ A.5 逐格断言：原 15 列里只有三列允许改 —— notes（30 行）
+     四列，与 B1 定稿的 19 列结构对齐。
+     型号取各 PDF 第 1 页封面原文；V003 封面只印族名 AM243x，
+     另有「AM2434, AM2432, AM2431」一行，故登记为 AM2431。
++    封卷时相对上一版仅 approved_by 一列有 7 处变化，其余 18 列逐格断言零差异。
+ A.6 溯源三处互校：CSV ↔ sidecar 比 file_name / device_model；
+     sidecar ↔ provenance 比 file_name / device_model / sha256 / page_count；
+     sha256 与页数从磁盘原件实算，页文本逐页抽取，PDF 模式再复算一次哈希。
++A.7 授权链封卷全过程（错位 → 撤销 → 正确补签，全程留痕）
++    09:48 PM 首次在 approved_by 列签 7 处，落点为数据行
++      8/9/22/23/24/25/26，其中 5 行并非 WB 代录进行，V242 五行反而漏签。
++    09:52 PM 主动发现并要求全部清空、恢复原样；WB 按指令撤销，主定稿
++      恢复到与已推送 6107ab7 逐字节一致，未产生新提交。
++    10:03 PM 在 WB 提供的标红版 Batch3_B2_FINAL_TO_SIGN.xlsx 中自行补签；
++    10:05 PM 再次授权 WB 在正确位置落签。WB 实测 PM 已填的 7 行恰为
++      数据行 8/9/16/17/18/19/20（Excel 行 9/10/17/18/19/20/21），
++      与 entered_by=WB_Agent 完全重合，故不再代填、不改写任何人工签名，
++      只做逐格复核并同步封卷定稿。全过程留痕：
++      ./Batch3_B2_FINAL_SIGNED_approval.xlsx  09:48 错签原件
++      ./Batch3_B2_FINAL_pre_approval.xlsx     封卷前无签名版
++      ./Batch3_B2_approval_revoke_note.txt    撤销说明
++      ./Batch3_B2_FINAL_TO_SIGN.xlsx          PM 正确补签原件（唯一授权真源）
++      ./Batch3_B2_FINAL_SIGNED_correct.xlsx  同字节留痕副本
++      ./Batch3_B2_APPROVAL_TARGETS.txt       7 行补签清单与 Excel 行号
++      ./Batch3_B2_approval_authorization.txt 授权链封卷记录
++    B1 已冻结，本轮未改动；两仓 main 未动。
+ 
+ B. 机检原始输出（未编辑）
+ ------------------------------------------------------------------------------
+@@ -180,6 +201,8 @@ C. 结论
+   PDF 模式与离线 sidecar 模式均为 OK=30 / SUSPECT=0 / ERROR=0，退出码 0。
+   7 行符号已按 PDF 原文回填，human_adjudication 全表清空，不再依赖裁定码；
+   达成 PM 要求的 OK=30 / ERROR=0，没有靠关闭或放宽任何一条 v1.6 判据。
++  封卷授权链已闭合：approved_by 7 行与 entered_by=WB_Agent 7 行完全对齐，
++  其余 23 行为空；主 xlsx / CSV / PM 补签原件三方逐格一致。
+   B2 定稿文件与本报告一并打包，审计包里不再只有 DRAFT 版。
+ 
+ D. 清理前的 30 行 notes 留痕（逐行）
+diff --git a/gate6a-plan/batch3_review/INDEX.md b/gate6a-plan/batch3_review/INDEX.md
+index e97bdd2..d1cf1b1 100644
+--- a/gate6a-plan/batch3_review/INDEX.md
++++ b/gate6a-plan/batch3_review/INDEX.md
+@@ -8,8 +8,10 @@ main SHA，详见第 9 节。
+ 2026-11-12 第三轮追加：修复 CORE_ORDER 通用正则漏洞并加固 prescan3，见第 10 节。
+ 2026-11-12 第四轮追加：清理 B1 过期备注、交付 B2 最终版与机检、
+ 补齐 prescan3 四个极端场景回归，见第 11、12 节。
+-2026-11-12 第五轮追加（本版）：B2 七行符号按 PDF 原图回填（不再用裁定码）、
++2026-11-12 第五轮追加：B2 七行符号按 PDF 原图回填（不再用裁定码）、
+ 修复 prescan3 边框表格与标题的空间关联并补两个极端测试，见第 13 节。
++2026-11-12 第六轮追加（本版·封卷）：B2 七行 `approved_by` 授权链闭合
++（错位撤销 → 正确补签 → 最终机检），见第 14 节。
+ 
+ ## 0. 一句话结论
+ 
+@@ -98,8 +100,9 @@ SHA-256 / 页数从磁盘原件实算，页文本逐页抽取，PDF 模式再用
+   `1.8V Operation`（p106 原文确有独立一行，脚本逐行断言后才落盘）。
+ - 7 行 symbol 已按 PDF 原图逐字回填（V320 两行、V242 五行），`condition`
+   只留真正的测试条件；`human_adjudication` 全表清空，不再依赖裁定码。
+-  7 行由 WB 代录入（`entered_by=WB_Agent`、`approved_by` 留空），
+-  **尚待 PM 逐行复核**，详见 `Batch3_B2_validation_report.txt` A.3 与第 13 节。
++  7 行由 WB 代录入（`entered_by=WB_Agent`）；第六轮 PM 已明确授权并在正确
++  7 行补签 `approved_by=wuxiaoxian`，授权链闭合，详见第 14 节与
++  `Batch3_B2_validation_report.txt` A.3 / A.7。
+ - 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
+ 
+ ## 5. 目录
+@@ -520,9 +523,10 @@ PM 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等
+ - 保留原表逗号 / `to` 写法，不改成 `符号1; 符号2`：分号不在 PDF 原文里，
+   会让 v1.6 的 `check_symbol()` 找不到符号。7 个符号与 V320 全表条件都做了
+   `nos(值) in nos(页文本)` 原文断言后才落盘。
+-- **授权链与复核请求**：回填由 WB 完成，7 行 `entered_by=WB_Agent`、
+-  `approved_by` 留空；`reviewer` 仍是 PM 对整表的签字，不擅自撤销、
+-  也不冒充人工已逐行确认。请 PM 对这 7 行逐行复核后确认。
++- **授权链**：回填由 WB 完成，7 行 `entered_by=WB_Agent`；第五轮时
++  `approved_by` 为空、需 PM 逐行确认，`reviewer` 仍是 PM 对整表的签字，
++  不擅自撤销、也不冒充人工已逐行确认。**该复核请求已在第六轮闭合，见第 14 节**
++  （PM 明确授权并在正确 7 行补签 `approved_by=wuxiaoxian`）。
+ - 其余 23 行的 symbol / condition 一字未动；30 行的 min/typ/max、unit、
+   evidence_page、table_title、row_status、reviewer、confidence_score 一字未动。
+ - 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
+@@ -570,3 +574,73 @@ Reviewer 反例的无关表格在页底 y0=400，离页顶标题 328pt，仍被
+ 
+ 真实补丁：`Batch3_CORE_ORDER_fix.diff`（累计 692 行 / 640 行新增）、
+ `Batch3_prescan3_extreme_fix.diff`（第五轮增量 247 行 / 156 行新增）。
++
++---
++
++## 14. 第六轮（封卷）：B2 授权链闭合与最终机检
++
++2026-11-12 10:05，PM 明确授权「在正确位置，签署 wuxiaoxian」。
++本轮**不改任何核心数值、不改生成器判据、不动 B1、不动两仓 main**，
++只闭合 B2 七行 `approved_by` 的授权链并封卷。
++
++### 14.1 为什么需要这一轮
++
++第五轮把 V320 两行、V242 五行的 `symbol` 从 PDF 原文回填后，这 7 行由 WB
++代录入（`entered_by=WB_Agent`），`approved_by` 为空，需 PM 逐行确认。
++PM 09:48 首次补签时，7 处 `wuxiaoxian` 落在数据行 `8/9/22/23/24/25/26`
++（V320 两行 + V003 四行 + V011 一行），其中 5 行并非代录进行，而真正需要
++复核的 V242 五行（数据行 `16/17/18/19/20`）反而漏签。
++
++### 14.2 处置全过程（全留痕，不粉饰）
++
++| 时间 | 动作 | 结果 |
++| --- | --- | --- |
++| 09:48 | PM 首次补签 7 处 | 落点错位，原件留存于 `Batch3_B2_FINAL_SIGNED_approval.xlsx` |
++| 09:52 | PM 主动要求全部清空、恢复原样 | WB 用 `_b2_approval_reset.py` 从封卷前快照恢复；主定稿与 `6107ab7` 逐字节一致，**未产生新提交** |
++| 09:52 | WB 给出 7 行标红清单 | `Batch3_B2_FINAL_TO_SIGN.xlsx` + `Batch3_B2_APPROVAL_TARGETS.txt` + V320 p12 / V242 p6 两张原表裁图 |
++| 10:03 | PM 在标红版 7 个红格自行补签 | 数据行 `8/9/16/17/18/19/20`（Excel 行 9/10/17/18/19/20/21） |
++| 10:05 | PM 再次授权 WB 在正确位置落签 | WB 实测位置已正确，**不再代填、不改写任何人工签名**，仅逐格复核并同步封卷定稿 |
++
++留痕文件：
++
++- `Batch3_B2_FINAL_TO_SIGN.xlsx` —— PM 正确补签原件（唯一授权真源，逐格未改）
++- `Batch3_B2_FINAL_SIGNED_correct.xlsx` —— 同字节留痕副本
++- `Batch3_B2_FINAL_SIGNED_approval.xlsx` —— 09:48 错签原件
++- `Batch3_B2_FINAL_pre_approval.xlsx` —— 封卷前无签名版
++- `Batch3_B2_approval_revoke_note.txt` / `Batch3_B2_approval_authorization.txt`
++- `Batch3_B2_APPROVAL_TARGETS.txt` —— 7 行 Excel 行号与符号现值
++- `_sync_b2_approval.py` / `_b2_approval_reset.py` / `_b2_final_seal.py`
++
++### 14.3 封卷断言
++
++- `approved_by` 非空数据行 `[8, 9, 16, 17, 18, 19, 20]`，与
++  `entered_by=WB_Agent` 的 7 行集合**完全相等**；其余 23 行保持空白。
++- 每个非空值都是 `wuxiaoxian`；`reviewer=wuxiaoxian` 30/30、
++  `row_status=CONFIRMED` 30/30、`symbol` 空 0、`human_adjudication` 非空 0。
++- 相对封卷前版本，除 `approved_by` 一列 7 处变化外，其余 18 列**逐格零差异**
++  （min/typ/max、unit、evidence_page、table_title、notes、symbol、condition 均未动）。
++- 主 `Batch3_B2_FINAL.xlsx` / `.csv` / PM 补签原件三方逐格一致。
++- **防回归加固**：`_make_b2_final.py` 现在从现有定稿读回 `approved_by` 并原样
++  保留；在干净临时目录实测重跑（退出码 0），7 处补签仍在，30 行与封卷定稿
++  逐格一致，不会因复核复跑而抹掉人工签字。
++
++### 14.4 最终机检（原始 stdout 均在包内）
++
++| 项目 | 结果 |
++| --- | --- |
++| B2 v1.6 PDF 模式 | `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
++| B2 v1.6 离线 sidecar 模式 | `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
++| `_selftest_validator_v2.py` | `PASS=31, FAIL=0, SKIP=0` |
++| `_test_core_order_and_header.py` | `PASS=26, FAIL=0, SKIP=0` |
++| `_verify_v003_candidates.py` | 13 页真表保留、无多余页、p14 排除 |
++| B1 | 已冻结，本轮未改动 |
++
++真实补丁：`Batch3_B2_seal.diff`（相对封卷前提交的文本差异，含 7 行
++`approved_by` 落点与报告 / INDEX 变更）。生成器底层代码本轮未改判据，
++第 10、13 节的累计补丁仍有效。
++
++### 14.5 尚未做的事
++
++B3（6 件）、B4（5 件）、SCAN（3 件按 SOP 标 EXCLUDED）未生成；
++33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
++更新并 push。两仓 main 本轮未动。
+diff --git a/gate6a-plan/batch3_review/_build_batch3_b2_report.py b/gate6a-plan/batch3_review/_build_batch3_b2_report.py
+index 8d02c53..90d6d01 100644
+--- a/gate6a-plan/batch3_review/_build_batch3_b2_report.py
++++ b/gate6a-plan/batch3_review/_build_batch3_b2_report.py
+@@ -33,9 +33,10 @@ def main():
+     A("Batch 3 · B2 人工签字定稿 —— v1.6 验证器机检报告")
+     A("=" * 78)
+     A("")
+-    A("真源：./Batch3_B2_SIGNED_original.xlsx（PM 签字的 xlsx 原件副本，30 行 × 15 列，逐格未改）")
++    A("签字真源（15 列原件）：./Batch3_B2_SIGNED_original.xlsx（PM 点选签字原件副本，逐格未改）")
++    A("授权真源（19 列补签）：./Batch3_B2_FINAL_TO_SIGN.xlsx（PM 在 7 个标红格补签 approved_by）")
+     A("      同目录 Excel 另存的 .csv 不作为真源（GBK 编码 / 导出格式）。")
+-    A("定稿：./Batch3_B2_FINAL.xlsx（30 行 × 19 列；同名 .csv 逐格同源，为验证器输入）")
++    A("封卷定稿：./Batch3_B2_FINAL.xlsx（30 行 × 19 列；同名 .csv 逐格同源，为验证器输入）")
+     A("签字：reviewer=wuxiaoxian，30 行全部 CONFIRMED，6 件 × 5 行")
+     A("      table_title 分布：Absolute Maximum Ratings 24 / Recommended Operating Conditions 6")
+     A("机检对象 = 定稿 30 行 / 6 样本（V038 V320 V346 V242 V003 V011）。")
+@@ -65,10 +66,11 @@ def main():
+     A("    保留原表的逗号 / `to` 写法，不改成 `符号1; 符号2`：分号不在 PDF 原文里，")
+     A("    会让 v1.6 的 check_symbol() 找不到符号。7 个符号与 V320 的全表条件")
+     A("    都做了 nos(symbol) in nos(页文本) 原文断言后才允许落盘。")
+-    A("    授权链：这 7 行由 WB 按原文回填，尚未经 PM 逐行复核，故")
+-    A("    approved_by 留空、entered_by=WB_Agent；reviewer 仍是 PM 对整表的签字，")
+-    A("    不擅自撤销、也不冒充人工已逐行确认。human_adjudication 全表清空。")
+-    A("    ※ 请 PM 对这 7 行逐行复核后确认；如需改动可直接告知，不改动机检判据。")
++    A("    授权链（封卷状态）：7 行由 WB 按原文回填，entered_by=WB_Agent；")
++    A("    PM 2026-11-12 10:05 明确授权「在正确位置，签署 wuxiaoxian」，并已在")
++    A("    标红版 7 个红格补签 approved_by=wuxiaoxian（数据行 8/9/16/17/18/19/20，")
++    A("    与 entered_by=WB_Agent 的 7 行完全重合）。reviewer 仍是 PM 对整表签字，")
++    A("    其余 23 行 approved_by 保持空白；human_adjudication 全表清空。")
+     A("A.4 3 件签字版 file_name 是简写，语料目录无同名文件：")
+     A("      ADC12QJ1600ALREP.pdf → ADC12QJ1600ALREP__adc12qj1600-ep.pdf")
+     A("      ADS54J40IRMPT.pdf    → ADS54J40IRMPT__ads54j40.pdf")
+@@ -87,9 +89,28 @@ def main():
+     A("    四列，与 B1 定稿的 19 列结构对齐。")
+     A("    型号取各 PDF 第 1 页封面原文；V003 封面只印族名 AM243x，")
+     A("    另有「AM2434, AM2432, AM2431」一行，故登记为 AM2431。")
++    A("    封卷时相对上一版仅 approved_by 一列有 7 处变化，其余 18 列逐格断言零差异。")
+     A("A.6 溯源三处互校：CSV ↔ sidecar 比 file_name / device_model；")
+     A("    sidecar ↔ provenance 比 file_name / device_model / sha256 / page_count；")
+     A("    sha256 与页数从磁盘原件实算，页文本逐页抽取，PDF 模式再复算一次哈希。")
++    A("A.7 授权链封卷全过程（错位 → 撤销 → 正确补签，全程留痕）")
++    A("    09:48 PM 首次在 approved_by 列签 7 处，落点为数据行")
++    A("      8/9/22/23/24/25/26，其中 5 行并非 WB 代录进行，V242 五行反而漏签。")
++    A("    09:52 PM 主动发现并要求全部清空、恢复原样；WB 按指令撤销，主定稿")
++    A("      恢复到与已推送 6107ab7 逐字节一致，未产生新提交。")
++    A("    10:03 PM 在 WB 提供的标红版 Batch3_B2_FINAL_TO_SIGN.xlsx 中自行补签；")
++    A("    10:05 PM 再次授权 WB 在正确位置落签。WB 实测 PM 已填的 7 行恰为")
++    A("      数据行 8/9/16/17/18/19/20（Excel 行 9/10/17/18/19/20/21），")
++    A("      与 entered_by=WB_Agent 完全重合，故不再代填、不改写任何人工签名，")
++    A("      只做逐格复核并同步封卷定稿。全过程留痕：")
++    A("      ./Batch3_B2_FINAL_SIGNED_approval.xlsx  09:48 错签原件")
++    A("      ./Batch3_B2_FINAL_pre_approval.xlsx     封卷前无签名版")
++    A("      ./Batch3_B2_approval_revoke_note.txt    撤销说明")
++    A("      ./Batch3_B2_FINAL_TO_SIGN.xlsx          PM 正确补签原件（唯一授权真源）")
++    A("      ./Batch3_B2_FINAL_SIGNED_correct.xlsx  同字节留痕副本")
++    A("      ./Batch3_B2_APPROVAL_TARGETS.txt       7 行补签清单与 Excel 行号")
++    A("      ./Batch3_B2_approval_authorization.txt 授权链封卷记录")
++    A("    B1 已冻结，本轮未改动；两仓 main 未动。")
+     A("")
+     A("B. 机检原始输出（未编辑）")
+     A("-" * 78)
+@@ -107,6 +128,8 @@ def main():
+     A("  PDF 模式与离线 sidecar 模式均为 OK=30 / SUSPECT=0 / ERROR=0，退出码 0。")
+     A("  7 行符号已按 PDF 原文回填，human_adjudication 全表清空，不再依赖裁定码；")
+     A("  达成 PM 要求的 OK=30 / ERROR=0，没有靠关闭或放宽任何一条 v1.6 判据。")
++    A("  封卷授权链已闭合：approved_by 7 行与 entered_by=WB_Agent 7 行完全对齐，")
++    A("  其余 23 行为空；主 xlsx / CSV / PM 补签原件三方逐格一致。")
+     A("  B2 定稿文件与本报告一并打包，审计包里不再只有 DRAFT 版。")
+     A("")
+     A("D. 清理前的 30 行 notes 留痕（逐行）")
+diff --git a/gate6a-plan/batch3_review/_make_b2_final.py b/gate6a-plan/batch3_review/_make_b2_final.py
+index 5d28dd0..268e2d1 100644
+--- a/gate6a-plan/batch3_review/_make_b2_final.py
++++ b/gate6a-plan/batch3_review/_make_b2_final.py
+@@ -35,9 +35,12 @@ Reviewer 指出这不是「源头没有符号」，用 ACCEPTED_SOURCE_HAS_NO_SY
+ 会让 v1.6 的 check_symbol() 找不到符号。每个回填值都做
+ `nos(symbol) in nos(页文本)` 原文断言，非空 condition 同样断言。
+ 
+-授权链：这 7 行的改动由 WB 按原文回填，尚未经 PM 逐行复核，
+-故 approved_by 留空、entered_by=WB_Agent；reviewer 仍是 PM 对整表的签字，
+-不擅自撤销、也不冒充人工已逐行确认。human_adjudication 全部清空。
++授权链（封卷状态）：这 7 行由 WB 按原文回填，entered_by=WB_Agent；
++PM 2026-11-12 10:05 授权并已在 Batch3_B2_FINAL_TO_SIGN.xlsx 的 7 个红格
++补签 approved_by=wuxiaoxian。本脚本重跑时会从现有 Batch3_B2_FINAL.xlsx
++读回这 7 处人工签名并原样保留，绝不代填、绝不自动补齐；
++其余 23 行保持空白。reviewer 仍是 PM 对整表的签字，
++human_adjudication 全部清空。
+ 
+ file_name 简写的处置（不改签字真源一格）
+ --------------------------------------
+@@ -214,6 +217,27 @@ def main():
+     if not PDF_DIR.is_dir():
+         raise SystemExit("找不到 PDF 语料目录：%s" % PDF_DIR)
+ 
++    # 授权链保护：PM 已在定稿 xlsx 上补签 approved_by，重跑本脚本不得抹掉。
++    # 只认 19 列定稿结构；读不到就按「无签名」处理并在结尾如实提示。
++    approval = []
++    if OUT_XLSX.exists():
++        awb = openpyxl.load_workbook(str(OUT_XLSX), data_only=True,
++                                     read_only=True)
++        avals = list(awb.active.values)
++        ahdr = [str(x or "").strip() for x in avals[0]]
++        awb.close()
++        if ahdr == FINAL_COLS:
++            ai = ahdr.index("approved_by")
++            for v in avals[1:]:
++                if not any(x is not None and str(x).strip() for x in v):
++                    continue
++                approval.append(cell(v[ai]))
++        if approval and len(approval) != 30:
++            raise SystemExit("现有定稿 approved_by 行数异常：%d" % len(approval))
++    for v in approval:
++        assert v in ("", REVIEWER), \
++            "现有定稿 approved_by 出现非 PM 签名：%r" % v
++
+     signed = read_signed_xlsx(SRC_XLSX)
+     assert len(signed) == 30, "签字版应为 30 行，实际 %d" % len(signed)
+     assert all(r["row_status"] == "CONFIRMED" for r in signed)
+@@ -247,7 +271,7 @@ def main():
+     for i, s in enumerate(signed):
+         r = {k: s[k] for k in ORIG_COLS}
+         r["notes"] = FINAL_NOTE
+-        r["approved_by"] = ""
++        r["approved_by"] = approval[i] if approval else ""
+         r["entered_by"] = ""
+         r["device_model"] = DEVICE_MODEL.get(s["sample_no"], "")
+         r["human_adjudication"] = ""
+@@ -428,7 +452,10 @@ def main():
+     for lineno, sno, oldcond, sym, cond in backfilled:
+         print("    行%-3d %-5s %-26s → symbol=%-26r condition=%r"
+               % (lineno, sno, oldcond, sym, cond))
+-    print("  7 行逐字段原文断言通过；approved_by 留空 / entered_by=WB_Agent（待 PM 逐行复核）")
++    print("  7 行逐字段原文断言通过；entered_by=WB_Agent")
++    n_ap = sum(1 for v in approval if v)
++    print("  approved_by：从现有定稿原样保留 %d 处 PM 补签，其余 %d 行保持空白"
++          % (n_ap, 30 - n_ap))
+     print("  其余 23 行原 15 列除 notes 外逐格未变；reviewer / row_status 未动")
+     print("\n复核命令：")
+     print("  python validate_annotation.py --csv %s --page-text %s "
+diff --git a/gate6a-plan/batch3_review/_sync_batch3_review.py b/gate6a-plan/batch3_review/_sync_batch3_review.py
+index e8672c5..238376e 100644
+--- a/gate6a-plan/batch3_review/_sync_batch3_review.py
++++ b/gate6a-plan/batch3_review/_sync_batch3_review.py
+@@ -60,6 +60,17 @@ SYNC = [
+     "annotation_reports/V003/b3_AMR_p0101.png",
+     "annotation_reports/V003/b3_ROC_p0105.png",
+     "annotation_reports/V003/b3_ROC_p0106.png",
++    # 第六轮：B2 授权链封卷（错位撤销 → 正确补签 → 最终机检）
++    "Batch3_B2_FINAL_TO_SIGN.xlsx",
++    "Batch3_B2_FINAL_SIGNED_correct.xlsx",
++    "Batch3_B2_FINAL_SIGNED_approval.xlsx",
++    "Batch3_B2_FINAL_pre_approval.xlsx",
++    "Batch3_B2_APPROVAL_TARGETS.txt",
++    "Batch3_B2_approval_revoke_note.txt",
++    "Batch3_B2_approval_authorization.txt",
++    "_sync_b2_approval.py",
++    "_b2_approval_reset.py",
++    "_b2_final_seal.py",
+ ]
+ DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
+ EXCLUDE = {"SHA256SUMS.txt", "Batch3_review.zip"}

@@ -35,9 +35,12 @@ Reviewer 指出这不是「源头没有符号」，用 ACCEPTED_SOURCE_HAS_NO_SY
 会让 v1.6 的 check_symbol() 找不到符号。每个回填值都做
 `nos(symbol) in nos(页文本)` 原文断言，非空 condition 同样断言。
 
-授权链：这 7 行的改动由 WB 按原文回填，尚未经 PM 逐行复核，
-故 approved_by 留空、entered_by=WB_Agent；reviewer 仍是 PM 对整表的签字，
-不擅自撤销、也不冒充人工已逐行确认。human_adjudication 全部清空。
+授权链（封卷状态）：这 7 行由 WB 按原文回填，entered_by=WB_Agent；
+PM 2026-11-12 10:05 授权并已在 Batch3_B2_FINAL_TO_SIGN.xlsx 的 7 个红格
+补签 approved_by=wuxiaoxian。本脚本重跑时会从现有 Batch3_B2_FINAL.xlsx
+读回这 7 处人工签名并原样保留，绝不代填、绝不自动补齐；
+其余 23 行保持空白。reviewer 仍是 PM 对整表的签字，
+human_adjudication 全部清空。
 
 file_name 简写的处置（不改签字真源一格）
 --------------------------------------
@@ -214,6 +217,27 @@ def main():
     if not PDF_DIR.is_dir():
         raise SystemExit("找不到 PDF 语料目录：%s" % PDF_DIR)
 
+    # 授权链保护：PM 已在定稿 xlsx 上补签 approved_by，重跑本脚本不得抹掉。
+    # 只认 19 列定稿结构；读不到就按「无签名」处理并在结尾如实提示。
+    approval = []
+    if OUT_XLSX.exists():
+        awb = openpyxl.load_workbook(str(OUT_XLSX), data_only=True,
+                                     read_only=True)
+        avals = list(awb.active.values)
+        ahdr = [str(x or "").strip() for x in avals[0]]
+        awb.close()
+        if ahdr == FINAL_COLS:
+            ai = ahdr.index("approved_by")
+            for v in avals[1:]:
+                if not any(x is not None and str(x).strip() for x in v):
+                    continue
+                approval.append(cell(v[ai]))
+        if approval and len(approval) != 30:
+            raise SystemExit("现有定稿 approved_by 行数异常：%d" % len(approval))
+    for v in approval:
+        assert v in ("", REVIEWER), \
+            "现有定稿 approved_by 出现非 PM 签名：%r" % v
+
     signed = read_signed_xlsx(SRC_XLSX)
     assert len(signed) == 30, "签字版应为 30 行，实际 %d" % len(signed)
     assert all(r["row_status"] == "CONFIRMED" for r in signed)
@@ -247,7 +271,7 @@ def main():
     for i, s in enumerate(signed):
         r = {k: s[k] for k in ORIG_COLS}
         r["notes"] = FINAL_NOTE
-        r["approved_by"] = ""
+        r["approved_by"] = approval[i] if approval else ""
         r["entered_by"] = ""
         r["device_model"] = DEVICE_MODEL.get(s["sample_no"], "")
         r["human_adjudication"] = ""
@@ -428,7 +452,10 @@ def main():
     for lineno, sno, oldcond, sym, cond in backfilled:
         print("    行%-3d %-5s %-26s → symbol=%-26r condition=%r"
               % (lineno, sno, oldcond, sym, cond))
-    print("  7 行逐字段原文断言通过；approved_by 留空 / entered_by=WB_Agent（待 PM 逐行复核）")
+    print("  7 行逐字段原文断言通过；entered_by=WB_Agent")
+    n_ap = sum(1 for v in approval if v)
+    print("  approved_by：从现有定稿原样保留 %d 处 PM 补签，其余 %d 行保持空白"
+          % (n_ap, 30 - n_ap))
     print("  其余 23 行原 15 列除 notes 外逐格未变；reviewer / row_status 未动")
     print("\n复核命令：")
     print("  python validate_annotation.py --csv %s --page-text %s "

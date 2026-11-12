@@ -8,8 +8,10 @@ main SHA，详见第 9 节。
 2026-11-12 第三轮追加：修复 CORE_ORDER 通用正则漏洞并加固 prescan3，见第 10 节。
 2026-11-12 第四轮追加：清理 B1 过期备注、交付 B2 最终版与机检、
 补齐 prescan3 四个极端场景回归，见第 11、12 节。
-2026-11-12 第五轮追加（本版）：B2 七行符号按 PDF 原图回填（不再用裁定码）、
+2026-11-12 第五轮追加：B2 七行符号按 PDF 原图回填（不再用裁定码）、
 修复 prescan3 边框表格与标题的空间关联并补两个极端测试，见第 13 节。
+2026-11-12 第六轮追加（本版·封卷）：B2 七行 `approved_by` 授权链闭合
+（错位撤销 → 正确补签 → 最终机检），见第 14 节。
 
 ## 0. 一句话结论
 
@@ -98,8 +100,9 @@ SHA-256 / 页数从磁盘原件实算，页文本逐页抽取，PDF 模式再用
   `1.8V Operation`（p106 原文确有独立一行，脚本逐行断言后才落盘）。
 - 7 行 symbol 已按 PDF 原图逐字回填（V320 两行、V242 五行），`condition`
   只留真正的测试条件；`human_adjudication` 全表清空，不再依赖裁定码。
-  7 行由 WB 代录入（`entered_by=WB_Agent`、`approved_by` 留空），
-  **尚待 PM 逐行复核**，详见 `Batch3_B2_validation_report.txt` A.3 与第 13 节。
+  7 行由 WB 代录入（`entered_by=WB_Agent`）；第六轮 PM 已明确授权并在正确
+  7 行补签 `approved_by=wuxiaoxian`，授权链闭合，详见第 14 节与
+  `Batch3_B2_validation_report.txt` A.3 / A.7。
 - 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
 
 ## 5. 目录
@@ -520,9 +523,10 @@ PM 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等
 - 保留原表逗号 / `to` 写法，不改成 `符号1; 符号2`：分号不在 PDF 原文里，
   会让 v1.6 的 `check_symbol()` 找不到符号。7 个符号与 V320 全表条件都做了
   `nos(值) in nos(页文本)` 原文断言后才落盘。
-- **授权链与复核请求**：回填由 WB 完成，7 行 `entered_by=WB_Agent`、
-  `approved_by` 留空；`reviewer` 仍是 PM 对整表的签字，不擅自撤销、
-  也不冒充人工已逐行确认。请 PM 对这 7 行逐行复核后确认。
+- **授权链**：回填由 WB 完成，7 行 `entered_by=WB_Agent`；第五轮时
+  `approved_by` 为空、需 PM 逐行确认，`reviewer` 仍是 PM 对整表的签字，
+  不擅自撤销、也不冒充人工已逐行确认。**该复核请求已在第六轮闭合，见第 14 节**
+  （PM 明确授权并在正确 7 行补签 `approved_by=wuxiaoxian`）。
 - 其余 23 行的 symbol / condition 一字未动；30 行的 min/typ/max、unit、
   evidence_page、table_title、row_status、reviewer、confidence_score 一字未动。
 - 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
@@ -570,3 +574,73 @@ Reviewer 反例的无关表格在页底 y0=400，离页顶标题 328pt，仍被�
 
 真实补丁：`Batch3_CORE_ORDER_fix.diff`（累计 692 行 / 640 行新增）、
 `Batch3_prescan3_extreme_fix.diff`（第五轮增量 247 行 / 156 行新增）。
+
+---
+
+## 14. 第六轮（封卷）：B2 授权链闭合与最终机检
+
+2026-11-12 10:05，PM 明确授权「在正确位置，签署 wuxiaoxian」。
+本轮**不改任何核心数值、不改生成器判据、不动 B1、不动两仓 main**，
+只闭合 B2 七行 `approved_by` 的授权链并封卷。
+
+### 14.1 为什么需要这一轮
+
+第五轮把 V320 两行、V242 五行的 `symbol` 从 PDF 原文回填后，这 7 行由 WB
+代录入（`entered_by=WB_Agent`），`approved_by` 为空，需 PM 逐行确认。
+PM 09:48 首次补签时，7 处 `wuxiaoxian` 落在数据行 `8/9/22/23/24/25/26`
+（V320 两行 + V003 四行 + V011 一行），其中 5 行并非代录进行，而真正需要
+复核的 V242 五行（数据行 `16/17/18/19/20`）反而漏签。
+
+### 14.2 处置全过程（全留痕，不粉饰）
+
+| 时间 | 动作 | 结果 |
+| --- | --- | --- |
+| 09:48 | PM 首次补签 7 处 | 落点错位，原件留存于 `Batch3_B2_FINAL_SIGNED_approval.xlsx` |
+| 09:52 | PM 主动要求全部清空、恢复原样 | WB 用 `_b2_approval_reset.py` 从封卷前快照恢复；主定稿与 `6107ab7` 逐字节一致，**未产生新提交** |
+| 09:52 | WB 给出 7 行标红清单 | `Batch3_B2_FINAL_TO_SIGN.xlsx` + `Batch3_B2_APPROVAL_TARGETS.txt` + V320 p12 / V242 p6 两张原表裁图 |
+| 10:03 | PM 在标红版 7 个红格自行补签 | 数据行 `8/9/16/17/18/19/20`（Excel 行 9/10/17/18/19/20/21） |
+| 10:05 | PM 再次授权 WB 在正确位置落签 | WB 实测位置已正确，**不再代填、不改写任何人工签名**，仅逐格复核并同步封卷定稿 |
+
+留痕文件：
+
+- `Batch3_B2_FINAL_TO_SIGN.xlsx` —— PM 正确补签原件（唯一授权真源，逐格未改）
+- `Batch3_B2_FINAL_SIGNED_correct.xlsx` —— 同字节留痕副本
+- `Batch3_B2_FINAL_SIGNED_approval.xlsx` —— 09:48 错签原件
+- `Batch3_B2_FINAL_pre_approval.xlsx` —— 封卷前无签名版
+- `Batch3_B2_approval_revoke_note.txt` / `Batch3_B2_approval_authorization.txt`
+- `Batch3_B2_APPROVAL_TARGETS.txt` —— 7 行 Excel 行号与符号现值
+- `_sync_b2_approval.py` / `_b2_approval_reset.py` / `_b2_final_seal.py`
+
+### 14.3 封卷断言
+
+- `approved_by` 非空数据行 `[8, 9, 16, 17, 18, 19, 20]`，与
+  `entered_by=WB_Agent` 的 7 行集合**完全相等**；其余 23 行保持空白。
+- 每个非空值都是 `wuxiaoxian`；`reviewer=wuxiaoxian` 30/30、
+  `row_status=CONFIRMED` 30/30、`symbol` 空 0、`human_adjudication` 非空 0。
+- 相对封卷前版本，除 `approved_by` 一列 7 处变化外，其余 18 列**逐格零差异**
+  （min/typ/max、unit、evidence_page、table_title、notes、symbol、condition 均未动）。
+- 主 `Batch3_B2_FINAL.xlsx` / `.csv` / PM 补签原件三方逐格一致。
+- **防回归加固**：`_make_b2_final.py` 现在从现有定稿读回 `approved_by` 并原样
+  保留；在干净临时目录实测重跑（退出码 0），7 处补签仍在，30 行与封卷定稿
+  逐格一致，不会因复核复跑而抹掉人工签字。
+
+### 14.4 最终机检（原始 stdout 均在包内）
+
+| 项目 | 结果 |
+| --- | --- |
+| B2 v1.6 PDF 模式 | `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
+| B2 v1.6 离线 sidecar 模式 | `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
+| `_selftest_validator_v2.py` | `PASS=31, FAIL=0, SKIP=0` |
+| `_test_core_order_and_header.py` | `PASS=26, FAIL=0, SKIP=0` |
+| `_verify_v003_candidates.py` | 13 页真表保留、无多余页、p14 排除 |
+| B1 | 已冻结，本轮未改动 |
+
+真实补丁：`Batch3_B2_seal.diff`（相对封卷前提交的文本差异，含 7 行
+`approved_by` 落点与报告 / INDEX 变更）。生成器底层代码本轮未改判据，
+第 10、13 节的累计补丁仍有效。
+
+### 14.5 尚未做的事
+
+B3（6 件）、B4（5 件）、SCAN（3 件按 SOP 标 EXCLUDED）未生成；
+33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
+更新并 push。两仓 main 本轮未动。

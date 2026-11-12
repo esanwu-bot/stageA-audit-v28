@@ -1,0 +1,26 @@
+Batch 3 B2 待补签清单（approved_by=wuxiaoxian）
+主文件：Batch3_B2_FINAL.xlsx / Batch3_B2_FINAL.csv（已恢复为无签名版）
+填写位置：O 列 approved_by；Excel 行号 = 数据行号 + 1（第 1 行是表头）
+只需填下面 7 个格子，其余 23 行保持空白，不要改任何数值或 reviewer。
+========================================================================================================
+Excel行    数据行       样本      页码     symbol（回填后的现值）                 condition（现值）                  表类型          PDF 原图
+--------------------------------------------------------------------------------------------------------
+9         8         V320    12     DACVDD, DIGVDD, CLKVDD         over operating free-air temperature range (unless otherwise noted) AMR          DAC3482IRKDR__slas748f.pdf
+10        9         V320    12     AVDD, PLLAVDD                  over operating free-air temperature range (unless otherwise noted) AMR          DAC3482IRKDR__slas748f.pdf
+17        16        V242    6      APWR to AGND                   (空)                            AMR          ADS131B26QPHPRQ1__ads131b26-q1.pdf
+18        17        V242    6      DPWR to DGND                   (空)                            AMR          ADS131B26QPHPRQ1__ads131b26-q1.pdf
+19        18        V242    6      AGND, AGNDy to DGND            (空)                            AMR          ADS131B26QPHPRQ1__ads131b26-q1.pdf
+20        19        V242    6      AVDD to AGND                   (空)                            AMR          ADS131B26QPHPRQ1__ads131b26-q1.pdf
+21        20        V242    6      IOVDD to DGND                  (空)                            AMR          ADS131B26QPHPRQ1__ads131b26-q1.pdf
+--------------------------------------------------------------------------------------------------------
+核对依据：
+  V320 两行 -> DAC3482IRKDR__slas748f.pdf 第 12 页 Absolute Maximum Ratings 表；
+              符号原文行 11 `DACVDD, DIGVDD, CLKVDD`、行 24 `AVDD, PLLAVDD`；
+              全表条件 `over operating free-air temperature range (unless otherwise noted)(1)`。
+  V242 五行 -> ADS131B26QPHPRQ1__ads131b26-q1.pdf 第 6 页 Absolute Maximum Ratings 表；
+              符号原文行 7/11/14/17/20；该表只有 `see (1)` 脚注引用，
+              没有具体测试条件，故 condition 留空是正确的。
+========================================================================================================
+填法二选一：① 直接在 Batch3_B2_FINAL_TO_SIGN.xlsx 的 7 个红格填好后保存发回；
+          ② 或在已打开的 Batch3_B2_FINAL.xlsx 的 O 列对应 Excel 行号填好后保存发回。
+WB 只做逐格核对 + v1.6 机检 + 封卷，不会代填、不会自动补齐、不会改动其他格子。
