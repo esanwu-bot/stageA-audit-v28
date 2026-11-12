@@ -1,0 +1,100 @@
+Batch 3 / B2 · V003 抓错页诊断与修复实证
+==============================================================
+
+PDF   : AM2431BSDFHIALXR__am2431.pdf
+页数  : 282（PDF 页码与文件物理页码一致）
+反馈  : 「V003 抓错页了，这页是纯文字术语解释，没有参数。」
+
+A. 旧草稿现场（Batch3_B2_DRAFT.csv 原 5 行）
+--------------------------------------------------------------
+  p14  13     PULL UP/DOWN TYPE: Indicates the presence of an internal    conf=0.40  low_confidence
+  p14         • PU: Internal pull-up                                       conf=0.40  low_confidence
+  p14         • PD: Internal pull-down                                      conf=0.40  low_confidence
+  p14         • PU/PD: Internal pull-up and pull-down                       conf=0.40  low_confidence
+  p14         • An empty box means No internal pull.                        conf=0.40  low_confidence
+  5 行全部来自 p14，全部无数值，全部 low_confidence；
+  旧的 5 行来自 Batch3_B2_DRAFT.csv 修复前，此处为固定留证，不随重跑变化。
+
+B. p14 原文（该页无任何参数）
+--------------------------------------------------------------
+  10. For more information, see valid operating voltage range(s) defined
+      for each power supply in Recommended Operating Conditions.
+  22. For more information, see the hysteresis values in Electrical Characteristics.
+  24. 13. PULL UP/DOWN TYPE: Indicates the presence of an internal pull-up
+      or pull-down resistor.
+  27. • PU: Internal pull-up      29. • PD: Internal pull-down
+  35. 14. BUFFER TYPE: ... which Electrical Characteristics table is applicable.
+  该页是 Table 5-1 Pin Attributes 的**列说明**，不是参数表。
+
+C. 全文标题/表头扫描（282 页逐页 get_text，原样结果）
+--------------------------------------------------------------
+  p6    Table of Contents（AMR / ELC / ROC 三种标题同页 → 目录页）
+  p14   正文交叉引用句命中 ELC 字样，但全页 0 个 MIN/TYP/MAX 列词
+  p15~p56  Table 5-1 Pin Attributes（引脚表，非参数表）
+  p101  6.1 Absolute Maximum Ratings        ← 真 AMR 表
+  p102  6.1 续表（AMR/ELC/ROC 字样同页，旧目录判据会误杀）
+  p105  6.4 Recommended Operating Conditions ← 真 ROC 表（供电）
+  p106  6.4 续表（VDDSHV5、TJ 工作结温）
+  p108~p115  6.7.x 各接口 Electrical Characteristics
+  修复后 prescan3() 全书候选页共 13 个：[101, 102, 105, 106, 108, 109, 110, 111, 112, 113, 115, 117, 119]
+  prescan3(..., max_pages=40)  → []  ← 旧版上限把真表整段漏掉
+  14 in 全书候选 → False；101/105/106 in 全书候选 → True
+
+D. 根因（三处叠加）
+--------------------------------------------------------------
+  1. _build_batch3_interactive.scan3() 用 min(npages, B.MAX_SCAN_PAGES=40)
+     截断了扫描范围，真表在 p101 之后，前 40 页一页参数表都没有。
+  2. X.HEADING['ELC'] 是宽松正则，X.find_headings() 逐行匹配，
+     把 p14 正文里的章节交叉引用句当成表标题；该页没有表头校验，
+     parse_page 又把术语条目当 label 抽出来。
+  3. pick_core() 排序后直接取前 5 行，没有「零核心命中」闸门，
+     5 行无数值的术语条目凑数落盘，只被标成 low_confidence。
+
+E. 生成器修复（_build_batch3_interactive.py，后续批次生效）
+--------------------------------------------------------------
+  1. prescan3() 全书文本快筛：候选页必须同时有表标题词和
+     ≥2 个 MIN/TYP/MAX/NOM 列词；scan3() 只解析候选页，不再限前 40 页。
+  2. find_headings3() 要求标题是独立短行（≤90 字符）且不含
+     see/refer/for more information/defined in/appropriate/table is 等引用词；
+     目录页判定只在前 10 页生效，避免误杀 p102 这类续表。
+  3. pick_core() 新增闸门：连一行「命中 CORE_ORDER 且带数值」都没有时
+     整件不落草稿，quality=无法定位参数表，HTML 直接给 EXCLUDED 建议。
+  实证：旧版 V003 5 行垃圾 → 新闸门 keep=0 / drop=5。
+  已定稿 B1 不重跑、不改动；B2 其余 5 件不重跑、不改动。
+
+F. 重截的正确表格图（300 DPI，按表格边框裁剪）
+--------------------------------------------------------------
+  p101  b3_AMR_p0101.png                       151 行文本   491647 字节
+  p105  b3_ROC_p0105.png                       214 行文本   580160 字节
+  p106  b3_ROC_p0106.png                        27 行文本    62140 字节
+  旧错页裁图 b3_ELC_p0014.png 已删除，HTML 不再引用。
+
+G. 新的 5 行核心草稿（文本层定向抽取，非 VLM）
+--------------------------------------------------------------
+  p105  VDD_CORE   Core supply                            min=0.81   typ=0.85   max=0.895   V   conf=0.60
+  p105  VDDR_CORE  RAM supply                             min=0.81   typ=0.85   max=0.895   V   conf=0.60
+  p106  VDDSHV5    Dual-voltage IO supply                 min=1.71   typ=1.8    max=1.89    V   conf=0.60
+  p106  TJ         Operating junction temperature range   min=-40    typ=-      max=125     °C  conf=0.60
+  p101  VDD_CORE   Core supply                            min=-0.3   typ=-      max=1.05    V   conf=0.60
+  每一行都做了证据页原文断言：参数名、单位、条件、各数值、符号
+  必须能在自己的 evidence_page 原文中逐字（横杠规范化后）找到，
+  任一缺失即拒绝生成。
+  row_status 一律 DRAFT_AWAITING_HUMAN_CONFIRM，reviewer 为空；
+  conf=0.60 < 阈值 0.85，5 行全部标 low_confidence，必须人工点选。
+
+H. 仍需人工确认的点
+--------------------------------------------------------------
+  1. ROC 表头是 MIN(1) / NOM / MAX(1)；把 NOM 放进 typ_value 是否合适，
+     必须由 Reviewer 定，机器不替人决定。
+  2. VDDSHV5 同页还有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V。
+  3. p101 的 VDD_CORE -0.3/1.05 V 是绝对最大额定值，
+     与 p105 的推荐工作条件 0.81/0.85/0.895 V 不是同一概念。
+  4. TJ 原文为 –40（U+2013），草稿按验证器 MINUS 规则写 -40。
+
+I. 产物变更
+--------------------------------------------------------------
+  Batch3_B2_DRAFT.csv      V003 的 5 行替换（总行数不变，其余 25 行未动）
+  Batch3_B2_Viewer.html    V003 卡片重画 + <script> 按同一份 CSV 重建
+  annotation_reports/V003/ 新增 3 张真表图，删除 1 张错页图
+  _build_batch3_interactive.py  三道定位闸门
+  _fix_v003_b2.py          本定向修复脚本

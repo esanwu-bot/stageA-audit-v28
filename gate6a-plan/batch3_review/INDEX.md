@@ -1,7 +1,8 @@
-# Batch 3 复审包 · B1 签字定稿 + B2 草稿
+# Batch 3 复审包 · B1 签字定稿 + B2 草稿（含 V003 错页修复）
 
 分支 `feat/gate6a-batch3`，**不动 main、不动 `feat/gate6a-annotation`**。
 B1 已有人工签字，B2 仍是草稿，机器没有替人确认任何一行。
+2026-11-12 追加：Reviewer 指出 B2 的 V003 抓错页，已重定位重截，详见第 8 节。
 
 ## 0. 一句话结论
 
@@ -60,10 +61,14 @@ SHA-256 / 页数从磁盘原件实算，页文本逐页抽取，PDF 模式再用
 
 ## 4. B2 草稿（待点选）
 
-`Batch3_B2_Viewer.html` + `Batch3_B2_DRAFT.csv`：6 件 / 30 行 / 14 张裁图，
+`Batch3_B2_Viewer.html` + `Batch3_B2_DRAFT.csv`：6 件 / 30 行 / 16 张裁图，
 样本 `V038 V320 V346 V242 V003 V011`，每件只留 5 行核心参数。
 
-**V003 的 5 行全是 `low_confidence`**，请优先对图。其余 5 件各 5 行均 ≥0.85。
+**V003 已按第 8 节重截重出**：原 5 行是 p14 的 Pin Attributes 术语解释（无参数），
+现替换为 p101/p105/p106 的 5 行文本层定向草稿，5 行全部 `low_confidence`
+（conf=0.60），**必须人工点选**；其余 5 件各 5 行未改动。
+其余 5 件各 5 行均 ≥0.85。
+
 置信度 0.95 只证明"抄的字在页面上都找得到"，**不证明数值归到了正确的列** ——
 B1 签字版漏掉的两处恰好都是这类问题（页码串页、条件混进数值列）。
 
@@ -79,10 +84,11 @@ B1 签字版漏掉的两处恰好都是这类问题（页码串页、条件混�
 | `b1_validation_raw/*.txt` | 六份原始 stdout（未编辑） |
 | `Batch3_B1_PDF_PROVENANCE.csv` / `page_text_batch3_b1.json` | 6 件 PDF 溯源与页文本 |
 | `Batch3_Viewer.html` / `Batch3_DRAFT.csv` | B1 圈选台与原始 30 行草稿 |
-| `Batch3_B2_Viewer.html` / `Batch3_B2_DRAFT.csv` | B2 圈选台与 30 行草稿 |
-| `annotation_reports/**/b3_*.png` | B1+B2 共 29 张 300DPI 表格裁图 |
+| `Batch3_B2_Viewer.html` / `Batch3_B2_DRAFT.csv` | B2 圈选台与 30 行草稿（V003 已重截重出） |
+| `annotation_reports/**/b3_*.png` | B1+B2 共 31 张 300DPI 表格裁图；V003 旧 p14 图已删，换成 p101/p105/p106 三张 |
+| `Batch3_V003_diagnosis.txt` | **V003 抓错页诊断实证**（全文扫描、根因、断言、修复清单） |
 | `validate_annotation.py` | v1.6 机检脚本 |
-| `_build_batch3_*.py` / `_make_b1_suggest_fix.py` / `_make_b1_resigned.py` / `_patch_b3_export_name.py` | 生成器与适配/修正/重签/前端补丁脚本 |
+| `_build_batch3_*.py` / `_make_b1_suggest_fix.py` / `_make_b1_resigned.py` / `_patch_b3_export_name.py` / `_fix_v003_b2.py` / `_sync_batch3_review.py` | 生成器与适配/修正/重签/前端补丁/V003 定向修复/审计包同步脚本 |
 | `_b2_app.js` / `_build_batch2_*.py` / `_draft_extract.py` / `_vl_*.py` | 复现依赖 |
 | `Batch3_BATCH_PLAN.csv` | 26 件待办的分批清单 |
 | `SHA256SUMS.txt` | 逐文件校验 |
@@ -122,3 +128,73 @@ python validate_annotation.py --csv Batch3_B1_RESIGNED.csv \
 
 打开 `Batch3_B2_Viewer.html` → 对图点选 → 「下载 CSV」→ 交回，继续 B3。
 不要用 Excel 另存覆盖 CSV（会把 UTF-8 BOM 变成 GBK + Tab）；要留档请另存 xlsx。
+
+## 8. V003 抓错页：诊断、修复与实证
+
+Reviewer 反馈原话：**「V003 抓错页了，这页是纯文字术语解释，没有参数。
+你检查一下你的生成器，V003 的电特性表到底在几页？要么你重新截正确的表格图发我，
+要么这件 V003 直接标 EXCLUDED 放弃掉。」**
+
+### 8.1 结论：真表存在，选择「重截」而非 EXCLUDED
+
+`AM2431BSDFHIALXR__am2431.pdf` 共 **282 页**，参数表在第 6 章 Specifications：
+
+| 页 | 内容 |
+| --- | --- |
+| p101 | `6.1 Absolute Maximum Ratings`（PARAMETER / MIN / MAX / UNIT） |
+| p102 | 6.1 续表 |
+| p105 | `6.4 Recommended Operating Conditions`（MIN(1) / NOM / MAX(1) / UNIT，供电） |
+| p106 | 6.4 续表（VDDSHV5、TJ 工作结温） |
+| p108–p115 | `6.7.x` 各接口 Electrical Characteristics |
+
+旧草稿抓的 p14 是 `Table 5-1 Pin Attributes` 的**列说明**：
+`13. PULL UP/DOWN TYPE`、`PU: Internal pull-up` 等，整页 0 个 MIN/TYP/MAX 列词。
+
+### 8.2 根因（三处叠加，一个都不能少）
+
+1. `scan3()` 用 `min(npages, MAX_SCAN_PAGES=40)` 截断扫描；真表在 p101 之后，
+   前 40 页一页参数表都没有。实测 `prescan3(..., max_pages=40) → []`。
+2. `X.HEADING["ELC"]` 是宽松正则，`X.find_headings()` 逐行匹配，把 p14 正文里的
+   **章节交叉引用句**（"For more information, see ... in Electrical Characteristics."）
+   当成表标题；没有「该页必须有 MIN/TYP/MAX 表头」这一关。
+3. `pick_core()` 排序后直接取前 5 行，没有「零核心命中」闸门，
+   5 行无数值的术语条目凑数落盘，只被标成 `low_confidence` 交给人。
+
+### 8.3 生成器修复（后续批次生效，已定稿 B1 / B2 其余 5 件不重跑）
+
+| 闸门 | 改动 | 实证 |
+| --- | --- | --- |
+| 定位范围 | `prescan3()` 全书文本快筛，候选页须同时有表标题词与 ≥2 个 `MIN/TYP/MAX/NOM` 列词；`scan3()` 只解析候选页 | 全书候选 13 页 `[101,102,105,106,108,109,110,111,112,113,115,117,119]`；`14 in 候选 → False` |
+| 标题真伪 | `find_headings3()` 要求独立短行（≤90 字符）且不含 see/refer/for more information/defined in/appropriate/table is 等引用词；目录页判定只在前 10 页生效（避免误杀 p102 续表） | p14 的 3 处交叉引用全部被排除 |
+| 草稿闸门 | `pick_core()` 连一行「命中 CORE_ORDER 且带数值」都没有时**整件不落草稿**，`quality=无法定位参数表`，HTML 直接给 EXCLUDED 建议 | 旧版 V003 5 行垃圾 → `keep=0 / drop=5` |
+
+### 8.4 V003 定向重出的 5 行（`_fix_v003_b2.py`）
+
+三张 300 DPI 裁图：`b3_AMR_p0101.png`、`b3_ROC_p0105.png`、`b3_ROC_p0106.png`；
+旧错页图 `b3_ELC_p0014.png` 已删除、HTML 不再引用。
+
+| 页 | 表 | symbol | 参数名 | min | typ | max | 单位 | 条件 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 105 | ROC | `VDD_CORE` | Core supply | 0.81 | 0.85 | 0.895 | V | Recommended Operating Conditions |
+| 105 | ROC | `VDDR_CORE` | RAM supply | 0.81 | 0.85 | 0.895 | V | Recommended Operating Conditions |
+| 106 | ROC | `VDDSHV5` | Dual-voltage IO supply | 1.71 | 1.8 | 1.89 | V | 1.8V Operation |
+| 106 | ROC | `TJ` | Operating junction temperature range | -40 | | 125 | °C | 125°C Industrial |
+| 101 | AMR | `VDD_CORE` | Core supply | -0.3 | | 1.05 | V | 6.1 Absolute Maximum Ratings |
+
+这 5 行是 **PDF 文本层定向抽取，不是 VLM**。每一行的参数名、单位、条件、
+各数值、符号都必须能在自己的 `evidence_page` 原文中逐字（横杠规范化后）找到，
+任一缺失即拒绝生成。`row_status` 一律 `DRAFT_AWAITING_HUMAN_CONFIRM`、
+`reviewer` 为空、`conf=0.60 < 0.85`，5 行全部 `low_confidence`。
+B2 总行数仍是 30，其余 25 行一字未动。
+
+### 8.5 仍需人工确认（机器不替人决定）
+
+1. ROC 表头是 `MIN(1) / NOM / MAX(1)`，把 **NOM 放进 `typ_value`** 是否合适，由 Reviewer 定。
+2. `VDDSHV5` 同页还有 3.3V Operation（3.135 / 3.3 / 3.465 V），本行只取 1.8V 模式。
+3. p101 的 `VDD_CORE -0.3 / 1.05 V` 是绝对最大额定值，与 p105 的推荐工作条件
+   `0.81 / 0.85 / 0.895 V` 不是同一概念，勿混。
+4. TJ 原文为 `–40`（U+2013 EN DASH），草稿按验证器 `MINUS` 规则写作 `-40`。
+
+完整逐页扫描、旧草稿现场、p14 原文、断言与修复清单见
+`Batch3_V003_diagnosis.txt`。若 Reviewer 认为这 5 行仍不够格，
+可整件标 `EXCLUDED`，生成器已给出该出口。

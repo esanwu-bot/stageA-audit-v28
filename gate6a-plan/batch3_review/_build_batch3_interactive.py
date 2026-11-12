@@ -29,6 +29,7 @@ import fitz
 
 import _build_batch2_viewer as B
 import _build_batch2_interactive as I2
+import _draft_extract as X
 from _vl_extract import extract_rows as vl_extract
 
 PREP = Path(__file__).resolve().parent
@@ -75,6 +76,12 @@ CORE_ORDER = [
 ]
 
 
+def has_num(r):
+    """三个数值列里至少有一个非空。"""
+    return any((r.get(k) or "").strip()
+               for k in ("min_value", "typ_value", "max_value"))
+
+
 def core_rank(r):
     """给一行打核心度：(优先级, 有没有数值, 置信度)。数值齐的先留。"""
     name = (r.get("parameter_name") or "") + " " + (r.get("symbol") or "")
@@ -83,56 +90,124 @@ def core_rank(r):
         if rx.search(name):
             pri = p
             break
-    has_num = any((r.get(k) or "").strip()
-                  for k in ("min_value", "typ_value", "max_value"))
     try:
         conf = float(r.get("confidence_score") or 0)
     except ValueError:
         conf = 0.0
     # 没有数值的核心参数排在"有数值的非核心参数"后面：
     # 人要先看到能核的数，空行放最后面再去补。
-    return (pri, 0 if has_num else 1, -conf)
+    return (pri, 0 if has_num(r) else 1, -conf)
 
 
 def pick_core(rows, lo=3, hi=5):
-    """每件只留最核心的 3~5 行，其余返回给调用方做记录，不落盘。"""
+    """每件只留最核心的 3~5 行，其余返回给调用方做记录，不落盘。
+
+    V003 事故后加的闸门：一件里若连一行「命中 CORE_ORDER 且带数值」都没有，
+    说明定位到的是术语解释页/线图/错表，此时**整件不落草稿**。
+    老版会把 5 行无参数名的术语条目凑数交给人，人得先删行再核，
+    等于把定位错误伪装成"低置信度草稿"，这是最坏的一种 Fail-Open。
+    """
     ranked = sorted(rows, key=core_rank)
-    keep = ranked[:hi]
-    drop = ranked[hi:]
+    usable = [r for r in ranked if core_rank(r)[0] < 99 and has_num(r)]
+    if not usable:
+        return [], ranked, [c for _, _, c in CORE_ORDER]
+    keep = usable[:hi]
+    ids = {id(r) for r in keep}
+    drop = [r for r in ranked if id(r) not in ids]
     # 不足 lo 行时不再从脏行里凑——宁可这件只有 2 行，也不拿垃圾行充数。
     return keep, drop, [c for _, _, c in CORE_ORDER]
 
 
-def scan3(doc, npages):
-    """同 B.scan，但多扫 ROC（Recommended Operating Conditions）。
+# —— 表格定位三道闸门（V003 抓错页事故后加）——
+# 事故复盘：AM2431 共 282 页，第 6 章 Specifications（p101~p116）才有参数表，
+# 老 scan3 只扫前 40 页，真表整整被漏掉 60 多页；前 40 页里 p14 是
+# Pin Attributes 的**术语解释**，正文写着 "For more information, see ... in
+# Electrical Characteristics"，宽松标题正则把这句章节交叉引用当成表标题，
+# parse_page 再把术语条目当 label，pick_core 最后凑满 5 行 —— 三处叠加，
+# 于是 5 行纯文字进了草稿。下面三道闸门分别堵这三处。
+NUMCOL_RX = re.compile(r"\b(MIN|TYP|MAX|NOM)\b", re.I)
+KIND_TITLE_RX = re.compile(
+    r"(absolute\s+)?maximum\s+ratings|recommended\s+operating\s+conditions"
+    r"|(electrical|dc\s+electrical|static|dc)\s+(characteristics|specifications)",
+    re.I)
+REF_RX = re.compile(
+    r"\b(see|refer|refer\s+to|for\s+more\s+information|defined\s+in|"
+    r"described\s+in|in\s+section|appropriate|values\s+in|table\s+is|"
+    r"which\s+.{0,40}\btable\b)\b", re.I)
+TOC_PAGE_LIMIT = 10        # 目录只可能在最前面，正文页不参与目录判定
+
+
+def prescan3(doc, npages, max_pages=0):
+    """全书文本快筛：只留「有表标题词 + 至少两个 MIN/TYP/MAX/NOM 列词」的页。
+
+    为什么分两阶段：find_tables()/parse_page() 对 282 页全做一遍很慢，
+    get_text("text") 是纯文本，全书扫一遍几乎不耗时。
+    纯术语解释页（V003 p14）连一个 MIN/MAX 列词都没有，第一关就出局；
+    p101/p105/p106 都有 PARAMETER MIN MAX UNIT / MIN(1) NOM MAX(1)，稳过。
+    max_pages=0 表示全书；调试时可传小值做回归。
+    """
+    limit = npages if max_pages <= 0 else min(npages, max_pages)
+    cand = []
+    for pno in range(1, limit + 1):
+        t = doc.load_page(pno - 1).get_text("text")
+        if not t.strip():
+            continue
+        if len(NUMCOL_RX.findall(t)) >= 2 and KIND_TITLE_RX.search(t):
+            cand.append(pno)
+    return cand
+
+
+def find_headings3(rows, kind):
+    """标题行 → [(y, 行文本)]，并排除章节交叉引用句。
+
+    X.find_headings 只返回 y，会把 "see ... in Electrical Characteristics"
+    整句算命中。真表标题是独立短行（如 "6.1 Absolute Maximum Ratings"），
+    引用句是长句且带 see/refer/for more information，必须排掉。
+    """
+    rx = re.compile(X.HEADING[kind], re.I)
+    out = []
+    for r in rows:
+        line = " ".join(w[4] for w in r["w"]).strip()
+        if not rx.search(line):
+            continue
+        if len(line) > 90 or REF_RX.search(line):
+            continue
+        out.append((r["y"], line))
+    return out
+
+
+def scan3(doc, npages, max_scan_pages=0):
+    """全书候选页扫描：先文本快筛，再只对候选页做表格解析。
 
     返回 (hits, nav)，结构与 B.scan 一致，只是 key 多了 "ROC"。
-    目录页判据沿用 Batch 2 的「同页命中 3 种以上表标题」——
-    正文页几乎不可能同时出现 AMR + ROC + ELC 三张表的标题。
+    与老版三点不同：
+      1. 不再被 MAX_SCAN_PAGES=40 截断（V003 真表在 p101）；
+      2. 候选页必须同时出现标题词与 MIN/TYP/MAX/NOM 列词；
+      3. 标题必须是独立短行，排除 see/refer 之类的章节交叉引用。
+    目录页仍排除，但只在最前 10 页判：p102 这类续表正文会同时出现
+    AMR/ELC/ROC 字样，若沿用「同页命中 3 种即跳过」会误杀真表。
     """
-    import _draft_extract as X
-
     hits = {k: [] for k in KINDS}
     nav = {k: [] for k in KINDS}
-    for pno in range(1, min(npages, B.MAX_SCAN_PAGES) + 1):
+    for pno in prescan3(doc, npages, max_scan_pages):
         page = doc.load_page(pno - 1)
         rows = X.group_lines(X.dedup(page.get_text("words")))
-        found = {k: X.find_headings(rows, k) for k in KINDS}
-        if sum(1 for v in found.values() if v) >= 3:
+        found = {k: find_headings3(rows, k) for k in KINDS}
+        if pno <= TOC_PAGE_LIMIT and sum(1 for v in found.values() if v) >= 3:
             continue                      # 目录页
         for kind in KINDS:
             hs = found.get(kind) or []
             if not hs:
                 continue
             bbs = X.table_bboxes(page)
-            for h in hs:
-                bb = X.choose_bbox(bbs, h)
+            for h_y, _htext in hs:
+                bb = X.choose_bbox(bbs, h_y)
                 recs, _ = X.parse_page(page, kind, bbox=bb)
                 good = [r for r in recs if r.get("label")]
                 if not any(n[0] == pno for n in nav[kind]):
-                    nav[kind].append((pno, h, bb, len(good)))
+                    nav[kind].append((pno, h_y, bb, len(good)))
                 for r in good:
-                    hits[kind].append((B.rank(r), pno, r, h, bb))
+                    hits[kind].append((B.rank(r), pno, r, h_y, bb))
     return hits, nav
 
 
@@ -362,12 +437,17 @@ def one_sample(meta, args):
     nlines = sum(len(p["lines"]) for p in panes)
     nlow = sum(1 for r in keep if WARN in r.get("notes", ""))
     if not panes:
-        quality, note = "未定位", "前 %d 页未找到 AMR/ELC 标题，需人工翻查" % B.MAX_SCAN_PAGES
+        quality, note = "未定位", "全书未找到带 MIN/TYP/MAX 列的参数表，需人工翻查"
     elif nlines == 0:
         quality = "无文本层"
         note = "页面抓不到文字（纯图形/扫描），建议整件标 EXCLUDED"
     elif not keep:
-        quality, note = "未定位", "定位到表格但没抽出行，需人工录入"
+        # 术语解释页/线图/错表：全部行都不是「带数值的核心参数」，
+        # 此时绝不能交草稿给人，直接给 EXCLUDED 建议。
+        quality, note = ("无法定位参数表",
+                         "定位到 %d 页但没抽到任何带数值的核心参数行；"
+                         "建议整件标 EXCLUDED: 表格定位失败/无标准参数表"
+                         % len(panes))
     elif nlow:
         quality, note = "需重点看", "核心 %d 行中 %d 行 low_confidence，先核这些" % (len(keep), nlow)
     else:
@@ -462,6 +542,11 @@ def main():
         if c["quality"] == "无文本层":
             p.append('<div class="err">本页抓不到任何文字（纯图形/扫描件）。'
                      "请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div>")
+        if c["quality"] == "无法定位参数表":
+            p.append('<div class="err">全书未抽到任何带数值的核心参数行，'
+                     '本件<b>不落草稿</b>。请整件标 '
+                     "<code>EXCLUDED: 表格定位失败/无标准参数表</code>，"
+                     "不要把术语解释、引脚说明当成参数行。</div>")
         for pn in c["panes"]:
             p.append('<div class="pane" data-sno="%s" data-fn="%s" data-page="%d" '
                      'data-title="%s">'
