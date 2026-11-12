@@ -1543,3 +1543,29 @@ V290 三行（VIH、VIL 两档）。
 4. Gold 行数合计 **111 → 105**。
 5. `_make_master_inventory.py` 的断言同步改为 24/5/3/1 与 6+6+6+4+2，
    并把 `V130` 写进 `EXPECT_EXCL` 固定集合 —— 分类再漂就直接报错。
+
+### 21.10 新事实源脚本的定向测试（Reviewer 追加要求）
+
+被测脚本 `_final_from_signed_xlsx.py` 的契约只有一条：**签字 xlsx 是唯一事实源，
+只读不写；字节不对就立刻停。** 回归脚本 `_test_b4_final_from_signed.py`，
+原始输出 `Batch3_b4_final_from_signed_test.txt`，**29 项断言全 PASS**。
+
+| 场景 | 断言要点 | 结果 |
+| --- | --- | --- |
+| 0 出厂常量自检 | `SIGNED_SHA` 与真实签字件哈希一致 | PASS |
+| 1 正常读取 | 派生 CSV / provenance / sidecar 三件；CSV 8 行 19 列、`approved_by` 全 `wuxiaoxian`；sidecar 只含 `V077`/`V290` | PASS |
+| 2a 追加一个字节 | 拦下，且 `load_workbook` **调用 0 次** | PASS |
+| 2b 合法 xlsx 改一格 | 仍拦下，且 `load_workbook` **调用 0 次** | PASS |
+| 3 源文件缺失 | 拦下，`load_workbook` 0 次 | PASS |
+| 4a `SIGNED_SHA` 置空 | 拦下，未进入解析 | PASS |
+| 4b `SIGNED_SHA` 改成错值 | 拦下，未进入解析 | PASS |
+| 5 失败不产物 | 场景 2a / 2b / 3 / 4a / 4b 的输出目录均为空 | PASS |
+| 6 源文件零改动 | 运行前后哈希一致、mtime 未被触碰、可重复派生 | PASS |
+| 7 测试无污染 | 工作目录三件产物哈希未变 | PASS |
+
+**关键在 2b**：它用 openpyxl 改一个 `confidence_score` 后另存，得到一个**完全合法、
+能被正常解析**的 xlsx。如果拦住它的是「解析失败」，说明闸门放错了位置；
+实测仍在 `load_workbook` 之前退出，证明拦住它的是哈希闸门本身。
+
+「在 `load_workbook()` 之前」不是从错误信息推断的：测试把
+`openpyxl.load_workbook` 换成计数器，失败场景里调用次数必须为 0。

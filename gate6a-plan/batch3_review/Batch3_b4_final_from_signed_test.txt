@@ -1,0 +1,39 @@
+  被测签字件：Batch3_B4_FINAL.xlsx
+    SHA-256 = 685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e
+    出厂常量 = 685caff0da9c568658057c5b2d1a4949abea506589de12846709e78d984bd28e
+  [PASS] 0 出厂 SIGNED_SHA 与真实签字件一致                     
+  [PASS] 1 哈希匹配 -> 允许读取并派生                            
+  [PASS] 1a 产出 CSV / provenance / sidecar 三件          ['Batch3_B4_FINAL.csv', 'Batch3_B4_PDF_PROVENANCE.csv', 'page_text_batch3_b4.json']
+  [PASS] 1b 确实调用过 load_workbook（前置未被误拦）               调用 2 次
+  [PASS] 1c 派生 CSV 为 8 行 19 列                         8 行
+  [PASS] 1d 派生 CSV 的 approved_by 全为 wuxiaoxian        
+  [PASS] 1e sidecar 只含仍在 Gold 的两个样本                   ['V077', 'V290']
+  [PASS] 2a 追加字节 -> 拦下                                定稿签字件字节与登记不一致，拒绝派生：
+  登记 685caff0da9c568658057c5b2d1a4949abe
+  [PASS] 2a-1 哈希闸门先于 load_workbook                    load_workbook 调用 0 次
+  [PASS] 2b 篡改后仍是合法 xlsx（能被解析）                        
+  [PASS] 2b-1 篡改后哈希确实变了                               0dc2142fc1c7b4f3…
+  [PASS] 2b-2 合法结构的篡改件 -> 仍被拦下                        定稿签字件字节与登记不一致，拒绝派生：
+  登记 685caff0da9c568658057c5b2d1a4949abe
+  [PASS] 2b-3 拦住它的是哈希闸门而非解析失败                         load_workbook 调用 0 次
+  [PASS] 3 源文件不存在 -> 拦下                               找不到定稿签字件：C:\Users\ADMINI~1\AppData\Local\Temp\finaltest_fpac
+  [PASS] 3a 同样在解析之前退出                                 load_workbook 调用 0 次
+  [PASS] 4a SIGNED_SHA 置空 -> 拦下                       定稿签字件字节与登记不一致，拒绝派生：
+  登记 
+  实际 685caff0da9c568658057c5b2d1a4
+  [PASS] 4a-1 未进入解析                                   调用 0 次
+  [PASS] 4b SIGNED_SHA 改成错值 -> 拦下                     定稿签字件字节与登记不一致，拒绝派生：
+  登记 00000000000000000000000000000000000
+  [PASS] 4b-1 未进入解析                                   调用 0 次
+  [PASS] 5 场景 2a 未产出任何派生文件                            []
+  [PASS] 5 场景 2b 未产出任何派生文件                            []
+  [PASS] 5 场景 3 未产出任何派生文件                             []
+  [PASS] 5 场景 4a 未产出任何派生文件                            []
+  [PASS] 5 场景 4b 未产出任何派生文件                            []
+  [PASS] 6 正常运行成功                                     
+  [PASS] 6a 运行前后签字 xlsx 哈希完全一致                        685caff0da9c5686… -> 685caff0da9c5686…
+  [PASS] 6b 文件修改时间未被触碰                                
+  [PASS] 6c 再跑一次仍一致（可重复派生）                            
+  [PASS] 7 测试未改动工作目录里的三件产物                            []
+
+PASS=29  FAIL=0

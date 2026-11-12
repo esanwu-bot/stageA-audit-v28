@@ -168,6 +168,9 @@ SYNC = [
     "_final_from_signed_xlsx.py",       # 签字 xlsx -> CSV / sidecar / provenance
     "_diff_pm_edit.py",                 # PM 手改与上一版定稿的逐格差异（留证）
     "Batch3_B4_approval_record_r13.txt",
+    # 第十三轮追加：新事实源脚本的定向测试（六场景 29 项断言）
+    "_test_b4_final_from_signed.py",
+    "Batch3_b4_final_from_signed_test.txt",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
 B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
