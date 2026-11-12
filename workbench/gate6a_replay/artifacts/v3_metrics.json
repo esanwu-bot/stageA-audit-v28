@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.2",
+  "schema_version": "3.3",
   "evaluator": "evaluator_v3_1to1",
   "parser_root": "E:\\workspace\\icpdf-extractor\\runs\\gate6a_replay_v2_postfix",
   "parser_rerun": false,
@@ -26,6 +26,95 @@
   "exact_rate": 0.8476,
   "row_verified_hit_rows": 66,
   "row_verified_hit_rate": 0.6286,
+  "symbol_gated_strict_hit_rows": 66,
+  "symbol_gated_strict_hit_rate": 0.6286,
+  "condition_gated_strict_hit_rows": 58,
+  "condition_gated_strict_hit_rate": 0.5524,
+  "semantic_hit_rows": 58,
+  "semantic_hit_rate": 0.5524,
+  "semantic_gate": {
+    "ladder": [
+      {
+        "gate": "exact_rows",
+        "rows": 89,
+        "rate": 0.8476,
+        "meaning": "块级全字段一致，符号归属与 condition 均未设门槛"
+      },
+      {
+        "gate": "symbol_gated_strict_hit",
+        "rows": 66,
+        "rate": 0.6286,
+        "meaning": "在上一级基础上，要求符号归属在命中物理行上可证"
+      },
+      {
+        "gate": "condition_gated_strict_hit",
+        "rows": 58,
+        "rate": 0.5524,
+        "meaning": "在上一级基础上，要求 condition 落在命中行或按列对齐（完全语义命中率）"
+      }
+    ],
+    "dropped_by_symbol_gate": 23,
+    "dropped_by_condition_gate": 8,
+    "reason_counts": {
+      "symbol_not_on_row": 16,
+      "field_mismatch": 15,
+      "coarse_block": 7,
+      "condition_not_on_row:grouped_subheader": 3,
+      "condition_not_on_row:other_block": 3,
+      "condition_not_on_row:section_heading": 1,
+      "condition_not_on_row:table_title": 1,
+      "not_located": 1
+    },
+    "condition_miss_kinds": {
+      "grouped_subheader": 3,
+      "other_block": 3,
+      "section_heading": 1,
+      "table_title": 1
+    },
+    "condition_failed_rows": [
+      {
+        "sample_id": "V003",
+        "gold_row_id": "G068",
+        "reason": "condition_not_on_row:other_block"
+      },
+      {
+        "sample_id": "V003",
+        "gold_row_id": "G069",
+        "reason": "condition_not_on_row:other_block"
+      },
+      {
+        "sample_id": "V003",
+        "gold_row_id": "G072",
+        "reason": "condition_not_on_row:section_heading"
+      },
+      {
+        "sample_id": "V101",
+        "gold_row_id": "G001",
+        "reason": "condition_not_on_row:grouped_subheader"
+      },
+      {
+        "sample_id": "V101",
+        "gold_row_id": "G004",
+        "reason": "condition_not_on_row:grouped_subheader"
+      },
+      {
+        "sample_id": "V101",
+        "gold_row_id": "G007",
+        "reason": "condition_not_on_row:grouped_subheader"
+      },
+      {
+        "sample_id": "V290",
+        "gold_row_id": "G105",
+        "reason": "condition_not_on_row:other_block"
+      },
+      {
+        "sample_id": "V320",
+        "gold_row_id": "G055",
+        "reason": "condition_not_on_row:table_title"
+      }
+    ],
+    "note": "每行只记首个阻断原因。55.24% 是纯代码 Parser 无外挂辅助下的真实底线，对外引用请用此数，不要用块级 84.76%。"
+  },
   "coarse_rows": 8,
   "miss_rate": 0.0095,
   "match_mode": {
