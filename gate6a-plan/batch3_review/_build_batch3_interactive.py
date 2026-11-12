@@ -64,6 +64,17 @@ DONE = {"V097", "V101", "V111", "V145", "V162", "V349"}
 # 度符号按原图写 °C；PDF 文本层把 ° 抽成 o（`25oC`），仅影响 OCR 显示，
 # v1.6 只用 condition 做分组键，不做原文断言，故按原图语义落盘。
 CONDITION_BACKFILL = {
+    # B4 V077：原文同一张 Recommended Operating Conditions 表里，CVDD 与 RVDD
+    # 各按「375 MHz version / 456 MHz version」给了两组值，VLM 只抄数值不抄条件。
+    # 顺序按原表自上而下：375 在前（1.14/1.2/1.32），456 在后（1.25/1.3/1.35）。
+    ("V077", "38", "CVDD"): ["375 MHz version", "456 MHz version"],
+    ("V077", "38", "RVDD"): ["375 MHz version", "456 MHz version"],
+    # DVDD 在原表里有两行（1.8V I/O 与 3.3V I/O），草稿只留了 1.8V 那行，
+    # 用原表的行标题把适用范围钉住，免得跟 3.3V 那行的 3.0/3.3/3.45 混起来。
+    ("V077", "38", "DVDD"): ["Supply voltage, I/O, 1.8V"],
+    # B4 V290：VIL 两行按温度档区分，0.8 V 对应 0°C to +70°C，
+    # 0.5 V 对应 −55°C to +125°C（注意原文用的是 U+2212 减号）。
+    ("V290", "3", "VIL"): ["0°C to +70°C", "−55°C to +125°C"],
     ("V256", "13", "V(MAIN-AUX)"): [
         "2V<VCELL<4.5V; TA=25°C",
         "2V<VCELL<4.5V; -20°C<TA<65°C",
@@ -100,6 +111,12 @@ def apply_condition_backfill(rows, sno):
                 "拒绝按顺序盲配" % (sno, page, sym, len(hit), len(conds)))
         for r, c in zip(hit, conds):
             r["condition"] = c
+            # 条件已经落到具体行上了，旧备注里的"有多组取值…疑 VLM 误标"
+            # 就成了自相矛盾的话术，必须换掉，否则 PM 会以为还没解决。
+            n = r.get("notes", "")
+            if "有多组取值" in n:
+                segs = [x for x in n.split("；") if "有多组取值" not in x]
+                r["notes"] = "；".join(segs + [COND_BOUND_NOTE]).strip("；")
     return rows
 
 # 第一梯队：原 Batch 1 名单（5 件普通文本型）+ 1 件复杂参数表。
@@ -203,6 +220,20 @@ CORE_ORDER_EXT = [
 
 # 二轮命中时写进 notes 的前缀：明确这些行不是按白名单选的
 EXT_NOTE = "非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺"
+EXT_PREFIX = "【非白名单参数·需 PM 决定是否纳入】"
+COND_BOUND_NOTE = ("多组取值已按 condition 分行绑定，请核对是否落在该版本/"
+                   "温度档对应的那一行")
+
+# Reviewer 2026-11-12 定稿的三类排除话术。必须按事实分类，不能一刀切：
+#   全书确实没有文本层       → OFF_EXCL_NOLAYER
+#   只有电气特性页是扫描图   → OFF_EXCL_SCANPAGE
+#   有文本层但版式还原不了行序 → OFF_EXCL_SMD
+OFF_EXCL_NOLAYER = ("EXCLUDED: 全书无文本层；当前 Gate6A 流程无可用 OCR 取证路径，"
+                    "无法建立可验证 Gold")
+OFF_EXCL_SCANPAGE = ("EXCLUDED: 电气特性页为扫描图；当前 Gate6A 流程无可用 OCR "
+                     "取证路径，无法建立可验证 Gold")
+OFF_EXCL_SMD = ("EXCLUDED: 版式不支持稳定还原行序，当前流程无法建立可验证 Gold；"
+                "需 SMD 专用规则后重评")
 
 
 def core_rank_ext(r):
@@ -899,9 +930,13 @@ def mark_dups(rows):
                               + "；与上一行完全重复，可能该删").strip("；")
             continue
         for r, _ in items:
-            r["notes"] = (r.get("notes", "")
-                          + "；%s 有多组取值（疑不同温度等级或 VLM 误标），请确认"
-                          % sym).strip("；")
+            # 条件已经按原图落到这一行了，就不再喊"疑似误标" —— 那句话会让 PM
+            # 以为问题没解决；只提醒核对落行是否对。
+            if (r.get("condition") or "").strip():
+                tail = COND_BOUND_NOTE
+            else:
+                tail = ("%s 有多组取值（疑不同温度等级或 VLM 误标），请确认" % sym)
+            r["notes"] = (r.get("notes", "") + "；" + tail).strip("；")
     return rows
 
 
@@ -1012,6 +1047,20 @@ def build_js(rows, export_name):
 # —— Reviewer 指定的逐件核查提示（B4）——
 # 这些不是自动判定，是人点选时**必须先回答的问题**，直接印在圈选台卡片上，
 # 避免「机器说 EXCLUDED 就照着标」或「机器出了草稿就默认对」。
+# 数值长得像但适用条件不同，最容易看错。这类必须红底提醒，不能只放灰字提示。
+WARN_BANNER = {
+    "V077": ("本件原文同一张 Recommended Operating Conditions 里同时给出 "
+             "<b>375 MHz version</b> 与 <b>456 MHz version</b> 两套条件："
+             "CVDD 与 RVDD 各两组值已分别绑定 —— 375 MHz → 1.14 / 1.2 / 1.32 V，"
+             "456 MHz → 1.25 / 1.3 / 1.35 V。"
+             "签字前请重点核对这两组 <code>condition</code> 是否落在正确的行上，"
+             "不要只看数值。"),
+    "V290": ("VIL 两行按温度档区分，数值不同、适用温度不同："
+             "0.8 V 对应 0°C to +70°C，0.5 V 对应 −55°C to +125°C。"
+             "本件 II（输入电流）原文条件是 VCC = Max、VI = 5.5V，"
+             "文本层抽成 “V CC = Max, VI Max = 5.5V”，是否补录请 PM 定夺。"),
+}
+
 REVIEW_HINTS = {
     "V077": "Reviewer 提示：请核实表格类型。该件 201 页、章节极多，"
             "先确认裁到的是电气特性表，而不是时序/引脚/封装表。",
@@ -1035,13 +1084,13 @@ EXCLUDED_REASON = {
         "20、30、40 μA），且 find_tables 在该页探不到边框表格（0 张）。"
         "VLM 实测只能给出「每符号一行」的合并值，并固定取 01,02 那一行，"
         "会掩盖器件类型差异 —— 属硬凑，故不进点选。"
-        "EXCLUDED: 表格版式不支持稳定还原行序，需 SMD 专用规则后再做"
+        + OFF_EXCL_SMD
     ),
     "V041": (
         "电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 "
         "PACKAGE OPTION ADDENDUM / PACKAGE MATERIALS / PACKAGE OUTLINE / "
         "LAND PATTERN / STENCIL DESIGN / 免责声明，其中的 MIN/MAX 是机械尺寸公差，"
-        "不是电气参数。EXCLUDED: 电气特性页无文本层，无 OCR 能力，无法建立 Gold"
+        "不是电气参数。" + OFF_EXCL_SCANPAGE
     ),
 }
 
@@ -1127,9 +1176,25 @@ def one_sample(meta, args):
         if keep_ext:
             keep, drop, ext_used = keep_ext, drop_ext, True
             for r in keep:
-                r["notes"] = (r.get("notes", "") + "；" + EXT_NOTE).strip("；")
+                # 逐行打头标「非白名单」，供 PM 逐条决定是否纳入 Gold；
+                # 不能只在样本级说明里提一句，Excel 里筛不出来。
+                r["notes"] = (EXT_PREFIX
+                              + (r.get("notes", "") + "；" + EXT_NOTE).strip("；"))
     # VLM 不抄 TEST CONDITIONS：按参数块内出现顺序从原图回填（Fail-Closed）
     apply_condition_backfill(keep, sno)
+    # 回填完必须回原文核一遍：条件在原页文本里找不到，就是绑错了页或错了行。
+    # 归一化只做 °→o（PDF 文本层常把度数符号抽成 o）与空白折叠，不做同义改写。
+    for r in keep:
+        cond = (r.get("condition") or "").strip()
+        if not cond:
+            continue
+        _p = doc.load_page(int(r["evidence_page"]) - 1).get_text("text")
+        _norm = lambda x: " ".join(x.replace("\u00b0", "o").split())
+        if _norm(cond) not in _norm(_p):
+            raise SystemExit(
+                "FAIL %s p%s %s 的 condition %r 在原页文本里核不到，"
+                "拒绝交付未经验证的条件" % (sno, r["evidence_page"],
+                                            r.get("symbol"), cond))
     mark_dups(keep)
 
     # low_confidence 标记：低于阈值的行在 notes 里打词，方便 Excel 筛。
@@ -1162,16 +1227,14 @@ def one_sample(meta, args):
             quality = "无文本层"
             if blank == npages:
                 note = ("全书 %d/%d 页无文本层，前 12 页有连续 %d 页空白；"
-                        "EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）"
-                        % (blank, npages, best))
+                        "%s（不进点选）" % (blank, npages, best, OFF_EXCL_NOLAYER))
             else:
                 # 只部分页是扫描图（B4 V041 的情形）：不能说「整本无文本层」，
                 # 文本层页确实存在，只是它们不是电气特性页。
                 note = ("全书 %d/%d 页无文本层（前 12 页有连续 %d 页空白），"
                         "其余 %d 页虽有文本层，但未定位到电气参数表；"
-                        "EXCLUDED: 电气特性页为扫描图，无 OCR 能力，"
-                        "无法建立 Gold（不进点选）"
-                        % (blank, npages, best, npages - blank))
+                        "%s（不进点选）"
+                        % (blank, npages, best, npages - blank, OFF_EXCL_SCANPAGE))
         else:
             quality = "无电气参数表"
             note = ("全书有文本层，但未定位到带 MIN/TYP/MAX 列的参数表"
@@ -1205,6 +1268,7 @@ def one_sample(meta, args):
             "panes": panes, "rows": keep, "quality": quality, "note": note,
             "dropped": len(drop), "nlow": nlow, "ext": ext_used,
             "hint": REVIEW_HINTS.get(sno, ""),
+            "warn": WARN_BANNER.get(sno, ""),
             "stratum": meta.get("stratum_proposed", "")}
     doc.close()
     return keep, card
@@ -1260,7 +1324,10 @@ def main():
     p.append("<style>%s%s%s</style></head><body>"
              % (B.CSS, I2.EXTRA_CSS,
                 ".hint-review{background:#fff4ce;border-left:4px solid #d68b00;"
-                "padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}"))
+                "padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}"
+                ".hint-warn{background:#fdecea;border-left:4px solid #c0392b;"
+                "padding:9px 11px;margin:8px 0;border-radius:4px;font-size:13px;"
+                "color:#7b1a12}"))
     p.append("<header><h1>%s 圈选台 · %d 件 · 核心参数草稿</h1>"
              % (B.esc(args.label), len(cards)))
     p.append("<p>左边是原图，右边是同区域抓出的纯文本。"
@@ -1287,12 +1354,18 @@ def main():
         p.append('　<a href="%s" target="_blank">在 PDF 中打开</a>' % B.esc(c["pdf"]))
         cls = "t-ok" if c["quality"] == "好" else "t-warn"
         tags = ['<span class="tag %s">草稿：%s</span>' % (cls, B.esc(c["quality"]))]
+        if c.get("ext"):
+            tags.append('<span class="tag t-warn">二轮兜底：非白名单</span>')
         for pn in c["panes"]:
             tags.append('<span class="tag %s">%s = p%s</span>'
                         % ("t-amr" if pn["kind"] == "AMR" else "t-elc",
                            pn["kind"], "/".join(str(x) for x in pn["span"])))
         p.append('<div class="meta">共 %d 页 　%s</div>' % (c["npages"], "".join(tags)))
         p.append('<div class="meta">%s</div>' % B.esc(c["note"]))
+        if c.get("warn"):
+            # 高亮块：这段是 HTML，带 <b>/<code>，不再转义
+            p.append('<div class="hint hint-warn"><b>必须核对</b>　%s</div>'
+                     % c["warn"])
         if c.get("hint"):
             p.append('<div class="hint hint-review"><b>核查提示</b>　%s</div>'
                      % B.esc(c["hint"]))
@@ -1300,7 +1373,10 @@ def main():
 
         if c["quality"] == "无文本层":
             p.append('<div class="err">本页抓不到任何文字（纯图形/扫描件）。'
-                     "请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div>")
+                     "排除话术请按事实选：全书确实无文本层用 "
+                     "<code>%s</code>；只有电气特性页是扫描图则用 "
+                     "<code>%s</code>，不要一刀切。</div>"
+                     % (B.esc(OFF_EXCL_NOLAYER), B.esc(OFF_EXCL_SCANPAGE)))
         if c["quality"] == "无法定位参数表":
             p.append('<div class="err">全书未抽到任何带数值的核心参数行，'
                      '本件<b>不落草稿</b>。请整件标 '

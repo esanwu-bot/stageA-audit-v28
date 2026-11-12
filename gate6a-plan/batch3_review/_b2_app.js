@@ -24,7 +24,11 @@ const STATUS = [
   "CONFIRMED",
   "UNRESOLVED: 表格排版混乱，无法定位列",
   "EXCLUDED: 文档内无标准参数表",
-  "EXCLUDED: 无 OCR 能力，无法建立 Gold"
+  // Reviewer 2026-11-12 定稿：排除话术按事实分三类，下拉里也只给这三条，
+  // 免得手输时又冒出"无 OCR 能力"这种一刀切写法。
+  "EXCLUDED: 全书无文本层；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold",
+  "EXCLUDED: 电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold",
+  "EXCLUDED: 版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评"
 ];
 
 // 单个单位记号。复合单位（V/µs、dBFS/Hz）由下面拼接，别一个个枚举，

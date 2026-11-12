@@ -25,7 +25,9 @@ WORKING = PREP / "Gold_Set_v1.1_WORKING.csv"
 OUT = PREP / "Batch3_SCAN_MANIFEST.csv"
 
 SCAN_SAMPLES = ["S01", "S02", "S03"]
-REASON = "EXCLUDED: 无 OCR 能力，无法建立 Gold"
+# Reviewer 2026-11-12 定稿话术：全书无文本层用这一句，不可与其他两类混用
+REASON = ("EXCLUDED: 全书无文本层；当前 Gate6A 流程无可用 OCR 取证路径，"
+          "无法建立可验证 Gold")
 COLS = [
     "sample_no", "file_name", "sha256", "page_count", "size_bytes",
     "blank_pages", "text_layer_pages", "verdict", "reason", "device_model",

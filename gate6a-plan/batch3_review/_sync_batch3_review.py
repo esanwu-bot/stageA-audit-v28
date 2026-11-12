@@ -138,6 +138,18 @@ SYNC = [
     "Batch3_SCAN_generation.txt",
     # 第十轮：write_xlsx 内容幂等（封卷件不因 openpyxl 时间戳漂移而改字节）
     "_patch_idem.py",
+    # 第十一轮：封卷保护改硬哈希（废弃内容签名软比较）+ 七场景回归
+    "_patch_hardhash_1.py",
+    "_patch_hardhash_2.py",
+    "_test_seal_guard.py",
+    "Batch3_seal_guard_test.txt",
+    # 第十一轮：B4 条件绑定与非白名单标注
+    "_patch_b4_round2.py",
+    "_b2_app.js",                       # 圈选台前端逻辑；状态枚举改为三类话术
+    # 第十一轮：33 件总清单
+    "_make_master_inventory.py",
+    "Batch3_MASTER_INVENTORY.csv",
+    "Batch3_MASTER_INVENTORY.txt",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
 B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}

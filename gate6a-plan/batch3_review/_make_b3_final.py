@@ -118,6 +118,45 @@ EXPECT_SAMPLES = 4
 # 唯一签名源：PM 在 5 个红格补签后的原件（2026-11-12 12:14 保存）。
 # 补签后按稳定 ID 继承，绝不按行号、绝不代填、绝不自动补齐。
 APPROVAL_SRC = PREP / "Batch3_B3_FINAL_TO_SIGN.xlsx"
+
+# 已封卷文件 → 冻结 SHA-256。这张表是封卷的唯一真源：
+# 生成器只能"确认没变"，不能"改成别的"。要变更必须先人工改这张表。
+SEALED_SHA = {
+    "Batch3_B3_FINAL.csv":
+        "b940e2e4802d505f69728cbf313f844392c073bd7e2b2c5a7a47d6e36e019b12",
+    "Batch3_B3_FINAL.xlsx":
+        "b437658dc8d2f8f39b4fdc44ea0b5fb233c1adf3dab72ec2df846c80f7f43035",
+    "Batch3_B3_FINAL_TO_SIGN.xlsx":
+        "306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7",
+    "page_text_batch3_b3.json":
+        "fca6fe2f6a896bdb1f32db15be0f86f5a7c52e745193a6613c2d1254e2ff21c4",
+}
+
+
+def guard_sealed(path, registry=None):
+    """封卷件写入闸门：'skip' = 保留原字节，'write' = 允许生成。
+
+    任何「已登记封卷却对不上」的情况一律 SystemExit。这里刻意不再做
+    内容层面的"看起来一样"比较 —— 那正是上一版被 Reviewer 判为 Fail-Open 的地方。
+    """
+    reg = SEALED_SHA if registry is None else registry
+    name = path.name
+    if name not in reg:
+        return "write"          # 本就不是封卷件，正常生成
+    want = reg[name]
+    if not want:
+        raise SystemExit("封卷登记缺哈希，拒绝默认放行：%s" % name)
+    if not path.exists():
+        raise SystemExit("封卷件缺失，不允许凭生成器重造：%s" % path)
+    try:
+        got = sha(path)
+    except OSError as exc:
+        raise SystemExit("封卷件无法读取，拒绝继续：%s（%s）" % (path, exc))
+    if got != want:
+        raise SystemExit(
+            "封卷件字节与登记不一致，拒绝自动替换：%s\n  登记 %s\n  实际 %s"
+            % (path, want, got))
+    return "skip"
 SIGNERS = {"wuxiaoxian"}
 
 # 唯一条件真源在本体生成器里，这里只声明"取哪一块"
@@ -231,37 +270,14 @@ def atomic_replace(tmp, dst):
                 pass
 
 
-def _wb_signature(path):
-    """工作簿内容签名：表名/冻结/筛选/列宽 + 每格的值与填充色、加粗。
-
-    只比对「内容」，不含 docProps 时间戳，用于判断是否需要真的重写。
-    """
-    wb = openpyxl.load_workbook(str(path), data_only=False)
-    ws = wb.active
-    sig = [ws.title, ws.freeze_panes or "", ws.auto_filter.ref or ""]
-    sig.append(tuple(sorted((k, round(float(v.width or 0), 4))
-                            for k, v in ws.column_dimensions.items())))
-    for row in ws.iter_rows():
-        for c in row:
-            fill = c.fill
-            fg = ""
-            if fill is not None and fill.fill_type == "solid":
-                rgb = getattr(fill.fgColor, "rgb", None)
-                fg = rgb if isinstance(rgb, str) else str(fill.fgColor.index or "")
-            font = c.font
-            frgb = ""
-            try:
-                frgb = font.color.rgb if font and font.color else ""
-            except (TypeError, AttributeError):
-                frgb = ""
-            sig.append((c.coordinate, c.value,
-                        bool(font.b) if font else False,
-                        frgb if isinstance(frgb, str) else ""))
-    return tuple(sig)
-
-
 def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
-    """写 19 列定稿表；highlights={(行号, 列名): 颜色}，行号从 1 起（数据行）。"""
+    """写 19 列定稿表；highlights={(行号, 列名): 颜色}，行号从 1 起（数据行）。
+
+    已封卷的目标先过硬哈希闸门：要么原字节不动，要么直接退出，没有第三种可能。
+    """
+    state = guard_sealed(path)
+    if state == "skip":
+        return "未改写（封卷件哈希与登记一致，保留原字节）"
     wb = openpyxl.Workbook()
     ws = wb.active
     ws.title = sheet
@@ -286,16 +302,6 @@ def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
     # 临时文件必须带 .xlsx 后缀：openpyxl 读取时会校验扩展名
     tmp = path.with_name(path.name + ".wb_tmp.xlsx")
     wb.save(str(tmp))
-    # 幂等保护：要写的内容与磁盘现件逐格一致时，保留原字节、不重写。
-    # openpyxl 每次 save 都会刷新 docProps/core.xml 的 dcterms:modified，
-    # 会让封卷件的整包 SHA-256 无意义漂移（数据其实一字未改）。
-    if path.exists():
-        try:
-            if _wb_signature(tmp) == _wb_signature(path):
-                tmp.unlink()
-                return "未改写（内容与磁盘一致，保留原字节）"
-        except (OSError, ValueError, KeyError):
-            pass
     atomic_replace(tmp, path)
     return "已改写"
 
@@ -376,6 +382,9 @@ def main():
         raise SystemExit("找不到 PM 签字 xlsx：%s" % SRC_XLSX)
     if not PDF_DIR.is_dir():
         raise SystemExit("找不到 PDF 语料目录：%s" % PDF_DIR)
+    # 签名源是封卷件：生成器不写它，但必须能发现它被动过/损坏。
+    # 哈希对不上直接退出，避免拿一份被改过的签名源继续往下跑。
+    guard_sealed(Path(args.approval))
 
     signed = read_signed_xlsx(SRC_XLSX)
     if len(signed) != EXPECT_ROWS:
@@ -537,12 +546,17 @@ def main():
               (sno, fname[:38], npages, how, DEVICE_MODEL[sno], digest[:16]))
 
     # ---- 落盘 ----
-    tmp_csv = OUT_CSV.with_name(OUT_CSV.name + ".wb_tmp")
-    with open(tmp_csv, "w", encoding="utf-8-sig", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=FINAL_COLS)
-        w.writeheader()
-        w.writerows(rows)
-    atomic_replace(tmp_csv, OUT_CSV)
+    csv_state = guard_sealed(OUT_CSV)
+    if csv_state == "skip":
+        csv_state = "未改写（封卷件哈希与登记一致，保留原字节）"
+    else:
+        tmp_csv = OUT_CSV.with_name(OUT_CSV.name + ".wb_tmp")
+        with open(tmp_csv, "w", encoding="utf-8-sig", newline="") as fh:
+            w = csv.DictWriter(fh, fieldnames=FINAL_COLS)
+            w.writeheader()
+            w.writerows(rows)
+        atomic_replace(tmp_csv, OUT_CSV)
+        csv_state = "已改写"
 
     tmp_prov = OUT_PROV.with_name(OUT_PROV.name + ".wb_tmp")
     with open(tmp_prov, "w", encoding="utf-8-sig", newline="") as fh:
@@ -561,24 +575,16 @@ def main():
         ("samples", side),
     ])
     side_text = json.dumps(obj, ensure_ascii=False, indent=2)
-    # 幂等保护：例外字段只有 generated_at。除它以外全部一致时保留原字节，
-    # 免得封卷件旁挂的 sidecar 仅因重跑时刻不同就改字节。
-    side_same = False
-    if OUT_SIDE.exists():
-        try:
-            cur = json.loads(OUT_SIDE.read_text(encoding="utf-8"))
-            new = json.loads(side_text)
-            cur.pop("generated_at", None)
-            new.pop("generated_at", None)
-            side_same = (cur == new)
-        except (OSError, ValueError, KeyError):
-            side_same = False
-    if side_same:
-        print("  sidecar：未改写（除 generated_at 外内容一致，保留原字节）")
+    # sidecar 同样是封卷件：软比较（只忽略 generated_at）等于又留一个 Fail-Open，
+    # 改成硬哈希闸门 —— 要么字节与登记一致原地不动，要么直接退出。
+    side_state = guard_sealed(OUT_SIDE)
+    if side_state == "skip":
+        side_state = "未改写（封卷件哈希与登记一致，保留原字节）"
     else:
         tmp_side = OUT_SIDE.with_name(OUT_SIDE.name + ".wb_tmp")
         tmp_side.write_text(side_text, encoding="utf-8", newline="\n")
         atomic_replace(tmp_side, OUT_SIDE)
+        side_state = "已改写"
 
     xlsx_state = write_xlsx(
         OUT_XLSX, rows, "B3_FINAL",
@@ -635,7 +641,9 @@ def main():
              sum(1 for r in rows if r["approved_by"])))
     print("  签名源：%s" % Path(args.approval).name)
     print("  补签落点清单：%s" % TARGETS.name)
+    print("  CSV 写入：%s" % csv_state)
     print("  xlsx 写入：%s" % xlsx_state)
+    print("  sidecar 写入：%s" % side_state)
     return 0
 
 

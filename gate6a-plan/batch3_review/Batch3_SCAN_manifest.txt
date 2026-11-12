@@ -2,6 +2,6 @@
   S02  ATOPA4343NA_2K5__BURRS00055-1.pdf           11 页  全 11 页无文本层  sha256=055b0c8e47e82529…
   S03  32P4752-CGT__SISYD006-4-73.pdf              53 页  全 53 页无文本层  sha256=6712c9281cfe063b…
 
-SCAN 登记表：3 件，全部 EXCLUDED，理由「EXCLUDED: 无 OCR 能力，无法建立 Gold」
+SCAN 登记表：3 件，全部 EXCLUDED，理由「EXCLUDED: 全书无文本层；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold」
   溯源列：sha256 / page_count / size_bytes / blank_pages 均从磁盘实算
-  产物：Batch3_SCAN_MANIFEST.csv（641 字节）
+  产物：Batch3_SCAN_MANIFEST.csv（827 字节）

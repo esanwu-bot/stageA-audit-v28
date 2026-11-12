@@ -1,0 +1,15 @@
+PASS  1 哈希一致 → skip 且字节未动  返回 'skip'
+PASS  2 只改数字格式（值不变）→ 退出  → SystemExit：封卷件字节与登记不一致，拒绝自动替换：C:\Users\ADMINI~1\AppData\Local\Temp\sealguard_16ba2kw7\fmt.xlsx /   登记 6bd4dbf55e148dc10e9
+PASS  2b 该场景确实只改了字节（证明老逻辑会误判一致）
+PASS  3 新增工作表 → 退出  → SystemExit：封卷件字节与登记不一致，拒绝自动替换：C:\Users\ADMINI~1\AppData\Local\Temp\sealguard_16ba2kw7\sheet.xlsx /   登记 6bd4dbf55e148dc10
+PASS  3b 删除工作表 → 退出  → SystemExit：封卷件字节与登记不一致，拒绝自动替换：C:\Users\ADMINI~1\AppData\Local\Temp\sealguard_16ba2kw7\sheet_del.xlsx /   登记 beeafecb8ae6c
+PASS  4 文件损坏（非 zip）→ 退出  → SystemExit：封卷件字节与登记不一致，拒绝自动替换：C:\Users\ADMINI~1\AppData\Local\Temp\sealguard_16ba2kw7\broken.xlsx /   登记 0000000000000000
+PASS  4b 路径存在但读不出字节 → 退出（无法读取分支）  → SystemExit：封卷件无法读取，拒绝继续：C:\Users\ADMINI~1\AppData\Local\Temp\sealguard_16ba2kw7\unreadable.xlsx（[Errno 13] Permission den
+PASS  5 封卷件缺失 → 退出（不许重造）  → SystemExit：封卷件缺失，不允许凭生成器重造：C:\Users\ADMINI~1\AppData\Local\Temp\sealguard_16ba2kw7\gone.xlsx
+PASS  6 未登记文件 → write（不误伤草稿）  返回 'write'
+PASS  7 登记缺哈希 → 退出（不默认放行）  → SystemExit：封卷登记缺哈希，拒绝默认放行：SEALED.xlsx
+PASS  8 真实封卷件 Batch3_B3_FINAL.xlsx 与登记一致  sha=b437658dc8d2f8f3…
+PASS  8b 真实封卷件过闸门返回 skip
+------------------------------------------------------------------------
+PASS=12, FAIL=0
+结论：全部通过
