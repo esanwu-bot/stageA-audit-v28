@@ -20,6 +20,33 @@ FAIL: list[str] = []
 PASS = 0
 
 
+def require_inputs() -> None:
+    """先决条件检查。
+
+    审计仓库（GitHub 镜像）里只有证据文件和脚本，不含 runs/ 与 Gold 台账 ——
+    前者是 Parser 产出的几个 GB，后者是客户数据。直接跑必然报 FileNotFoundError
+    或 AssertionError，那种栈信息对复核者没有帮助。这里先给出能看懂的说明。
+    """
+    missing = []
+    for name in ("metrics.json", "eval_detail.csv", "rows_parser.csv",
+                 "soft_hits.csv", "parent_block_sharing.csv"):
+        if not (OUT / name).is_file():
+            missing.append("runs/gate6a_replay_v3_1to1/" + name)
+    if missing:
+        print("先决条件不满足：缺少 v3 评估产物。", file=sys.stderr)
+        for m in missing[:5]:
+            print("  缺：%s" % m, file=sys.stderr)
+        print(
+            "\n若你拿到的是只含审计证据的仓库副本，这是预期内的 ——\n"
+            "本脚本需要先在有 Parser 产物的完整工作区里跑过\n"
+            "  ICPDF_REPLAY_OUT=runs/gate6a_replay_v3_1to1 \\\n"
+            "    python workbench/gate6a_replay/audit/evaluator_v3_1to1/_evaluate.py\n"
+            "详见 audit/README.md 的「先决条件」一节。",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+
+
 def check(cond: bool, name: str, detail: str = "") -> None:
     global PASS
     if cond:
@@ -36,6 +63,7 @@ def load_csv(name: str) -> list[dict]:
 
 
 def main() -> int:
+    require_inputs()
     m = json.loads((OUT / "metrics.json").read_text(encoding="utf-8"))
     detail = load_csv("eval_detail.csv")
     soft = load_csv("soft_hits.csv")

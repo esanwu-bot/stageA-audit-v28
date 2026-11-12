@@ -178,6 +178,19 @@ python workbench/gate6a_replay/_verify_v3_faithful.py
 python workbench/gate6a_replay/_assert_v3_1to1.py
 ```
 
+**先决条件（必须说清楚，否则「可执行」是空话）**：这两个脚本读的是
+`runs/` 下的 Parser 冻结产物与 `workbench/_gate6a_prep/` 的 Gold 台账，
+而这两者按约定**不在审计仓库里** —— 前者体积以 GB 计，后者是客户数据。
+所以：
+
+| 你拿到的是 | 能跑什么 |
+| --- | --- |
+| 审计仓库副本（GitHub 镜像 / 只含证据的目录） | `sha256sum -c SHA256SUMS.txt`，核对字节 |
+| 完整工作区（含 `runs/` 与 `_gate6a_prep/`） | 上述两个脚本，复算 104 / 89 / 82 / 7 |
+
+在仓库副本里跑这两个脚本，会得到一句先决条件说明并以退出码 2 结束 ——
+是脚本主动拦下的，不是崩溃。
+
 `_assert_v3_1to1.py` 守的 27 条里，与本次两条指控直接相关的是：
 
 | # | 断言 | 实测 |

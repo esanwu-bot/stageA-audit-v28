@@ -54,25 +54,32 @@ Reviewer 指出两处致命伤，本轮针对性修复，**Parser 未重跑**，
 
 ## 怎么自行验证
 
-四个脚本都可以直接跑，失败即非零退出：
+### 在这个仓库里能做的：核对字节
 
 ```bash
-# 1. 先证明没换输入：冻结产物能重建 v2 的全部指标
-python workbench/gate6a_replay/_verify_v3_faithful.py
-#   → 24 样本块组装零漂移；旧逻辑复现 v2 的 104 / 89 / 8 / 7
-
-# 2. v3 的 27 项不变量
-python workbench/gate6a_replay/_assert_v3_1to1.py
-#   → 全部 27 项断言通过
-
-# 3. 校验拿到的字节和本包一致
 cd workbench/gate6a_replay/audit && sha256sum -c SHA256SUMS.txt
 #   → 53 个文件全部 OK
 ```
 
+已实测：在 `core.autocrlf=true`（Windows 默认）下克隆本仓库后执行，53 / 53 通过。
+
 `audit/**` 与 `artifacts/**` 在 `.gitattributes` 里标为 `-text`，**禁止 git 转换行尾**。
-不加这一条，Windows 检出会是 CRLF、Linux 会是 LF，同一份产物的 sha256 就不同，
+不加这一条，Windows 检出是 CRLF、Linux 是 LF，同一份产物的 sha256 就不同，
 校验表随之失效 —— v2 踩过这个坑（31 个文件对不上），v3 已修。
+
+### 需要完整工作区才能做的：复算指标
+
+本仓库按约定**不含** `runs/`（Parser 冻结产物，GB 级）与 `workbench/_gate6a_prep/`
+（Gold 台账，客户数据）。所以下面两个脚本在**只含审计证据的副本里跑不起来**，
+它们会打印缺失的输入并以退出码 2 结束：
+
+```bash
+python workbench/gate6a_replay/_verify_v3_faithful.py
+#   → 24 样本块组装零漂移；旧逻辑复现 v2 的 104 / 89 / 8 / 7
+
+python workbench/gate6a_replay/_assert_v3_1to1.py
+#   → 全部 27 项断言通过
+```
 
 ## 目录
 

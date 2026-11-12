@@ -111,6 +111,9 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 sha256sum -c SHA256SUMS.txt     # 53 个文件应全部 OK
 ```
 
+已实测：在 `core.autocrlf=true`（Windows 默认）下克隆 GitHub 镜像后执行，
+53 / 53 全部 OK。
+
 为此有一项前置约定：`workbench/gate6a_replay/.gitattributes` 把 `audit/**` 与
 `artifacts/**` 标记为 `-text`，**禁止 git 做任何行尾转换**。
 
@@ -120,6 +123,19 @@ sha256sum -c SHA256SUMS.txt     # 53 个文件应全部 OK
 Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 
 脚本（`*.py`）不受此约束，仍按普通文本处理。
+
+### 先决条件：哪些脚本在这个目录里跑得起来
+
+本包按约定**不携带** Parser 冻结产物（`runs/`，体积以 GB 计）与 Gold 台账
+（`workbench/_gate6a_prep/`，客户数据）。因此：
+
+| 你手上的东西 | 能跑什么 |
+| --- | --- |
+| 只有审计仓库副本 | `sha256sum -c SHA256SUMS.txt` —— 核对字节 |
+| 完整工作区 | 另加 `_verify_v3_faithful.py`（复现 v2 的 104/89/8/7）、<br>`_assert_v3_1to1.py`（27 项不变量） |
+
+在仓库副本里跑后两个脚本，会打印缺哪几个输入并以退出码 2 结束。
+这是脚本主动拦的，不是崩溃 —— 目的是别让复核者对着一屏 traceback 猜。
 
 ---
 

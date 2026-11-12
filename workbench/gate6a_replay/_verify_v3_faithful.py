@@ -45,6 +45,30 @@ C.BASELINE_ROOT = REPO / "runs" / "gate6a_replay_v1"
 
 
 def main() -> int:
+    # 先决条件：本脚本读的是 Parser 冻结产物与 Gold 台账，两者都不在审计仓库里
+    # （前者体积以 GB 计，后者是客户数据）。缺了就直说，不要甩一段栈信息。
+    missing = []
+    if not (RUN / "per_sample").is_dir():
+        missing.append("runs/gate6a_replay_v2_postfix/per_sample/（Parser 冻结产物）")
+    if not C.LEDGER.is_file():
+        missing.append("workbench/_gate6a_prep/Gold_Set_v1.1_WORKING.csv（Gold 台账）")
+    for _, path in C.GOLD_SOURCES:
+        if not path.is_file():
+            missing.append("workbench/_gate6a_prep/%s（Gold 分册）" % path.name)
+    if missing:
+        print("先决条件不满足：缺少输入。", file=sys.stderr)
+        for m in missing:
+            print("  缺：%s" % m, file=sys.stderr)
+        print(
+            "\n若你拿到的是只含审计证据的仓库副本，这是预期内的：本包按约定\n"
+            "不携带 Parser 产物与 Gold 数据。此时请改用\n"
+            "  cd workbench/gate6a_replay/audit && sha256sum -c SHA256SUMS.txt\n"
+            "核对字节是否与本包一致；要复算指标则需在完整工作区运行本脚本。\n"
+            "详见 audit/README.md 的「先决条件」一节。",
+            file=sys.stderr,
+        )
+        return 2
+
     print("OUT_ROOT =", C.OUT_ROOT)
     assert C.OUT_ROOT == RUN.resolve(), "OUT_ROOT 未指向 v2 冻结目录"
 
