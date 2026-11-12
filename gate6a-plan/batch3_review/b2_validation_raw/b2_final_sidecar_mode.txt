@@ -45,15 +45,6 @@
 [OK      ] 行30   V011  
 [OK      ] 行31   V011  
 
-人工裁定（human_adjudication）：
-  行9    V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
-  行10   V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
-  行17   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
-  行18   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
-  行19   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
-  行20   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
-  行21   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
-
 数值分类: 数值=57  正负值=1
 统计: OK=30
 

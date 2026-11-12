@@ -6,8 +6,10 @@ B1、B2 均为人工签字定稿；机器没有替人确认任何一行，也没
 2026-11-12 第二轮追加：修正 V304 表头归属、补齐人工授权链、统一真源口径与两仓
 main SHA，详见第 9 节。
 2026-11-12 第三轮追加：修复 CORE_ORDER 通用正则漏洞并加固 prescan3，见第 10 节。
-2026-11-12 第四轮追加（本版）：清理 B1 过期备注、交付 B2 最终版与机检、
+2026-11-12 第四轮追加：清理 B1 过期备注、交付 B2 最终版与机检、
 补齐 prescan3 四个极端场景回归，见第 11、12 节。
+2026-11-12 第五轮追加（本版）：B2 七行符号按 PDF 原图回填（不再用裁定码）、
+修复 prescan3 边框表格与标题的空间关联并补两个极端测试，见第 13 节。
 
 ## 0. 一句话结论
 
@@ -94,9 +96,10 @@ SHA-256 / 页数从磁盘原件实算，页文本逐页抽取，PDF 模式再用
 - 备注按 PM 裁定统一为「人工已核对 PDF 原图并确认」，30 行原始 notes 全文留痕在
   `Batch3_B2_notes_before_cleanup.txt`；V003 的 `VDDSHV5 condition` 保留
   `1.8V Operation`（p106 原文确有独立一行，脚本逐行断言后才落盘）。
-- 7 行空 symbol 按 B1 的 V345 先例补 `ACCEPTED_SOURCE_HAS_NO_SYMBOL`，
-  登记 `approved_by=wuxiaoxian` / `entered_by=WB_Agent`；语义边界见
-  `Batch3_B2_validation_report.txt` A.3。
+- 7 行 symbol 已按 PDF 原图逐字回填（V320 两行、V242 五行），`condition`
+  只留真正的测试条件；`human_adjudication` 全表清空，不再依赖裁定码。
+  7 行由 WB 代录入（`entered_by=WB_Agent`、`approved_by` 留空），
+  **尚待 PM 逐行复核**，详见 `Batch3_B2_validation_report.txt` A.3 与第 13 节。
 - 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
 
 ## 5. 目录
@@ -152,7 +155,7 @@ python validate_annotation.py --csv Batch3_B2_FINAL.csv \
 env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B2_FINAL.csv \
   --page-text page_text_batch3_b2.json \
   --provenance Batch3_B2_PDF_PROVENANCE.csv                      # B2 离线同样 OK=30
-python _test_core_order_and_header.py                              # PASS=24 FAIL=0 SKIP=0
+python _test_core_order_and_header.py                              # PASS=26 FAIL=0 SKIP=0
 ```
 
 ## 7. 导出文件名 Bug 已修
@@ -368,7 +371,7 @@ minimum / maximum 也会被当成参数表，属 Fail-Open。现在加第二层�
 
 | 测试 | 结果 |
 | --- | --- |
-| `_test_core_order_and_header.py` | **`PASS=24, FAIL=0, SKIP=0`**（第四轮扩充后），退出码 0；原始输出 `Batch3_CORE_ORDER_regression.txt` |
+| `_test_core_order_and_header.py` | **`PASS=26, FAIL=0, SKIP=0`**（第五轮扩充后），退出码 0；原始输出 `Batch3_CORE_ORDER_regression.txt` |
 | `_selftest_validator_v2.py`（v1.6 验证器 31 例） | **`PASS=31, FAIL=0, SKIP=0`**，退出码 0；原始输出 `Batch3_validator_selftest.txt` |
 
 新测试全部使用内存对象与合成 PDF 页，不依赖外部 PDF 或环境变量，
@@ -377,13 +380,14 @@ minimum / maximum 也会被当成参数表，属 Fail-Open。现在加第二层�
 AMR/ROC 两种真表头正向、纯正文多组 MIN/MAX 反向、
 合成整页的正向与反向、p14 式术语解释页反向。
 第四轮按 Reviewer 要求补 6 例（四个极端场景 AMR/ROC 各算一例，
-另加跨页续表防误杀），共 24 例，详见第 12 节。
+另加跨页续表防误杀），共 24 例，详见第 12 节；
+第五轮再补 2 例（边框表格关联反例 / 续表标识正例），共 26 例，见第 13 节。
 
 ### 10.5 真实代码 diff 与 B1 定稿确认
 
 - `Batch3_CORE_ORDER_fix.diff`：从 `9c0a81a` 到当前工作区的**累计真实补丁**，
-  550 行 / 498 行新增（含第四轮加固）；`Batch3_prescan3_extreme_fix.diff`
-  是第四轮相对 `9a3047f` 的增量补丁，258 行。两份都是 `git diff` 原样产出，
+  692 行 / 640 行新增（含第四、五轮加固）；`Batch3_prescan3_extreme_fix.diff`
+  是第五轮相对 `de9a433` 的增量补丁，247 行 / 156 行新增。两份都是 `git diff` 原样产出，
   Reviewer 可直接查看，不需要占位描述。
 - `Batch3_B1_RESIGNED.csv` / `.xlsx`（**23 行 × 19 列**）确为本包内的最终定稿：
   V304 物理行 8 的 `table_title` 已是 `Absolute Maximum Ratings`；
@@ -396,8 +400,8 @@ AMR/ROC 两种真表头正向、纯正文多组 MIN/MAX 反向、
 | 文件 | 作用 |
 | --- | --- |
 | `_build_batch3_interactive.py` | 修复后的生成器（本轮唯一改动的生产代码） |
-| `_test_core_order_and_header.py` | 24 例回归测试（含四个极端场景） |
-| `Batch3_CORE_ORDER_regression.txt` | 24 例真实 stdout |
+| `_test_core_order_and_header.py` | 26 例回归测试（含四轮极端场景） |
+| `Batch3_CORE_ORDER_regression.txt` | 26 例真实 stdout |
 | `Batch3_validator_selftest.txt` | v1.6 自测 31 例真实 stdout |
 | `Batch3_CORE_ORDER_fix.diff` | 真实代码 diff |
 
@@ -426,7 +430,7 @@ PM 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等
 | 定稿 | `Batch3_B2_FINAL.csv` / `.xlsx`，30 行 × 19 列，**已是定稿而非 DRAFT** |
 | notes | 30 行统一为「人工已核对 PDF 原图并确认」；原文全文留痕在 `Batch3_B2_notes_before_cleanup.txt` |
 | V003 条件 | `VDDSHV5 condition=1.8V Operation` 保留；p106 文本层独立行断言通过 |
-| 空符号 | 7 行补 `ACCEPTED_SOURCE_HAS_NO_SYMBOL` + 授权链；原 15 列除 notes 外逐格未变 |
+| 符号回填 | 7 行按 PDF 原图回填 symbol、清理 condition，逐字段原文断言；`human_adjudication` 全表清空；原 15 列仅 notes（30 行）与 symbol/condition（7 行）改动 |
 | 简写文件名 | 3 件按 CSV 原名在 `b2_pdfs/` 建硬链接指向语料原件同一字节，签字真源一格未改 |
 | 机检 | PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
 
@@ -434,9 +438,10 @@ PM 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等
 模式（B.2 命令）即可复现 `OK=30`，需要 PDF 模式时用
 `_make_b2_final.py --xlsx <签字xlsx> --pdf-dir <语料目录>` 重建该目录。
 
-**语义边界如实报备**：裁定码字面是「源头无符号」，B2 这 7 行实际是
-「符号列过长被留空、原文移入 condition」，属同类人工接受。没有新增判据、
-没有放宽机检；PM 可随时要求改回或改填完整符号。
+**待 PM 复核**：上一版用 `ACCEPTED_SOURCE_HAS_NO_SYMBOL` 放行这 7 行属语义错配
+（源头其实有符号，只是被 VLM 挪进了 condition），本版已改为按原文回填并清空裁定码。
+回填由 WB 完成，故 `approved_by` 留空、`entered_by=WB_Agent`，
+`reviewer` 仍是 PM 对整表的签字，不擅自撤销也不冒充人工逐行确认。
 
 ### 11.3 本版新增文件
 
@@ -481,11 +486,87 @@ PM 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等
 
 | 测试 | 结果 |
 | --- | --- |
-| `_test_core_order_and_header.py` | **`PASS=24, FAIL=0, SKIP=0`**，退出码 0；全部内存对象 / 合成页，无 SKIP |
+| `_test_core_order_and_header.py` | **`PASS=26, FAIL=0, SKIP=0`**，退出码 0；全部内存对象 / 合成页，无 SKIP |
 | `_selftest_validator_v2.py`（v1.6 验证器 31 例） | **`PASS=31, FAIL=0, SKIP=0`**，退出码 0 |
-| `_verify_v003_candidates.py`（V003 全书 282 页） | 候选页仍为 `[101,102,105,106,108,109,110,111,112,113,115,117,119]` 共 13 页；p101/p105/p106 保留，p14 排除，结论「全部通过」 |
+| `_verify_v003_candidates.py`（V003 全书 282 页） | 候选页仍为 `[101,102,105,106,108,109,110,111,112,113,115,117,119]` 共 13 页；13 页真表逐页断言保留、无多余页，p14 排除，结论「全部通过」 |
 | B1 复跑 | PDF / 离线 `OK=23`，退出码 0 |
 | B2 复跑 | PDF / 离线 `OK=30`，退出码 0 |
 
-真实补丁：`Batch3_CORE_ORDER_fix.diff`（累计 550 行 / 498 行新增）与
-`Batch3_prescan3_extreme_fix.diff`（第四轮增量 258 行）。
+真实补丁：`Batch3_CORE_ORDER_fix.diff`（累计 692 行 / 640 行新增）与
+`Batch3_prescan3_extreme_fix.diff`（第五轮增量 247 行 / 156 行新增）。
+
+
+## 13. B2 符号回填 + prescan3 边框关联（Reviewer 第五轮 · 本版）
+
+### 13.1 七行符号按 PDF 原图回填
+
+上一版把 7 行空 symbol 用 `ACCEPTED_SOURCE_HAS_NO_SYMBOL` 放行，Reviewer 指出
+语义错配：这 7 行的符号并非不存在，而是太长被 VLM 挪进了 `condition`。
+本版回到 PDF 原图逐字提取，回填 `symbol`，`condition` 只留真正的测试条件，
+`human_adjudication` 全表清空。
+
+| 行 | 样本 / 页 | 原 condition（错放） | 回填 symbol | 新 condition |
+| --- | --- | --- | --- | --- |
+| 8 | V320 p12 | `DACVDD, DIGVDD, CLKVDD` | 同左（p12 行 11） | `over operating free-air temperature range (unless otherwise noted)` |
+| 9 | V320 p12 | `AVDD, PLLAVDD` | 同左（p12 行 24） | 同上全表条件 |
+| 16 | V242 p6 | `APWR to AGND` | 同左（p6 行 7） | 空 |
+| 17 | V242 p6 | `DPWR to DGND` | 同左（p6 行 11） | 空 |
+| 18 | V242 p6 | `AGND, AGNDy to DGND` | 同左（p6 行 14） | 空 |
+| 19 | V242 p6 | `AVDD to AGND` | 同左（p6 行 17） | 空 |
+| 20 | V242 p6 | `IOVDD to DGND` | 同左（p6 行 20） | 空 |
+
+- V320 该表标题下方行 7 是**全表测试条件**，故填入 condition；V242 只有
+  `see (1)` 脚注引用、无具体条件，故留空，不臆造。
+- 保留原表逗号 / `to` 写法，不改成 `符号1; 符号2`：分号不在 PDF 原文里，
+  会让 v1.6 的 `check_symbol()` 找不到符号。7 个符号与 V320 全表条件都做了
+  `nos(值) in nos(页文本)` 原文断言后才落盘。
+- **授权链与复核请求**：回填由 WB 完成，7 行 `entered_by=WB_Agent`、
+  `approved_by` 留空；`reviewer` 仍是 PM 对整表的签字，不擅自撤销、
+  也不冒充人工已逐行确认。请 PM 对这 7 行逐行复核后确认。
+- 其余 23 行的 symbol / condition 一字未动；30 行的 min/typ/max、unit、
+  evidence_page、table_title、row_status、reviewer、confidence_score 一字未动。
+- 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
+
+### 13.2 边框表格必须与目标标题空间关联
+
+**漏洞**：`_table_header_from_borders(page)` 只要表头成立就放行整页，
+与页面标题无关。若页顶有独立 AMR 标题、AMR 区域却没有表头，页底另有一个
+带完整表头的无关表格，旧逻辑会把整页放进候选页。
+
+**修复**：`_table_header_from_borders()` 现在要求边框表格满足以下之一：
+
+1. 表格顶端距上方「独立标题行 / 小节标题行 / 续表标识行」≤ 200pt
+   （`_anchor_ys()` 从 `get_text("dict")` 取行级 bbox，做真正的空间关联）；
+2. 表格落在页首（`y0 ≤ 160pt`）且表头有效 —— 跨页续表的客观特征。
+
+新增 `CONT_RX`（`(continued)` / `cont'd` / `cont.`）、`SECTION_TITLE_RX`
+（识别 `6.7.2 Fail-Safe Reset (FS RESET) Electrical Characteristics`
+这类带描述的小节标题）、`_table_is_anchored()`。
+
+**阈值来自实测，不是拍脑袋**：V003 p108 表格 y0=229.4、标题 y=75（相距 154.4pt），
+p119 y0=154.4、p117 y0=144.2、p109~115 y0=107.0、p106 y0=86.0；
+Reviewer 反例的无关表格在页底 y0=400，离页顶标题 328pt，仍被拦。
+第一版把阈值定成 120/100 时曾把 9 页真表（p108~119）误杀，
+已逐页诊断后修正，并把 13 页真表清单整表写进回归断言。
+
+**补交的两个极端测试**：
+
+| 用例 | 构造 | 期望 | 实测 |
+| --- | --- | --- | --- |
+| 反例 | 独立 AMR 标题 + AMR 区域无表头 + 页底无关边框表（带 `PARAMETER/MIN/MAX/UNIT`） | 拦截 | PASS |
+| 正例 | `Table 6-1. Absolute Maximum Ratings (continued)` + 真 AMR 续表边框表头 | 保留 | PASS |
+
+另有第 3 例防误杀：V003 p106 式页面（无标题、无续表标识、表格在页首）仍保留。
+
+### 13.3 本版测试与机检
+
+| 测试 | 结果 |
+| --- | --- |
+| `_test_core_order_and_header.py` | `PASS=26, FAIL=0, SKIP=0`，退出码 0 |
+| `_selftest_validator_v2.py`（v1.6 31 例） | `PASS=31, FAIL=0, SKIP=0`，退出码 0 |
+| `_verify_v003_candidates.py`（V003 全书 282 页） | 13 页真表逐页保留、候选集合无多余页、p14 排除，结论「全部通过」 |
+| B2 定稿机检 | PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
+| B1 | 已冻结，本轮未改动 |
+
+真实补丁：`Batch3_CORE_ORDER_fix.diff`（累计 692 行 / 640 行新增）、
+`Batch3_prescan3_extreme_fix.diff`（第五轮增量 247 行 / 156 行新增）。

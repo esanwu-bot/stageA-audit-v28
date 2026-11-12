@@ -6,19 +6,19 @@ V038,ADC12QJ1600ALREP.pdf,9,Absolute Maximum Ratings,VTRIG,Supply voltage range,
 V038,ADC12QJ1600ALREP.pdf,9,Absolute Maximum Ratings,VA11,Supply voltage range,-0.3,,1.32,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADC12QJ1600-EP,
 V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,VFUSE,Supply voltage,-0.5,,1.5,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DAC3482,
 V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,IOVDD,Supply voltage,-0.5,,4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DAC3482,
-V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,,Supply voltage,-0.5,,1.5,V,"DACVDD, DIGVDD, CLKVDD",CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,DAC3482,ACCEPTED_SOURCE_HAS_NO_SYMBOL
-V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,,Supply voltage,-0.5,,4,V,"AVDD, PLLAVDD",CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,DAC3482,ACCEPTED_SOURCE_HAS_NO_SYMBOL
+V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,"DACVDD, DIGVDD, CLKVDD",Supply voltage,-0.5,,1.5,V,over operating free-air temperature range (unless otherwise noted),CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,DAC3482,
+V320,DAC3482IRKDR__slas748f.pdf,12,Absolute Maximum Ratings,"AVDD, PLLAVDD",Supply voltage,-0.5,,4,V,over operating free-air temperature range (unless otherwise noted),CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,DAC3482,
 V320,DAC3482IRKDR__slas748f.pdf,12,Recommended Operating Conditions,V(ESD),Electrostatic discharge,,,±2000,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DAC3482,
 V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,AVDD3V,Supply voltage range,-0.3,,3.6,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
 V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,AVDD,Supply voltage range,-0.3,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
 V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,DVDD,Supply voltage range,-0.3,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
 V346,ADS54J40IRMPT.pdf,8,Absolute Maximum Ratings,IOVDD,Supply voltage range,-0.2,,1.4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
 V346,ADS54J40IRMPT.pdf,9,Recommended Operating Conditions,AVDD3V,Supply voltage range,2.85,3,3.6,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,ADS54J40,
-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,,Power-supply voltage,-0.3,,20,V,APWR to AGND,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,ACCEPTED_SOURCE_HAS_NO_SYMBOL
-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,,Power-supply voltage,-0.3,,20,V,DPWR to DGND,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,ACCEPTED_SOURCE_HAS_NO_SYMBOL
-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,,Power-supply voltage,-0.3,,0.3,V,"AGND, AGNDy to DGND",CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,ACCEPTED_SOURCE_HAS_NO_SYMBOL
-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,,Power-supply voltage,-0.3,,4,V,AVDD to AGND,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,ACCEPTED_SOURCE_HAS_NO_SYMBOL
-V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,,Power-supply voltage,-0.3,,7,V,IOVDD to DGND,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,ADS131B26-Q1,ACCEPTED_SOURCE_HAS_NO_SYMBOL
+V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,APWR to AGND,Power-supply voltage,-0.3,,20,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,DPWR to DGND,Power-supply voltage,-0.3,,20,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,"AGND, AGNDy to DGND",Power-supply voltage,-0.3,,0.3,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,AVDD to AGND,Power-supply voltage,-0.3,,4,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
+V242,ADS131B26-Q1.pdf,6,Absolute Maximum Ratings,IOVDD to DGND,Power-supply voltage,-0.3,,7,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,ADS131B26-Q1,
 V003,AM2431BSDFHIALXR__am2431.pdf,105,Recommended Operating Conditions,VDD_CORE,Core supply,0.81,0.85,0.895,V,Recommended Operating Conditions,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.6,AM2431,
 V003,AM2431BSDFHIALXR__am2431.pdf,105,Recommended Operating Conditions,VDDR_CORE,RAM supply,0.81,0.85,0.895,V,Recommended Operating Conditions,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.6,AM2431,
 V003,AM2431BSDFHIALXR__am2431.pdf,106,Recommended Operating Conditions,VDDSHV5,Dual-voltage IO supply,1.71,1.8,1.89,V,1.8V Operation,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.6,AM2431,

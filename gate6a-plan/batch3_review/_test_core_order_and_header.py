@@ -177,9 +177,13 @@ def _v003_symbols():
 
 # —— Reviewer 第三轮：prescan3 的四个极端场景 ——
 # 用可控的「文本层 + 边框表格」对象，精确构造排版，而不是靠真实 PDF 碰运气。
+DEFAULT_BORDER_BBOX = (56.0, 400.0, 550.0, 500.0)   # 页底：离页顶标题很远
+
+
 class FakeTable(object):
-    def __init__(self, rows):
+    def __init__(self, rows, bbox=DEFAULT_BORDER_BBOX):
         self._rows = rows
+        self.bbox = bbox
 
     def extract(self):
         return self._rows
@@ -191,11 +195,27 @@ class FakeTables(object):
 
 
 class FakePage(object):
+    """可控的文本层 + 边框表格；borders 元素可为 rows 或 (rows, bbox)。"""
+
     def __init__(self, lines, borders=()):
+        self._lines = list(lines)
         self._text = "\n".join(lines)
-        self._tables = [FakeTable(t) for t in borders]
+        self._tables = []
+        for spec in borders:
+            if (isinstance(spec, tuple) and len(spec) == 2
+                    and isinstance(spec[0], list)):
+                rows, bbox = spec
+            else:
+                rows, bbox = spec, DEFAULT_BORDER_BBOX
+            self._tables.append(FakeTable(rows, bbox))
 
     def get_text(self, *a, **k):
+        fmt = a[0] if a else k.get("option", "text")
+        if fmt == "dict":
+            lines = [{"spans": [{"text": ln}],
+                      "bbox": (72.0, 72.0 + 14.0 * i, 400.0, 82.0 + 14.0 * i)}
+                     for i, ln in enumerate(self._lines)]
+            return {"blocks": [{"lines": lines}]}
         return self._text
 
     def find_tables(self):
@@ -251,17 +271,47 @@ CASE_C_BORDER = [
     [["Device Information", "Rev A", ""], ["Note", "Value", ""]],
 ]
 
-# e. V003 p106 式跨页续表：没有独立标题行，靠真实边框表头进候选页。
+# e. V003 p106 实测形态：既无独立标题行，也没有 (continued) 字样，
+#    只有表格顶端落在页首 y0=86.0；靠「页首 + 真表头」这条等价证据保留。
 CASE_E = [
-    "Table 6-4 (continued). Recommended Operating Conditions over operating junction temperature range",
+    "Refer to the Recommended Operating Conditions for OTP eFuse Programming table.",
     "SUPPLY NAME", "DESCRIPTION", "MIN(1)", "NOM", "MAX(1)", "UNIT",
     "VDDSHV5", "Dual-voltage IO supply", "1.8V Operation",
     "1.71", "1.8", "1.89", "V",
 ]
 CASE_E_BORDER = [
-    [["SUPPLY NAME", "DESCRIPTION", "", "MIN(1)", "NOM", "MAX(1)", "UNIT"],
-     ["VDDSHV5", "Dual-voltage IO supply", "1.8V Operation",
-      "1.71 1.8 1.89", "", "", "V"]],
+    ([["SUPPLY NAME", "DESCRIPTION", "", "MIN(1)", "NOM", "MAX(1)", "UNIT"],
+      ["VDDSHV5", "Dual-voltage IO supply", "1.8V Operation",
+       "1.71 1.8 1.89", "", "", "V"]],
+     (56.0, 86.0, 550.0, 200.0)),
+]
+
+# f. Reviewer 第五轮反例：独立 AMR 标题 + AMR 区域无表头 + 页底无关表格带表头。
+CASE_F = [
+    "6.1 Absolute Maximum Ratings",
+    "over operating free-air temperature range (unless otherwise noted)",
+    "VDD_CORE   -0.3   1.05   V",
+    "VDDR_CORE  -0.3   1.05   V",
+    "",
+    "Table 4-1 Pin Configuration",
+    "PIN   MIN   MAX   UNIT",
+    "A1    1.0   2.0   V",
+]
+CASE_F_BORDER = [
+    ([["PARAMETER", "MIN", "MAX", "UNIT"], ["A1", "1.0", "2.0", "V"]],
+     (56.0, 400.0, 550.0, 500.0)),
+]
+
+# g. Reviewer 第五轮正例：明确的续表标识 + 对应的真实 AMR 续表边框表头。
+CASE_G = [
+    "Table 6-1. Absolute Maximum Ratings (continued)",
+    "PARAMETER", "MIN", "MAX", "UNIT",
+    "VDD_CORE", "-0.3", "1.05", "V",
+]
+CASE_G_BORDER = [
+    ([["PARAMETER", "MIN", "MAX", "UNIT"],
+      ["VDD_CORE", "-0.3", "1.05", "V"]],
+     (56.0, 130.0, 550.0, 220.0)),
 ]
 
 
@@ -304,13 +354,36 @@ def _extreme_d_roc():
     assert I3.prescan3(FakeDoc(pg), 1) == [1], "真 ROC 表被误杀"
 
 
-@case("正向 跨页续表（无独立标题行、有真实边框表头）仍保留，防误杀 V003 p106")
+@case("正向 页首跨页续表（无标题、无续表标识、有真表头）仍保留，防误杀 V003 p106")
 def _extreme_continuation():
+    pg = FakePage(CASE_E, CASE_E_BORDER)
     txt = "\n".join(CASE_E)
     assert I3.title_anchor_lines(txt) == [], "续表不该有独立标题行"
+    assert I3._anchor_ys(pg) == [], "p106 式页面确实没有标题/续表锚点"
     assert I3.has_table_header(txt, []) is False
-    assert I3._table_header_from_borders(FakePage(CASE_E, CASE_E_BORDER)) is True
-    assert prescan_fake(CASE_E, CASE_E_BORDER) == [1], "p106 式续表被误杀"
+    assert I3._table_header_from_borders(pg) is True, "页首续表被误杀"
+    assert prescan_fake(CASE_E, CASE_E_BORDER) == [1]
+
+
+@case("反向第五轮 独立 AMR 标题 + AMR 区无表头 + 页底无关边框表 → 拦截")
+def _extreme_f():
+    pg = FakePage(CASE_F, CASE_F_BORDER)
+    txt = "\n".join(CASE_F)
+    assert I3.title_anchor_lines(txt) == [0], "AMR 独立标题行没找到"
+    assert I3.has_table_header(txt, [0]) is False, "AMR 区没有表头却被当成有表头"
+    assert I3._table_header_from_borders(pg) is False, \
+        "页底无关表格借页顶 AMR 标题被误关联"
+    assert prescan_fake(CASE_F, CASE_F_BORDER) == [], "整页被误放行"
+
+
+@case("正向第五轮 明确续表标识 + 真 AMR 续表边框表头 → 保留")
+def _extreme_g():
+    pg = FakePage(CASE_G, CASE_G_BORDER)
+    txt = "\n".join(CASE_G)
+    assert I3.title_anchor_lines(txt) == [], "续表标识行不是纯标题行"
+    assert I3._anchor_ys(pg), "续表标识行没被识别为空间锚点"
+    assert I3._table_header_from_borders(pg) is True, "真 AMR 续表被误杀"
+    assert prescan_fake(CASE_G, CASE_G_BORDER) == [1]
 
 
 def main():

@@ -16,15 +16,28 @@ PM 2026-11-12 裁定
   approved_by / entered_by / device_model / human_adjudication
 与 B1 最终定稿的 19 列结构完全对齐。
 
-7 行空 symbol 的处置（重要，需 PM 复核）
---------------------------------------
-签字版 notes 自己写明「symbol 过长已留空，原文移入 condition」，
-v1.6 的 check_symbol() 对空符号一律给 SUSPECT，除非 CSV 的
-human_adjudication 列有 `ACCEPTED_SOURCE_HAS_NO_SYMBOL`。
-要达到 PM 要求的 OK=30，这 7 行按 B1 的 V345 先例补裁定码，并在
-approved_by / entered_by 里登记为 PM 批准、WB_Agent 代录入。
-语义边界如实说明：裁定码字面是「源头无符号」，本批实际是「符号列过长
-被留空、原文移入 condition」，属同类人工接受，不是新判据、也没有放宽机检。
+7 行符号回填（Reviewer 第五轮，不再用裁定码）
+--------------------------------------------
+签字版里 V320 两行、V242 五行的 symbol 为空，符号被 VLM 塞进了 condition。
+Reviewer 指出这不是「源头没有符号」，用 ACCEPTED_SOURCE_HAS_NO_SYMBOL
+放行属于语义错配。现回到 PDF 原图把符号逐字提取回 symbol 列：
+
+  V320 p12（DAC3482IRKDR__slas748f.pdf）
+    行 11 `DACVDD, DIGVDD, CLKVDD`、行 24 `AVDD, PLLAVDD`
+    表标题下方行 7 是全表条件 `over operating free-air temperature range
+    (unless otherwise noted)(1)`，回填进 condition（去掉脚注编号）。
+  V242 p6（ADS131B26QPHPRQ1__ads131b26-q1.pdf）
+    行 7/11/14/17/20 分别是 `APWR to AGND` / `DPWR to DGND` /
+    `AGND, AGNDy to DGND` / `AVDD to AGND` / `IOVDD to DGND`。
+    该表只有 `see (1)` 脚注引用，没有具体测试条件，condition 留空。
+
+保留原表的逗号 / `to` 写法，不改成 `符号1; 符号2`：分号不在 PDF 原文里，
+会让 v1.6 的 check_symbol() 找不到符号。每个回填值都做
+`nos(symbol) in nos(页文本)` 原文断言，非空 condition 同样断言。
+
+授权链：这 7 行的改动由 WB 按原文回填，尚未经 PM 逐行复核，
+故 approved_by 留空、entered_by=WB_Agent；reviewer 仍是 PM 对整表的签字，
+不擅自撤销、也不冒充人工已逐行确认。human_adjudication 全部清空。
 
 file_name 简写的处置（不改签字真源一格）
 --------------------------------------
@@ -104,11 +117,26 @@ ALIAS = {
 }
 
 FINAL_NOTE = "人工已核对 PDF 原图并确认"
-ADJ = "ACCEPTED_SOURCE_HAS_NO_SYMBOL"
 REVIEWER = "wuxiaoxian"
-APPROVED_BY = "wuxiaoxian"
 ENTERED_BY = "WB_Agent"
 V003_COND = "1.8V Operation"
+
+# key = (sample_no, 签字版里被错放进 condition 的原值)
+# value = (回到 PDF 原图后应填的 symbol, 真正的测试条件)
+V320_COND = "over operating free-air temperature range (unless otherwise noted)"
+SYMBOL_BACKFILL = {
+    ("V320", "DACVDD, DIGVDD, CLKVDD"): ("DACVDD, DIGVDD, CLKVDD", V320_COND),
+    ("V320", "AVDD, PLLAVDD"): ("AVDD, PLLAVDD", V320_COND),
+    ("V242", "APWR to AGND"): ("APWR to AGND", ""),
+    ("V242", "DPWR to DGND"): ("DPWR to DGND", ""),
+    ("V242", "AGND, AGNDy to DGND"): ("AGND, AGNDy to DGND", ""),
+    ("V242", "AVDD to AGND"): ("AVDD to AGND", ""),
+    ("V242", "IOVDD to DGND"): ("IOVDD to DGND", ""),
+}
+
+import sys
+sys.path.insert(0, str(PREP))
+from validate_annotation import nos   # 与 v1.6 用同一个归一化函数做原文断言
 
 
 def cell(v):
@@ -215,7 +243,7 @@ def main():
 
     # ---- 生成 19 列定稿 ----
     rows = []
-    adjudicated = []
+    backfilled = []
     for i, s in enumerate(signed):
         r = {k: s[k] for k in ORIG_COLS}
         r["notes"] = FINAL_NOTE
@@ -224,18 +252,30 @@ def main():
         r["device_model"] = DEVICE_MODEL.get(s["sample_no"], "")
         r["human_adjudication"] = ""
         if not r["symbol"]:
-            r["human_adjudication"] = ADJ
-            r["approved_by"] = APPROVED_BY
+            key = (s["sample_no"], s["condition"])
+            if key not in SYMBOL_BACKFILL:
+                raise SystemExit("第 %d 行空符号未按 PDF 原图登记：%r" % (i + 1, key))
+            sym, cond = SYMBOL_BACKFILL[key]
+            r["symbol"] = sym
+            r["condition"] = cond
             r["entered_by"] = ENTERED_BY
-            adjudicated.append((i + 1, s["sample_no"]))
+            backfilled.append((i + 1, s["sample_no"], s["condition"], sym, cond))
         rows.append(r)
 
-    assert len(adjudicated) == 7, "空符号行应为 7，实际 %d" % len(adjudicated)
+    assert len(backfilled) == 7, "符号回填应为 7 行，实际 %d" % len(backfilled)
+    assert all(r["symbol"].strip() for r in rows), "定稿里仍有空 symbol"
+    assert not any(r["human_adjudication"] for r in rows), \
+        "符号已回填，不应再留 ACCEPTED_SOURCE_HAS_NO_SYMBOL 裁定码"
 
-    # 逐格断言：原 15 列里除 notes 外全部没动
+    # 逐格断言：原 15 列里只有 notes / symbol / condition 三列允许改，
+    # 且 symbol / condition 只允许在登记的 7 行里改。
+    backfill_lines = {x[0] for x in backfilled}
     for i, (a, b) in enumerate(zip(signed, rows), 1):
+        allowed = {"notes"}
+        if i in backfill_lines:
+            allowed |= {"symbol", "condition"}
         for k in ORIG_COLS:
-            if k == "notes":
+            if k in allowed:
                 continue
             assert a[k] == b[k], "行%d 列%s 被改动：%r → %r" % (i, k, a[k], b[k])
     v003 = [r for r in rows if r["sample_no"] == "V003" and
@@ -286,6 +326,17 @@ def main():
             p106 = pages.get("106", "")
             assert any(ln.strip() == V003_COND for ln in p106.splitlines()), \
                 "p106 原文找不到独立行 %r，拒绝保留该 condition" % V003_COND
+        # 7 行符号回填：每个符号、每个非空测试条件都必须能在本页原文核到
+        if sno in ("V320", "V242"):
+            ptxt = "\n".join(pages.values())
+            for lineno, bsno, oldcond, sym, cond in backfilled:
+                if bsno != sno:
+                    continue
+                assert nos(sym) in nos(ptxt), \
+                    "行%d 符号 %r 在 %s 证据页原文找不到" % (lineno, sym, sno)
+                if cond:
+                    assert nos(cond) in nos(ptxt), \
+                        "行%d 测试条件 %r 在 %s 证据页原文找不到" % (lineno, cond, sno)
 
         node = OrderedDict([
             ("sample_no", sno),
@@ -349,9 +400,8 @@ def main():
                  "entered_by": 15, "condition": 32}.get(k, 15)
         ws.column_dimensions[get_column_letter(ci)].width = width
     green = PatternFill("solid", fgColor="E2EFDA")
-    for lineno, _ in adjudicated:
-        for k in ("row_status", "reviewer", "approved_by", "entered_by",
-                  "human_adjudication"):
+    for lineno, _, _, _, _ in backfilled:
+        for k in ("symbol", "condition", "entered_by"):
             ws.cell(row=lineno + 1, column=FINAL_COLS.index(k) + 1).fill = green
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = ws.dimensions
@@ -374,9 +424,12 @@ def main():
           (len(rows), len(samples), len(FINAL_COLS)))
     print("  notes 全部为：%s" % FINAL_NOTE)
     print("  V003 VDDSHV5 condition 保留：%s（p106 原文断言通过）" % V003_COND)
-    print("  空符号补人工裁定 %d 行：%s" %
-          (len(adjudicated), ", ".join("%s(行%d)" % (s, n) for n, s in adjudicated)))
-    print("  原 15 列除 notes 外逐格未变；reviewer / row_status 未动")
+    print("  按 PDF 原图回填符号 %d 行（不再使用裁定码）：" % len(backfilled))
+    for lineno, sno, oldcond, sym, cond in backfilled:
+        print("    行%-3d %-5s %-26s → symbol=%-26r condition=%r"
+              % (lineno, sno, oldcond, sym, cond))
+    print("  7 行逐字段原文断言通过；approved_by 留空 / entered_by=WB_Agent（待 PM 逐行复核）")
+    print("  其余 23 行原 15 列除 notes 外逐格未变；reviewer / row_status 未动")
     print("\n复核命令：")
     print("  python validate_annotation.py --csv %s --page-text %s "
           "--provenance %s --pdf-dir %s" %

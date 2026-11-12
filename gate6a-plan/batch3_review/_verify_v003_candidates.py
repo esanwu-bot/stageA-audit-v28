@@ -16,7 +16,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import _build_batch3_interactive as I3
 
 PDF = Path(r"E:\workspace\IcPdfParser\data\pdfs\AM2431BSDFHIALXR__am2431.pdf")
-WANT = (101, 105, 106)
+# 13 页都是第 6 章真实参数表页：p101 AMR，p105/p106 ROC，
+# p108~119 为 Electrical Characteristics / ROC 等真表（表头含
+# PARAMETER / TEST CONDITIONS / MIN / TYP / MAX / UNIT）。
+# 第五轮加固曾因阈值过紧把这 9 页误杀，现整表写进回归断言。
+WANT = (101, 102, 105, 106, 108, 109, 110, 111, 112, 113, 115, 117, 119)
 EXCLUDE = (14,)
 
 
@@ -46,6 +50,11 @@ def main():
         print("%s p%d（术语解释页）%s" %
               ("PASS" if hit else "FAIL", pno, "排除" if hit else "被误放行"))
         ok = ok and hit
+    extra = sorted(set(cand) - set(WANT))
+    hit = not extra
+    print("%s 候选页集合与 13 页真表清单一致，无多余页%s" %
+          ("PASS" if hit else "FAIL", "" if hit else "：%s" % extra))
+    ok = ok and hit
     print("结论：%s" % ("全部通过" if ok else "未通过"))
     return 0 if ok else 1
 

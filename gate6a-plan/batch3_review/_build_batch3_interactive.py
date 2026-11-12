@@ -183,6 +183,71 @@ DATA_ROW_RX = re.compile(r"[-+]?\d+\.\d+|[-+]\d+(?:\s|$)")
 BORDER_MARK_RX = re.compile(
     r"\b(PARAMETER|DESCRIPTION|SUPPLY\s+NAME|TEST\s+CONDITIONS)\b", re.I)
 
+# Reviewer 第五轮：边框路径不能「表头成立即放行」。页上有个 AMR 标题、
+# AMR 区域却没有表头，页尾另有一个带完整表头的无关表格 —— 旧逻辑会
+# 因为那个无关表格把整页放进候选。现在要求边框表格与「独立标题 /
+# 续表标识」有空间关联，或表格本身落在页首（跨页续表的客观特征）。
+CONT_RX = re.compile(r"\bcontinued\b|\(cont'?d\)|\bcont\.", re.I)
+# 真实手册的小节标题常写成「6.7.2 Fail-Safe Reset (FS RESET) Electrical
+# Characteristics」，整行不是纯标题词，但确实是独立成行的表标题。
+SECTION_TITLE_RX = re.compile(
+    r"^\s*\d+(?:\.\d+){1,3}\s+.{0,70}\b"
+    r"(?:electrical\s+characteristics|specifications"
+    r"|recommended\s+operating\s+conditions|absolute\s+maximum\s+ratings)"
+    r"\b.{0,45}$", re.I)
+# 阈值按 V003 真表页实测几何定，不是拍脑袋：
+#   p108 表格 y0=229.4，标题 y=75 → 相距 154.4pt；
+#   p119 表格 y0=154.4、p117 y0=144.2、p109~115 y0=107.0、p106 y0=86.0。
+# Reviewer 反例里的无关表格在页底 y0=400，离页顶标题 328pt，仍被拦。
+TABLE_ANCHOR_MAX_PT = 200.0     # 表格顶端离上方标题/续表标识的最大垂直距离
+PAGE_TOP_MAX_PT = 160.0         # 无锚点时，表格须落在页首（跨页续表特征）
+
+
+def _anchor_ys(page):
+    """页面里「独立标题行」或「带续表标识的标题行」的 y 坐标。
+
+    从 get_text("dict") 取行级 bbox，才能判断表格是不是紧跟在标题下面；
+    只看「页面任意位置出现过标题词」挡不住 Reviewer 的反例。
+    """
+    ys = []
+    try:
+        data = page.get_text("dict")
+    except Exception:
+        return ys
+    for block in data.get("blocks", []):
+        for ln in block.get("lines", []):
+            s = " ".join(" ".join(str(sp.get("text", ""))
+                                  for sp in ln.get("spans", [])).split())
+            if not s:
+                continue
+            try:
+                y0 = float(ln["bbox"][1])
+            except (KeyError, IndexError, TypeError, ValueError):
+                continue
+            if ((TITLE_LINE_RX.match(s) or SECTION_TITLE_RX.match(s))
+                    and not REF_RX.search(s)):
+                ys.append(y0)
+            elif CONT_RX.search(s) and KIND_TITLE_RX.search(s):
+                ys.append(y0)          # "Table 6-1 ... (continued)" 之类
+    return ys
+
+
+def _table_is_anchored(t, anchor_ys):
+    """边框表格必须与目标标题关联，或是页首的跨页续表。
+
+    V003 p106 实测既没有独立标题行、也没有 (continued) 字样，
+    只有表格顶端落在 y0=86.0 的页首位置。严格只认标题/续表标识会
+    把这张真表误杀，所以保留「页首 + 表头有效」这条等价证据。
+    页尾的无关表格（y 很大）既不满足页首，也离标题超过阈值。
+    """
+    try:
+        y0 = float(t.bbox[1])
+    except (AttributeError, IndexError, TypeError, ValueError):
+        return False
+    if y0 <= PAGE_TOP_MAX_PT:
+        return True
+    return any(0.0 <= y0 - y <= TABLE_ANCHOR_MAX_PT for y in anchor_ys)
+
 
 def title_anchor_lines(text):
     """页面里「独立成行的参数表标题」所在行号（0 基）。
@@ -239,15 +304,18 @@ def has_table_header(text, title_positions=None, max_gap=TITLE_MAX_GAP):
 
 
 def _table_header_from_borders(page):
-    """有表格边框时，直接看表头区域单元格里有没有 >=2 个数值列词。
+    """有表格边框时，看表头区域单元格里有没有 >=2 个数值列词，且表格
+    与独立标题 / 续表标识存在空间关联（或是页首跨页续表）。
 
     这是文本判据之外的第二条结构化证据。老手册的点线式 AMR 表没有边框，
     所以两条是「或」关系，不是「与」—— 不能把无边框的真表误杀。
+    但「或」不等于「边框表头成立就无条件放行」：表格必须属于目标表。
     """
     try:
         tables = page.find_tables().tables
     except Exception:
         return False
+    anchor_ys = _anchor_ys(page)
     for t in tables:
         try:
             head = t.extract()[:2]
@@ -259,7 +327,8 @@ def _table_header_from_borders(page):
         # 光有 MIN/MAX 不够：无关表格（PIN / MIN / MAX / UNIT）也有两列词。
         # 真参数表的表头一定还有 PARAMETER / DESCRIPTION / SUPPLY NAME /
         # TEST CONDITIONS 之一，这是把「无关表格」挡在候选页外的关键。
-        if len(nums) >= 2 and BORDER_MARK_RX.search(words):
+        if (len(nums) >= 2 and BORDER_MARK_RX.search(words)
+                and _table_is_anchored(t, anchor_ys)):
             return True
     return False
 

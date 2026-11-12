@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T09:05:09.529545+08:00",
+  "generated_at": "2026-11-12T09:29:04.840198+08:00",
   "source_xlsx": "Batch3_B2_SIGNED_original.xlsx",
   "extractor": "_make_b2_final.py",
   "note": "file_name 沿用 PM 签字原值；3 件简写名通过 b2_pdfs/ 硬链接指向语料原件同一字节。sha256/页数从磁盘实算，页文本逐页抽取，验证器 PDF 模式会再复算一次哈希。",
