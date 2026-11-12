@@ -57,7 +57,10 @@ README = """# error_matrix_105.csv 字段与「命中」判定口径
 重复行折叠成 101 行，已废弃该口径）。
 
 > **本表出自 evaluator v3（一对一消费匹配）**，不是 v2 的增量补丁。
-> v3 相对 v2 只改了两件事：候选块/物理行**只能用一次**；`coarse` 行**不得计入严格命中**。
+> v3 相对 v2 改了三件事：候选块/物理行**只能用一次**；`coarse` 行**不得计入严格命中**；
+> **符号必须在命中的那一行上可证**（v3.2，见 `eval_v3_2_row_level.md`）。
+> 第三项把 16 行「符号只在父块更靠前的行、命中行自身没有符号」的行降级为软命中，
+> 严格命中因此从 82 修正为 66。
 > Parser 一次都没有重跑，输入是 v2 冻结在盘上的 `per_sample/` 产物。
 
 ## 一、`match_status` 四值定义（互斥，合计 $n）
@@ -76,7 +79,7 @@ README = """# error_matrix_105.csv 字段与「命中」判定口径
 | 值 | 判定条件 | 说明 |
 | --- | --- | --- |
 | `严格命中` | 上表六行全部满足 | 「值/单位/符号/页码全对」且「能落到具体物理行」 |
-| `软命中` | 同上，但 `coarse=是` | 值确实在解析结果里，但命中落在一个 ≥5 行的大块内，**无法逐行确认** |
+| `软命中` | 同上但未达严格 | 两种原因：`coarse=是`（命中落在 ≥5 行大块内，无法逐行确认）或**符号无依据跨行继承**（符号只在父块更靠前的行）。具体原因见 `soft_reason` 列 |
 | `错误匹配` | `located=是`，但字段至少一项不过 | 能挂上块，但挂错了 |
 | `漏提` | `located=否` | 完全没抽出来 |
 
@@ -87,8 +90,8 @@ README = """# error_matrix_105.csv 字段与「命中」判定口径
 
 | 口径 | 定义 | 分子 | 分母 | 比率 |
 | --- | --- | --- | --- | --- |
-| **严格命中率** | 值 + 单位 + 符号 + 页码全过，且 `coarse=否` | **$strict** | $n | **$strict_rate** |
-| 全字段一致（含软） | 同上但含 `coarse=是` | $exact_all | $n | $exact_rate |
+| **严格命中率** | 值 + 单位 + 符号 + 页码全过，`coarse=否`，**且符号归属在命中物理行上可证** | **$strict** | $n | **$strict_rate** |
+| 全字段一致（含软） | 同上但含 `coarse=是` 与符号无依据跨行继承的行 | $exact_all | $n | $exact_rate |
 | 命中率（保守口径） | 严格命中里再把 condition 当硬门（扣掉 $cond_blocked 行不可定位） | $conserv | $n | $conserv_rate |
 | **定位率** | 只要定位到候选块即可，不看字段 | **$located** | $n | **$located_rate** |
 
@@ -145,7 +148,7 @@ V(MAIN-AUX) 是合并符号单元，符号只落在首行，没有随行下传�
 located=是                       $located
   ├─ 全字段一致                   $exact_all
   │    ├─ 严格命中（coarse=否）    $strict
-  │    └─ 软命中  （coarse=是）      $soft
+  │    └─ 软命中  （coarse / 符号跨行） $soft
   └─ 错误匹配                      $mism   （数值错 6 / symbol 错配 5 / 页错 3 / 单位错 1）
 located=否（漏提）                  $miss   （V319 / IO：该页无同时含 IO 与 20 mA 的块）
                                ----
@@ -264,10 +267,15 @@ def write_readme() -> None:
         (AUDIT / "error_matrix_105_README.md").write_text(README, encoding="utf-8")
 
 
-def owner(primary: str, status: str, secondary: str = "") -> str:
+def owner(primary: str, status: str, secondary: str = "",
+          soft_reason: str = "") -> str:
     if primary == "解析失败":
         return "Parser（格线崩溃，已在 v2 修复并复跑）"
     if status == "软命中":
+        if soft_reason.startswith("symbol"):
+            # 符号只在父块更靠前的行、命中行自身没有符号。根因是 Parser 没记录
+            # 纵向合并（merge_evidence=0），评估器因此无法证明符号属于这一行。
+            return "Parser（未记录纵向合并，符号归属不可证）"
         return "Parser（大块合并，需人工复核）"
     if secondary:
         return "Parser（Tech Debt）"
@@ -305,9 +313,13 @@ def build_rows(detail: list[dict]) -> list[dict]:
         located = r["hit"] == "True"
         sym = symbol_match_of(r, located)
         exact_all = is_exact_all(r, located, sym)
-        # v3 的严格命中已在评估器侧剔除 coarse；这里再独立复算一次，双向对齐
-        strict = exact_all and r["coarse"] != "True"
-        soft = exact_all and r["coarse"] == "True"
+        # 严格命中 = 全字段一致 + 非 coarse + **符号归属在命中物理行上可证**。
+        # 第三项是 v3.2 加的：符号只在父块更靠前的行、命中行自身没有符号时，
+        # 「符号挂上了这个块」不等于「符号属于这一行」，不能算严格命中。
+        inh = r.get("symbol_inheritance", "")
+        sym_ok_on_row = inh in ("同一行直接命中", "不适用（Gold 无符号，按值兜底）")
+        strict = exact_all and r["coarse"] != "True" and sym_ok_on_row
+        soft = exact_all and not strict
 
         # 交叉校验：新口径的「全字段一致」必须与评估器 primary 严格等价，
         # 严格/软两列必须与评估器自身判定一致，否则说明两套口径打架。
@@ -345,6 +357,9 @@ def build_rows(detail: list[dict]) -> list[dict]:
             "located": "是" if located else "否",
             "strict_hit": "是" if strict else "否",
             "soft_hit": "是" if soft else "否",
+            "soft_reason": r.get("soft_reason", ""),
+            "symbol_inheritance": inh or "—",
+            "condition_attribution": r.get("condition_attribution", "") or "—",
             "value_match": "不适用" if r["primary"] == "解析失败"
             else ("是" if r["num_ok"] == "True" else "否"),
             "unit_match": "不适用" if r["primary"] == "解析失败"
@@ -357,7 +372,7 @@ def build_rows(detail: list[dict]) -> list[dict]:
             "parser_page": r["matched_page"] or "—",
             "error_category": r["primary"],
             "secondary_category": sec,
-            "defect_owner": owner(r["primary"], status, sec),
+            "defect_owner": owner(r["primary"], status, sec, r.get("soft_reason", "")),
             "match_mode": r["match_mode"] or "—",
             "block_rows": r["block_rows"] or "0",
             "run_version": RUN_LABEL,
@@ -367,7 +382,9 @@ def build_rows(detail: list[dict]) -> list[dict]:
 
 COLUMNS = ["sample_id", "gold_row_id", "parser_output_id",
            "matched_physical_row_id", "match_status", "located",
-           "strict_hit", "soft_hit", "value_match", "unit_match",
+           "strict_hit", "soft_hit", "soft_reason",
+           "symbol_inheritance", "condition_attribution",
+           "value_match", "unit_match",
            "symbol_match", "condition_match", "gold_page", "parser_page",
            "error_category", "secondary_category", "defect_owner",
            "match_mode", "block_rows", "run_version"]

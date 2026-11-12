@@ -1,0 +1,41 @@
+﻿sample_no,gold_key,symbol,condition,matched_block_id,matched_physical_row_id,row_text,condition_row_match,condition_header_match,condition_block_match,condition_unresolved,condition_attribution,condition_evidence,strict_hit
+V003,067|V003|105|vddcore|0.81|0.85|0.895|v|recommended operating conditions,VDD_CORE,Recommended Operating Conditions,p105-t01-r02,p105-t01-r02,VDD_CORE Core supply 0.81 0.85 0.895 V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V003,068|V003|105|vddrcore|0.81|0.85|0.895|v|recommended operating conditions,VDDR_CORE,Recommended Operating Conditions,p105-t01-r03,p105-t01-r03,VDDR_CORE RAM supply 0.81 0.85 0.895 V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V003,069|V003|106|vddshv5|1.71|1.8|1.89|v|1.8v operation,VDDSHV5,1.8V Operation,p106-t01-r02,p106-t01-r02,VDDSHV5 Dual-voltage IO supply 1.8V Operation 1.71 1.8 1.89 V,True,False,False,False,条件在命中行,该物理行文本：VDDSHV5 Dual-voltage IO supply 1.8V Operation 1.71 1.8 1.89 V,True
+V003,070|V003|106|tj|-40||125|oc|125oc industrial,TJ,125°C Industrial,p106-t01-r05,p106-t01-r05,"T J Operating junction temperature range Extended
+Industrial –40 105",False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V003,071|V003|101|vddcore|-0.3||1.05|v|6.1 absolute maximum ratings,VDD_CORE,6.1 Absolute Maximum Ratings,p101-t01-r02,p101-t01-r02,VDD_CORE Core supply -0.3 1.05 V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V077,097|V077|38|cvdd|1.14|1.2|1.32|v|375 mhz version,CVDD,375 MHz version,p038-t01-r03,p038-t01-r04,375 MHz version 1.14 1.2 1.32 V,True,False,False,False,条件在命中行,该物理行文本：375 MHz version 1.14 1.2 1.32 V,False
+V077,098|V077|38|cvdd|1.25|1.3|1.35|v|456 mhz version,CVDD,456 MHz version,p038-t01-r03,p038-t01-r03,"CVDD (CVDD, RTC_CVDD, PLL0_VDDA) 456 MHz version 1.25 1.3 1.35 V",True,False,False,False,条件在命中行,"该物理行文本：CVDD (CVDD, RTC_CVDD, PLL0_VDDA) 456 MHz version 1.25 1.3 1.35 V",True
+V077,099|V077|38|rvdd|1.14|1.2|1.32|v|375 mhz version,RVDD,375 MHz version,p038-t01-r05,p038-t01-r06,"Supply voltage, I/O, 1.8V
+(USB0_VDDA18, USB1_VDDA18) 1.71 1.8 1.89 V",False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V077,100|V077|38|rvdd|1.25|1.3|1.35|v|456 mhz version,RVDD,456 MHz version,p038-t01-r05,p038-t01-r05,"RVDD Supply Voltage, Internal RAM
+456 MHz version 1.25 1.3 1.35 V",True,False,False,False,条件在命中行,"该物理行文本：RVDD Supply Voltage, Internal RAM
+456 MHz version 1.25 1.3 1.35 V",True
+V077,"101|V077|38|dvdd|1.71|1.8|1.89|v|supply voltage, i/o, 1.8v",DVDD,"Supply voltage, I/O, 1.8V",p038-t01-r07,p038-t01-r07,"DVDD Supply voltage, I/O, 3.3V
+(DVDD, USB0_VDDA33, USB1_VDDA33) 3.0 3.3 3.45 V",False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V101,"000|V101|3|vih|1.5|||v|hc, vcc=2v",VIH,"HC, VCC=2V",p003-t01-r04,p003-t01-r04,High Level Input V IH - - 2 1.5 - - 1.5 - 1.5 - V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V101,"001|V101|3|vih|3.15|||v|hc, vcc=4.5v",VIH,"HC, VCC=4.5V",p003-t01-r04,p003-t01-r05,Voltage 4.5 3.15 - - 3.15 - 3.15 - V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V101,"002|V101|3|vih|4.2|||v|hc, vcc=6v",VIH,"HC, VCC=6V",p003-t01-r04,p003-t01-r06,6 4.2 - - 4.2 - 4.2 - V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V101,"003|V101|3|vil|||0.5|v|hc, vcc=2v",VIL,"HC, VCC=2V",p003-t01-r07,p003-t01-r07,Low Level Input V IL - - 2 - - 0.5 - 0.5 - 0.5 V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V101,"004|V101|3|vil|||1.35|v|hc, vcc=4.5v",VIL,"HC, VCC=4.5V",p003-t01-r07,p003-t01-r08,Voltage 4.5 - - 1.35 - 1.35 - 1.35 V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V101,"005|V101|3|vil|||1.8|v|hc, vcc=6v",VIL,"HC, VCC=6V",p003-t01-r07,p003-t01-r09,6 - - 1.8 - 1.8 - 1.8 V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V101,"006|V101|3|voh|1.9|||v|hc, vcc=2v",VOH,"HC, VCC=2V",p003-t01-r10,p003-t01-r10,High Level Output V OH V IH  or V IL -0.02 2 1.9 - - 1.9 - 1.9 - V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V101,"007|V101|3|voh|4.4|||v|hc, vcc=4.5v",VOH,"HC, VCC=4.5V",p003-t01-r10,p003-t01-r11,"Voltage
+CMOS Loads -0.02 4.5 4.4 - - 4.4 - 4.4 - V",False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V101,"008|V101|3|voh|5.9|||v|hc, vcc=6v",VOH,"HC, VCC=6V",p003-t01-r10,p003-t01-r12,-0.02 6 5.9 - - 5.9 - 5.9 - V,False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V162,"014|V162|25|io|||128|ma|sn74lvth182504a, a port or tdo",IO,"SN74LVTH182504A, A port or TDO",p027-t01-r31,p027-t01-r31,"ICC IO = 0, Outputs low 19.5 27 19.5 27",False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,False
+V173,042|V173|4|io|||±25|ma|vo = 0 to vcc,IO,VO = 0 to VCC,p004-t01-r04,p004-t01-r07,I O Continuous output current V O  = 0 to V CC ±25 mA,True,False,False,False,条件在命中行,该物理行文本：I O Continuous output current V O  = 0 to V CC ±25 mA,False
+V256,087|V256|13|v(main-aux)|-7.1||6.1|mv|2v<vcell<4.5v; ta=25oc,V(MAIN-AUX),2V<VCELL<4.5V; TA=25°C,p013-t01-r02,p013-t01-r02,2V<V CELL <4.5V; T A =25 o C -7.1 6.1 mV,True,False,False,False,条件在命中行,该物理行文本：2V<V CELL <4.5V; T A =25 o C -7.1 6.1 mV,False
+V256,088|V256|13|v(main-aux)|-7.8||6.6|mv|2v<vcell<4.5v; -20oc<ta<65oc,V(MAIN-AUX),2V<VCELL<4.5V; -20°C<TA<65°C,p013-t01-r03,p013-t01-r03,Main - AUX measurement during 2V<V CELL <4.5V; -20 o C<T A <65 o C -7.8 6.6 mV,True,False,False,False,条件在命中行,该物理行文本：Main - AUX measurement during 2V<V CELL <4.5V; -20 o C<T A <65 o C -7.8 6.6 mV,False
+V256,089|V256|13|v(main-aux)|-7.8||6.6|mv|2v<vcell<4.5v; -40oc<ta<105oc,V(MAIN-AUX),2V<VCELL<4.5V; -40°C<TA<105°C,p013-t01-r04,p013-t01-r04,V VCELL and OVDAC Reference 2V<V CELL <4.5V; -40 o C<T A <105 o C -7.8 6.6 mV,True,False,False,False,条件在命中行,该物理行文本：V VCELL and OVDAC Reference 2V<V CELL <4.5V; -40 o C<T A <105 o C -7.8 6.6 mV,False
+V256,090|V256|13|v(main-aux)|-7.8||6.7|mv|2v<vcell<4.5v; -40oc<ta<125oc,V(MAIN-AUX),2V<VCELL<4.5V; -40°C<TA<125°C,p013-t01-r05,p013-t01-r05,"(MAIN-AUX) diagnostic. Same input voltage to both 
+ADC under same T ; 2V<V CELL <4.5V; -40 o C<T A <125 o C -7.8 6.7 mV",True,False,False,False,条件在命中行,"该物理行文本：(MAIN-AUX) diagnostic. Same input voltage to both 
+ADC under same T ; 2V<V CELL <4.5V; -40 o C<T A <",False
+V256,091|V256|13|v(main-aux)|-7.9||6.9|mv|1v<vcell< 5v; -40oc<ta<125oc,V(MAIN-AUX),1V<VCELL< 5V; -40°C<TA<125°C,p013-t01-r06,p013-t01-r06,A 1V<V CELL < 5V; -40 o C<T A <125 o C -7.9 6.9 mV,True,False,False,False,条件在命中行,该物理行文本：A 1V<V CELL < 5V; -40 o C<T A <125 o C -7.9 6.9 mV,False
+V290,103|V290|3|vil|||0.8|v|0oc to +70oc,VIL,0°C to +70°C,p003-t01-r03,p003-t01-r03,V IL Input Voltage LOW 0°C to +70°C 0.8 V,True,False,False,False,条件在命中行,该物理行文本：V IL Input Voltage LOW 0°C to +70°C 0.8 V,True
+V290,104|V290|3|vil|||0.5|v|-55oc to +125oc,VIL,−55°C to +125°C,p003-t01-r08,p003-t01-r08,"V OL Output Voltage LOW V CC  = Min, V IH  = V IH Min ,
+V IL  = V IL Max , I OL  = 40 mA 0.5 V",False,False,False,True,条件未定位,命中行 / 表头 / 父块他行 均未出现,True
+V304,030|V304|4|iik|||-50|ma|vin < 0,IIK,VIN < 0,p004-t01-r02,p004-t01-r05,I IK Control input clamp current V IN  < 0 –50 mA,True,False,False,False,条件在命中行,该物理行文本：I IK Control input clamp current V IN  < 0 –50 mA,False
+V320,"054|V320|12|dacvdd,digvdd,clkvdd|-0.5||1.5|v|over operating free-air temperature range (unless otherwise noted)","DACVDD, DIGVDD, CLKVDD",over operating free-air temperature range (unless otherwise noted),p012-t01-r02,p012-t01-r02,"DACVDD, DIGVDD, CLKVDD –0.5 1.5 V",False,False,True,False,条件仅在父块他行,条件只出现在表题/表头文本，属整表共用条件，无法按列索引对齐到该行,True
+V320,"055|V320|12|avdd,pllavdd|-0.5||4|v|over operating free-air temperature range (unless otherwise noted)","AVDD, PLLAVDD",over operating free-air temperature range (unless otherwise noted),p012-t01-r04,p012-t01-r04,Supply voltage IOVDD –0.5 4 V,False,False,True,False,条件仅在父块他行,条件只出现在表题/表头文本，属整表共用条件，无法按列索引对齐到该行,False

@@ -4,8 +4,14 @@
 
 - 冻结时间：2026-11-12
 - 回测根：`gate6a_replay_v1`（首次受控回测）、`gate6a_replay_v2_postfix`（格线修复后补跑）、
-  `gate6a_replay_v3_1to1`（**一对一消费匹配重算，本包主口径**）
+  `gate6a_replay_v3_1to1`（**一对一消费匹配 + 物理行级符号/condition 归属，本包主口径**）
 - 源码版本：见 [`parser_commit.txt`](parser_commit.txt) 与 [`source_fingerprint.md`](source_fingerprint.md)
+
+> **⚠️ 口径更新（v3.2，最新）**：硬命中由 **82 修正为 66 / 105 = 62.86%**。
+> 上一版只校验「符号挂上了这个块」，没校验「符号属于这一行」；下沉到物理行后
+> 16 行因**无依据跨行继承**降级为软命中。一对一消费与块组装**完全没动**
+> （两份 CSV 逐字节相同可证）。**引用硬命中请用 66。**
+> 详见 [`eval_v3_2_row_level.md`](eval_v3_2_row_level.md)。
 
 > **本包不含 `src/icpdf/` 源码树。** 唯一的源码片段是
 > [`monotonic_lattice.diff`](monotonic_lattice.diff) —— 被审的那一处改动本身，
@@ -20,7 +26,7 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 | 指控 | 实际是什么 | 修法 | 证据 |
 | --- | --- | --- | --- |
 | **假一对一消费** | `eval_gold_row` 让每条 Gold 独立扫全池，同一候选块可被任意多条 Gold 行反复引用（实测 14 个块被 2~3 行共用，V256 的 G089/G090 抢同一个 `n_rows=1` 的单行块） | 引入物理行级消费集合；多行父块按「父块-子行」拆到不同物理行，记 `matched_physical_row_id` | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv)、[`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) |
-| **软硬命中混算** | `exact_rows` 直接把 `coarse=True`（命中落在 ≥5 行大块里）的行算作完全一致 | 强制剔除，单列 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)；严格命中 = 82 | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)、[`error_matrix_105.csv`](error_matrix_105.csv) |
+| **软硬命中混算** | `exact_rows` 直接把 `coarse=True`（命中落在 ≥5 行大块里）的行算作完全一致 | 强制剔除，单列 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)；当时严格命中 = 82（v3.2 再降至 66，见文首口径更新） | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)、[`error_matrix_105.csv`](error_matrix_105.csv) |
 
 **Parser 一次都没有重跑。** v3 的输入是 v2 冻结在盘上的 `per_sample/` 产物，
 只重算评估器侧的块组装与匹配。块组装结果与 v2 冻结的 `param_blocks` 逐块比对，
@@ -32,23 +38,28 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 
 | 指标 | 分子/分母 | 值 | 定义 |
 | --- | --- | --- | --- |
-| **严格命中率**（主口径） | **82 / 105** | **78.10%** | 值 + 单位 + 符号 + 页码全过，**且 `coarse=否`** |
-| 全字段一致（含软） | 89 / 105 | 84.76% | 同上但含 `coarse=是`（v2 的旧口径） |
-| 命中率（保守口径） | 69 / 105 | 65.71% | 严格命中里再把 condition 当硬门 |
+| **严格命中率**（主口径） | **66 / 105** | **62.86%** | 值 + 单位 + 符号 + 页码全过，**且 `coarse=否`，且符号归属在命中物理行上可证** |
+| 全字段一致（含软） | 89 / 105 | 84.76% | 同上但含 `coarse=是` 与符号无依据的行（v2 的旧口径） |
+| 命中率（保守口径） | 69 / 105 | 65.71% | 严格命中里再把 condition 当硬门（v3 旧算法，仅作对照） |
 | **定位率** | **104 / 105** | **99.05%** | 只要找到候选块就算，不看字段 |
 
 ```
-定位           104 / 105   99.05%
- ├─ 全字段一致    89 / 105   84.76%
- │   ├─ 严格命中    82 / 105   78.10%   ← 本轮主口径
- │   └─ 软命中       7 / 105    6.67%
- └─ 错误匹配      15 / 105   14.29%
-漏提                1 / 105
+定位             104 / 105   99.05%
+ ├─ 全字段一致      89 / 105   84.76%
+ │   ├─ 严格命中      66 / 105   62.86%   ← 本轮主口径
+ │   └─ 软命中        23 / 105   21.90%   （coarse 7 + 符号无依据 16）
+ └─ 错误匹配        15 / 105   14.29%
+漏提                  1 / 105
 ```
 
-**`104` 是定位率的分子，不是命中率的分子。** `89` 也不是严格命中 —— 它含 7 行软命中。
-只有 `82` 是严格命中。完整拆解见
+**`104` 是定位率的分子，不是命中率的分子。** `89` 也不是严格命中 —— 它含 23 行软命中。
+只有 `66` 是严格命中。完整拆解见
+[`eval_v3_2_row_level.md` §1](eval_v3_2_row_level.md) 与
 [`error_matrix_105_README.md` §2](error_matrix_105_README.md)。
+
+**敏感性参考（不是主指标）**：若把「父块内符号在更靠前的行」也算通过，
+严格命中为 **81 / 105 = 77.14%**（`metrics.symbol_inheritance.strict_if_cross_row_accepted`）。
+我们不用它当结论，但把它算好放在那里。
 
 ---
 
@@ -64,17 +75,25 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 | # | 文件 | 一句话 | 回答什么 |
 | --- | --- | --- | --- |
 | 1 | [`error_matrix_105.csv`](error_matrix_105.csv) | 105 行 × 20 列逐行判定 | 哪行严格命中、哪行软命中、哪行错、错在哪、落在哪个物理行 |
-| 2 | [`error_matrix_105_README.md`](error_matrix_105_README.md) | 字段字典与四口径定义 | 82 / 89 / 69 / 104 分别怎么算 |
-| 3 | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv) | 7 条软命中逐条 | 哪 7 行是靠大块并集撑起来的 |
-| 4 | [`eval_v3_1to1.md`](eval_v3_1to1.md) | v3 算法与 v2→v3 差异 | 一对一怎么实现、改了哪几行、为什么 |
+| 2 | [`error_matrix_105_README.md`](error_matrix_105_README.md) | 字段字典与四口径定义 | 66 / 89 / 69 / 104 分别怎么算 |
+| 3 | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv) | 23 条软命中逐条 | 哪 23 行没进严格命中，各自是什么原因 |
+| 4 | [`eval_v3_2_row_level.md`](eval_v3_2_row_level.md) | **本轮主文档**：符号继承 + condition 四层 | 82 为什么降到 66、16 行逐条、V077/V256 深挖 |
+
+### 物理行级归属（本轮新增，回应 19:08 意见）
+
+| # | 文件 | 一句话 |
+| --- | --- | --- |
+| 5 | [`symbol_inheritance_proof.csv`](symbol_inheritance_proof.csv) | 20 行 = 16 行无依据跨行继承 + 4 行无符号；含 `is_parent_first_row` / `in_reviewer_filter` 两列，可按字面口径复现子集 |
+| 6 | [`condition_attribution.csv`](condition_attribution.csv) | 31 条带 condition 的行，四层归属逐条（row 12 / header 0 / block 2 / unresolved 17） |
+| 7 | [`v3_metrics.json`](../artifacts/v3_metrics.json) | `schema_version=3.2`，含 `strict_scope_breakdown` 配平表与 `strict_if_cross_row_accepted` |
 
 ### 一对一消费的证据链
 
 | # | 文件 | 一句话 |
 | --- | --- | --- |
-| 5 | [`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) | 13 个被多条 Gold 行共用的父块，及各自分配到的子行（全部互不相同） |
-| 6 | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv) | 因消费冲突而改判的行（仅 1 行，V256 G090） |
-| 7 | [`../_assert_v3_1to1.py`](../_assert_v3_1to1.py) | 27 项不变量断言脚本，可直接运行 |
+| 8 | [`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) | 13 个被多条 Gold 行共用的父块，及各自分配到的子行（全部互不相同） |
+| 9 | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv) | 因消费冲突而改判的行（仅 1 行，V256 G090） |
+| 10 | [`../_assert_v3_1to1.py`](../_assert_v3_1to1.py) | 37 项不变量断言脚本，可直接运行 |
 
 ### V256 修复
 
@@ -137,7 +156,7 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 | 你手上的东西 | 能跑什么 |
 | --- | --- |
 | 只有审计仓库副本 | `sha256sum -c SHA256SUMS.txt` —— 核对字节 |
-| 完整工作区 | 另加 `_verify_v3_faithful.py`（复现 v2 的 104/89/8/7）、<br>`_assert_v3_1to1.py`（27 项不变量） |
+| 完整工作区 | 另加 `_verify_v3_faithful.py`（复现 v2 的 104/89/8/7）、<br>`_assert_v3_1to1.py`（37 项不变量） |
 
 在仓库副本里跑后两个脚本，会打印缺哪几个输入并以退出码 2 结束。
 这是脚本主动拦的，不是崩溃 —— 目的是别让复核者对着一屏 traceback 猜。
@@ -157,9 +176,9 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 
 ### 需求 2：硬/软命中分离
 
-- `exact_rows` 只表示严格全字段一致，`coarse=True` 一律剔除。
-- 7 条被剔出的行单列 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)，全部是 `n_rows` 为 5/6/8 的大块 + `text` 匹配。
-- 严格硬命中率 **82 / 105 = 78.10%**。
+- `exact_rows` 只表示「值/单位/页码/符号在块级全过」，**含 coarse、含软命中**，等于 严格 + 软 = 66 + 23 = 89。
+- 23 条被剔出的行单列 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)：7 条是 `n_rows` 为 5/6/8 的大块 + `text` 匹配，16 条是**符号无依据跨行继承**。
+- 严格硬命中率 **66 / 105 = 62.86%**。
 
 ### 需求 3：指标命名统一
 
@@ -169,10 +188,12 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 | --- | --- | --- |
 | `recall` | `location_rate` | 定位率，不是召回率 |
 | `hit_rows` | `located_rows` | 定位到候选块的行数 |
-| `exact_rows` | `strict_hit_rows`（同值） | 仅严格全字段一致，已剔除 coarse |
+| `exact_rows` | `strict_hit_rows`（**不再同值**） | `exact_rows` = 全字段一致（含软）；`strict_hit_rows` = 66，只含符号归属可证的行 |
 | — | `soft_hit_rows` | 软命中，新增 |
 | — | `row_verified_hit_rows` | 严格命中且值确实落在被指派物理行 |
-| `condition_match` | `reference_only.condition_match` | 明确标注仅参考 |
+| `condition_match` | `condition_attribution.reference_only.condition_match` | 明确标注仅参考 |
+| — | `symbol_inheritance` | 符号从哪来，新增（v3.2） |
+| — | `condition_attribution` | 条件落在哪一层，新增（v3.2） |
 
 ### 需求 4：证据表述修正
 
@@ -215,9 +236,11 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 | Reviewer 的问题 | 答案 | 证据 |
 | --- | --- | --- |
 | 你们的一对一是假的吧 | 是假的，已修：块/物理行消费唯一，14→13 个共用父块全部落在不同子行，重复行 0 | [`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) |
-| 软命中和硬命中混算了 | 已拆：89 里 7 行是软命中，严格命中 82 / 105 = 78.10% | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv) |
+| 软命中和硬命中混算了 | 已拆：89 里 23 行是软命中，严格命中 66 / 105 = 62.86% | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv) |
+| 符号只在首行、值在后续行，也算命中？ | 不算。15 行跨行借用 + 1 行行指派错位全部降级，逐行给出几何/结构证据缺失的原因 | [`symbol_inheritance_proof.csv`](symbol_inheritance_proof.csv) |
+| condition 是不是父块里出现过就放行？ | 不是。拆成 row/header/block/unresolved 四层，12 行落到命中行，V256 五行 5/5 行级可证 | [`condition_attribution.csv`](condition_attribution.csv) |
 | V256 的 G089/G090 抢同一行 | 已修：改落 `r03` / `r04`，且与各自 condition 吻合（condition 未参与分配） | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv) |
-| 94.3% / 99.05% 怎么算的 | 都是**定位率**；命中率是 82（严格）/ 89（含软）/ 69（condition 硬门） | [`error_matrix_105_README.md`](error_matrix_105_README.md) |
+| 94.3% / 99.05% 怎么算的 | 都是**定位率**；命中率是 66（严格）/ 89（含软）/ 69（condition 硬门，v3 旧算法） | [`error_matrix_105_README.md`](error_matrix_105_README.md) |
 | 39 行翻正是否动了 Parser | 没动，185/192 个 JSON 哈希全同 | [`parser_json_immutability.txt`](parser_json_immutability.txt) |
 | V256 修得对不对、有没有伤到别人 | 23 件 115 个文件逐字节不变；2701 表里只有 1 表受影响；最大边界位移 +33.663pt 但单元格位移 0 | [`v256_crash_evidence.md`](v256_crash_evidence.md) |
 | 有没有偷偷联网 | 出网事件 0 次；16 向量全拦；对照组能出网 | [`network_guard_proof.md`](network_guard_proof.md) |

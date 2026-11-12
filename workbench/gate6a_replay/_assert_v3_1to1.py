@@ -86,16 +86,24 @@ def main() -> int:
           "严格 + 软 == 全字段一致", "%d + %d = %d" % (strict, softn, exact_all))
     check(located + sum(1 for r in detail if r["located"] != "True") == 105,
           "定位 + 未定位 == 105")
-    check(m["exact_rows"] == strict,
-          "exact_rows 就是严格命中（已剔除 coarse）", "%d" % m["exact_rows"])
+    # v3.2 起 exact_rows 的含义是「值/单位/页码/符号在块级全过」，含 coarse、含软命中，
+    # 所以它等于 严格 + 软，**不再**等于严格命中。硬命中只能看 strict_hit_rows。
+    check(m["exact_rows"] == strict + softn,
+          "exact_rows == 严格 + 软（不再等于硬命中）",
+          "%d == %d + %d" % (m["exact_rows"], strict, softn))
 
-    print("\n=== 3. 硬/软互斥：coarse 一行都不许进严格命中 ===")
+    print("\n=== 3. 硬/软互斥：coarse 与无依据符号继承都不许进严格命中 ===")
     bad = [r for r in detail if r["strict_hit"] == "True" and r["coarse"] == "True"]
     check(not bad, "严格命中里没有 coarse 行", "%d 行" % len(bad))
     both = [r for r in detail if r["strict_hit"] == "True" and r["soft_hit"] == "True"]
     check(not both, "同一行不同时是严格与软命中", "%d 行" % len(both))
-    all_soft_coarse = [r for r in detail if r["soft_hit"] == "True" and r["coarse"] != "True"]
-    check(not all_soft_coarse, "软命中必为 coarse", "%d 行" % len(all_soft_coarse))
+    bad_soft = [r for r in detail if r["soft_hit"] == "True"
+                and r["coarse"] != "True"
+                and r["symbol_inheritance"] != "无依据跨行继承"]
+    check(not bad_soft, "非 coarse 的软命中必为无依据符号继承", "%d 行" % len(bad_soft))
+    bad_strict_inh = [r for r in detail if r["strict_hit"] == "True"
+                      and r["symbol_inheritance"] == "无依据跨行继承"]
+    check(not bad_strict_inh, "严格命中里没有无依据跨行继承", "%d 行" % len(bad_strict_inh))
 
     print("\n=== 4. 软命中清单与明细一致 ===")
     check(len(soft) == softn, "soft_hits.csv 行数 == 软命中数", "%d" % len(soft))
@@ -141,11 +149,51 @@ def main() -> int:
     check(fl["page_ok"] == sum(1 for r in detail
                                if r["located"] == "True" and r["page_ok"] == "True"),
           "field_level.page_ok 一致")
-    check(m["reference_only"]["condition_match"]
+    check(m["condition_attribution"]["reference_only"]["condition_match"]
           == sum(1 for r in detail if r["located"] == "True" and r["cond_ok"] == "True"),
           "condition_match 为参考值且与明细一致")
 
-    print("\n=== 10. 不再重跑 Parser ===")
+    print("\n=== 10. 符号继承：判定作用域必须自己配平 ===")
+    inh = m["symbol_inheritance"]
+    b = inh["strict_scope_breakdown"]
+    coarse_exact = sum(1 for r in detail if r["primary"] == "完全一致" and r["coarse"] == "True")
+    check(b["exact_not_coarse_rows"] == exact_all - coarse_exact,
+          "判定作用域 == 全字段一致 − 其中的 coarse", "%d" % b["exact_not_coarse_rows"])
+    check(b["exact_not_coarse_rows"] == (b["同一行直接命中"] + b["无依据_命中行非首行"]
+                                        + b["无依据_命中行为首行"] + b["不适用_无符号"]),
+          "82 = 直接命中 + 跨行借用 + 行指派错位 + 无符号",
+          "%d = %d + %d + %d + %d" % (b["exact_not_coarse_rows"], b["同一行直接命中"],
+                                      b["无依据_命中行非首行"], b["无依据_命中行为首行"],
+                                      b["不适用_无符号"]))
+    check(strict == b["同一行直接命中"] + b["不适用_无符号"],
+          "严格命中 == 直接命中 + 无符号", "%d" % strict)
+    demoted_n = sum(1 for r in detail if r["primary"] == "完全一致"
+                    and r["coarse"] != "True"
+                    and r["symbol_inheritance"] == "无依据跨行继承")
+    check(demoted_n == inh["demoted_rows"], "降级行数一致", "%d" % demoted_n)
+    check(len(inh["demoted_detail"]) == demoted_n, "降级明细条数一致")
+    # 敏感性参考值：把跨行借用也算通过时，严格命中应恰好增加「非首行」那一档
+    check(inh["strict_if_cross_row_accepted"] == strict + b["无依据_命中行非首行"],
+          "strict_if_cross_row_accepted == 严格 + 跨行借用",
+          "%d" % inh["strict_if_cross_row_accepted"])
+
+    print("\n=== 11. condition 四层互斥且可配平 ===")
+    ca = m["condition_attribution"]
+    four = (sum(1 for r in detail if r["located"] == "True" and r["condition_row_match"] == "True"),
+            sum(1 for r in detail if r["located"] == "True" and r["condition_header_match"] == "True"),
+            sum(1 for r in detail if r["located"] == "True" and r["condition_block_match"] == "True"),
+            sum(1 for r in detail if r["located"] == "True" and r["condition_unresolved"] == "True"))
+    check(sum(four) == ca["rows_with_condition"],
+          "四层之和 == 带 condition 的已定位行", "%d == %d" % (sum(four), ca["rows_with_condition"]))
+    multi = [r for r in detail if r["located"] == "True"
+             and sum(1 for k in ("condition_row_match", "condition_header_match",
+                                 "condition_block_match", "condition_unresolved")
+                     if r[k] == "True") > 1]
+    check(not multi, "同一行只落一个 condition 层级", "%d 行多层" % len(multi))
+    check(ca["row_level_verified"] == four[0] + four[1],
+          "row_level_verified == row + header", "%d" % ca["row_level_verified"])
+
+    print("\n=== 12. 不再重跑 Parser ===")
     check(m.get("parser_rerun") is False, "metrics.parser_rerun == False")
     check(m["parser_root"].endswith("gate6a_replay_v2_postfix"),
           "输入指向 v2 冻结产物", m["parser_root"])

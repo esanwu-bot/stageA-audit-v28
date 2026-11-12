@@ -145,6 +145,19 @@ def build_blocks(sno: str, tables, cands) -> list[dict]:
                 u = C.norm_unit(c.get("text") or "")
                 if u in set(C.UNIT_ALIAS.values()):
                     table_units.add(u)
+
+        # 表级「合并证据」：Parser 若记录了纵向合并，这里是唯一的显式来源。
+        # 同时把重建状态一并带上 —— reconstruction_status=partial 的表，
+        # 「某列没有单元格」既可能是合并，也可能是丢格，不能默认前者。
+        tbl_evidence = {
+            "merge_evidence_n": len(t.get("merge_evidence") or []),
+            "merge_evidence": list(t.get("merge_evidence") or []),
+            "recon_status": str(t.get("reconstruction_status") or ""),
+            "uncertainty_reason": str(t.get("uncertainty_reason") or ""),
+            "header_cells": [{"column_id": int(hc.get("column_id", -1)),
+                              "text": (hc.get("text") or "")}
+                             for hc in (t.get("header_cells") or [])],
+        }
         cur = None
         for r in t.get("rows") or []:
             cells = [(c.get("text") or "") for c in (r.get("cells") or [])]
@@ -168,9 +181,21 @@ def build_blocks(sno: str, tables, cands) -> list[dict]:
             row_page = next((int(c["page_number"]) for c in (r.get("cells") or [])
                              if c.get("page_number")), int(t["page_number"]))
 
+            row_bb = r.get("bbox") or [0.0, 0.0, 0.0, 0.0]
+            # 行级几何是「符号能否跨行继承」的唯一可证材料：
+            #   - 行 bbox 给出这一行的纵向范围
+            #   - 单元格 bbox 给出符号文字实际占的纵向范围
+            # 只有符号单元格的 bbox 真的把目标行盖住，才谈得上「合并单元格继承」。
+            # 否则「符号属于这一行」只是推断 —— Reviewer 这一轮要的正是这条界线。
             detail = {"row_id": r["row_id"], "text": joined,
                       "numbers": list(nums), "units": sorted(units),
-                      "symbols": sorted(syms)}
+                      "symbols": sorted(syms),
+                      "y0": float(row_bb[1]), "y1": float(row_bb[3]),
+                      "cells": [{"column_id": int(c.get("column_id", -1)),
+                                 "text": (c.get("text") or ""),
+                                 "y0": float((c.get("bbox") or [0, 0, 0, 0])[1]),
+                                 "y1": float((c.get("bbox") or [0, 0, 0, 0])[3])}
+                                for c in (r.get("cells") or [])]}
 
             if syms:
                 cur = {"block_id": r["row_id"], "sample_no": sno,
@@ -181,7 +206,7 @@ def build_blocks(sno: str, tables, cands) -> list[dict]:
                        "units": set(units), "texts": [joined],
                        "header_text": hdr_text, "n_rows": 1,
                        "table_units": set(table_units), "orphan": False,
-                       "rows_detail": [detail]}
+                       "rows_detail": [detail], **tbl_evidence}
                 blocks.append(cur)
             elif cur is not None and not cur["orphan"] \
                     and cur["n_rows"] < MAX_BLOCK_ROWS:
@@ -199,7 +224,7 @@ def build_blocks(sno: str, tables, cands) -> list[dict]:
                        "units": set(units), "texts": [joined],
                        "header_text": hdr_text, "n_rows": 1,
                        "table_units": set(table_units), "orphan": True,
-                       "rows_detail": [detail]}
+                       "rows_detail": [detail], **tbl_evidence}
                 blocks.append(cur)
 
     for i, b in enumerate(blocks):
@@ -210,10 +235,17 @@ def build_blocks(sno: str, tables, cands) -> list[dict]:
 
 
 def symbol_regex(sym: str) -> re.Pattern | None:
+    """符号匹配正则：允许符号内部夹排版空格（`V IH`），两侧不许粘字母数字。
+
+    **必须大小写不敏感**：`norm_symbol()` 会把符号归一成小写（`Tstg` -> `tstg`），
+    而物理行原文是原始大小写（`Storage Temperature (T stg )`）。早期版本没加 re.I，
+    于是「符号明明就在这一行」也被判成不在 —— 那是判定缺陷，不是数据缺陷。
+    边界断言仍用小写字符类，配合 re.I 等价于 `(?<![A-Za-z0-9])`。
+    """
     if not sym:
         return None
     body = r"\s*".join(re.escape(ch) for ch in sym)
-    return re.compile(r"(?<![a-z0-9])" + body + r"(?![a-z0-9])")
+    return re.compile(r"(?<![a-z0-9])" + body + r"(?![a-z0-9])", re.IGNORECASE)
 
 
 def block_haystack(b: dict) -> str:
@@ -248,8 +280,222 @@ def cond_probe(g_cond: str, block: dict) -> tuple[bool, str]:
     return False, ",".join(missing[:4])
 
 
-def cover_count(b: dict, need: list[float]) -> int:
-    return sum(1 for v in need if any(close(v, x) for x in b["numbers"]))
+# ---------------------------------------------------------------- 符号继承证据
+#
+# Reviewer 这一轮的问题：一条 Gold 行落在父块的第 2、3 行上，而符号只写在第 1 行。
+# v3 之前只保证「这条 Gold 行占了这个物理行」，没保证「符号也属于这个物理行」。
+# 于是出现一批「数值确实在这一行、但符号是借来的」的所谓严格命中。
+#
+# 判定只认三个证据通道，任一成立才算跨行继承站得住：
+#   1. 符号文字就在该行              -> 同一行直接命中
+#   2. 承载符号的单元格 bbox 纵向盖住该行 -> 跨行合并单元格继承（几何证据）
+#   3. 表级 merge_evidence 明确记了两行的合并 -> 跨行合并单元格继承（显式证据）
+# 三者皆不成立 -> 无依据跨行继承。此时「符号属于这一行」是推断，不是证据。
+
+INH_DIRECT = "同一行直接命中"
+INH_MERGED = "跨行合并单元格继承"
+INH_UNPROVEN = "无依据跨行继承"
+INH_NA = "不适用（Gold 无符号，按值兜底）"
+
+ROW_EPS = 0.5          # pt，浮点比较容差；与 V256 证据里的 0.2pt 阈值不是一回事
+
+
+def _cell_holding(cells: list[dict], sym: str) -> dict | None:
+    """在若干单元格里找承载该符号的那一个（按归一化文本比，容忍 `V IH` 这类下标空格）。"""
+    rx = symbol_regex(sym)
+    for c in cells:
+        t = c.get("text") or ""
+        if sym and (C.norm_symbol(t) == sym or (rx and rx.search(C.norm_text(t)))):
+            return c
+    return None
+
+
+def classify_symbol_inheritance(g: dict, asg: dict) -> dict:
+    """判定命中物理行上的符号从哪来。"""
+    block = asg["block"]
+    row = asg["row"]
+    rows_d: list[dict] = block["rows_detail"]
+    first = rows_d[0]
+    sym = C.norm_symbol(g.get("symbol"))
+
+    out = {"symbol_inheritance": "", "symbol_row_verified": False,
+           "symbol_carrier_row": "", "row_text": row.get("text", ""),
+           "parent_block_id": block["block_id"],
+           "matched_row_id": row["row_id"],
+           "parent_first_row": first["row_id"],
+           "symbol_cell_y": "", "symbol_row_y": "", "merge_evidence_n": "",
+           "recon_status": "", "basis": ""}
+
+    if not sym:
+        out["symbol_inheritance"] = INH_NA
+        out["symbol_row_verified"] = True      # 不涉及符号继承，不因此降级
+        out["basis"] = "Gold 行本身没有符号，走按值兜底，不存在符号归属问题"
+        return out
+
+    rx = symbol_regex(sym)
+    # 在**归一化后**的行文本上找：norm_text 会统一大小写、全角/半角、破折号，
+    # 与 norm_symbol 的口径一致。直接拿原文比会把 `Tstg` 和 `tstg` 当成两个东西。
+    row_norm = C.norm_text(row.get("text") or "")
+    on_row = (sym in (row.get("symbols") or [])) or bool(rx and rx.search(row_norm))
+    if on_row:
+        out["symbol_inheritance"] = INH_DIRECT
+        out["symbol_row_verified"] = True
+        out["symbol_carrier_row"] = row["row_id"]
+        out["basis"] = "符号文字出现在该物理行自身的文本里"
+        return out
+
+    # 符号不在这一行：找承载它的那一行（同样按归一化文本比）
+    carrier = next((x for x in rows_d if sym in (x.get("symbols") or [])), None)
+    if carrier is None:
+        carrier = next((x for x in rows_d
+                        if rx and rx.search(C.norm_text(x.get("text") or ""))), first)
+    out["symbol_carrier_row"] = carrier["row_id"]
+
+    # 通道 2：几何 —— 符号单元格的纵向范围是否盖住目标行
+    cell = _cell_holding(carrier.get("cells") or [], sym)
+    if cell:
+        cy0, cy1 = cell.get("y0", 0.0), cell.get("y1", 0.0)
+        ry0, ry1 = row.get("y0", 0.0), row.get("y1", 0.0)
+        out["symbol_cell_y"] = "%.2f-%.2f" % (cy0, cy1)
+        out["symbol_row_y"] = "%.2f-%.2f" % (ry0, ry1)
+        if cy0 <= ry0 + ROW_EPS and cy1 >= ry1 - ROW_EPS:
+            out["symbol_inheritance"] = INH_MERGED
+            out["symbol_row_verified"] = True
+            out["basis"] = ("符号单元格 bbox 纵向从 %.2f 覆盖到 %.2f，"
+                            "完整盖住目标行 %.2f-%.2f（几何证据）"
+                            % (cy0, cy1, ry0, ry1))
+            return out
+
+    # 通道 3：表级显式合并证据
+    out["merge_evidence_n"] = block.get("merge_evidence_n", 0)
+    out["recon_status"] = block.get("recon_status", "")
+    for ev in block.get("merge_evidence") or []:
+        blob = json.dumps(ev, ensure_ascii=False)
+        if carrier["row_id"] in blob and row["row_id"] in blob:
+            out["symbol_inheritance"] = INH_MERGED
+            out["symbol_row_verified"] = True
+            out["basis"] = "表级 merge_evidence 显式记录了两行的合并关系（显式证据）"
+            return out
+
+    out["symbol_inheritance"] = INH_UNPROVEN
+    out["symbol_row_verified"] = False
+    span = ""
+    if cell:
+        span = ("符号单元格只占 %.2f-%.2f，未覆盖目标行 %.2f-%.2f；"
+                % (cell.get("y0", 0.0), cell.get("y1", 0.0),
+                   row.get("y0", 0.0), row.get("y1", 0.0)))
+    out["basis"] = (span +
+                    "表级 merge_evidence=%d 条，reconstruction_status=%s。"
+                    "「该列在这一行没有单元格」既可能是纵向合并，也可能是丢格，"
+                    "Parser 自己把后者写进了 uncertainty_reason，故不能判为合并。"
+                    % (block.get("merge_evidence_n", 0),
+                       block.get("recon_status") or "(空)"))
+    return out
+
+
+# ------------------------------------------------------------ condition 归属层级
+#
+# v3.1 之前 condition 只在「块文本 + 表头」里找，找到了就算过。
+# 但块文本是整块拼接的，父块任何一行出现过都算 —— 这等于用正确答案去挑行。
+# 现在拆成四层，只认这一行的证据优先：
+#   row     ：条件就写在这一行上           （最强，无需推断）
+#   header  ：条件在表头，且能按列索引对齐到这一行
+#   block   ：只在父块的其他行出现过       （需要列出具体位置）
+#   unresolved：哪里都找不到
+
+COND_IN_ROW = "条件在命中行"
+COND_IN_HEADER = "条件在表头且按列对齐"
+COND_IN_BLOCK = "条件仅在父块他行"
+COND_UNRESOLVED = "条件未定位"
+COND_NONE = "无条件（不适用）"
+
+
+def _flat(s: str) -> str:
+    return C.norm_text(s or "").replace(" ", "")
+
+
+def cond_attribution(cond: str, block: dict, row: dict) -> dict:
+    """把 condition 落到具体层级，四层互斥，优先级 row > header > block > unresolved。"""
+    out = {"condition_row_match": False, "condition_header_match": False,
+           "condition_block_match": False, "condition_unresolved": False,
+           "condition_attribution": COND_NONE, "condition_evidence": ""}
+
+    flat = _flat(cond)
+    if not flat:
+        return out
+
+    toks = [x for x in re.split(r"[^0-9a-z]+", flat) if len(x) >= 2 and x not in COND_STOP]
+    if not toks:
+        toks = [flat]
+
+    def _all_in(hay: str) -> bool:
+        return flat in hay or all(t in hay for t in toks)
+
+    # 第 1 层：命中行自身
+    row_flat = _flat(row.get("text", ""))
+    if _all_in(row_flat):
+        out["condition_row_match"] = True
+        out["condition_attribution"] = COND_IN_ROW
+        out["condition_evidence"] = "该物理行文本：%s" % (row.get("text", "")[:100])
+        return out
+
+    # 第 2 层：表头 + 列索引对齐
+    hdr_flat = _flat(block.get("header_text", ""))
+    if _all_in(hdr_flat):
+        hcs = block.get("header_cells") or []
+        row_cols = {c.get("column_id") for c in (row.get("cells") or [])
+                    if (c.get("text") or "").strip()}
+        aligned, cols = True, []
+        for t in toks:
+            hit_cols = {hc["column_id"] for hc in hcs if t in _flat(hc.get("text", ""))}
+            if not hit_cols:
+                continue
+            cols.extend(sorted(hit_cols))
+            if not (hit_cols & row_cols):
+                aligned = False
+        if cols and aligned:
+            out["condition_header_match"] = True
+            out["condition_attribution"] = COND_IN_HEADER
+            out["condition_evidence"] = ("表头命中，且目标行在列 %s 上有取值"
+                                         % ",".join(str(c) for c in sorted(set(cols))))
+            return out
+
+    # 第 3 层：只在父块其他行
+    locs = []
+    for r2 in block.get("rows_detail") or []:
+        if r2["row_id"] == row["row_id"]:
+            continue
+        if _all_in(_flat(r2.get("text", ""))):
+            locs.append(r2["row_id"])
+    if locs:
+        out["condition_block_match"] = True
+        out["condition_attribution"] = COND_IN_BLOCK
+        out["condition_evidence"] = "命中父块其他行：%s" % "|".join(locs)
+        return out
+
+    # 第 4 层：找不到（连同父块整体文本一起兜底判断）
+    # 注意两种兜底要分开写清楚，否则会把「表级条件」误报成「父块他行条件」：
+    #   只在表题/表头文本里出现 -> 表级条件（整张表共用），无法按列对齐到某一行
+    #   只在块正文里出现        -> 父块他行条件，位置不可定
+    if _all_in(hdr_flat):
+        out["condition_block_match"] = True
+        out["condition_attribution"] = COND_IN_BLOCK
+        out["condition_evidence"] = ("条件只出现在表题/表头文本，属整表共用条件，"
+                                     "无法按列索引对齐到该行")
+        return out
+    if _all_in(hdr_flat + _flat(block.get("text", ""))):
+        out["condition_attribution"] = COND_IN_BLOCK
+        out["condition_block_match"] = True
+        out["condition_evidence"] = "仅在父块整体文本中出现，无法定位到具体行"
+        return out
+
+    out["condition_unresolved"] = True
+    out["condition_attribution"] = COND_UNRESOLVED
+    out["condition_evidence"] = "命中行 / 表头 / 父块他行 均未出现"
+    return out
+
+
+def cover_count(b: dict, need: list[float]) -> int:    return sum(1 for v in need if any(close(v, x) for x in b["numbers"]))
 
 
 def candidates_for(g: dict, blocks: list[dict]) -> list[dict]:
@@ -417,6 +663,19 @@ def judge(g: dict, asg: dict) -> dict:
     rec["cond_ok"] = ok_cond
     rec["cond_missing"] = miss_cond
 
+    # 符号归属：不是「挂上块」就算，要能指认符号落在这一行的证据
+    inh = classify_symbol_inheritance(g, asg)
+    rec["symbol_inheritance"] = inh["symbol_inheritance"]
+    rec["symbol_row_verified"] = inh["symbol_row_verified"]
+    rec["symbol_carrier_row"] = inh["symbol_carrier_row"]
+    for _k in ("row_text", "symbol_cell_y", "symbol_row_y",
+               "merge_evidence_n", "recon_status", "basis"):
+        rec[_k] = inh.get(_k, "")
+
+    # condition 落到层级上，而不是「父块里出现过就算过」
+    ca = cond_attribution(g.get("condition", ""), b, row)
+    rec.update(ca)
+
     if not rec["page_ok"]:
         rec["primary"] = "evidence page 错"
     elif rec["by_value"] and sym:
@@ -428,10 +687,23 @@ def judge(g: dict, asg: dict) -> dict:
     else:
         rec["primary"] = "完全一致"
 
-    # 硬/软分离：完全一致再按 coarse 拆开。
+    # 三层收窄，逐层可见：
+    #   字段全一致（exact）  值/单位/页码/符号在块级全过
+    #   ├─ 严格命中（strict）再要求：非 coarse 且 符号归属在行级可证
+    #   └─ 软命中（soft）    exact 但不满足 strict 的那些，必须写明是哪一类
     all_fields_ok = (rec["primary"] == "完全一致")
-    rec["soft_hit"] = bool(all_fields_ok and rec["coarse"])
-    rec["strict_hit"] = bool(all_fields_ok and not rec["coarse"])
+    rec["exact_hit"] = bool(all_fields_ok)
+    rec["soft_reason"] = ""
+    if all_fields_ok and rec["coarse"]:
+        rec["soft_reason"] = "coarse_大块并集"
+    if all_fields_ok and not inh["symbol_row_verified"]:
+        rec["soft_reason"] = ("coarse_大块并集+symbol_无依据跨行继承"
+                              if rec["coarse"] else "symbol_无依据跨行继承")
+
+    rec["strict_hit"] = bool(all_fields_ok and not rec["coarse"]
+                             and inh["symbol_row_verified"])
+    rec["soft_hit"] = bool(all_fields_ok and not rec["strict_hit"])
+
     rec["flags"] = ",".join(k for k, v in (
         ("page", rec["page_ok"]), ("num", rec["num_ok"]),
         ("unit", rec["unit_ok"])) if not v) or "ok"
@@ -443,7 +715,9 @@ def miss_record(g: dict) -> dict:
         "sample_no", "batch", "gold_key", "symbol", "gold_page", "min", "typ",
         "max", "unit", "condition", "matched_block_id", "matched_physical_row_id",
         "block_covered_rows", "matched_page", "matched_text", "missing_values",
-        "match_mode", "cond_missing", "flags")}
+        "match_mode", "cond_missing", "flags",
+        "symbol_inheritance", "symbol_carrier_row", "soft_reason",
+        "condition_attribution", "condition_evidence")}
     rec.update({
         "sample_no": g["sample_no"], "batch": g["_batch"],
         "gold_key": g.get("_uid", ""), "symbol": g.get("symbol", ""),
@@ -454,6 +728,9 @@ def miss_record(g: dict) -> dict:
         "hit": False, "num_ok": False, "unit_ok": False, "unit_strict": False,
         "page_ok": False, "cond_ok": False, "coarse": False, "by_value": False,
         "row_value_ok": False, "soft_hit": False, "strict_hit": False,
+        "exact_hit": False, "symbol_row_verified": False,
+        "condition_row_match": False, "condition_header_match": False,
+        "condition_block_match": False, "condition_unresolved": False,
         "block_rows": 0, "assign_tier": 99, "assign_tier_label": "no_candidate",
         "assign_seq": "", "primary": "漏提", "flags": "miss"})
     return rec
@@ -599,6 +876,7 @@ def main() -> int:
     located = sum(1 for d in details if d["hit"])
     strict = sum(1 for d in details if d["strict_hit"])
     soft = sum(1 for d in details if d["soft_hit"])
+    exact_n = sum(1 for d in details if d["exact_hit"])
     row_verified = sum(1 for d in details if d["strict_hit"] and d["row_value_ok"])
     coarse_n = sum(1 for d in details if d["coarse"])
     primary = Counter(d["primary"] for d in details)
@@ -606,8 +884,42 @@ def main() -> int:
     cond_ok = sum(1 for d in details if d["hit"] and d["cond_ok"])
     bad_share = [x for x in shared_parents if not x["distinct"]]
 
+    inh_counts = Counter(d["symbol_inheritance"] for d in details if d["hit"])
+    ca_counts = Counter(d["condition_attribution"] for d in details if d["hit"])
+    demoted = [d for d in details if d["exact_hit"] and not d["strict_hit"]
+               and not d["coarse"]]
+    soft_reasons = Counter(d["soft_reason"] or "unspecified"
+                           for d in details if d["soft_hit"])
+    cond_row_level = sum(1 for d in details if d["hit"] and (
+        d["condition_row_match"] or d["condition_header_match"]))
+    cond_has = sum(1 for d in details if d["hit"] and (d["condition"] or "").strip())
+    cond_block_only = sum(1 for d in details if d["hit"] and d["condition_block_match"])
+    cond_unres = sum(1 for d in details if d["hit"] and d["condition_unresolved"])
+
+    # 严格命中判定作用域（exact 且非 coarse）内的符号归属分布。
+    # 这张表必须能自己配平：82 = 62 直接命中 + 15 跨行借用 + 1 行指派错位 + 4 无符号。
+    # 上面的 inh_counts 是按「已定位 104 行」统计的，两者口径不同，不能混着引用。
+    def _is_first(d) -> bool:
+        cov = (d["block_covered_rows"] or "").split("|")
+        return bool(cov[0]) and d["matched_physical_row_id"] == cov[0]
+
+    judged = [d for d in details if d["exact_hit"] and not d["coarse"]]
+    inh_scope = {
+        "exact_not_coarse_rows": len(judged),
+        "同一行直接命中": sum(1 for d in judged if d["symbol_inheritance"] == INH_DIRECT),
+        "无依据_命中行非首行": sum(1 for d in judged if not _is_first(d)
+                                   and d["symbol_inheritance"] == INH_UNPROVEN),
+        "无依据_命中行为首行": sum(1 for d in judged if _is_first(d)
+                                   and d["symbol_inheritance"] == INH_UNPROVEN),
+        "不适用_无符号": sum(1 for d in judged if d["symbol_inheritance"] == INH_NA),
+    }
+    # 若把「父块内符号在更靠前的行」也算作可接受继承（不要求几何证据），严格命中会是多少：
+    # 只作敏感性参考，不参与任何主指标。
+    strict_if_cross_accepted = strict + sum(
+        1 for d in demoted if d["symbol_inheritance"] == INH_UNPROVEN and not _is_first(d))
+
     metrics = {
-        "schema_version": "3.1",
+        "schema_version": "3.2",
         "evaluator": "evaluator_v3_1to1",
         "parser_root": str(C.PARSER_ROOT),
         "parser_rerun": False,
@@ -630,19 +942,45 @@ def main() -> int:
         "strict_hit_rate": round(strict / n, 4),
         "soft_hit_rows": soft,
         "soft_hit_rate": round(soft / n, 4),
-        "exact_rows": strict,
-        "exact_rate": round(strict / n, 4),
+        "exact_rows": exact_n,
+        "exact_rate": round(exact_n / n, 4),
         "row_verified_hit_rows": row_verified,
         "row_verified_hit_rate": round(row_verified / n, 4),
         "coarse_rows": coarse_n,
         "miss_rate": round(1 - located / n, 4),
         "match_mode": dict(modes),
         "attribution": dict(primary),
-        "reference_only": {
-            "condition_match": cond_ok,
-            "note": "condition 仅作参考，不参与命中判定（Gold 的 condition 常来自列头，"
-                    "Parser 块文本不携带该语义）",
+        "symbol_inheritance": {
+            "counts": dict(inh_counts),
+            "strict_scope_breakdown": inh_scope,
+            "demoted_rows": len(demoted),
+            "demoted_detail": [
+                {"sample_no": d["sample_no"], "gold_key": d["gold_key"],
+                 "symbol": d["symbol"], "parent_block_id": d["matched_block_id"],
+                 "matched_row_id": d["matched_physical_row_id"],
+                 "is_parent_first_row": _is_first(d),
+                 "reason": d["symbol_inheritance"]} for d in demoted],
+            "strict_if_cross_row_accepted": strict_if_cross_accepted,
+            "strict_if_cross_row_accepted_rate": round(strict_if_cross_accepted / n, 4),
+            "note": ("符号归属只认三条证据：符号文字在该行 / 符号单元格 bbox 纵向盖住该行 / "
+                     "表级 merge_evidence 显式记录。三者全无即判无依据，从严格命中降级为软命中。"
+                     "strict_if_cross_row_accepted 是敏感性参考（假设跨行借用可接受），不进主指标。"),
         },
+        "condition_attribution": {
+            "counts": dict(ca_counts),
+            "rows_with_condition": cond_has,
+            "row_level_verified": cond_row_level,
+            "header_level_verified": sum(1 for d in details if d["hit"] and d["condition_header_match"]),
+            "block_level_only": cond_block_only,
+            "unresolved": cond_unres,
+            "note": ("四层互斥，优先级 row > header > block > unresolved。"
+                     "condition 仍不进命中判定，但 block 级不再等同 row 级。"),
+            "reference_only": {
+                "condition_match": cond_ok,
+                "note": "兼容旧字段；等于 cond_probe 在块文本+表头里的粗定位结果，仅供参考",
+            },
+        },
+        "soft_hit_breakdown": dict(soft_reasons),
         "candidates": {
             "blocks_total": len(all_blocks),
             "blocks_on_gold_pages": sum(v.get("page_blocks", 0) for v in per_sample.values()),
@@ -659,10 +997,16 @@ def main() -> int:
         },
         "definitions": {
             "located_rows": "挂上候选块即算，不看值/单位/符号/页码",
-            "strict_hit_rows": "located 且 值/单位/页码 全过 且 NOT coarse",
-            "soft_hit_rows": "同上但 coarse=True（命中落在 >=5 行的大块里且非 token 匹配）",
-            "exact_rows": "同 strict_hit_rows，仅表示严格全字段一致",
+            "exact_rows": "值/单位/页码/符号（块级）全过，不问证据形态",
+            "strict_hit_rows": "exact 且 NOT coarse 且 符号归属在命中物理行上可证（同一行/几何覆盖/显式合并）",
+            "soft_hit_rows": "exact 但不满足 strict，需人工复核；原因见 soft_hit_breakdown",
             "row_verified_hit_rows": "strict 且 Gold 的数值确实落在被指派的那一物理行上",
+            "symbol_inheritance": "符号从哪来：同一行直接命中 / 跨行合并单元格继承 / 无依据跨行继承",
+            "condition_attribution": "条件落在哪一层：命中行 / 表头列对齐 / 仅父块他行 / 未定位",
+            "condition_row_match": "条件文本出现在 matched_physical_row_id 这一行上",
+            "condition_header_match": "条件在表头，且能按列索引对齐到命中行",
+            "condition_block_match": "条件只在父块的其他行/整体文本里出现（evidence 列给出位置）",
+            "condition_unresolved": "命中行 / 表头 / 父块他行 均找不到",
             "condition_match": "参考指标，不计入任何命中率",
         },
         "per_sample": per_sample,
@@ -677,10 +1021,14 @@ def main() -> int:
 
     COLS = ["sample_no", "batch", "gold_key", "symbol", "gold_page",
             "min", "typ", "max", "unit", "condition",
-            "hit", "located", "strict_hit", "soft_hit",
+            "hit", "located", "strict_hit", "soft_hit", "exact_hit", "soft_reason",
             "page_ok", "num_ok", "unit_ok", "unit_strict",
             "row_value_ok", "coarse", "match_mode", "assign_tier",
             "assign_tier_label", "assign_seq", "by_value",
+            "symbol_inheritance", "symbol_row_verified", "symbol_carrier_row",
+            "condition_row_match", "condition_header_match",
+            "condition_block_match", "condition_unresolved",
+            "condition_attribution", "condition_evidence",
             "cond_ok", "cond_missing", "primary", "flags", "missing_values",
             "matched_block_id", "matched_physical_row_id", "block_covered_rows",
             "matched_page", "block_rows", "matched_text"]
@@ -691,9 +1039,85 @@ def main() -> int:
         detail_rows.append(r)
     C.write_csv_lf(C.OUT_ROOT / "eval_detail.csv", detail_rows, COLS)
 
-    # 软命中单列：coarse=True 且被判为完全一致的那些行
+    # 软命中单列：exact 但未达 strict 的全部行，附降级原因
     soft_rows = [r for r in detail_rows if r["soft_hit"]]
     C.write_csv_lf(C.OUT_ROOT / "soft_hits.csv", soft_rows, COLS)
+
+    # 符号继承证据：收录「字段全一致、非 coarse、且符号**不在命中行自身**」的全部行。
+    #
+    # 口径说明（重要）：Reviewer 的字面筛选是「match_mode=text 且命中行不是父块首行」，
+    # 实测那样只有 1 行（V146）。但缺陷与 match_mode 无关 —— 15 条 token 模式的
+    # 行同样在跨行借符号。只交 1 行等于用筛选条件把 15 条问题藏起来，所以这里
+    # 收录全部「需要做符号归属裁定」的行（含首行命中但符号在后续行的 1 条，
+    # 含 Gold 无符号的 4 条），并给出 is_parent_first_row / in_reviewer_filter
+    # 两列，让任何人都能按自己的口径复现子集。
+    INH_COLS = ["sample_no", "gold_key", "symbol", "match_mode",
+                "parent_block_id", "parent_first_row", "matched_row_id",
+                "is_parent_first_row", "in_reviewer_filter",
+                "row_text", "inheritance_type", "symbol_carrier_row",
+                "diagnosis", "strict_after_verification",
+                "soft_reason", "symbol_cell_y", "symbol_row_y",
+                "merge_evidence_n", "recon_status", "basis"]
+    inh_rows = []
+    for d in details:
+        if not (d["exact_hit"] and not d["coarse"]):
+            continue
+        if d["symbol_inheritance"] == INH_DIRECT:
+            continue
+        cov = (d["block_covered_rows"] or "").split("|")
+        first = cov[0] if cov else ""
+        is_first = bool(first) and d["matched_physical_row_id"] == first
+        if d["symbol_inheritance"] == INH_NA:
+            diag = "Gold 行本身没有符号，走按值兜底，不存在符号归属问题"
+        elif is_first:
+            diag = ("命中行是父块首行，但符号只出现在后续行 —— "
+                    "符号被指派到了不含它的物理行（行指派错位，非合并继承）")
+        else:
+            diag = ("符号只在父块更靠前的行，命中行自身不含符号 —— "
+                    "跨行借用，且无几何/显式合并证据支撑")
+        inh_rows.append({
+            "sample_no": d["sample_no"], "gold_key": d["gold_key"],
+            "symbol": d["symbol"], "match_mode": d["match_mode"],
+            "parent_block_id": d["matched_block_id"],
+            "parent_first_row": first,
+            "matched_row_id": d["matched_physical_row_id"],
+            "is_parent_first_row": is_first,
+            "in_reviewer_filter": (d["match_mode"] == "text" and not is_first),
+            "row_text": d.get("row_text", ""),
+            "inheritance_type": d["symbol_inheritance"],
+            "symbol_carrier_row": d.get("symbol_carrier_row", ""),
+            "diagnosis": diag,
+            "strict_after_verification": bool(d["strict_hit"]),
+            "soft_reason": d["soft_reason"],
+            "symbol_cell_y": d.get("symbol_cell_y", ""),
+            "symbol_row_y": d.get("symbol_row_y", ""),
+            "merge_evidence_n": d.get("merge_evidence_n", ""),
+            "recon_status": d.get("recon_status", ""),
+            "basis": d.get("basis", ""),
+        })
+    C.write_csv_lf(C.OUT_ROOT / "symbol_inheritance_proof.csv", inh_rows, INH_COLS)
+
+    # condition 归属清单：只列「确实带 condition」的已定位行，其余行在 eval_detail 里
+    CA_COLS = ["sample_no", "gold_key", "symbol", "condition",
+               "matched_block_id", "matched_physical_row_id", "row_text",
+               "condition_row_match", "condition_header_match",
+               "condition_block_match", "condition_unresolved",
+               "condition_attribution", "condition_evidence", "strict_hit"]
+    ca_rows = [{
+        "sample_no": d["sample_no"], "gold_key": d["gold_key"],
+        "symbol": d["symbol"], "condition": d["condition"],
+        "matched_block_id": d["matched_block_id"],
+        "matched_physical_row_id": d["matched_physical_row_id"],
+        "row_text": d.get("row_text", ""),
+        "condition_row_match": d["condition_row_match"],
+        "condition_header_match": d["condition_header_match"],
+        "condition_block_match": d["condition_block_match"],
+        "condition_unresolved": d["condition_unresolved"],
+        "condition_attribution": d["condition_attribution"],
+        "condition_evidence": d["condition_evidence"],
+        "strict_hit": bool(d["strict_hit"]),
+    } for d in details if d["hit"] and (d["condition"] or "").strip()]
+    C.write_csv_lf(C.OUT_ROOT / "condition_attribution.csv", ca_rows, CA_COLS)
 
     # 父块共用清单：证明多行 Gold 落在不同物理行
     C.write_csv_lf(C.OUT_ROOT / "parent_block_sharing.csv",

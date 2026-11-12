@@ -1,5 +1,5 @@
 {
-  "schema_version": "3.1",
+  "schema_version": "3.2",
   "evaluator": "evaluator_v3_1to1",
   "parser_root": "E:\\workspace\\icpdf-extractor\\runs\\gate6a_replay_v2_postfix",
   "parser_rerun": false,
@@ -18,14 +18,14 @@
   "samples": 24,
   "located_rows": 104,
   "location_rate": 0.9905,
-  "strict_hit_rows": 82,
-  "strict_hit_rate": 0.781,
-  "soft_hit_rows": 7,
-  "soft_hit_rate": 0.0667,
-  "exact_rows": 82,
-  "exact_rate": 0.781,
-  "row_verified_hit_rows": 82,
-  "row_verified_hit_rate": 0.781,
+  "strict_hit_rows": 66,
+  "strict_hit_rate": 0.6286,
+  "soft_hit_rows": 23,
+  "soft_hit_rate": 0.219,
+  "exact_rows": 89,
+  "exact_rate": 0.8476,
+  "row_verified_hit_rows": 66,
+  "row_verified_hit_rate": 0.6286,
   "coarse_rows": 8,
   "miss_rate": 0.0095,
   "match_mode": {
@@ -43,9 +43,191 @@
     "单位错": 1,
     "漏提": 1
   },
-  "reference_only": {
-    "condition_match": 87,
-    "note": "condition 仅作参考，不参与命中判定（Gold 的 condition 常来自列头，Parser 块文本不携带该语义）"
+  "symbol_inheritance": {
+    "counts": {
+      "同一行直接命中": 77,
+      "无依据跨行继承": 23,
+      "不适用（Gold 无符号，按值兜底）": 4
+    },
+    "strict_scope_breakdown": {
+      "exact_not_coarse_rows": 82,
+      "同一行直接命中": 62,
+      "无依据_命中行非首行": 15,
+      "无依据_命中行为首行": 1,
+      "不适用_无符号": 4
+    },
+    "demoted_rows": 16,
+    "demoted_detail": [
+      {
+        "sample_no": "V011",
+        "gold_key": "073|V011|3|vih|3.15|||v|",
+        "symbol": "VIH",
+        "parent_block_id": "p003-t01-r04",
+        "matched_row_id": "p003-t01-r05",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V011",
+        "gold_key": "074|V011|3|vih|4.2|||v|",
+        "symbol": "VIH",
+        "parent_block_id": "p003-t01-r04",
+        "matched_row_id": "p003-t01-r06",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V011",
+        "gold_key": "076|V011|3|vil|||1.35|v|",
+        "symbol": "VIL",
+        "parent_block_id": "p003-t01-r07",
+        "matched_row_id": "p003-t01-r08",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V077",
+        "gold_key": "097|V077|38|cvdd|1.14|1.2|1.32|v|375 mhz version",
+        "symbol": "CVDD",
+        "parent_block_id": "p038-t01-r03",
+        "matched_row_id": "p038-t01-r04",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V101",
+        "gold_key": "001|V101|3|vih|3.15|||v|hc, vcc=4.5v",
+        "symbol": "VIH",
+        "parent_block_id": "p003-t01-r04",
+        "matched_row_id": "p003-t01-r05",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V101",
+        "gold_key": "002|V101|3|vih|4.2|||v|hc, vcc=6v",
+        "symbol": "VIH",
+        "parent_block_id": "p003-t01-r04",
+        "matched_row_id": "p003-t01-r06",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V101",
+        "gold_key": "004|V101|3|vil|||1.35|v|hc, vcc=4.5v",
+        "symbol": "VIL",
+        "parent_block_id": "p003-t01-r07",
+        "matched_row_id": "p003-t01-r08",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V101",
+        "gold_key": "005|V101|3|vil|||1.8|v|hc, vcc=6v",
+        "symbol": "VIL",
+        "parent_block_id": "p003-t01-r07",
+        "matched_row_id": "p003-t01-r09",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V101",
+        "gold_key": "007|V101|3|voh|4.4|||v|hc, vcc=4.5v",
+        "symbol": "VOH",
+        "parent_block_id": "p003-t01-r10",
+        "matched_row_id": "p003-t01-r11",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V101",
+        "gold_key": "008|V101|3|voh|5.9|||v|hc, vcc=6v",
+        "symbol": "VOH",
+        "parent_block_id": "p003-t01-r10",
+        "matched_row_id": "p003-t01-r12",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V146",
+        "gold_key": "079|V146|4|voh|2.4|3.3||v|",
+        "symbol": "VOH",
+        "parent_block_id": "p004-t01-r03",
+        "matched_row_id": "p004-t01-r04",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V199",
+        "gold_key": "032|V199|1|pd|||77|w|",
+        "symbol": "PD",
+        "parent_block_id": "p001-t03-r08",
+        "matched_row_id": "p001-t03-r09",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V244",
+        "gold_key": "093|V244|44|cvdd|1.05|1.1|1.16|v|",
+        "symbol": "CVDD",
+        "parent_block_id": "p044-t01-r02",
+        "matched_row_id": "p044-t01-r03",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V244",
+        "gold_key": "094|V244|44|cvdd|0.95|1|1.05|v|",
+        "symbol": "CVDD",
+        "parent_block_id": "p044-t01-r02",
+        "matched_row_id": "p044-t01-r04",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V320",
+        "gold_key": "053|V320|12|iovdd|-0.5||4|v|",
+        "symbol": "IOVDD",
+        "parent_block_id": "p012-t01-r04",
+        "matched_row_id": "p012-t01-r05",
+        "is_parent_first_row": false,
+        "reason": "无依据跨行继承"
+      },
+      {
+        "sample_no": "V320",
+        "gold_key": "055|V320|12|avdd,pllavdd|-0.5||4|v|over operating free-air temperature range (unless otherwise noted)",
+        "symbol": "AVDD, PLLAVDD",
+        "parent_block_id": "p012-t01-r04",
+        "matched_row_id": "p012-t01-r04",
+        "is_parent_first_row": true,
+        "reason": "无依据跨行继承"
+      }
+    ],
+    "strict_if_cross_row_accepted": 81,
+    "strict_if_cross_row_accepted_rate": 0.7714,
+    "note": "符号归属只认三条证据：符号文字在该行 / 符号单元格 bbox 纵向盖住该行 / 表级 merge_evidence 显式记录。三者全无即判无依据，从严格命中降级为软命中。strict_if_cross_row_accepted 是敏感性参考（假设跨行借用可接受），不进主指标。"
+  },
+  "condition_attribution": {
+    "counts": {
+      "条件未定位": 17,
+      "条件在命中行": 12,
+      "无条件（不适用）": 73,
+      "条件仅在父块他行": 2
+    },
+    "rows_with_condition": 31,
+    "row_level_verified": 12,
+    "header_level_verified": 0,
+    "block_level_only": 2,
+    "unresolved": 17,
+    "note": "四层互斥，优先级 row > header > block > unresolved。condition 仍不进命中判定，但 block 级不再等同 row 级。",
+    "reference_only": {
+      "condition_match": 87,
+      "note": "兼容旧字段；等于 cond_probe 在块文本+表头里的粗定位结果，仅供参考"
+    }
+  },
+  "soft_hit_breakdown": {
+    "symbol_无依据跨行继承": 16,
+    "coarse_大块并集": 7
   },
   "candidates": {
     "blocks_total": 22943,
@@ -62,10 +244,16 @@
   },
   "definitions": {
     "located_rows": "挂上候选块即算，不看值/单位/符号/页码",
-    "strict_hit_rows": "located 且 值/单位/页码 全过 且 NOT coarse",
-    "soft_hit_rows": "同上但 coarse=True（命中落在 >=5 行的大块里且非 token 匹配）",
-    "exact_rows": "同 strict_hit_rows，仅表示严格全字段一致",
+    "exact_rows": "值/单位/页码/符号（块级）全过，不问证据形态",
+    "strict_hit_rows": "exact 且 NOT coarse 且 符号归属在命中物理行上可证（同一行/几何覆盖/显式合并）",
+    "soft_hit_rows": "exact 但不满足 strict，需人工复核；原因见 soft_hit_breakdown",
     "row_verified_hit_rows": "strict 且 Gold 的数值确实落在被指派的那一物理行上",
+    "symbol_inheritance": "符号从哪来：同一行直接命中 / 跨行合并单元格继承 / 无依据跨行继承",
+    "condition_attribution": "条件落在哪一层：命中行 / 表头列对齐 / 仅父块他行 / 未定位",
+    "condition_row_match": "条件文本出现在 matched_physical_row_id 这一行上",
+    "condition_header_match": "条件在表头，且能按列索引对齐到命中行",
+    "condition_block_match": "条件只在父块的其他行/整体文本里出现（evidence 列给出位置）",
+    "condition_unresolved": "命中行 / 表头 / 父块他行 均找不到",
     "condition_match": "参考指标，不计入任何命中率"
   },
   "per_sample": {
@@ -121,8 +309,8 @@
       "dup_conflict": 0,
       "gold_rows": 5,
       "located": 5,
-      "strict": 5,
-      "soft": 0,
+      "strict": 2,
+      "soft": 3,
       "consumed_physical_rows": 5,
       "parent_blocks_shared": 2,
       "extra_examples": [
@@ -205,8 +393,8 @@
       "dup_conflict": 0,
       "gold_rows": 5,
       "located": 5,
-      "strict": 3,
-      "soft": 0,
+      "strict": 2,
+      "soft": 1,
       "consumed_physical_rows": 5,
       "parent_blocks_shared": 2,
       "extra_examples": [
@@ -289,8 +477,8 @@
       "dup_conflict": 0,
       "gold_rows": 9,
       "located": 9,
-      "strict": 9,
-      "soft": 0,
+      "strict": 3,
+      "soft": 6,
       "consumed_physical_rows": 9,
       "parent_blocks_shared": 3,
       "extra_examples": [
@@ -405,8 +593,8 @@
       "dup_conflict": 0,
       "gold_rows": 5,
       "located": 5,
-      "strict": 5,
-      "soft": 0,
+      "strict": 4,
+      "soft": 1,
       "consumed_physical_rows": 5,
       "parent_blocks_shared": 1,
       "extra_examples": [
@@ -505,8 +693,8 @@
       "dup_conflict": 0,
       "gold_rows": 5,
       "located": 5,
-      "strict": 4,
-      "soft": 0,
+      "strict": 3,
+      "soft": 1,
       "consumed_physical_rows": 5,
       "parent_blocks_shared": 1,
       "extra_examples": [
@@ -589,8 +777,8 @@
       "dup_conflict": 0,
       "gold_rows": 5,
       "located": 5,
-      "strict": 5,
-      "soft": 0,
+      "strict": 3,
+      "soft": 2,
       "consumed_physical_rows": 5,
       "parent_blocks_shared": 1,
       "extra_examples": [
@@ -826,8 +1014,8 @@
       "dup_conflict": 0,
       "gold_rows": 5,
       "located": 5,
-      "strict": 4,
-      "soft": 0,
+      "strict": 2,
+      "soft": 2,
       "consumed_physical_rows": 5,
       "parent_blocks_shared": 1,
       "extra_examples": [
