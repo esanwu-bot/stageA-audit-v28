@@ -1,0 +1,40 @@
+﻿sample_id,gold_row_id,symbol,old_verdict,new_verdict,reason,original_pdf_page,old_block,new_block,new_match_mode,gold_key
+V003,G068,VDD_CORE,symbol 错配,完全一致,符号正则不允许下划线：`VDD_CORE` 整类电源轨名被判「不像符号」，该行被吞进上一块,105,p105-t01-r04,p105-t01-r02,token,067|V003|105|vddcore|0.81|0.85|0.895|v|recommended operating conditions
+V003,G069,VDDR_CORE,symbol 错配,完全一致,符号正则不允许下划线：`VDDR_CORE` 整类电源轨名被判「不像符号」，该行被吞进上一块,105,p105-t01-r04,p105-t01-r03,token,068|V003|105|vddrcore|0.81|0.85|0.895|v|recommended operating conditions
+V003,G072,VDD_CORE,symbol 错配,完全一致,符号正则不允许下划线：`VDD_CORE` 整类电源轨名被判「不像符号」，该行被吞进上一块,101,p101-t01-r04,p101-t01-r02,token,071|V003|101|vddcore|-0.3||1.05|v|6.1 absolute maximum ratings
+V038,G048,VA19,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VA19 (2)` ≠ `VA19`，目标页的块认不出，旧口径退而命中了别的页上的同名块,9,p008-t01-r13,p009-t01-r02,token,047|V038|9|va19|-0.3||2.35|v|
+V038,G049,VPLL19,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VPLL19 (2)` ≠ `VPLL19`，目标页的块认不出，旧口径退而命中了别的页上的同名块,9,p008-t01-r15,p009-t01-r03,token,048|V038|9|vpll19|-0.3||2.35|v|
+V038,G050,VREFO,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VREFO (2)` ≠ `VREFO`，目标页的块认不出，旧口径退而命中了别的页上的同名块,9,p008-t01-r16,p009-t01-r04,token,049|V038|9|vrefo|-0.3||2.35|v|
+V038,G051,VTRIG,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VTRIG (2)` ≠ `VTRIG`，目标页的块认不出，旧口径退而命中了别的页上的同名块,9,p008-t01-r17,p009-t01-r05,token,050|V038|9|vtrig|-0.3||2.35|v|
+V038,G052,VA11,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VA11 (2)` ≠ `VA11`，目标页的块认不出，旧口径退而命中了别的页上的同名块,9,p008-t01-r12,p009-t01-r06,token,051|V038|9|va11|-0.3||1.32|v|
+V097,G011,,漏提,完全一致,Gold 该行 symbol 为空，旧口径没有「按值 + 单位」回退,8,—,p008-t01-r07,value,010|V097|8||135|220||v/us|
+V097,G012,,漏提,完全一致,Gold 该行 symbol 为空，旧口径没有「按值 + 单位」回退,8,—,p008-t01-r10,value,011|V097|8|||46|73|ns|
+V111,G022,VDD,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VDD (2)` ≠ `VDD`，目标页的块认不出，旧口径退而命中了别的页上的同名块,6,p005-t01-r02,p006-t01-r02,text,021|V111|6|vdd|-0.3||2.5|v|
+V111,G023,Tstg,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,6,p006-t01-r07,p006-t01-r07,text,022|V111|6|tstg|-65||150|oc|
+V111,G024,VOS,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,7,p007-t01-r08,p007-t01-r08,text,023|V111|7|vos|1.09|1.22|1.36|v|
+V145,G019,PDISS,漏提,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,12,—,p012-t01-r04,text,018|V145|12|pdiss||0.86|1.1|w|
+V145,G020,,漏提,完全一致,Gold 该行 symbol 为空，旧口径没有「按值 + 单位」回退,12,—,p012-t01-r05,value,019|V145|12||||40|na|
+V145,G021,Tsett,漏提,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,12,—,p012-t01-r11,text,020|V145|12|tsett||15||us|
+V146,G079,VOH,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,4,p004-t01-r03,p004-t01-r03,text,078|V146|4|voh|2|||v|
+V146,G080,VOH,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,4,p004-t01-r03,p004-t01-r03,text,079|V146|4|voh|2.4|3.3||v|
+V173,G041,VCC,数值错,完全一致,负号与数字在文本层被空格分开（`– 0.5` 读成 `+0.5`），旧口径把符号位丢了,4,p004-t03-r06,p004-t01-r02,text,040|V173|4|vcc|-0.5||7|v|
+V173,G042,Tstg,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,4,p004-t01-r04,p004-t01-r04,text,041|V173|4|tstg|-65||150|oc|
+V173,G043,IO,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,4,p004-t01-r04,p004-t01-r04,text,042|V173|4|io|||±25|ma|vo = 0 to vcc
+V242,G063,APWR to AGND,漏提,完全一致,Gold 的符号是关系式短语（`APWR to AGND`），只认整格 token 时无法命中，需按字符序列定位,6,—,p006-t01-r02,text,062|V242|6|apwrtoagnd|-0.3||20|v|
+V242,G064,DPWR to DGND,漏提,完全一致,Gold 的符号是关系式短语（`DPWR to DGND`），只认整格 token 时无法命中，需按字符序列定位,6,—,p006-t01-r03,text,063|V242|6|dpwrtodgnd|-0.3||20|v|
+V242,G065,"AGND, AGNDy to DGND",漏提,完全一致,"Gold 的符号是关系式短语（`AGND, AGNDy to DGND`），只认整格 token 时无法命中，需按字符序列定位",6,—,p006-t01-r04,text,"064|V242|6|agnd,agndytodgnd|-0.3||0.3|v|"
+V242,G066,AVDD to AGND,漏提,完全一致,Gold 的符号是关系式短语（`AVDD to AGND`），只认整格 token 时无法命中，需按字符序列定位,6,—,p006-t01-r05,text,065|V242|6|avddtoagnd|-0.3||4|v|
+V242,G067,IOVDD to DGND,漏提,完全一致,Gold 的符号是关系式短语（`IOVDD to DGND`），只认整格 token 时无法命中，需按字符序列定位,6,—,p006-t01-r06,text,066|V242|6|iovddtodgnd|-0.3||7|v|
+V244,G097,RTC_CVDD,symbol 错配,完全一致,符号正则不允许下划线：`RTC_CVDD` 整类电源轨名被判「不像符号」，该行被吞进上一块,44,p044-t01-r05,p044-t01-r06,token,096|V244|44|rtccvdd|0.9|1.2|1.32|v|
+V271,G083,vdd_mpu_iva,漏提,完全一致,符号正则不允许下划线：`vdd_mpu_iva` 整类电源轨名被判「不像符号」，该行被吞进上一块,117,—,p117-t01-r02,token,082|V271|117|vddmpuiva|-0.5||1.5|v|
+V271,G084,vdd_core,漏提,完全一致,符号正则不允许下划线：`vdd_core` 整类电源轨名被判「不像符号」，该行被吞进上一块,117,—,p117-t01-r03,token,083|V271|117|vddcore|-0.5||1.5|v|
+V271,G085,vdds_sram,漏提,完全一致,符号正则不允许下划线：`vdds_sram` 整类电源轨名被判「不像符号」，该行被吞进上一块,117,—,p117-t01-r07,token,084|V271|117|vddssram|-0.5||2.1|v|
+V271,G086,vdda_dac,漏提,完全一致,符号正则不允许下划线：`vdda_dac` 整类电源轨名被判「不像符号」，该行被吞进上一块,117,—,p117-t01-r08,token,085|V271|117|vddadac|-0.5||2.1|v|
+V271,G087,vdds,数值错,完全一致,负号与数字在文本层被空格分开（`– 0.5` 读成 `+0.5`），旧口径把符号位丢了,117,p117-t01-r09,p117-t01-r09,token,086|V271|117|vdds|-0.5||2.1|v|
+V304,G029,VCC,evidence page 错,完全一致,符号结尾脚注标记未剥离：`VCC (2)` ≠ `VCC`，目标页的块认不出，旧口径退而命中了别的页上的同名块,4,p003-t01-r10,p004-t01-r02,text,028|V304|4|vcc|-0.5||7|v|
+V304,G030,TJ,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,4,p004-t01-r02,p004-t01-r02,text,029|V304|4|tj|||150|oc|
+V304,G031,IIK,symbol 错配,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,4,p004-t01-r02,p004-t01-r02,text,030|V304|4|iik|||-50|ma|vin < 0
+V319,G025,VDD,漏提,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,5,—,p005-t02-r02,text,024|V319|5|vdd|2||8|v|
+V320,G055,"DACVDD, DIGVDD, CLKVDD",symbol 错配,完全一致,"Gold 的符号是关系式短语（`DACVDD, DIGVDD, CLKVDD`），只认整格 token 时无法命中，需按字符序列定位",12,p012-t01-r03,p012-t01-r02,text,"054|V320|12|dacvdd,digvdd,clkvdd|-0.5||1.5|v|over operating free-air temperature range (unless otherwise noted)"
+V320,G056,"AVDD, PLLAVDD",symbol 错配,完全一致,"Gold 的符号是关系式短语（`AVDD, PLLAVDD`），只认整格 token 时无法命中，需按字符序列定位",12,p012-t01-r04,p012-t01-r04,text,"055|V320|12|avdd,pllavdd|-0.5||4|v|over operating free-air temperature range (unless otherwise noted)"
+V349,G017,Tstg,漏提,完全一致,符号与参数名同格或下标断字（如 `T sett`），整格 token 匹配落空，文本级定位命中,5,—,p005-t01-r07,text,016|V349|5|tstg|-65||150|oc|

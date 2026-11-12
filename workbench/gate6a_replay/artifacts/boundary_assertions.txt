@@ -1,0 +1,38 @@
+
+=== 边界 1：环境与版本 ===
+PASS  commit SHA 完整  [a11131a]
+PASS  Python 3.13.x  [3.13.15]
+PASS  解析链路未改动  [31240f6db08f]
+PASS  parser 包文件数 27
+PASS  parser.yaml 磁盘哈希 == 快照哈希
+
+=== 边界 2：输入白名单 ===
+PASS  样本数 24  [24]
+PASS  全部 SHA-256 与台账一致
+PASS  Gold 行数 105  [105]
+PASS  逐件重算哈希 == 台账哈希  [24/24]
+
+=== 边界 3：LLM 硬禁用 ===
+PASS  每个成功样本都有 llm 记录  [23/23]
+PASS  blocked_events 全为 0  [取值集合 [0]，合计 0]
+PASS  拦截事件明细为空（无任何出站尝试）
+PASS  装闸自测：主动出站被 RuntimeError 拦下
+
+=== 边界 4：输出隔离 ===
+PASS  输出根目录名正确
+PASS  runs/ 下其他目录未在本次运行中被改写（已登记后续授权目录）  [无溢出]
+       已知后续产物目录：gate6a_replay_v2_postfix,gate6a_v256_probe
+PASS  Gold 台账目录 _gate6a_prep/ 未被写入  [0 个文件]
+PASS  未改写 Batch3_B4_FINAL.xlsx
+PASS  未改写 Batch3_B4_FINAL.csv
+PASS  未改写 Gold_Set_v1.1_WORKING.csv
+PASS  PM 签字件 xlsx 哈希未变
+PASS  B4 派生 CSV 哈希未变
+
+=== 指标自洽 ===
+PASS  归因各类之和 == Gold 行数  [105 == 105]
+PASS  命中行 >= 完全一致行
+PASS  eval_detail 行数 105  [105]
+PASS  eval_detail 命中数与 metrics 一致
+
+全部断言通过

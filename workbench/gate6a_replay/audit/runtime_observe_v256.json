@@ -1,0 +1,26 @@
+{
+  "sample": "V256",
+  "env_scrubbed": [
+    "GEMINI_API_KEY=***"
+  ],
+  "events_total": 1,
+  "outbound_events": [],
+  "local_events": [
+    "socket.gethostname"
+  ],
+  "events_all": [
+    "socket.gethostname"
+  ],
+  "suspect_modules_loaded": [
+    "socket",
+    "urllib"
+  ],
+  "urllib_submodules": [
+    "urllib",
+    "urllib.parse"
+  ],
+  "modules_loaded_during_parse": [
+    "urllib"
+  ],
+  "page_count": 216
+}

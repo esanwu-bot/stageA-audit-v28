@@ -1,0 +1,51 @@
+﻿sample_no,symbol,gold_page,gold_value,match_mode,block_rows,coarse,primary,matched_block_id,verdict,evidence_note,matched_text
+V097,,8,135/220/ V/µs,value,1,False,完全一致,p008-t01-r07,确认成立,Gold 该行 symbol 为空，只能按值 + 单位定位,"Slew rate G = +2, 1V step, 20% to 80% 135 220 V/μs"
+V097,,8,/46/73 ns,value,1,False,完全一致,p008-t01-r10,确认成立,Gold 该行 symbol 为空，只能按值 + 单位定位,"Settling time to 0.1% G = +2, 1V step 46 73 ns"
+V111,VDD,6,-0.3//2.5 V,text,5,True,完全一致,p006-t01-r02,确认成立,块内含 'Supply Voltage (V DD ) −0.3 2.5 V'；块 5 行，其余为相邻参数行,Supply Voltage (V DD ) −0.3 2.5 V LVCMOS Input Voltage −0.3 VDD + 0.3 V LVDS Driver Output Voltage −0.3 3.6 V LVDS Outpu
+V111,Tstg,6,-65//150 °C,text,1,False,完全一致,p006-t01-r07,确认成立,单行 'Storage Temperature (T stg ) −65 150 °C',Storage Temperature (T stg ) −65 150 °C
+V111,VOS,7,1.09/1.22/1.36 V,text,8,True,完全一致,p007-t01-r08,确认成立,8 行块，但块内确有 'V OS Offset Voltage ... 1.09 1.22 1.36 V',"OD L
+VODSEL = V GND 110
+(220) 220
+(440) 400
+(800) mV
+(mV P-P ) ΔV Change in V OD  between
+OD Complimentary Output States"
+V145,PDISS,12,/0.86/1.1 W,text,1,False,完全一致,p012-t01-r04,确认成立,符号与参数名同格：'PDISS Power Dissipation (PVDD+AVDD) ... 0.86 1.1 W',"PDISS Power Dissipation (PVDD+AVDD) All Buck-Boost converter positive
+output enabled, IOUT_x mode
+operation, All IOUT ch"
+V145,,12,//40 nA,value,1,False,完全一致,p012-t01-r05,确认成立,Gold 该行 symbol 为空，只能按值 + 单位定位,"IVSENSE
+Current Flowing into VSENSEP
+P VOUT disabled 40 nA"
+V145,Tsett,12,/15/ µs,text,1,False,完全一致,p012-t01-r11,确认成立,PDF 文本层抽成 'T sett'，允许符号内空格后定位到,"T sett Output Voltage Settling Time -5 to 5 V, to ±0.03% FSR RL = 1K||CL
+= 200 pF 15 µs"
+V146,VOH,4,2// V,text,2,False,完全一致,p004-t01-r03,确认成立,2 行块，含 2 / 2.4 / 3.3 两组 IOH 条件,VOH VOH VCC VCC = 4.75 4 75 IOH = –32 mA 2 V V IOH = –15 mA 2.4 3.3
+V146,VOH,4,2.4/3.3/ V,text,2,False,完全一致,p004-t01-r03,确认成立,2 行块，含 2 / 2.4 / 3.3 两组 IOH 条件,VOH VOH VCC VCC = 4.75 4 75 IOH = –32 mA 2 V V IOH = –15 mA 2.4 3.3
+V162,VI,25,-0.5//7 V,text,8,True,evidence page 错,p027-t01-r09,不计入,该行主归因为「evidence page 错」,VCC = 2.7 V VCC 2 7 V IOL = 100  µ A 0.2 0.2 V V IOL = 24 mA 0.5 0.5 VOL VOL IOL = 16 mA 0.4 0.4 VCC VCC = 3 V 3 V IOL =
+V162,IO,25,//128 mA,text,3,False,evidence page 错,p027-t01-r31,不计入,该行主归因为「evidence page 错」,"ICC IO = 0, Outputs low 19.5 27 19.5 27 VI = VCC or GND Outputs disabled 0.6 2 0.6 2 ∆ ICC # VCC = 3 V to 3.6 V, One inp"
+V173,VCC,4,-0.5//7 V,text,1,False,完全一致,p004-t01-r02,确认成立,单行 'V CC Supply voltage range –0.5 7 V'；负号分离修正后数值才对上,V CC Supply voltage range –0.5 7 V
+V173,Tstg,4,-65//150 °C,text,6,True,完全一致,p004-t01-r04,软命中-确认成立,6 行块，块内含 'T stg Storage temperature range –65 150 °C',V O (2) Output voltage range –0.5 V CC  + 0.5 V I IK Input clamp current V I  < 0 –20 mA I OK Output clamp current V O  
+V173,IO,4,//±25 mA,text,6,True,完全一致,p004-t01-r04,软命中-确认成立,同上 6 行块，块内含 'I O Continuous output current ... ±25 mA',V O (2) Output voltage range –0.5 V CC  + 0.5 V I IK Input clamp current V I  < 0 –20 mA I OK Output clamp current V O  
+V242,APWR to AGND,6,-0.3//20 V,text,1,False,完全一致,p006-t01-r02,确认成立,符号以字符序列命中（非整格 token）,APWR to AGND –0.3 20 V
+V242,DPWR to DGND,6,-0.3//20 V,text,1,False,完全一致,p006-t01-r03,确认成立,符号以字符序列命中（非整格 token）,DPWR to DGND –0.3 20
+V242,"AGND, AGNDy to DGND",6,-0.3//0.3 V,text,1,False,完全一致,p006-t01-r04,确认成立,符号以字符序列命中（非整格 token）,"AGND, AGNDy to DGND –0.3 0.3"
+V242,AVDD to AGND,6,-0.3//4 V,text,1,False,完全一致,p006-t01-r05,确认成立,符号以字符序列命中（非整格 token）,Power-supply voltage AVDD to AGND –0.3 4
+V242,IOVDD to DGND,6,-0.3//7 V,text,1,False,完全一致,p006-t01-r06,确认成立,符号以字符序列命中（非整格 token）,IOVDD to DGND –0.3 7
+V290,VIL,3,//0.5 V,text,1,False,完全一致,p003-t01-r08,确认成立,2 行块 'V IL Input Voltage LOW 0°C to +70°C 0.8 V ...',"V OL Output Voltage LOW V CC  = Min, V IH  = V IH Min ,
+V IL  = V IL Max , I OL  = 40 mA 0.5 V"
+V304,VCC,4,-0.5//7 V,text,8,True,完全一致,p004-t01-r02,软命中-确认成立,8 行合并块，值在块内但非逐行对上,V CC Supply voltage (2) –0.5 7 V V IN Control input voltage (2)(3) –0.5 7 V V I/O Switch I/O voltage (2)(3)(4) –0.5 7 V 
+V304,TJ,4,//150 °C,text,8,True,完全一致,p004-t01-r02,软命中-确认成立,8 行合并块，值在块内但非逐行对上,V CC Supply voltage (2) –0.5 7 V V IN Control input voltage (2)(3) –0.5 7 V V I/O Switch I/O voltage (2)(3)(4) –0.5 7 V 
+V304,IIK,4,//-50 mA,text,8,True,完全一致,p004-t01-r02,软命中-确认成立,8 行合并块，值在块内但非逐行对上,V CC Supply voltage (2) –0.5 7 V V IN Control input voltage (2)(3) –0.5 7 V V I/O Switch I/O voltage (2)(3)(4) –0.5 7 V 
+V319,VDD,5,2//8 V,text,1,False,完全一致,p005-t02-r02,确认成立,"单行 'Supply voltage, VDD 2 8 V'","Supply voltage, VDD 2 8 V"
+V319,TA,5,-40//85 °C,text,3,False,单位错,p005-t02-r03,不计入,该行主归因为「单位错」,"Common Common-mode input voltage, VIC mode input voltage VIC VDD = 3 V 0 1.75 V V VDD = 5 V 0 3.75 TLV2354I
+Operating fr"
+V319,TA,5,-55//125 °C,text,1,False,数值错,p005-t01-r01,不计入,该行主归因为「数值错」,"PACKAGE TA  ≤  25 ° C
+POWER RATING DERATING
+FACTOR TA = 85 ° C
+POWER RATING TA = 125 ° C
+POWER RATING"
+V320,"DACVDD, DIGVDD, CLKVDD",12,-0.5//1.5 V,text,1,False,完全一致,p012-t01-r02,确认成立,"单行 'DACVDD, DIGVDD, CLKVDD –0.5 1.5 V'","DACVDD, DIGVDD, CLKVDD –0.5 1.5 V"
+V320,"AVDD, PLLAVDD",12,-0.5//4 V,text,4,False,完全一致,p012-t01-r04,软命中-确认成立,"4 行块，块内含 'AVDD, PLLAVDD –0.5 4 V'","Supply voltage IOVDD –0.5 4 V AVDD, PLLAVDD –0.5 4 V D[15..0]P/N, DATACLKP/N, FRAMEP/N, PARITYP/N, SYNCP/N –0.5 IOVDD + "
+V320,V(ESD),12,//±2000 V,text,1,False,数值错,p012-t02-r03,不计入,该行主归因为「数值错」,"V (ESD) Electrostatic discharge Charged-device model (CDM), per JEDEC specification JESD22-
+C101 (2) ±500"
+V345,,4,-10//10 mA,value,2,False,完全一致,p004-t01-r06,确认成立,Gold 该行 symbol 为空，只能按值 + 单位定位,"V REF External reference, V REF  to AGND –0.3 V DD  + 0.3 V Current into any pin except the OUTx, VDD, and AGND pins –10"
+V349,Tstg,5,-65//150 °C,text,1,False,完全一致,p005-t01-r07,确认成立,"单行 'Storage temperature, T stg –65 150 °C'","Storage temperature, T stg –65 150 °C"

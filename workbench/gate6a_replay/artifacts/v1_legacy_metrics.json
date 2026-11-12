@@ -1,0 +1,833 @@
+{
+  "gold_rows": 105,
+  "samples": 24,
+  "hit_rows": 80,
+  "exact_rows": 50,
+  "recall": 0.7619,
+  "miss_rate": 0.2381,
+  "exact_rate": 0.4762,
+  "match_mode": {
+    "none": 39,
+    "token": 65,
+    "value": 1
+  },
+  "coarse_hits": 5,
+  "attribution": {
+    "symbol 错配": 14,
+    "完全一致": 50,
+    "数值错": 6,
+    "evidence page 错": 10,
+    "漏提": 20,
+    "解析失败": 5
+  },
+  "candidates": {
+    "blocks_total": 15735,
+    "blocks_on_gold_pages": 244,
+    "extra_on_gold_pages": 196,
+    "dup_conflict": 2,
+    "candidate_per_gold_row": 2.32
+  },
+  "field_level": {
+    "num_ok": 64,
+    "unit_ok": 77,
+    "unit_ok_strict": 68,
+    "page_ok": 70,
+    "cond_ok": 65
+  },
+  "per_sample": {
+    "V003": {
+      "pages": 215,
+      "tables": 364,
+      "blocks": 3081,
+      "gold_pages": 3,
+      "page_blocks": 43,
+      "extra_candidates": 39,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 1,
+      "extra_examples": [
+        {
+          "block_id": "p101-t01-r05",
+          "page": 101,
+          "text": "VDD_DLL_MMC0 MMC0 PLL analog supply -0.3 1.05 V"
+        },
+        {
+          "block_id": "p101-t01-r06",
+          "page": 101,
+          "text": "VDDA_0P85_SERDES0 SERDES0 0.85V analog supply -0.3 1.05 V VDDA_0P85_SE"
+        },
+        {
+          "block_id": "p101-t01-r08",
+          "page": 101,
+          "text": "VDDA_0P85_USB0 USB0 0.85V analog supply -0.3 1.05 V VDDS_DDR DDR PHY I"
+        },
+        {
+          "block_id": "p101-t01-r11",
+          "page": 101,
+          "text": "VDDS_MMC0 MMC0 PHY IO supply -0.3 1.98 V VDDS_OSC MCU_OSC0 supply -0.3"
+        },
+        {
+          "block_id": "p101-t01-r14",
+          "page": 101,
+          "text": "VDDA_ADC0 ADC0 analog supply -0.3 1.98 V VDDA_PLL0 MAIN_PLL0, MAIN_PLL"
+        }
+      ]
+    },
+    "V011": {
+      "pages": 16,
+      "tables": 20,
+      "blocks": 160,
+      "gold_pages": 1,
+      "page_blocks": 7,
+      "extra_candidates": 5,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 5,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r01",
+          "page": 3,
+          "text": "TEST\nCONDITIONS V CC 25 o C -40 o C TO 85 o C -55 o C TO 125 o C UNITS"
+        },
+        {
+          "block_id": "p003-t01-r10",
+          "page": 3,
+          "text": "High Level Output V OH V IH  or V IL -0.02 2 1.9 - - 1.9 - 1.9 - V Vol"
+        },
+        {
+          "block_id": "p003-t01-r16",
+          "page": 3,
+          "text": "Low Level Output V OL V IH  or V IL 0.02 2 - - 0.1 - 0.1 - 0.1 V Volta"
+        },
+        {
+          "block_id": "p003-t01-r22",
+          "page": 3,
+          "text": "Input Leakage\nCurrent I I V CC  or\nGND - 6 - - ± 0.1 - ± 1 - ± 1 µ A"
+        },
+        {
+          "block_id": "p003-t01-r23",
+          "page": 3,
+          "text": "Quiescent Device\nCurrent I CC V CC  or\nGND 0 6 - - 8 - 80 - 160 µ A"
+        }
+      ]
+    },
+    "V038": {
+      "pages": 87,
+      "tables": 199,
+      "blocks": 974,
+      "gold_pages": 1,
+      "page_blocks": 7,
+      "extra_candidates": 7,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p009-t01-r02",
+          "page": 9,
+          "text": "VA19 (2) –0.3 2.35 V"
+        },
+        {
+          "block_id": "p009-t01-r03",
+          "page": 9,
+          "text": "VPLL19 (3) –0.3 2.35"
+        },
+        {
+          "block_id": "p009-t01-r04",
+          "page": 9,
+          "text": "VREFO (2) –0.3 2.35"
+        },
+        {
+          "block_id": "p009-t01-r05",
+          "page": 9,
+          "text": "Supply voltage range VTRIG (5) –0.3 2.35"
+        },
+        {
+          "block_id": "p009-t01-r06",
+          "page": 9,
+          "text": "VA11 (2) –0.3 1.32 (11)"
+        }
+      ]
+    },
+    "V077": {
+      "pages": 126,
+      "tables": 215,
+      "blocks": 1568,
+      "gold_pages": 1,
+      "page_blocks": 11,
+      "extra_candidates": 8,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 3,
+      "extra_examples": [
+        {
+          "block_id": "p038-t01-r08",
+          "page": 38,
+          "text": "VSS Supply ground\n(VSS, PLL0_VSSA, OSCVSS (1) , RTC_VSS (1) ) 0 0 0 V "
+        },
+        {
+          "block_id": "p038-t01-r15",
+          "page": 38,
+          "text": "V HYS Input Hysteresis 160 mV"
+        },
+        {
+          "block_id": "p038-t01-r16",
+          "page": 38,
+          "text": "USB USB0_VBUS 4.75 5 5.25 V"
+        },
+        {
+          "block_id": "p038-t01-r17",
+          "page": 38,
+          "text": "t t Transition time, 10%-90%, All Inputs (unless otherwise specified i"
+        },
+        {
+          "block_id": "p038-t01-r18",
+          "page": 38,
+          "text": "Commercial (default) 0 375 (1.2V)\n456 (1.3V) MHz"
+        }
+      ]
+    },
+    "V097": {
+      "pages": 15,
+      "tables": 22,
+      "blocks": 56,
+      "gold_pages": 2,
+      "page_blocks": 8,
+      "extra_candidates": 7,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 1,
+      "exact": 1,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r02",
+          "page": 3,
+          "text": "V S–  to V S+ Power supply ±6.5 V DC Internal power dissipation See  T"
+        },
+        {
+          "block_id": "p003-t01-r05",
+          "page": 3,
+          "text": "V I Input voltage (V S– ) – 0.5V (V S+ ) + 0.3V V"
+        },
+        {
+          "block_id": "p003-t01-r06",
+          "page": 3,
+          "text": "T J Junction temperature 150 °C"
+        },
+        {
+          "block_id": "p003-t01-r07",
+          "page": 3,
+          "text": "T stg Storage temperature –65 125 °C"
+        },
+        {
+          "block_id": "p003-t04-r01",
+          "page": 3,
+          "text": "OPA2830 UNIT"
+        }
+      ]
+    },
+    "V101": {
+      "pages": 10,
+      "tables": 14,
+      "blocks": 90,
+      "gold_pages": 1,
+      "page_blocks": 6,
+      "extra_candidates": 3,
+      "dup_conflict": 0,
+      "gold_rows": 9,
+      "hit": 9,
+      "exact": 9,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r01",
+          "page": 3,
+          "text": "TEST\nCONDITIONS V CC 25 o C -40 o C TO 85 o C -55 o C TO 125 o C UNITS"
+        },
+        {
+          "block_id": "p003-t01-r16",
+          "page": 3,
+          "text": "Low Level Output V OL V IH  or V IL 0.02 2 - - 0.1 - 0.1 - 0.1 V Volta"
+        },
+        {
+          "block_id": "p003-t01-r22",
+          "page": 3,
+          "text": "Input Leakage\nCurrent I I V CC  or\nGND - 6 - - ± 0.1 - ± 1 - ± 1 µ A"
+        }
+      ]
+    },
+    "V111": {
+      "pages": 23,
+      "tables": 33,
+      "blocks": 152,
+      "gold_pages": 2,
+      "page_blocks": 13,
+      "extra_candidates": 11,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 3,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p006-t01-r02",
+          "page": 6,
+          "text": "Supply Voltage (V DD ) −0.3 2.5 V LVCMOS Input Voltage −0.3 VDD + 0.3 "
+        },
+        {
+          "block_id": "p006-t03-r05",
+          "page": 6,
+          "text": "Supply Noise Voltage <90 mV p-p"
+        },
+        {
+          "block_id": "p006-t04-r01",
+          "page": 6,
+          "text": "DS90C189-Q1 UNIT"
+        },
+        {
+          "block_id": "p006-t04-r02",
+          "page": 6,
+          "text": "THERMAL METRIC (1) RTD (VQFN) 64 PINS R θJA Junction-to-ambient therma"
+        },
+        {
+          "block_id": "p007-t01-r03",
+          "page": 7,
+          "text": "V IH High Level Input Voltage 0.66V DD V DD V"
+        }
+      ]
+    },
+    "V145": {
+      "pages": 34,
+      "tables": 92,
+      "blocks": 283,
+      "gold_pages": 1,
+      "page_blocks": 6,
+      "extra_candidates": 6,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 0,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p012-t01-r13",
+          "page": 12,
+          "text": "Output Voltage Ripple Buck-Boost converter enabled, 50\nKHz, 20dB/decad"
+        },
+        {
+          "block_id": "p012-t01-r15",
+          "page": 12,
+          "text": "Power-On Glitch Magnitude (2) 0.1 V"
+        },
+        {
+          "block_id": "p012-t01-r16",
+          "page": 12,
+          "text": "Power-off Glitch Magnitude (4) 0.8 V Channel to Channel DC Crosstalk F"
+        },
+        {
+          "block_id": "p012-t01-r20",
+          "page": 12,
+          "text": "Output Noise (0.1 Hz to 10 Hz\nbandwidth) UP10V, Mid scale 0.1 LSB p-p"
+        },
+        {
+          "block_id": "p012-t01-r21",
+          "page": 12,
+          "text": "Output Noise (100 kHz bandwidth) UP10V, Mid scale 200 µVrms Output Noi"
+        }
+      ]
+    },
+    "V146": {
+      "pages": 10,
+      "tables": 14,
+      "blocks": 55,
+      "gold_pages": 1,
+      "page_blocks": 12,
+      "extra_candidates": 8,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 3,
+      "extra_examples": [
+        {
+          "block_id": "p004-t01-r06",
+          "page": 4,
+          "text": "VH All inputs 0.2 V"
+        },
+        {
+          "block_id": "p004-t01-r08",
+          "page": 4,
+          "text": "IIH VCC = 5.25 V, VIN = 2.7 V ± 1 µ A"
+        },
+        {
+          "block_id": "p004-t01-r09",
+          "page": 4,
+          "text": "IIL VCC = 5.25 V, VIN = 0.5 V ± 1 µ A IOS ‡ VCC = 5.25 V, VOUT = 0 V –"
+        },
+        {
+          "block_id": "p004-t01-r11",
+          "page": 4,
+          "text": "Ioff VCC = 0 V, VOUT = 4.5 V ± 1 µ A"
+        },
+        {
+          "block_id": "p004-t01-r12",
+          "page": 4,
+          "text": "ICC VCC = 5.25 V, VIN  ≤  0.2 V, VIN  ≥ VCC – 0.2 V 0.1 0.2 mA ∆ ICC V"
+        }
+      ]
+    },
+    "V162": {
+      "pages": 23,
+      "tables": 31,
+      "blocks": 201,
+      "gold_pages": 1,
+      "page_blocks": 0,
+      "extra_candidates": 0,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 1,
+      "exact": 0,
+      "extra_examples": []
+    },
+    "V173": {
+      "pages": 9,
+      "tables": 18,
+      "blocks": 62,
+      "gold_pages": 1,
+      "page_blocks": 4,
+      "extra_candidates": 2,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 3,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p004-t01-r03",
+          "page": 4,
+          "text": "V I (2) Input voltage range –0.5 7 V"
+        },
+        {
+          "block_id": "p004-t03-r09",
+          "page": 4,
+          "text": "Δt/Δv Input Transition rise or fall rate 20 ns/V T A Operating free-ai"
+        }
+      ]
+    },
+    "V199": {
+      "pages": 7,
+      "tables": 11,
+      "blocks": 44,
+      "gold_pages": 1,
+      "page_blocks": 14,
+      "extra_candidates": 10,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 4,
+      "extra_examples": [
+        {
+          "block_id": "p001-t01-r03",
+          "page": 1,
+          "text": "Q g Gate Charge Total (4.5V) 7.7 nC"
+        },
+        {
+          "block_id": "p001-t01-r04",
+          "page": 1,
+          "text": "Q gd Gate Charge Gate-to-Drain 2.4 nC R Drain-to-Source On-Resistance "
+        },
+        {
+          "block_id": "p001-t01-r06",
+          "page": 1,
+          "text": "DS(on) V GS  = 10V 5.3 mΩ"
+        },
+        {
+          "block_id": "p001-t01-r07",
+          "page": 1,
+          "text": "V GS(th) Threshold Voltage 1.9 V"
+        },
+        {
+          "block_id": "p001-t02-r02",
+          "page": 1,
+          "text": "CSD18504Q5A 2500 13-Inch Reel SON 5mm × 6mm Tape and \nReel"
+        }
+      ]
+    },
+    "V242": {
+      "pages": 192,
+      "tables": 356,
+      "blocks": 1214,
+      "gold_pages": 1,
+      "page_blocks": 2,
+      "extra_candidates": 2,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 0,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p006-t01-r11",
+          "page": 6,
+          "text": "Digital input voltage GPIO0A, GPIO1A AGNDA – 0.3 AVDD + 0.3"
+        },
+        {
+          "block_id": "p006-t01-r12",
+          "page": 6,
+          "text": "GPIO0B, GPIO1B AGNDB – 0.3 AVDD + 0.3 Input current Continuous, all pi"
+        }
+      ]
+    },
+    "V244": {
+      "pages": 129,
+      "tables": 189,
+      "blocks": 1698,
+      "gold_pages": 1,
+      "page_blocks": 20,
+      "extra_candidates": 18,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 4,
+      "extra_examples": [
+        {
+          "block_id": "p044-t01-r07",
+          "page": 44,
+          "text": "PLL0_VDDA PLL0 Supply Voltage 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p044-t01-r08",
+          "page": 44,
+          "text": "PLL1_VDDA PLL1 Supply Voltage 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p044-t01-r09",
+          "page": 44,
+          "text": "USB_CVDD USB0 Core Logic Supply Voltage 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p044-t01-r10",
+          "page": 44,
+          "text": "USB0_VDDA18 USB0 PHY Supply Voltage 1.71 1.8 1.89 V"
+        },
+        {
+          "block_id": "p044-t01-r11",
+          "page": 44,
+          "text": "USB0_VDDA33 USB0 PHY Supply Voltage 3.15 3.3 3.45 V"
+        }
+      ]
+    },
+    "V256": {
+      "error": "parser_crash",
+      "gold_rows": 5,
+      "hit": 0,
+      "exact": 0,
+      "blocks": 0,
+      "tables": 0,
+      "pages": 0,
+      "gold_pages": 0,
+      "page_blocks": 0,
+      "extra_candidates": 0,
+      "dup_conflict": 0,
+      "extra_examples": []
+    },
+    "V271": {
+      "pages": 222,
+      "tables": 359,
+      "blocks": 4346,
+      "gold_pages": 1,
+      "page_blocks": 7,
+      "extra_candidates": 6,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 1,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p117-t01-r13",
+          "page": 117,
+          "text": "JTAG (9) 200 V"
+        },
+        {
+          "block_id": "p117-t01-r14",
+          "page": 117,
+          "text": "V ESD ESD stress HBM (Human CAM (6)\nvoltage (1) Body Model) (2) 400"
+        },
+        {
+          "block_id": "p117-t01-r15",
+          "page": 117,
+          "text": "GPMC (8) 500 Other signals 1000"
+        },
+        {
+          "block_id": "p117-t01-r17",
+          "page": 117,
+          "text": "CDM (Charged Device Model) (3) 250"
+        },
+        {
+          "block_id": "p117-t01-r18",
+          "page": 117,
+          "text": "I IOI Current-pulse injection on each IO pin (5) 200 mA I clamp Clamp "
+        }
+      ]
+    },
+    "V290": {
+      "pages": 4,
+      "tables": 6,
+      "blocks": 27,
+      "gold_pages": 1,
+      "page_blocks": 16,
+      "extra_candidates": 14,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 3,
+      "exact": 3,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r05",
+          "page": 3,
+          "text": "V IC Input Clamp Voltage V CC  = Min, I I  =  − 18 mA − 1.0 − 1.2 V"
+        },
+        {
+          "block_id": "p003-t01-r06",
+          "page": 3,
+          "text": "V OH Output Voltage HIGH V CC  = Min, I OH  =  − 10 mA 2.5 3.5 V V V I"
+        },
+        {
+          "block_id": "p003-t01-r08",
+          "page": 3,
+          "text": "V OL Output Voltage LOW V CC  = Min, V IH  = V IH Min ,\nV IL  = V IL M"
+        },
+        {
+          "block_id": "p003-t01-r09",
+          "page": 3,
+          "text": "I I Input Current at Maximum Input\nVoltage V CC  = Max, V I Max  = 5.5"
+        },
+        {
+          "block_id": "p003-t01-r10",
+          "page": 3,
+          "text": "I IH Input Current HIGH V CC  = Max, V IH  = 2.7V 25 μ A"
+        }
+      ]
+    },
+    "V304": {
+      "pages": 13,
+      "tables": 18,
+      "blocks": 63,
+      "gold_pages": 1,
+      "page_blocks": 1,
+      "extra_candidates": 0,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 3,
+      "exact": 0,
+      "extra_examples": []
+    },
+    "V319": {
+      "pages": 8,
+      "tables": 12,
+      "blocks": 42,
+      "gold_pages": 1,
+      "page_blocks": 2,
+      "extra_candidates": 2,
+      "dup_conflict": 0,
+      "gold_rows": 4,
+      "hit": 2,
+      "exact": 0,
+      "extra_examples": [
+        {
+          "block_id": "p005-t02-r03",
+          "page": 5,
+          "text": "Common Common-mode input voltage, VIC mode input voltage VIC VDD = 3 V"
+        },
+        {
+          "block_id": "p005-t02-r06",
+          "page": 5,
+          "text": "TLV2354M –55 125"
+        }
+      ]
+    },
+    "V320": {
+      "pages": 54,
+      "tables": 101,
+      "blocks": 419,
+      "gold_pages": 1,
+      "page_blocks": 5,
+      "extra_candidates": 3,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 4,
+      "exact": 2,
+      "extra_examples": [
+        {
+          "block_id": "p012-t01-r08",
+          "page": 12,
+          "text": "Pin voltage (2) ALARM, SDO, SDIO, SCLK, SDENB, SLEEP, RESETB, TESTMODE"
+        },
+        {
+          "block_id": "p012-t01-r11",
+          "page": 12,
+          "text": "LPF 0.5 PLLAVDD + 0.5V V"
+        },
+        {
+          "block_id": "p012-t01-r12",
+          "page": 12,
+          "text": "Peak input current (any input) 20 mA Peak total input current (all inp"
+        }
+      ]
+    },
+    "V336": {
+      "pages": 5,
+      "tables": 11,
+      "blocks": 45,
+      "gold_pages": 1,
+      "page_blocks": 14,
+      "extra_candidates": 10,
+      "dup_conflict": 0,
+      "gold_rows": 4,
+      "hit": 4,
+      "exact": 4,
+      "extra_examples": [
+        {
+          "block_id": "p005-t01-r09",
+          "page": 5,
+          "text": "V TL Differential-Input Low Threshold\nVoltage V CC  = 4.5V & 5.5V,\nV C"
+        },
+        {
+          "block_id": "p005-t01-r13",
+          "page": 5,
+          "text": "I IH Logical \"1\" Enable Input Current V CC  = 5.5V, V IH  = 2.7V 10 µA"
+        },
+        {
+          "block_id": "p005-t01-r14",
+          "page": 5,
+          "text": "I IL Logical \"0\" Enable Input Current V CC  = 5.5V, V IL  = 0.4V -100 "
+        },
+        {
+          "block_id": "p005-t01-r15",
+          "page": 5,
+          "text": "I Output Short Circuit Current V CC  = 4.5V, V O  = 0V See (3) -85 -15"
+        },
+        {
+          "block_id": "p005-t01-r16",
+          "page": 5,
+          "text": "OS V CC  = 5.5V, V O  = 0V -85 -15 mA 1, 2, 3"
+        }
+      ]
+    },
+    "V345": {
+      "pages": 46,
+      "tables": 77,
+      "blocks": 310,
+      "gold_pages": 1,
+      "page_blocks": 12,
+      "extra_candidates": 8,
+      "dup_conflict": 2,
+      "gold_rows": 4,
+      "hit": 4,
+      "exact": 4,
+      "extra_examples": [
+        {
+          "block_id": "p004-t03-r02",
+          "page": 4,
+          "text": "V DD Positive supply voltage to ground (AGND) 1.7 5.5 V"
+        },
+        {
+          "block_id": "p004-t03-r03",
+          "page": 4,
+          "text": "V REF External reference to ground (AGND) 1.7 V DD V"
+        },
+        {
+          "block_id": "p004-t03-r04",
+          "page": 4,
+          "text": "V IH Digital input high voltage, 1.7 V < V DD  ≤ 5.5 V 1.62 V"
+        },
+        {
+          "block_id": "p004-t03-r05",
+          "page": 4,
+          "text": "V IL Digital input low voltage 0.4 V"
+        },
+        {
+          "block_id": "p004-t03-r06",
+          "page": 4,
+          "text": "C CAP External capacitor on CAP pin 0.5 15 μF"
+        }
+      ]
+    },
+    "V346": {
+      "pages": 72,
+      "tables": 124,
+      "blocks": 451,
+      "gold_pages": 2,
+      "page_blocks": 12,
+      "extra_candidates": 7,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "hit": 5,
+      "exact": 5,
+      "extra_examples": [
+        {
+          "block_id": "p009-t01-r03",
+          "page": 9,
+          "text": "Supply voltage range AVDD 1.8 1.9 2.0"
+        },
+        {
+          "block_id": "p009-t01-r04",
+          "page": 9,
+          "text": "DVDD 1.7 1.9 2.0"
+        },
+        {
+          "block_id": "p009-t01-r05",
+          "page": 9,
+          "text": "IOVDD 1.1 1.15 1.2"
+        },
+        {
+          "block_id": "p009-t01-r06",
+          "page": 9,
+          "text": "Differential input voltage range 1.9 V PP Analog inputs Input common-m"
+        },
+        {
+          "block_id": "p009-t01-r10",
+          "page": 9,
+          "text": "Input clock amplitude differential Sine wave, ac-coupled 0.75 1.5 V PP"
+        }
+      ]
+    },
+    "V349": {
+      "pages": 49,
+      "tables": 78,
+      "blocks": 394,
+      "gold_pages": 2,
+      "page_blocks": 22,
+      "extra_candidates": 20,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "hit": 2,
+      "exact": 2,
+      "extra_examples": [
+        {
+          "block_id": "p005-t03-r02",
+          "page": 5,
+          "text": "Supply AVDD (1) 1.75 1.8 1.85 V"
+        },
+        {
+          "block_id": "p005-t03-r03",
+          "page": 5,
+          "text": "voltage range IOVDD (1) 1.75 1.8 1.85 V"
+        },
+        {
+          "block_id": "p005-t03-r04",
+          "page": 5,
+          "text": "T A Operating free-air temperature –40 105 °C"
+        },
+        {
+          "block_id": "p005-t04-r01",
+          "page": 5,
+          "text": "ADC354x UNIT"
+        },
+        {
+          "block_id": "p005-t04-r02",
+          "page": 5,
+          "text": "THERMAL METRIC (1) RSB (QFN) 40 Pins R ΘJA  Junction-to-ambient therma"
+        }
+      ]
+    }
+  }
+}

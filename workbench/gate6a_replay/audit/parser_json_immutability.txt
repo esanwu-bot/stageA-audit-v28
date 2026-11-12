@@ -1,0 +1,31 @@
+# Parser 产物不可变性证明
+
+生成时间：2026-11-12 16:37:09
+产物目录：runs/gate6a_replay_v1/per_sample/（24 个样本）
+纳入比对的文件：document.json、tables.json、candidates.json、text_blocks.json、boundary_decisions.json、product.json、run_manifest.json、run_config.json
+
+## 实验步骤
+
+1. 快照 A：185 个 JSON 的 sha256
+2. 跑修正前口径：!! 尚未完成回测的样本 1 件：V256（本次指标不含它们）
+3. 跑正式口径：  !! 尚未完成回测的样本 1 件：V256（本次指标不含它们）
+4. 快照 B：重算 185 个 JSON 的 sha256
+
+## 结果
+
+| 检查项 | 结果 |
+|---|---|
+| 内容变化的文件 | **0** |
+| 消失的文件 | **0** |
+| 新增的文件 | **0** |
+| 结论 | **评估器只读，未改动 Parser 产物** |
+
+## 时间线佐证
+
+| 事实 | 时间 |
+|---|---|
+| 评估器脚本最后修改 | 2026-11-12 16:32:14 |
+| Parser 产物中最新的一个 | 2026-11-12 16:14:32 |
+| 差值 | 17.7 分钟（产物早于评估器脚本） |
+
+两版评估器源码与 SHA-256 见 audit/evaluator_v1_legacy/、audit/evaluator_v2_final/、audit/SHA256SUMS.txt。

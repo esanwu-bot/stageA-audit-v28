@@ -1,0 +1,42 @@
+﻿sample_no,block_id,page,n_rows,symbols,numbers,verdict,note,text
+V101,p003-t01-r01,3,1,vcc,25|-40|85|-55|125,版式碎片,表头行（TEST CONDITIONS / 温度档 / UNITS）漏成候选块，值为温度档,"TEST
+CONDITIONS V CC 25 o C -40 o C TO 85 o C -55 o C TO 125 o C UNITS"
+V101,p003-t01-r16,3,6,vol,0.02|2|0.1|0.1|0.1|0.02|4.5|0.1|0.1|0.1|0.02|6|0.1|0.1|0.1|6|4.5|0.26|0.33|0.4|7.8|6|0.26|0.33|0.4,合法参数行,`Low Level Output V OL`，Gold 抽样未覆盖该参数,"Low Level Output V OL V IH  or V IL 0.02 2 - - 0.1 - 0.1 - 0.1 V Voltage
+CMOS Loads 0.02 4.5 - - 0.1 - 0.1 - 0.1 V 0.02 6 - - 0.1 - 0.1 - 0.1 V Low Level Output - - - - - - - - - V Voltage
+TTL Loads 6"
+V101,p003-t01-r22,3,1,ii,6|0.1|1|1,合法参数行,`Input Leakage Current I I`，Gold 抽样未覆盖,"Input Leakage
+Current I I V CC  or
+GND - 6 - - ± 0.1 - ± 1 - ± 1 µ A"
+V319,p005-t01-r02,5,1,,950|1375|1375|1150|700|700|7.6|11|11|9.2|5.6|5.5|494|715|715|598|364|370|-275|275|-150,版式碎片,合并热阻表残行（封装代号 + 多档功率），值零散,"D
+FK
+J
+N
+PW
+W 950 mW
+1375 mW
+1375 mW
+1150 mW
+700 mW
+700 mW 7.6 mW/ ° C
+11.0 mW/ ° C
+11.0 mW/ ° C
+9.2 mW/ ° C
+5.6 mW/ ° C
+5.5 mW/ ° C 494 mW
+715 mW
+715 mW
+598 mW
+364 mW
+370 mW —
+275 mW
+275 mW
+—
+—
+150 m"
+V319,p005-t02-r06,5,1,tlv2354m,2354|-55|125,合法参数行,`TLV2354M –55 125`，推荐工作温度的另一档,TLV2354M –55 125
+V320,p012-t01-r08,12,3,pinvoltage,2|-0.5|0.5|-1|0.5|-0.5|0.5,合法参数行,`Pin voltage` 参数行,"Pin voltage (2) ALARM, SDO, SDIO, SCLK, SDENB, SLEEP, RESETB, TESTMODE,
+TXENABLE –0.5 IOVDD + 0.5 V IOUTIP/N, IOUTQP/N –1.0 AVDD + 0.5 V EXTIO, BIASJ –0.5 AVDD + 0.5 V"
+V320,p012-t01-r11,12,1,lpf,0.5|0.5,合法参数行,`LPF 0.5 PLLAVDD + 0.5V`,LPF 0.5 PLLAVDD + 0.5V V
+V320,p012-t01-r12,12,5,peakinputcurrent(anyinput),20|-30|-40|85|150|-65|150,合法参数行,`Peak input current` / `Peak total input current`,"Peak input current (any input) 20 mA Peak total input current (all inputs) –30 mA Operating free-air temperature, T A –40 85 °C Absolute maximum junction temperature, T J 150 °C Storage temperature, T"
+V320,p012-t02-r02,12,1,,-1|1|2000,合法参数行,`Human-body model (HBM) ±2000 V`，ESD 参数行,"Human-body model (HBM), per ANSI/ESDA/JEDEC JS-001 (1) ±2000 V"
+V320,p012-t03-r02,12,1,,105,合法参数行,`Recommended operating junction temperature 105 °C`,Recommended operating junction temperature 105 °C

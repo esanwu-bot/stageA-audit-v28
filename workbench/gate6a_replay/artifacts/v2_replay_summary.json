@@ -1,0 +1,200 @@
+{
+  "sample_count": 24,
+  "ok_count": 24,
+  "total_wall_sec": 856.13,
+  "out_root": "E:\\workspace\\icpdf-extractor\\runs\\gate6a_replay_v2_postfix",
+  "results": [
+    {
+      "sample_no": "V003",
+      "exit_code": 0,
+      "wall_sec": 86.56,
+      "pages": "282",
+      "stdout_tail": "{\"sample_no\": \"V003\", \"ok\": true, \"elapsed_sec\": 81.8, \"page_count\": 282, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V011",
+      "exit_code": 0,
+      "wall_sec": 12.81,
+      "pages": "24",
+      "stdout_tail": "{\"sample_no\": \"V011\", \"ok\": true, \"elapsed_sec\": 7.47, \"page_count\": 24, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V038",
+      "exit_code": 0,
+      "wall_sec": 138.13,
+      "pages": "151",
+      "stdout_tail": "{\"sample_no\": \"V038\", \"ok\": true, \"elapsed_sec\": 132.77, \"page_count\": 151, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V077",
+      "exit_code": 0,
+      "wall_sec": 59.01,
+      "pages": "201",
+      "stdout_tail": "{\"sample_no\": \"V077\", \"ok\": true, \"elapsed_sec\": 49.49, \"page_count\": 201, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V097",
+      "exit_code": 0,
+      "wall_sec": 15.45,
+      "pages": "52",
+      "stdout_tail": "{\"sample_no\": \"V097\", \"ok\": true, \"elapsed_sec\": 10.29, \"page_count\": 52, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V101",
+      "exit_code": 0,
+      "wall_sec": 11.38,
+      "pages": "21",
+      "stdout_tail": "{\"sample_no\": \"V101\", \"ok\": true, \"elapsed_sec\": 6.59, \"page_count\": 21, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V111",
+      "exit_code": 0,
+      "wall_sec": 14.63,
+      "pages": "39",
+      "stdout_tail": "{\"sample_no\": \"V111\", \"ok\": true, \"elapsed_sec\": 9.63, \"page_count\": 39, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V145",
+      "exit_code": 0,
+      "wall_sec": 37.31,
+      "pages": "80",
+      "stdout_tail": "{\"sample_no\": \"V145\", \"ok\": true, \"elapsed_sec\": 32.27, \"page_count\": 80, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V146",
+      "exit_code": 0,
+      "wall_sec": 8.51,
+      "pages": "16",
+      "stdout_tail": "{\"sample_no\": \"V146\", \"ok\": true, \"elapsed_sec\": 3.78, \"page_count\": 16, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V162",
+      "exit_code": 0,
+      "wall_sec": 14.64,
+      "pages": "43",
+      "stdout_tail": "{\"sample_no\": \"V162\", \"ok\": true, \"elapsed_sec\": 9.28, \"page_count\": 43, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V173",
+      "exit_code": 0,
+      "wall_sec": 9.47,
+      "pages": "24",
+      "stdout_tail": "{\"sample_no\": \"V173\", \"ok\": true, \"elapsed_sec\": 4.71, \"page_count\": 24, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V199",
+      "exit_code": 0,
+      "wall_sec": 7.96,
+      "pages": "16",
+      "stdout_tail": "{\"sample_no\": \"V199\", \"ok\": true, \"elapsed_sec\": 3.22, \"page_count\": 16, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V242",
+      "exit_code": 0,
+      "wall_sec": 59.83,
+      "pages": "253",
+      "stdout_tail": "{\"sample_no\": \"V242\", \"ok\": true, \"elapsed_sec\": 54.68, \"page_count\": 253, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V244",
+      "exit_code": 0,
+      "wall_sec": 50.67,
+      "pages": "185",
+      "stdout_tail": "{\"sample_no\": \"V244\", \"ok\": true, \"elapsed_sec\": 45.53, \"page_count\": 185, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V256",
+      "exit_code": 0,
+      "wall_sec": 58.64,
+      "pages": "216",
+      "stdout_tail": "{\"sample_no\": \"V256\", \"ok\": true, \"elapsed_sec\": 53.75, \"page_count\": 216, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V271",
+      "exit_code": 0,
+      "wall_sec": 98.68,
+      "pages": "283",
+      "stdout_tail": "{\"sample_no\": \"V271\", \"ok\": true, \"elapsed_sec\": 93.72, \"page_count\": 283, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V290",
+      "exit_code": 0,
+      "wall_sec": 7.11,
+      "pages": "10",
+      "stdout_tail": "{\"sample_no\": \"V290\", \"ok\": true, \"elapsed_sec\": 2.28, \"page_count\": 10, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V304",
+      "exit_code": 0,
+      "wall_sec": 9.79,
+      "pages": "23",
+      "stdout_tail": "{\"sample_no\": \"V304\", \"ok\": true, \"elapsed_sec\": 4.92, \"page_count\": 23, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V319",
+      "exit_code": 0,
+      "wall_sec": 8.69,
+      "pages": "19",
+      "stdout_tail": "{\"sample_no\": \"V319\", \"ok\": true, \"elapsed_sec\": 4.09, \"page_count\": 19, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V320",
+      "exit_code": 0,
+      "wall_sec": 28.1,
+      "pages": "106",
+      "stdout_tail": "{\"sample_no\": \"V320\", \"ok\": true, \"elapsed_sec\": 23.5, \"page_count\": 106, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V336",
+      "exit_code": 0,
+      "wall_sec": 8.23,
+      "pages": "15",
+      "stdout_tail": "{\"sample_no\": \"V336\", \"ok\": true, \"elapsed_sec\": 3.61, \"page_count\": 15, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V345",
+      "exit_code": 0,
+      "wall_sec": 20.75,
+      "pages": "82",
+      "stdout_tail": "{\"sample_no\": \"V345\", \"ok\": true, \"elapsed_sec\": 16.1, \"page_count\": 82, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V346",
+      "exit_code": 0,
+      "wall_sec": 60.83,
+      "pages": "117",
+      "stdout_tail": "{\"sample_no\": \"V346\", \"ok\": true, \"elapsed_sec\": 56.07, \"page_count\": 117, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V349",
+      "exit_code": 0,
+      "wall_sec": 28.88,
+      "pages": "75",
+      "stdout_tail": "{\"sample_no\": \"V349\", \"ok\": true, \"elapsed_sec\": 20.15, \"page_count\": 75, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    }
+  ]
+}

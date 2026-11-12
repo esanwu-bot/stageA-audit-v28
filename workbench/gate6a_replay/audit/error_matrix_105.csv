@@ -1,0 +1,106 @@
+﻿sample_id,gold_row_id,parser_output_id,match_status,located,value_match,unit_match,symbol_match,condition_match,gold_page,parser_page,error_category,secondary_category,defect_owner,match_mode,block_rows,run_version
+V003,G068,p105-t01-r02,命中,是,是,是,是,不可定位,105,105,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V003,G069,p105-t01-r03,命中,是,是,是,是,不可定位,105,105,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V003,G070,p106-t01-r02,命中,是,是,是,是,可定位,106,106,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V003,G071,p106-t01-r05,错误匹配,是,否,否,是,不可定位,106,106,数值错,档位串行：取到 Extended Industrial –40/105，Gold 记 125,Parser（Tech Debt）,token,1,gate6a_replay_v2_postfix
+V003,G072,p101-t01-r02,命中,是,是,是,是,不可定位,101,101,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V011,G073,p003-t01-r04,命中,是,是,是,是,无,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V011,G074,p003-t01-r04,命中,是,是,是,是,无,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V011,G075,p003-t01-r04,命中,是,是,是,是,无,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V011,G076,p003-t01-r07,命中,是,是,是,是,无,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V011,G077,p003-t01-r07,命中,是,是,是,是,无,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V038,G048,p009-t01-r02,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V038,G049,p009-t01-r03,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V038,G050,p009-t01-r04,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V038,G051,p009-t01-r05,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V038,G052,p009-t01-r06,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V077,G098,p038-t01-r03,命中,是,是,是,是,可定位,38,38,完全一致,,—,token,2,gate6a_replay_v2_postfix
+V077,G099,p038-t01-r03,命中,是,是,是,是,可定位,38,38,完全一致,,—,token,2,gate6a_replay_v2_postfix
+V077,G100,p038-t01-r05,错误匹配,是,否,是,是,不可定位,38,38,数值错,档位串行：符号行本身无值，吞入下一行 456 MHz 档,Parser（Tech Debt）,token,2,gate6a_replay_v2_postfix
+V077,G101,p038-t01-r05,命中,是,是,是,是,可定位,38,38,完全一致,,—,token,2,gate6a_replay_v2_postfix
+V077,G102,p038-t01-r07,错误匹配,是,否,是,是,不可定位,38,38,数值错,档位串行：块内是 3.3V 档，Gold 记 1.8V 档,Parser（Tech Debt）,token,1,gate6a_replay_v2_postfix
+V097,G010,p003-t01-r04,命中,是,是,是,是,无,3,3,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V097,G011,p008-t01-r07,命中,是,是,是,不适用,无,8,8,完全一致,,—,value,1,gate6a_replay_v2_postfix
+V097,G012,p008-t01-r10,命中,是,是,是,不适用,无,8,8,完全一致,,—,value,1,gate6a_replay_v2_postfix
+V101,G001,p003-t01-r04,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V101,G002,p003-t01-r04,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V101,G003,p003-t01-r04,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V101,G004,p003-t01-r07,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V101,G005,p003-t01-r07,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V101,G006,p003-t01-r07,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V101,G007,p003-t01-r10,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,6,gate6a_replay_v2_postfix
+V101,G008,p003-t01-r10,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,6,gate6a_replay_v2_postfix
+V101,G009,p003-t01-r10,命中,是,是,是,是,不可定位,3,3,完全一致,,—,token,6,gate6a_replay_v2_postfix
+V111,G022,p006-t01-r02,命中,是,是,是,是,无,6,6,完全一致,,—,text,5,gate6a_replay_v2_postfix
+V111,G023,p006-t01-r07,命中,是,是,是,是,无,6,6,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V111,G024,p007-t01-r08,命中,是,是,是,是,无,7,7,完全一致,,—,text,8,gate6a_replay_v2_postfix
+V145,G019,p012-t01-r04,命中,是,是,是,是,无,12,12,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V145,G020,p012-t01-r05,命中,是,是,是,不适用,无,12,12,完全一致,,—,value,1,gate6a_replay_v2_postfix
+V145,G021,p012-t01-r11,命中,是,是,是,是,无,12,12,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V146,G078,p004-t01-r02,命中,是,是,是,是,无,4,4,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V146,G079,p004-t01-r03,命中,是,是,是,是,无,4,4,完全一致,,—,text,2,gate6a_replay_v2_postfix
+V146,G080,p004-t01-r03,命中,是,是,是,是,无,4,4,完全一致,,—,text,2,gate6a_replay_v2_postfix
+V146,G081,p004-t01-r05,命中,是,是,是,是,无,4,4,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V146,G082,p004-t01-r07,命中,是,是,是,是,无,4,4,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V162,G013,p005-t01-r13,错误匹配,是,否,否,是,无,25,5,evidence page 错,同名符号跨页：VCC 挂到 p5 表头行，p25 目标行未成块,Parser（Tech Debt）,token,1,gate6a_replay_v2_postfix
+V162,G014,p027-t01-r09,错误匹配,是,否,是,是,无,25,27,evidence page 错,同名符号跨页：p25 行无符号，按值落到 p27,Parser（Tech Debt）,text,8,gate6a_replay_v2_postfix
+V162,G015,p027-t01-r31,错误匹配,是,否,是,是,不可定位,25,27,evidence page 错,同名符号跨页：IO 在 p27 的 ICC 语境命中,Parser（Tech Debt）,text,3,gate6a_replay_v2_postfix
+V173,G041,p004-t01-r02,命中,是,是,是,是,无,4,4,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V173,G042,p004-t01-r04,命中,是,是,是,是,无,4,4,完全一致,,—,text,6,gate6a_replay_v2_postfix
+V173,G043,p004-t01-r04,命中,是,是,是,是,可定位,4,4,完全一致,,—,text,6,gate6a_replay_v2_postfix
+V199,G032,p001-t03-r08,命中,是,是,是,是,无,1,1,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V199,G033,p001-t03-r08,命中,是,是,是,是,无,1,1,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V199,G034,p001-t01-r02,命中,是,是,是,是,无,1,1,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V199,G035,p001-t03-r03,命中,是,是,是,是,无,1,1,完全一致,,—,token,2,gate6a_replay_v2_postfix
+V199,G036,p001-t03-r05,错误匹配,是,否,是,是,无,1,1,数值错,档位串行：取到 TC=25°C 的 75A，Gold 记另一条件 50A,Parser（Tech Debt）,token,1,gate6a_replay_v2_postfix
+V242,G063,p006-t01-r02,命中,是,是,是,是,无,6,6,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V242,G064,p006-t01-r03,命中,是,是,是,是,无,6,6,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V242,G065,p006-t01-r04,命中,是,是,是,是,无,6,6,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V242,G066,p006-t01-r05,命中,是,是,是,是,无,6,6,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V242,G067,p006-t01-r06,命中,是,是,是,是,无,6,6,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V244,G093,p044-t01-r02,命中,是,是,是,是,无,44,44,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V244,G094,p044-t01-r02,命中,是,是,是,是,无,44,44,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V244,G095,p044-t01-r02,命中,是,是,是,是,无,44,44,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V244,G096,p044-t01-r05,命中,是,是,是,是,无,44,44,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V244,G097,p044-t01-r06,命中,是,是,是,是,无,44,44,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V256,G088,p013-t01-r02,错误匹配,是,是,是,否,可定位,13,13,symbol 错配,合并符号单元未随行：值/页/单位全对，符号列未落到行上,Parser（Tech Debt）,—,1,gate6a_replay_v2_postfix
+V256,G089,p013-t01-r03,错误匹配,是,是,是,否,可定位,13,13,symbol 错配,合并符号单元未随行：值/页/单位全对，符号列未落到行上,Parser（Tech Debt）,—,1,gate6a_replay_v2_postfix
+V256,G090,p013-t01-r03,错误匹配,是,是,是,否,不可定位,13,13,symbol 错配,合并符号单元未随行：值/页/单位全对，符号列未落到行上,Parser（Tech Debt）,—,1,gate6a_replay_v2_postfix
+V256,G091,p013-t01-r05,错误匹配,是,是,是,否,可定位,13,13,symbol 错配,合并符号单元未随行：值/页/单位全对，符号列未落到行上,Parser（Tech Debt）,—,1,gate6a_replay_v2_postfix
+V256,G092,p013-t01-r06,错误匹配,是,是,是,否,可定位,13,13,symbol 错配,合并符号单元未随行：值/页/单位全对，符号列未落到行上,Parser（Tech Debt）,—,1,gate6a_replay_v2_postfix
+V271,G083,p117-t01-r02,命中,是,是,是,是,无,117,117,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V271,G084,p117-t01-r03,命中,是,是,是,是,无,117,117,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V271,G085,p117-t01-r07,命中,是,是,是,是,无,117,117,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V271,G086,p117-t01-r08,命中,是,是,是,是,无,117,117,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V271,G087,p117-t01-r09,命中,是,是,是,是,无,117,117,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V290,G103,p003-t01-r02,命中,是,是,是,是,无,3,3,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V290,G104,p003-t01-r03,命中,是,是,是,是,可定位,3,3,完全一致,,—,token,2,gate6a_replay_v2_postfix
+V290,G105,p003-t01-r08,命中,是,是,是,是,不可定位,3,3,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V304,G029,p004-t01-r02,命中,是,是,是,是,无,4,4,完全一致,,—,text,8,gate6a_replay_v2_postfix
+V304,G030,p004-t01-r02,命中,是,是,是,是,无,4,4,完全一致,,—,text,8,gate6a_replay_v2_postfix
+V304,G031,p004-t01-r02,命中,是,是,是,是,可定位,4,4,完全一致,,—,text,8,gate6a_replay_v2_postfix
+V319,G025,p005-t02-r02,命中,是,是,是,是,无,5,5,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V319,G026,p005-t02-r03,错误匹配,是,是,否,是,无,5,5,单位错,同名符号多语境：推荐温度档 / 热阻表 / 共模表未消歧,Parser（Tech Debt）,text,3,gate6a_replay_v2_postfix
+V319,G027,p005-t01-r01,错误匹配,是,否,否,是,无,5,5,数值错,同名符号多语境：推荐温度档 / 热阻表 / 共模表未消歧,Parser（Tech Debt）,text,1,gate6a_replay_v2_postfix
+V319,G028,—,漏提,否,否,否,不适用,无,5,—,漏提,行未成块：该页无同时含 IO 与 20 mA 的块,Parser（Tech Debt）,—,0,gate6a_replay_v2_postfix
+V320,G053,p012-t01-r03,命中,是,是,是,是,无,12,12,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V320,G054,p012-t01-r04,命中,是,是,是,是,无,12,12,完全一致,,—,token,4,gate6a_replay_v2_postfix
+V320,G055,p012-t01-r02,命中,是,是,是,是,可定位,12,12,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V320,G056,p012-t01-r04,命中,是,是,是,是,可定位,12,12,完全一致,,—,text,4,gate6a_replay_v2_postfix
+V320,G057,p012-t02-r03,错误匹配,是,否,是,是,无,12,12,数值错,合并符号单元未随行：符号只落在 CDM 行，交付 ±500 而非 ±2000,Parser（Tech Debt）,text,1,gate6a_replay_v2_postfix
+V336,G037,p005-t01-r02,命中,是,是,是,是,无,5,5,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V336,G038,p005-t01-r03,命中,是,是,是,是,无,5,5,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V336,G039,p005-t01-r04,命中,是,是,是,是,无,5,5,完全一致,,—,token,2,gate6a_replay_v2_postfix
+V336,G040,p005-t01-r06,命中,是,是,是,是,无,5,5,完全一致,,—,token,3,gate6a_replay_v2_postfix
+V345,G044,p004-t01-r02,命中,是,是,是,是,无,4,4,完全一致,,—,token,4,gate6a_replay_v2_postfix
+V345,G045,p004-t01-r06,命中,是,是,是,不适用,无,4,4,完全一致,,—,value,2,gate6a_replay_v2_postfix
+V345,G046,p004-t01-r09,命中,是,是,是,是,无,4,4,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V345,G047,p004-t01-r08,命中,是,是,是,是,无,4,4,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V346,G058,p008-t01-r02,命中,是,是,是,是,无,8,8,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V346,G059,p008-t01-r03,命中,是,是,是,是,无,8,8,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V346,G060,p008-t01-r04,命中,是,是,是,是,无,8,8,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V346,G061,p008-t01-r05,命中,是,是,是,是,无,8,8,完全一致,,—,token,7,gate6a_replay_v2_postfix
+V346,G062,p009-t01-r02,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V349,G016,p005-t03-r05,命中,是,是,是,是,无,5,5,完全一致,,—,token,1,gate6a_replay_v2_postfix
+V349,G017,p005-t01-r07,命中,是,是,是,是,无,5,5,完全一致,,—,text,1,gate6a_replay_v2_postfix
+V349,G018,p009-t01-r02,命中,是,是,是,是,无,9,9,完全一致,,—,token,1,gate6a_replay_v2_postfix

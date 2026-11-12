@@ -1,0 +1,49 @@
+Gate 6A 回测所对应的代码版本
+================================
+
+本包生成时 HEAD : bede1f581945331fa0f213a8be5d1171601639ae
+所在分支        : feat/gate6a-audit
+提交主题        : Gate 6A 审计证据包：105 行错误矩阵、39 行翻正证据、V256 崩溃修复与复跑
+（HEAD 会随提交变化；代码身份以下面的逐文件 sha256 为准）
+
+运行时
+------
+Python          : 3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]
+PyMuPDF(包)     : 2.0
+PyMuPDF(binding): ('2.0', '1.28.5', None)
+icpdf / parser  : 0.1.0 / 0.1.0-phase1
+config 快照     : configs/parser.yaml  sha256=ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c
+
+两次回测的 parser 包指纹（27 个 .py 的合并哈希）
+------------------------------------------------
+v1（首次回测，runs/gate6a_replay_v1）
+  31240f6db08f7ef4eee6622122df0b3180231f75e3c304faa50ca5fdf8aa2969
+
+v2（格线修复后补跑，runs/gate6a_replay_v2_postfix）
+  7e70c1f801004c54667b062934efdce28fb5624f461da9bd1625d62872132dca
+
+本次修复触及的文件（逐文件 sha256，取自两份 env_snapshot）
+----------------------------------------------------------
+src/icpdf/parser/structure.py
+  修复前 sha256 b1c5530494a8ec60c9334c967fb507b591f1ae7dc1c3b6a71b5fb69649b000c7
+  修复后 sha256 5ce20999d3de6f76b1a725d6a9c21c4746a804a81aecede66846adb15fa8cb53
+src/icpdf/parser/table_detector.py
+  修复前 sha256 c3007d73c91a74a9bb6d2adf99a590bf176e1766c35aeafdddf62f5851e6e885
+  修复后 sha256 eb4f9c8bc40b3362409565ffe9299c0b84df695f8880261c4e2827461d493766
+
+两个指纹整体不同，说明 Parser 确实被改过；改的就是上面这些文件，
+其余 25 个 .py 逐文件哈希在两版之间完全一致。
+
+未触及但工作区有改动的文件
+--------------------------
+src/icpdf/cli.py —— 文档分类（classify / qc-report）的 CLI 入口，
+属于另一条产品线，不参与 parse_pdf → detect_tables_with_evidence →
+recognize_structure 调用链，因此不计入本次 Parser 变更。
+
+关于既有的 pipeline.py 行尾差异
+-------------------------------
+tests/unit/test_assembly.py::test_a1_10_pipeline_py_is_byte_identical_to_the_authorised_snapshot
+在本次工作区中失败，原因是 core.autocrlf=true 让工作区 pipeline.py 变成 CRLF，
+而快照钉的是 LF 版。已验证 work.replace(b"\r\n", b"\n") == head，
+且 git status src/icpdf/parser/ 中不含 pipeline.py。
+这是既有问题，与本次修复无关，本次未改动 pipeline.py。

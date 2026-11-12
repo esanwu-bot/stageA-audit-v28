@@ -1,0 +1,1372 @@
+{
+  "pdf": "E:\\workspace\\IcPdfParser\\data\\batch1000_v3\\pdfs_flat\\BQ79652PAPRQ1.pdf",
+  "page": 57,
+  "min_row_gap_pt": 0.2,
+  "deterministic": true,
+  "prefix_identity": [
+    {
+      "region": 0,
+      "source": "text_alignment",
+      "bbox": [
+        57.756,
+        500.456,
+        553.672,
+        635.496
+      ],
+      "grid_ys": [
+        500.456,
+        508.374,
+        513.699,
+        521.126,
+        529.291,
+        543.035,
+        533.715,
+        588.75,
+        571.507,
+        555.487,
+        635.496
+      ],
+      "n_rows": 10,
+      "lattice_adjusted": false,
+      "descending": [
+        [
+          6,
+          543.035,
+          533.715
+        ],
+        [
+          8,
+          588.75,
+          571.507
+        ],
+        [
+          9,
+          571.507,
+          555.487
+        ]
+      ],
+      "cells": [
+        {
+          "text": "[DIR0_ADDR] = 2",
+          "row": 0,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            94.843,
+            500.851,
+            140.531,
+            506.176
+          ]
+        },
+        {
+          "text": "response from S3, S2",
+          "row": 0,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            501.756,
+            282.348,
+            507.094
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 2",
+          "row": 0,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            355.449,
+            504.023,
+            401.136,
+            509.347
+          ]
+        },
+        {
+          "text": "All the devices identified as",
+          "row": 0,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            500.456,
+            545.057,
+            505.814
+          ]
+        },
+        {
+          "text": "also responds and",
+          "row": 1,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            508.652,
+            274.322,
+            514.01
+          ]
+        },
+        {
+          "text": "³ stack ´ \u0003 execute the command",
+          "row": 1,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            507.4,
+            551.836,
+            512.758
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 2,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.713,
+            513.388,
+            168.312,
+            517.636
+          ]
+        },
+        {
+          "text": "process continues for",
+          "row": 2,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            515.597,
+            284.184,
+            520.955
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 2,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            411.507,
+            516.52,
+            429.122,
+            520.784
+          ]
+        },
+        {
+          "text": "except B0 (as it is identified as",
+          "row": 2,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            514.352,
+            553.672,
+            519.69
+          ]
+        },
+        {
+          "text": "the rest of the device.",
+          "row": 3,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            522.557,
+            281.113,
+            527.895
+          ]
+        },
+        {
+          "text": "³ base ´",
+          "row": 3,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            521.297,
+            486.452,
+            526.635
+          ]
+        },
+        {
+          "text": "S2",
+          "row": 4,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            154.65,
+            530.688,
+            161.449,
+            534.936
+          ]
+        },
+        {
+          "text": "S2",
+          "row": 4,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            415.445,
+            533.819,
+            422.276,
+            538.083
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 5,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.095,
+            547.987,
+            166.788,
+            552.236
+          ]
+        },
+        {
+          "text": "B0 (identified as base",
+          "row": 5,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            550.294,
+            282.965,
+            555.632
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 5,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            410.89,
+            551.119,
+            427.639,
+            555.383
+          ]
+        },
+        {
+          "text": "device) only forward the",
+          "row": 6,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            557.198,
+            289.759,
+            562.556
+          ]
+        },
+        {
+          "text": "Stack Write command being forward",
+          "row": 6,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            318.402,
+            511.798,
+            323.74,
+            613.356
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 1",
+          "row": 7,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            95.317,
+            567.289,
+            140.998,
+            572.594
+          ]
+        },
+        {
+          "text": "response and does not",
+          "row": 7,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            564.143,
+            286.662,
+            569.501
+          ]
+        },
+        {
+          "text": "return its own data",
+          "row": 8,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            571.079,
+            274.941,
+            576.437
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 1",
+          "row": 8,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            355.927,
+            570.42,
+            401.614,
+            575.745
+          ]
+        },
+        {
+          "text": "Stack Read command being forward",
+          "row": 9,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            57.756,
+            534.537,
+            63.114,
+            635.496
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 9,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.713,
+            577.603,
+            168.312,
+            581.851
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 9,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            411.507,
+            580.734,
+            429.122,
+            584.998
+          ]
+        }
+      ],
+      "validator": "ValueError: grid_ys must be strictly ascending"
+    },
+    {
+      "region": 1,
+      "source": "text_alignment",
+      "bbox": [
+        64.712,
+        587.33,
+        548.228,
+        676.69
+      ],
+      "grid_ys": [
+        587.33,
+        594.818,
+        625.345,
+        627.086,
+        637.874,
+        642.79,
+        654.87,
+        666.464,
+        676.69
+      ],
+      "n_rows": 8,
+      "lattice_adjusted": false,
+      "descending": [],
+      "cells": [
+        {
+          "text": "S1",
+          "row": 0,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            154.65,
+            594.902,
+            161.449,
+            599.15
+          ]
+        },
+        {
+          "text": "S1",
+          "row": 0,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            415.445,
+            598.042,
+            422.276,
+            602.306
+          ]
+        },
+        {
+          "text": "through the stack",
+          "row": 1,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            64.712,
+            587.33,
+            70.05,
+            635.496
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 1,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.095,
+            612.202,
+            166.788,
+            616.45
+          ]
+        },
+        {
+          "text": "1",
+          "row": 2,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            241.247,
+            615.193,
+            244.35,
+            620.551
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 2,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            410.89,
+            615.341,
+            427.639,
+            619.606
+          ]
+        },
+        {
+          "text": "1",
+          "row": 2,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            520.824,
+            618.38,
+            523.916,
+            623.718
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 0",
+          "row": 3,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            97.994,
+            633.667,
+            143.682,
+            638.991
+          ]
+        },
+        {
+          "text": "Host sends Stack",
+          "row": 3,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            231.04,
+            630.454,
+            281.048,
+            635.812
+          ]
+        },
+        {
+          "text": "Read command",
+          "row": 4,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            231.04,
+            637.41,
+            274.123,
+            642.748
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 0",
+          "row": 4,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            358.604,
+            636.818,
+            404.291,
+            642.142
+          ]
+        },
+        {
+          "text": "Host sends Stack",
+          "row": 4,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            498.277,
+            636.756,
+            548.228,
+            642.114
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 5,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.713,
+            642.831,
+            168.327,
+            647.096
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 5,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            411.507,
+            646.003,
+            429.122,
+            650.267
+          ]
+        },
+        {
+          "text": "Write command",
+          "row": 5,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            498.277,
+            643.696,
+            541.358,
+            649.054
+          ]
+        },
+        {
+          "text": "B0",
+          "row": 6,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            154.65,
+            659.472,
+            161.461,
+            663.736
+          ]
+        },
+        {
+          "text": "B0",
+          "row": 6,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            415.445,
+            662.659,
+            422.265,
+            666.907
+          ]
+        },
+        {
+          "text": "RX",
+          "row": 7,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            185.732,
+            666.021,
+            193.779,
+            670.285
+          ]
+        },
+        {
+          "text": "MCU MCU\nTX TX",
+          "row": 7,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            233.611,
+            666.49,
+            258.097,
+            673.519
+          ]
+        },
+        {
+          "text": "RX",
+          "row": 7,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            445.695,
+            669.208,
+            453.729,
+            673.456
+          ]
+        },
+        {
+          "text": "MCU MCU\nTX TX",
+          "row": 7,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            493.746,
+            669.625,
+            518.755,
+            676.69
+          ]
+        }
+      ],
+      "validator": "pass"
+    }
+  ],
+  "postfix": [
+    {
+      "region": 0,
+      "source": "text_alignment",
+      "bbox": [
+        57.756,
+        500.456,
+        553.672,
+        635.496
+      ],
+      "grid_ys": [
+        500.456,
+        508.374,
+        513.699,
+        521.126,
+        529.291,
+        543.035,
+        543.235,
+        588.75,
+        588.95,
+        589.15,
+        635.496
+      ],
+      "n_rows": 10,
+      "lattice_adjusted": true,
+      "descending": [],
+      "cells": [
+        {
+          "text": "[DIR0_ADDR] = 2",
+          "row": 0,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            94.843,
+            500.851,
+            140.531,
+            506.176
+          ]
+        },
+        {
+          "text": "response from S3, S2",
+          "row": 0,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            501.756,
+            282.348,
+            507.094
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 2",
+          "row": 0,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            355.449,
+            504.023,
+            401.136,
+            509.347
+          ]
+        },
+        {
+          "text": "All the devices identified as",
+          "row": 0,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            500.456,
+            545.057,
+            505.814
+          ]
+        },
+        {
+          "text": "also responds and",
+          "row": 1,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            508.652,
+            274.322,
+            514.01
+          ]
+        },
+        {
+          "text": "³ stack ´ \u0003 execute the command",
+          "row": 1,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            507.4,
+            551.836,
+            512.758
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 2,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.713,
+            513.388,
+            168.312,
+            517.636
+          ]
+        },
+        {
+          "text": "process continues for",
+          "row": 2,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            515.597,
+            284.184,
+            520.955
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 2,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            411.507,
+            516.52,
+            429.122,
+            520.784
+          ]
+        },
+        {
+          "text": "except B0 (as it is identified as",
+          "row": 2,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            514.352,
+            553.672,
+            519.69
+          ]
+        },
+        {
+          "text": "the rest of the device.",
+          "row": 3,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            522.557,
+            281.113,
+            527.895
+          ]
+        },
+        {
+          "text": "³ base ´",
+          "row": 3,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            467.608,
+            521.297,
+            486.452,
+            526.635
+          ]
+        },
+        {
+          "text": "S2",
+          "row": 4,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            154.65,
+            530.688,
+            161.449,
+            534.936
+          ]
+        },
+        {
+          "text": "S2",
+          "row": 4,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            415.445,
+            533.819,
+            422.276,
+            538.083
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 5,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.095,
+            547.987,
+            166.788,
+            552.236
+          ]
+        },
+        {
+          "text": "B0 (identified as base",
+          "row": 5,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            550.294,
+            282.965,
+            555.632
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 5,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            410.89,
+            551.119,
+            427.639,
+            555.383
+          ]
+        },
+        {
+          "text": "device) only forward the",
+          "row": 6,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            557.198,
+            289.759,
+            562.556
+          ]
+        },
+        {
+          "text": "Stack Write command being forward",
+          "row": 6,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            318.402,
+            511.798,
+            323.74,
+            613.356
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 1",
+          "row": 7,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            95.317,
+            567.289,
+            140.998,
+            572.594
+          ]
+        },
+        {
+          "text": "response and does not",
+          "row": 7,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            564.143,
+            286.662,
+            569.501
+          ]
+        },
+        {
+          "text": "return its own data",
+          "row": 8,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            222.143,
+            571.079,
+            274.941,
+            576.437
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 1",
+          "row": 8,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            355.927,
+            570.42,
+            401.614,
+            575.745
+          ]
+        },
+        {
+          "text": "Stack Read command being forward",
+          "row": 9,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            57.756,
+            534.537,
+            63.114,
+            635.496
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 9,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.713,
+            577.603,
+            168.312,
+            581.851
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 9,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            411.507,
+            580.734,
+            429.122,
+            584.998
+          ]
+        }
+      ],
+      "validator": "pass"
+    },
+    {
+      "region": 1,
+      "source": "text_alignment",
+      "bbox": [
+        64.712,
+        587.33,
+        548.228,
+        676.69
+      ],
+      "grid_ys": [
+        587.33,
+        594.818,
+        625.345,
+        627.086,
+        637.874,
+        642.79,
+        654.87,
+        666.464,
+        676.69
+      ],
+      "n_rows": 8,
+      "lattice_adjusted": false,
+      "descending": [],
+      "cells": [
+        {
+          "text": "S1",
+          "row": 0,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            154.65,
+            594.902,
+            161.449,
+            599.15
+          ]
+        },
+        {
+          "text": "S1",
+          "row": 0,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            415.445,
+            598.042,
+            422.276,
+            602.306
+          ]
+        },
+        {
+          "text": "through the stack",
+          "row": 1,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            64.712,
+            587.33,
+            70.05,
+            635.496
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 1,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.095,
+            612.202,
+            166.788,
+            616.45
+          ]
+        },
+        {
+          "text": "1",
+          "row": 2,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            241.247,
+            615.193,
+            244.35,
+            620.551
+          ]
+        },
+        {
+          "text": "COML",
+          "row": 2,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            410.89,
+            615.341,
+            427.639,
+            619.606
+          ]
+        },
+        {
+          "text": "1",
+          "row": 2,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            520.824,
+            618.38,
+            523.916,
+            623.718
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 0",
+          "row": 3,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            97.994,
+            633.667,
+            143.682,
+            638.991
+          ]
+        },
+        {
+          "text": "Host sends Stack",
+          "row": 3,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            231.04,
+            630.454,
+            281.048,
+            635.812
+          ]
+        },
+        {
+          "text": "Read command",
+          "row": 4,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            231.04,
+            637.41,
+            274.123,
+            642.748
+          ]
+        },
+        {
+          "text": "[DIR0_ADDR] = 0",
+          "row": 4,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            358.604,
+            636.818,
+            404.291,
+            642.142
+          ]
+        },
+        {
+          "text": "Host sends Stack",
+          "row": 4,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            498.277,
+            636.756,
+            548.228,
+            642.114
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 5,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            150.713,
+            642.831,
+            168.327,
+            647.096
+          ]
+        },
+        {
+          "text": "COMH",
+          "row": 5,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            411.507,
+            646.003,
+            429.122,
+            650.267
+          ]
+        },
+        {
+          "text": "Write command",
+          "row": 5,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            498.277,
+            643.696,
+            541.358,
+            649.054
+          ]
+        },
+        {
+          "text": "B0",
+          "row": 6,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            154.65,
+            659.472,
+            161.461,
+            663.736
+          ]
+        },
+        {
+          "text": "B0",
+          "row": 6,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            415.445,
+            662.659,
+            422.265,
+            666.907
+          ]
+        },
+        {
+          "text": "RX",
+          "row": 7,
+          "column": 0,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            185.732,
+            666.021,
+            193.779,
+            670.285
+          ]
+        },
+        {
+          "text": "MCU MCU\nTX TX",
+          "row": 7,
+          "column": 1,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            233.611,
+            666.49,
+            258.097,
+            673.519
+          ]
+        },
+        {
+          "text": "RX",
+          "row": 7,
+          "column": 2,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            445.695,
+            669.208,
+            453.729,
+            673.456
+          ]
+        },
+        {
+          "text": "MCU MCU\nTX TX",
+          "row": 7,
+          "column": 3,
+          "row_span": 1,
+          "column_span": 1,
+          "bbox": [
+            493.746,
+            669.625,
+            518.755,
+            676.69
+          ]
+        }
+      ],
+      "validator": "pass"
+    }
+  ],
+  "scope": {
+    "samples": 24,
+    "tables": 2701,
+    "clamped": [
+      {
+        "sample": "V256",
+        "table_id": "p057-t01",
+        "n_rows": 10,
+        "page": 57
+      }
+    ]
+  }
+}

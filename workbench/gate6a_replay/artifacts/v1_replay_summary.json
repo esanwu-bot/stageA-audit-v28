@@ -1,0 +1,203 @@
+{
+  "sample_count": 24,
+  "ok_count": 23,
+  "total_wall_sec": 820.73,
+  "out_root": "E:\\workspace\\icpdf-extractor\\runs\\gate6a_replay_v1",
+  "results": [
+    {
+      "sample_no": "V003",
+      "exit_code": 0,
+      "wall_sec": 84.11,
+      "pages": "282",
+      "stdout_tail": "{\"sample_no\": \"V003\", \"ok\": true, \"elapsed_sec\": 79.28, \"page_count\": 282, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V011",
+      "exit_code": 0,
+      "wall_sec": 12.41,
+      "pages": "24",
+      "stdout_tail": "{\"sample_no\": \"V011\", \"ok\": true, \"elapsed_sec\": 7.46, \"page_count\": 24, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V038",
+      "exit_code": 0,
+      "wall_sec": 129.67,
+      "pages": "151",
+      "stdout_tail": "{\"sample_no\": \"V038\", \"ok\": true, \"elapsed_sec\": 124.47, \"page_count\": 151, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V077",
+      "exit_code": 0,
+      "wall_sec": 58.53,
+      "pages": "201",
+      "stdout_tail": "{\"sample_no\": \"V077\", \"ok\": true, \"elapsed_sec\": 50.1, \"page_count\": 201, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V097",
+      "exit_code": 0,
+      "wall_sec": 15.25,
+      "pages": "52",
+      "stdout_tail": "{\"sample_no\": \"V097\", \"ok\": true, \"elapsed_sec\": 10.23, \"page_count\": 52, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V101",
+      "exit_code": 0,
+      "wall_sec": 14.72,
+      "pages": "21",
+      "stdout_tail": "{\"sample_no\": \"V101\", \"ok\": true, \"elapsed_sec\": 6.81, \"page_count\": 21, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V111",
+      "exit_code": 0,
+      "wall_sec": 15.15,
+      "pages": "39",
+      "stdout_tail": "{\"sample_no\": \"V111\", \"ok\": true, \"elapsed_sec\": 9.95, \"page_count\": 39, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V145",
+      "exit_code": 0,
+      "wall_sec": 37.78,
+      "pages": "80",
+      "stdout_tail": "{\"sample_no\": \"V145\", \"ok\": true, \"elapsed_sec\": 32.87, \"page_count\": 80, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V146",
+      "exit_code": 0,
+      "wall_sec": 9.4,
+      "pages": "16",
+      "stdout_tail": "{\"sample_no\": \"V146\", \"ok\": true, \"elapsed_sec\": 4.14, \"page_count\": 16, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V162",
+      "exit_code": 0,
+      "wall_sec": 14.01,
+      "pages": "43",
+      "stdout_tail": "{\"sample_no\": \"V162\", \"ok\": true, \"elapsed_sec\": 9.11, \"page_count\": 43, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V173",
+      "exit_code": 0,
+      "wall_sec": 10.02,
+      "pages": "24",
+      "stdout_tail": "{\"sample_no\": \"V173\", \"ok\": true, \"elapsed_sec\": 4.55, \"page_count\": 24, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V199",
+      "exit_code": 0,
+      "wall_sec": 8.49,
+      "pages": "16",
+      "stdout_tail": "{\"sample_no\": \"V199\", \"ok\": true, \"elapsed_sec\": 3.33, \"page_count\": 16, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V242",
+      "exit_code": 0,
+      "wall_sec": 60.53,
+      "pages": "253",
+      "stdout_tail": "{\"sample_no\": \"V242\", \"ok\": true, \"elapsed_sec\": 55.42, \"page_count\": 253, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V244",
+      "exit_code": 0,
+      "wall_sec": 51.31,
+      "pages": "185",
+      "stdout_tail": "{\"sample_no\": \"V244\", \"ok\": true, \"elapsed_sec\": 46.29, \"page_count\": 185, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V256",
+      "exit_code": 1,
+      "wall_sec": 16.13,
+      "pages": "216",
+      "stdout_tail": "",
+      "stderr_tail": "    For further information visit https://errors.pydantic.dev/2.14/v/value_error"
+    },
+    {
+      "sample_no": "V271",
+      "exit_code": 0,
+      "wall_sec": 101.98,
+      "pages": "283",
+      "stdout_tail": "{\"sample_no\": \"V271\", \"ok\": true, \"elapsed_sec\": 96.95, \"page_count\": 283, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V290",
+      "exit_code": 0,
+      "wall_sec": 6.83,
+      "pages": "10",
+      "stdout_tail": "{\"sample_no\": \"V290\", \"ok\": true, \"elapsed_sec\": 2.33, \"page_count\": 10, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V304",
+      "exit_code": 0,
+      "wall_sec": 9.96,
+      "pages": "23",
+      "stdout_tail": "{\"sample_no\": \"V304\", \"ok\": true, \"elapsed_sec\": 5.13, \"page_count\": 23, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V319",
+      "exit_code": 0,
+      "wall_sec": 9.29,
+      "pages": "19",
+      "stdout_tail": "{\"sample_no\": \"V319\", \"ok\": true, \"elapsed_sec\": 4.13, \"page_count\": 19, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V320",
+      "exit_code": 0,
+      "wall_sec": 28.81,
+      "pages": "106",
+      "stdout_tail": "{\"sample_no\": \"V320\", \"ok\": true, \"elapsed_sec\": 23.88, \"page_count\": 106, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V336",
+      "exit_code": 0,
+      "wall_sec": 8.61,
+      "pages": "15",
+      "stdout_tail": "{\"sample_no\": \"V336\", \"ok\": true, \"elapsed_sec\": 3.77, \"page_count\": 15, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V345",
+      "exit_code": 0,
+      "wall_sec": 21.8,
+      "pages": "82",
+      "stdout_tail": "{\"sample_no\": \"V345\", \"ok\": true, \"elapsed_sec\": 16.63, \"page_count\": 82, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V346",
+      "exit_code": 0,
+      "wall_sec": 63.62,
+      "pages": "117",
+      "stdout_tail": "{\"sample_no\": \"V346\", \"ok\": true, \"elapsed_sec\": 58.69, \"page_count\": 117, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    },
+    {
+      "sample_no": "V349",
+      "exit_code": 0,
+      "wall_sec": 27.2,
+      "pages": "75",
+      "stdout_tail": "{\"sample_no\": \"V349\", \"ok\": true, \"elapsed_sec\": 22.14, \"page_count\": 75, \"llm_blocked\": 0}",
+      "stderr_tail": ""
+    }
+  ],
+  "rerun": [
+    "V101"
+  ]
+}
