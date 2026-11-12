@@ -19,8 +19,8 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 
 | 指控 | 实际是什么 | 修法 | 证据 |
 | --- | --- | --- | --- |
-| **假一对一消费** | `eval_gold_row` 让每条 Gold 独立扫全池，同一候选块可被任意多条 Gold 行反复引用（实测 14 个块被 2~3 行共用，V256 的 G089/G090 抢同一个 `n_rows=1` 的单行块） | 引入物理行级消费集合；多行父块按「父块-子行」拆到不同物理行，记 `matched_physical_row_id` | [`consumption_reassignments.csv`](consumption_reassignments.csv)、[`parent_block_sharing.csv`](parent_block_sharing.csv) |
-| **软硬命中混算** | `exact_rows` 直接把 `coarse=True`（命中落在 ≥5 行大块里）的行算作完全一致 | 强制剔除，单列 [`soft_hits.csv`](soft_hits.csv)；严格命中 = 82 | [`soft_hits.csv`](soft_hits.csv)、[`error_matrix_105.csv`](error_matrix_105.csv) |
+| **假一对一消费** | `eval_gold_row` 让每条 Gold 独立扫全池，同一候选块可被任意多条 Gold 行反复引用（实测 14 个块被 2~3 行共用，V256 的 G089/G090 抢同一个 `n_rows=1` 的单行块） | 引入物理行级消费集合；多行父块按「父块-子行」拆到不同物理行，记 `matched_physical_row_id` | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv)、[`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) |
+| **软硬命中混算** | `exact_rows` 直接把 `coarse=True`（命中落在 ≥5 行大块里）的行算作完全一致 | 强制剔除，单列 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)；严格命中 = 82 | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)、[`error_matrix_105.csv`](error_matrix_105.csv) |
 
 **Parser 一次都没有重跑。** v3 的输入是 v2 冻结在盘上的 `per_sample/` 产物，
 只重算评估器侧的块组装与匹配。块组装结果与 v2 冻结的 `param_blocks` 逐块比对，
@@ -54,21 +54,26 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 
 ## 文件索引
 
+> 约定：逐行产物统一放 `../artifacts/`，v3 的以 `v3_` 前缀命名
+> （`v3_eval_detail.csv`、`v3_metrics.json`、`v3_soft_hits.csv`、
+> `v3_consumption_reassignments.csv`、`v3_parent_block_sharing.csv`、`v3_rows_parser.csv`）。
+> 本目录只放**说明与结论**，不复制产物，避免两份字节各自漂移。
+
 ### 核心（先看这四个）
 
 | # | 文件 | 一句话 | 回答什么 |
 | --- | --- | --- | --- |
 | 1 | [`error_matrix_105.csv`](error_matrix_105.csv) | 105 行 × 20 列逐行判定 | 哪行严格命中、哪行软命中、哪行错、错在哪、落在哪个物理行 |
 | 2 | [`error_matrix_105_README.md`](error_matrix_105_README.md) | 字段字典与四口径定义 | 82 / 89 / 69 / 104 分别怎么算 |
-| 3 | [`soft_hits.csv`](soft_hits.csv) | 7 条软命中逐条 | 哪 7 行是靠大块并集撑起来的 |
+| 3 | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv) | 7 条软命中逐条 | 哪 7 行是靠大块并集撑起来的 |
 | 4 | [`eval_v3_1to1.md`](eval_v3_1to1.md) | v3 算法与 v2→v3 差异 | 一对一怎么实现、改了哪几行、为什么 |
 
 ### 一对一消费的证据链
 
 | # | 文件 | 一句话 |
 | --- | --- | --- |
-| 5 | [`parent_block_sharing.csv`](parent_block_sharing.csv) | 13 个被多条 Gold 行共用的父块，及各自分配到的子行（全部互不相同） |
-| 6 | [`consumption_reassignments.csv`](consumption_reassignments.csv) | 因消费冲突而改判的行（仅 1 行，V256 G090） |
+| 5 | [`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) | 13 个被多条 Gold 行共用的父块，及各自分配到的子行（全部互不相同） |
+| 6 | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv) | 因消费冲突而改判的行（仅 1 行，V256 G090） |
 | 7 | [`../_assert_v3_1to1.py`](../_assert_v3_1to1.py) | 27 项不变量断言脚本，可直接运行 |
 
 ### V256 修复
@@ -153,7 +158,7 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 ### 需求 2：硬/软命中分离
 
 - `exact_rows` 只表示严格全字段一致，`coarse=True` 一律剔除。
-- 7 条被剔出的行单列 [`soft_hits.csv`](soft_hits.csv)，全部是 `n_rows` 为 5/6/8 的大块 + `text` 匹配。
+- 7 条被剔出的行单列 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)，全部是 `n_rows` 为 5/6/8 的大块 + `text` 匹配。
 - 严格硬命中率 **82 / 105 = 78.10%**。
 
 ### 需求 3：指标命名统一
@@ -209,9 +214,9 @@ Linux 上克隆必然报 FAILED。现在两侧都是 LF，跨平台一致。
 
 | Reviewer 的问题 | 答案 | 证据 |
 | --- | --- | --- |
-| 你们的一对一是假的吧 | 是假的，已修：块/物理行消费唯一，14→13 个共用父块全部落在不同子行，重复行 0 | [`parent_block_sharing.csv`](parent_block_sharing.csv) |
-| 软命中和硬命中混算了 | 已拆：89 里 7 行是软命中，严格命中 82 / 105 = 78.10% | [`soft_hits.csv`](soft_hits.csv) |
-| V256 的 G089/G090 抢同一行 | 已修：改落 `r03` / `r04`，且与各自 condition 吻合（condition 未参与分配） | [`consumption_reassignments.csv`](consumption_reassignments.csv) |
+| 你们的一对一是假的吧 | 是假的，已修：块/物理行消费唯一，14→13 个共用父块全部落在不同子行，重复行 0 | [`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv) |
+| 软命中和硬命中混算了 | 已拆：89 里 7 行是软命中，严格命中 82 / 105 = 78.10% | [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv) |
+| V256 的 G089/G090 抢同一行 | 已修：改落 `r03` / `r04`，且与各自 condition 吻合（condition 未参与分配） | [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv) |
 | 94.3% / 99.05% 怎么算的 | 都是**定位率**；命中率是 82（严格）/ 89（含软）/ 69（condition 硬门） | [`error_matrix_105_README.md`](error_matrix_105_README.md) |
 | 39 行翻正是否动了 Parser | 没动，185/192 个 JSON 哈希全同 | [`parser_json_immutability.txt`](parser_json_immutability.txt) |
 | V256 修得对不对、有没有伤到别人 | 23 件 115 个文件逐字节不变；2701 表里只有 1 表受影响；最大边界位移 +33.663pt 但单元格位移 0 | [`v256_crash_evidence.md`](v256_crash_evidence.md) |

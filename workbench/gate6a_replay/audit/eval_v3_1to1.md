@@ -90,7 +90,7 @@ V256/G090  p013-t01-r03 → p013-t01-r04    消费冲突，顺位到下一个物
 其余 104 行的块归属、物理行、字段级判定全部与 v2 一致
 （`metrics.json` → `matching.rows_differing_from_v2 = 1`，`rows_lost_vs_v2 = 0`）。
 
-完整变动记录见 [`consumption_reassignments.csv`](consumption_reassignments.csv)，全文只此一行。
+完整变动记录见 [`v3_consumption_reassignments.csv`](../artifacts/v3_consumption_reassignments.csv)，全文只此一行。
 
 需要说明的是：**「1 行变动」不等于「一对一消费只影响 1 行」**。
 v2 的 `eval_detail` 只记到块（`matched_block_id`），13 个共用父块里的 Gold 行
@@ -133,7 +133,7 @@ v2 不记物理行，因此**无法从 v2 产物判定这些行是否落在同�
 `matched_physical_row_id` 的理由：让「有没有共用子行」变成可验证的事实，而不是推测。
 
 v3 把 104 条定位全部下沉到物理行后，13 个共用父块无一行重复，
-逐条见 [`parent_block_sharing.csv`](parent_block_sharing.csv)（`all_distinct` 列全为 `True`），
+逐条见 [`v3_parent_block_sharing.csv`](../artifacts/v3_parent_block_sharing.csv)（`all_distinct` 列全为 `True`），
 并由 `_assert_v3_1to1.py` 的「物理行占用唯一」组断言兜底。
 
 ---
@@ -162,7 +162,7 @@ v3 把 104 条定位全部下沉到物理行后，13 个共用父块无一行重
 
 它们不是「算错了」，而是「值确实在解析结果里，但落在一个跨 5~8 行的大块内，
 无法逐行确认」。v2 把它们直接算进完全一致，等于用大块并集冒充逐行证据。
-逐条明细见 [`soft_hits.csv`](soft_hits.csv)。
+逐条明细见 [`v3_soft_hits.csv`](../artifacts/v3_soft_hits.csv)。
 
 ---
 

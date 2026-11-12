@@ -45,9 +45,9 @@ Reviewer 指出两处致命伤，本轮针对性修复，**Parser 未重跑**，
 | # | 文件 | 回答哪个问题 |
 |---|---|---|
 | 1 | [`audit/error_matrix_105.csv`](workbench/gate6a_replay/audit/error_matrix_105.csv) | 105 行逐行的 `value_match` / `unit_match` / `symbol_match` / `condition_match` / `page_match`，含四态 `match_status` 与 `matched_physical_row_id` |
-| 2 | [`audit/soft_hits.csv`](workbench/gate6a_replay/audit/soft_hits.csv) | 7 条「值在大块里但无法逐行确认」的行，逐条列出块行数与匹配方式 |
-| 3 | [`audit/consumption_reassignments.csv`](workbench/gate6a_replay/audit/consumption_reassignments.csv) | v2 → v3 唯一一条块归属变动（V256/G090）及其原因 |
-| 4 | [`audit/parent_block_sharing.csv`](workbench/gate6a_replay/audit/parent_block_sharing.csv) | 13 个被多行共用的父块，各自的物理行分配与 `all_distinct` 校验 |
+| 2 | [`artifacts/v3_soft_hits.csv`](workbench/gate6a_replay/artifacts/v3_soft_hits.csv) | 7 条「值在大块里但无法逐行确认」的行，逐条列出块行数与匹配方式 |
+| 3 | [`artifacts/v3_consumption_reassignments.csv`](workbench/gate6a_replay/artifacts/v3_consumption_reassignments.csv) | v2 → v3 唯一一条块归属变动（V256/G090）及其原因 |
+| 4 | [`artifacts/v3_parent_block_sharing.csv`](workbench/gate6a_replay/artifacts/v3_parent_block_sharing.csv) | 13 个被多行共用的父块，各自的物理行分配与 `all_distinct` 校验 |
 | 5 | [`audit/v256_crash_evidence.md`](workbench/gate6a_replay/audit/v256_crash_evidence.md) | 夹紧公式、实测最大位移 **+33.663 pt**、`0.2 pt` 只是最小行间距阈值、下游不读 `status` 的静态核对 |
 | 6 | [`audit/source_fingerprint.md`](workbench/gate6a_replay/audit/source_fingerprint.md) + [`monotonic_lattice.diff`](workbench/gate6a_replay/audit/monotonic_lattice.diff) | 主仓三个 commit 的 `structure.py` blob 指纹、`+47 / -2` 的完整 diff、`core.autocrlf` 行尾陷阱 |
 | 7 | [`audit/parser_json_immutability.txt`](workbench/gate6a_replay/audit/parser_json_immutability.txt) | 评估器只读不写的**静态代码证据**（时间戳已降级为辅助） |
