@@ -102,7 +102,12 @@ def main() -> int:
     check(C.OUT_ROOT.name == "gate6a_replay_v1", "输出根目录名正确")
     # 本断言守的是「v1 那次运行没有溢出到 runs/ 的其它目录」。
     # 之后经授权的产物目录单独登记，不算违规，但要显式列出来，不能被静默忽略。
-    FOLLOWUP = {"gate6a_replay_v2_postfix", "gate6a_v256_probe"}
+    #
+    # gate6a_replay_v3_1to1 是 v3 评估器的输出根（一对一消费匹配）。
+    # 它只读 v2 冻结产物、只写自己这个目录，登记在此是为了让白名单保持穷举，
+    # 而不是为了让断言变松 —— 任何未登记的新目录仍然会判失败。
+    FOLLOWUP = {"gate6a_replay_v2_postfix", "gate6a_v256_probe",
+                "gate6a_replay_v3_1to1"}
     outside = [p for p in (C.REPO / "runs").iterdir()
                if p.is_dir() and p.name not in FOLLOWUP
                and p.name != "gate6a_replay_v1"
@@ -134,15 +139,17 @@ def main() -> int:
 
     print("\n=== 指标自洽 ===")
     att = metrics["attribution"]
+    # 兼容 v3 改名：hit_rows → located_rows
+    _loc = metrics.get("located_rows", metrics.get("hit_rows"))
     check(sum(att.values()) == metrics["gold_rows"],
           "归因各类之和 == Gold 行数",
           "%d == %d" % (sum(att.values()), metrics["gold_rows"]))
-    check(metrics["hit_rows"] >= metrics["exact_rows"], "命中行 >= 完全一致行")
+    check(_loc >= metrics["exact_rows"], "定位行 >= 严格命中行")
     detail = list(__import__("csv").DictReader(open(
         C.OUT_ROOT / "eval_detail.csv", encoding="utf-8-sig", newline="")))
     check(len(detail) == C.EXPECT_ROWS, "eval_detail 行数 105", str(len(detail)))
-    check(sum(1 for r in detail if r["hit"] == "True") == metrics["hit_rows"],
-          "eval_detail 命中数与 metrics 一致")
+    check(sum(1 for r in detail if r["hit"] == "True") == _loc,
+          "eval_detail 定位数与 metrics 一致")
 
     print("\n" + ("全部断言通过" if not FAIL else "失败 %d 项：%s" % (len(FAIL), FAIL)))
     return 0 if not FAIL else 1

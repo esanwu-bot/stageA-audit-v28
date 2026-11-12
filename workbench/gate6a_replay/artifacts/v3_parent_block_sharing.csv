@@ -1,0 +1,14 @@
+﻿sample_no,block_id,n_gold_rows,physical_rows,all_distinct
+V011,p003-t01-r04,3,p003-t01-r04|p003-t01-r05|p003-t01-r06,True
+V011,p003-t01-r07,2,p003-t01-r07|p003-t01-r08,True
+V077,p038-t01-r03,2,p038-t01-r04|p038-t01-r03,True
+V077,p038-t01-r05,2,p038-t01-r06|p038-t01-r05,True
+V101,p003-t01-r04,3,p003-t01-r04|p003-t01-r05|p003-t01-r06,True
+V101,p003-t01-r07,3,p003-t01-r07|p003-t01-r08|p003-t01-r09,True
+V101,p003-t01-r10,3,p003-t01-r10|p003-t01-r11|p003-t01-r12,True
+V146,p004-t01-r03,2,p004-t01-r03|p004-t01-r04,True
+V173,p004-t01-r04,2,p004-t01-r09|p004-t01-r07,True
+V199,p001-t03-r08,2,p001-t03-r08|p001-t03-r09,True
+V244,p044-t01-r02,3,p044-t01-r02|p044-t01-r03|p044-t01-r04,True
+V304,p004-t01-r02,3,p004-t01-r02|p004-t01-r09|p004-t01-r05,True
+V320,p012-t01-r04,2,p012-t01-r05|p012-t01-r04,True

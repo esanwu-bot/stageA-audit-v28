@@ -1,0 +1,2 @@
+﻿sample_no,gold_key,gold_symbol,v2_block,v3_block,v3_physical_row,primary_v2,primary_v3,reason
+V256,089|V256|13|v(main-aux)|-7.8||6.6|mv|2v<vcell<4.5v; -40oc<ta<105oc,V(MAIN-AUX),p013-t01-r03,p013-t01-r04,p013-t01-r04,symbol 错配,symbol 错配,消费冲突：v2 所选块/行已被本样本另一条 Gold 行占用，按排序顺序顺位到下一个可用物理行

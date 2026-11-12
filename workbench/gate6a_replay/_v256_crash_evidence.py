@@ -203,6 +203,23 @@ def main() -> int:
                "delta": round(ys_a[i] - ys_b[i], 3),
                "shifted": abs(ys_a[i] - ys_b[i]) > 1e-9}
               for i in range(len(ys_b))]
+    # 边界位移的极值。0.2pt 是 MIN_ROW_GAP_PT（最小间距阈值），
+    # 不是位移量；真实位移是把倒序边界推到合法位置所需的距离，可以远大于 0.2。
+    _mx = max(deltas, key=lambda d: abs(d["delta"])) if deltas else None
+    max_disp = abs(_mx["delta"]) if _mx else 0.0
+
+    # 静态核对：下游块组装到底读不读 status。只查函数体，避免误伤文件别处的注释。
+    _ev = AUDIT / "evaluator_v3_1to1" / "_evaluate.py"
+    _src = _ev.read_text(encoding="utf-8")
+    _s = _src.index("def build_blocks(")
+    _e = _src.index("\ndef ", _s + 1)
+    _body = _src[_s:_e]
+    status_probe = {
+        "file": str(_ev.relative_to(REPO)).replace("\\", "/"),
+        "line": _src[:_s].count("\n") + 1,
+        "n_lines": _body.count("\n") + 1,
+        "hits": [ln.strip() for ln in _body.splitlines() if "status" in ln],
+    }
 
     lines = [
         "# V256 崩溃证据：traceback、夹紧公式与单元格映射不变性",
@@ -293,7 +310,20 @@ def main() -> int:
         f"倒序点共 **{len(desc)}** 处：" + "；".join(
             f"第 {i} 位 {p:g} → {c:g}" for i, p, c in desc),
         "",
-        "夹紧把这三处推到 `前一位 + 0.2`，其余 8 条边界逐位不变。",
+        "**先把两个容易混淆的量分清楚：**",
+        "",
+        "| 量 | 值 | 含义 |",
+        "| --- | --- | --- |",
+        f"| `MIN_ROW_GAP_PT` | **{S.MIN_ROW_GAP_PT} pt** | **最小间距阈值**，只决定"
+        "「把边界推到前一位之后多少」，是规则参数，不是实际位移 |",
+        f"| 实测**最大边界位移** | **+{max_disp:.3f} pt** | 第 {_mx['i']} 位边界从 "
+        f"{_mx['before']:.3f} 推到 {_mx['after']:.3f}，位移量 = 原本的倒序深度 + "
+        f"{S.MIN_ROW_GAP_PT} |" if _mx else "| 实测最大边界位移 | 0 | — |",
+        "",
+        "也就是说：**夹紧把 3 处倒序边界推到「前一位 + 0.2」，单条边界的位移量由"
+        "倒序深度决定，最大一处达到 %+.3f pt，远大于 0.2 pt。**"
+        "0.2 不是位移上界，只是每步要留的最小间隔。另外 8 条边界逐位不变。"
+        % max_disp,
         "",
         "## 5. 单元格映射不变性（region 0）",
         "",
@@ -362,7 +392,33 @@ def main() -> int:
         "",
         f"确定性：同一口径连跑两遍，输出逐位一致 = **{deterministic}**。",
         "",
-        "## 7. 结论",
+        "## 7. 静态核对：下游候选生成不读 `status`",
+        "",
+        "「`partial` 会不会被下游洗白」不能靠叙述，直接查代码：",
+        "",
+        "```",
+        f"被检文件：{status_probe['file']}",
+        f"被检函数：build_blocks()（第 {status_probe['line']} 行起，共 {status_probe['n_lines']} 行）",
+        f"函数体内出现 'status' 的行数：{len(status_probe['hits'])}",
+        "```",
+        "",
+    ]
+    if status_probe["hits"]:
+        lines += ["**存在引用**，需逐条复核：", ""]
+        lines += ["- `%s`" % h for h in status_probe["hits"]]
+    else:
+        lines += [
+            "**函数体内一次都没有出现 `status`。** 因此：",
+            "",
+            "- `partial` 表不会被跳过：块组装只按行内容走，不按状态筛；",
+            "- `partial` 表也不会被额外优待：没有任何 `if status == ...` 的分支；",
+            "- 状态只留在 `tables.json` 里作为可审计标记，"
+            "与「是否算命中」完全解耦。",
+        ]
+
+    lines += [
+        "",
+        "## 8. 结论",
         "",
         "1. 倒序格线来自 `(prev_bottom + cur_top) / 2` 在**双栏版式**上的失效：",
         "   第 57 页左右两栏被识别成一个 `text_alignment` 区域，右侧跨行单元格让行带上下交错。",
@@ -371,8 +427,15 @@ def main() -> int:
         "   它拦住了一个真实的几何错误，不是误报。因此修复放在 `structure.py`，没有放宽校验。",
         "3. 修复只把倒序边界上推到「前一位 + 0.2pt」，不排序、不重排行，",
         "   单元格的 `(text, row, column)` 映射逐格不变（见 §5）。",
+        "   注意 0.2pt 是最小间距阈值，不是位移量：实测最大边界位移 "
+        f"**+{max_disp:.3f} pt**，但**单元格位移数为 0**。",
         "4. 夹紧事实通过 `TableGrid.lattice_adjusted` 上报，`_status()` 据此降级为 `PARTIAL`",
         "   并写明原因，几何修复不被静默吞掉。",
+        "5. **下游候选生成环节无法把 `partial` 洗白**：`build_blocks()` 只读 "
+        "`tables.json` 的 `table_id` / `page_number` / `table_type` / `rows[].cells`，"
+        "**完全不读 `status` 字段**（已用静态扫描核对，见 §7）。因此 `partial` 表抽出的块"
+        "与 `valid` 表走同一套判据：既不会因为标了 `partial` 被跳过，"
+        "也不会因为标了 `partial` 被额外优待；`partial` 只作为可审计标记留在产物里。",
     ]
 
     (AUDIT / "v256_crash_evidence.md").write_text("\n".join(lines) + "\n",

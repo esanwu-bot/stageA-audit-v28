@@ -1,0 +1,102 @@
+# bede1f5 对 a11131a 的改动：src/icpdf/parser/structure.py
+#
+# 本文件是全审计包中唯一的源码片段，只包含这处被审改动，不含任何其他实现。
+# 完整 commit：bede1f581945331fa0f213a8be5d1171601639ae
+# 父 commit  ：a11131a80474f3d5bea5ab6fb5204e77b8839eed
+# structure.py blob：fd3ce1607c21ea9edbcebad032ca81a8bc3e6203 -> 39280973ed1bb950b64c65da188abb47d47e7942
+# 内容 sha256（LF）：23b4cd8b926e66e5978a3667da9f6d9418c9ffef45ba4f68e95ac63f2b49c3f4 -> 1e75279f9e408127051a54dfa240c14db063471306a3218767703768489952aa
+diff --git a/src/icpdf/parser/structure.py b/src/icpdf/parser/structure.py
+index fd3ce16..3928097 100644
+--- a/src/icpdf/parser/structure.py
++++ b/src/icpdf/parser/structure.py
+@@ -83,6 +83,12 @@ class TableGrid:
+     # ``_assign_words`` saw them.  Derived cache; physical fields are unchanged.
+     cell_words: dict[int, tuple[TextWord, ...]] = field(default_factory=dict)
+     source: str = "rule_lattice"
++    # True when the row lattice had to be clamped to stay strictly ascending.
++    # Two-column prose detected as one text-alignment region produces
++    # overlapping row bands, so the midpoint formula can emit a boundary that
++    # sits above its predecessor.  The clamp keeps the lattice valid without
++    # reordering rows; the flag carries that fact downstream as evidence.
++    lattice_adjusted: bool = False
+ 
+     @property
+     def n_rows(self) -> int:
+@@ -516,6 +522,8 @@ def _rule_grid(layout: PageLayout, region: TableRegion, params: TableParams) ->
+         additions = [(a + b) / 2.0 for a, b in zip(centers, centers[1:])]
+         ys = _unique(ys + additions, 3.0)
+ 
++    ys, _lattice_adjusted = _monotonic_lattice(ys, bbox[1], bbox[3])
++
+     body_runs = _band_runs(layout, ys, params.cell_gap_pt)
+     members = region.components if len(region.components) > 1 else ()
+ 
+@@ -614,7 +622,8 @@ def _rule_grid(layout: PageLayout, region: TableRegion, params: TableParams) ->
+         cells.append(GridCell(r0, c0, r1 - r0 + 1, c1 - c0 + 1,
+                               (all_xs[c0], ys[r0], all_xs[c1 + 1], ys[r1 + 1])))
+     cells.sort(key=lambda cell: (cell.row, cell.column))
+-    grid = TableGrid(bbox, all_xs, ys, cells, source=region.source)
++    grid = TableGrid(bbox, all_xs, ys, cells, source=region.source,
++                     lattice_adjusted=_lattice_adjusted)
+     _assign_words(layout, grid)
+     return grid
+ 
+@@ -642,6 +651,40 @@ def _column_centers(rows: list[list[TextWord]], gap: float) -> list[float]:
+             if len(cluster) >= minimum_support]
+ 
+ 
++# 行格线最小间距（pt）。
++MIN_ROW_GAP_PT = 0.2
++
++
++def _monotonic_lattice(ys: list[float], lo: float, hi: float
++                       ) -> tuple[list[float], bool]:
++    """把行格线夹成严格递增，且**不改变任何行的序号**。
++
++    为什么不排序：排序会重排行，``GridCell.row`` 与 ``cell_words`` 的索引随之
++    失效，等于把证据打乱。这里只把倒序的那条边界向上推到「前一条 + 最小间距」，
++    行数、行序、每个 cell 归属的行全部不变，只有边界几何被微调。
++
++    可行性：最小间距先压到 ``(hi - lo) / (n - 1)`` 以内，最坏情况整条格线等距
++    塞进 ``lo..hi``，不会越出区域底边。
++
++    返回 (格线, 是否发生过夹紧)。未发生夹紧时逐位等于输入 —— 这是「其他样本
++    输出必须一模一样」的前提。
++    """
++    n = len(ys)
++    if n < 2:
++        return list(ys), False
++    gap = min(MIN_ROW_GAP_PT, (hi - lo) / (n - 1))
++    out = [ys[0]]
++    adjusted = False
++    for value in ys[1:]:
++        floor = out[-1] + gap
++        if value < floor:
++            out.append(floor)
++            adjusted = True
++        else:
++            out.append(value)
++    return out, adjusted
++
++
+ def _alignment_grid(layout: PageLayout, region: TableRegion,
+                     params: TableParams) -> TableGrid:
+     rows = [list(row) for row in region.rows_words]
+@@ -659,6 +702,7 @@ def _alignment_grid(layout: PageLayout, region: TableRegion,
+         cur_top = min(w.bbox[1] for w in current)
+         ys.append((prev_bottom + cur_top) / 2.0)
+     ys.append(region.bbox[3])
++    ys, lattice_adjusted = _monotonic_lattice(ys, region.bbox[1], region.bbox[3])
+ 
+     cells: list[GridCell] = []
+     cell_words: dict[int, tuple[TextWord, ...]] = {}
+@@ -681,7 +725,8 @@ def _alignment_grid(layout: PageLayout, region: TableRegion,
+             cells.append(GridCell(row_index, column, 1, 1, bbox, _words_to_text(group),
+                                   len(group)))
+     return TableGrid(region.bbox, xs, ys, cells, cell_words=cell_words,
+-                     source=region.source)
++                     source=region.source,
++                     lattice_adjusted=lattice_adjusted)
+ 
+ 
+ def recognize_structure(layout: PageLayout, region: TableRegion,

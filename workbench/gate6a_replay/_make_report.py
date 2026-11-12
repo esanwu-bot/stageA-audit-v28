@@ -39,6 +39,21 @@ def pct(x: float) -> str:
     return "%.1f%%" % (100 * x)
 
 
+# 指标字段兼容层：v3 起把 recall → location_rate、hit_rows → located_rows
+# （因为那个数一直是「定位」而不是「命中」），exact_rows 改为严格全字段一致
+# 并剔除 coarse 行。v1/v2 的冻结 metrics.json 仍是旧名，两边都要能读。
+def mloc(m: dict) -> int:
+    return m.get("located_rows", m.get("hit_rows"))
+
+
+def mloc_rate(m: dict) -> float:
+    return m.get("location_rate", m.get("recall"))
+
+
+def mexact_rate(m: dict) -> float:
+    return m["exact_rate"]
+
+
 def main() -> int:
     env = jread("env_snapshot.json")
     man = jread("input_manifest.json")
@@ -50,7 +65,7 @@ def main() -> int:
     detail = cread("eval_detail.csv")
 
     n = m["gold_rows"]
-    hit = m["hit_rows"]
+    hit = mloc(m)
     exact = m["exact_rows"]
     miss = n - hit
     att = m["attribution"]
@@ -91,7 +106,7 @@ def main() -> int:
     A("24 件里 23 件解析成功、1 件（**%s**）在建表校验处崩溃。"
       "105 行 Gold 中 **%d 行能定位到候选块（定位率 %s）**，"
       "其中 **%d 行四项全过、判为命中（命中率 %s）**。"
-      % ("、".join(crash), hit, pct(m["recall"]), exact, pct(m["exact_rate"])))
+      % ("、".join(crash), hit, pct(mloc_rate(m)), exact, pct(mexact_rate(m))))
     A("")
     A("两个数不是一回事，本报告全文严格区分：**定位**只要求找到某个候选块，"
       "**命中**还要求值、单位、符号、页码四项全对（定义见 §4.0）。")
@@ -223,9 +238,9 @@ def main() -> int:
     A("|---|---|---|")
     A("| Gold 行 | 分母 | %d |" % n)
     A("| **定位率** | 定位到候选块的行 / 105 | **%d / 105 = %s** |"
-      % (hit, pct(m["recall"])))
+      % (hit, pct(mloc_rate(m))))
     A("| **命中率** | 四项全过的行 / 105 | **%d / 105 = %s** |"
-      % (exact, pct(m["exact_rate"])))
+      % (exact, pct(mexact_rate(m))))
     A("| 未定位率 | 1 − 定位率 | %s（%d 行 = 无法定位 %d + 解析失败 %d） |"
       % (pct(m["miss_rate"]), miss, att.get("漏提", 0), att.get("解析失败", 0)))
     A("")
@@ -328,7 +343,7 @@ def main() -> int:
         A("| %s | %d |" % (k, kinds[k]))
     A("")
     A("修正前：召回 %s、完全一致 %s；修正后：召回 %s、完全一致 %s。**变差 %d 行**。"
-      % (pct(lm["recall"]), pct(lm["exact_rate"]), pct(m["recall"]), pct(m["exact_rate"]),
+      % (pct(mloc_rate(lm)), pct(mexact_rate(lm)), pct(mloc_rate(m)), pct(mexact_rate(m)),
          kinds["口径调整后变差"]))
     A("")
     A("四处修正，全部是**评估脚本自己没对齐**，与 Parser 无关：")

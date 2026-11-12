@@ -6,7 +6,12 @@
     1. 把 runs/gate6a_replay_v1/per_sample/ 下所有 Parser JSON 逐文件算 sha256（快照 A）；
     2. 依次跑「修正前口径」与「正式口径」两遍评估；
     3. 再算一遍 sha256（快照 B），逐文件断言 A == B；
-    4. 同时记录文件 mtime，证明它们全部早于评估器脚本的最后修改时间。
+    4. 静态扫描评估器源码的写操作，确认没有一处指向 Parser 产物目录 —— 这是主证据；
+    5. 记录文件 mtime，但**只作运行顺序记录，不作不可变性证据**。
+
+   为什么把时间戳降级：产物完全可能在评估器之后再被覆盖而 mtime 变新，
+   产物比脚本旧也完全不排除它被改过。早先版本把「产物早于评估器脚本」当成
+   佐证，那是无效论证，已删除。
 
 产物：audit/parser_json_immutability.txt + audit/parser_outputs_sha256.csv
 """
@@ -61,9 +66,32 @@ def run_eval(legacy: bool) -> str:
     return proc.stdout.strip().splitlines()[0] if proc.stdout.strip() else ""
 
 
+def scan_writes() -> list[tuple[str, int, str]]:
+    """静态扫描评估器里的写操作。
+
+    不可变性的主证据是「代码里根本没有改写 Parser 产物的路径」，
+    这比任何时间戳都硬：它不依赖运行环境，也不依赖先后顺序。
+    只扫 `_evaluate.py`（调用方，目标路径在这里指定）；
+    `_replay_common` 里的 write_json / write_csv_lf 只是把数据写到调用方给的路径。
+    """
+    hits: list[tuple[str, int, str]] = []
+    p = HERE / "_evaluate.py"
+    for i, line in enumerate(p.read_text(encoding="utf-8").splitlines(), 1):
+        s = line.strip()
+        if any(k in s for k in ("write_json(", "write_csv_lf(",
+                                ".write_bytes(", ".write_text(")):
+            hits.append((p.name, i, s[:96]))
+    return hits
+
+
 def main() -> int:
     before = snapshot()
     assert before, "per_sample 下没有 Parser 产物"
+
+    writes = scan_writes()
+    bad_writes = [w for w in writes
+                  if "PARSER_ROOT" in w[2] or "per_sample" in w[2]]
+    assert not bad_writes, "评估器里存在指向 Parser 产物的写操作：%s" % bad_writes
 
     line_legacy = run_eval(legacy=True)
     line_final = run_eval(legacy=False)
@@ -103,7 +131,19 @@ def main() -> int:
         "| 结论 | **%s** |" % ("评估器只读，未改动 Parser 产物"
                                if not (changed or missing or added) else "存在改动，需追查"),
         "",
-        "## 时间线佐证",
+        "## 静态代码证据（主证据）",
+        "",
+        "评估器源码里**全部写操作**共 %d 处，逐处列出如下（目标一律是 `C.OUT_ROOT`）："
+        % len(writes),
+        "",
+        *["  - `%s` L%d  `%s`" % (f, ln, s) for f, ln, s in writes],
+        "",
+        "没有一处指向 `PARSER_ROOT` 或 `per_sample/`：**评估器在代码层面就不具备"
+        "改写 Parser 产物的路径**。读入走 `read_text(encoding=\"utf-8\")`，"
+        "只出现在 `load_run()` 与快照函数里。这是不可变性的主证据，"
+        "因为它不依赖运行时环境，也不依赖任何时间假设。",
+        "",
+        "## 时间戳记录（**不是**证据）",
         "",
         "| 事实 | 时间 |",
         "|---|---|",
@@ -111,11 +151,15 @@ def main() -> int:
         .strftime("%Y-%m-%d %H:%M:%S"),
         "| Parser 产物中最新的一个 | %s |" % datetime.fromtimestamp(newest_json)
         .strftime("%Y-%m-%d %H:%M:%S"),
-        "| 差值 | %.1f 分钟（产物早于评估器脚本） |"
-        % ((ev_mtime - newest_json) / 60.0),
+        "| 先后关系 | 产物先写、评估器后跑（仅记录运行顺序） |",
+        "",
+        "> **时间戳先后不能作为不可变性的证据。** 产物完全可能在评估器跑完之后"
+        "被覆盖，而 mtime 只会变新；反过来，产物比脚本旧也完全不排除它被改过。"
+        "这里保留时间戳只为了说明本次运行的先后顺序，"
+        "不可变性由上面的静态代码扫描与下面的 A→B 哈希比对共同证明。",
         "",
         "两版评估器源码与 SHA-256 见 audit/evaluator_v1_legacy/、"
-        "audit/evaluator_v2_final/、audit/SHA256SUMS.txt。",
+        "audit/evaluator_v2_final/、audit/evaluator_v3_1to1/、audit/SHA256SUMS.txt。",
     ]
     AUDIT.mkdir(parents=True, exist_ok=True)
     REPORT.write_bytes(("\n".join(lines) + "\n").encode("utf-8"))

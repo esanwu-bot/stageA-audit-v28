@@ -1,0 +1,1030 @@
+{
+  "schema_version": "3.1",
+  "evaluator": "evaluator_v3_1to1",
+  "parser_root": "E:\\workspace\\icpdf-extractor\\runs\\gate6a_replay_v2_postfix",
+  "parser_rerun": false,
+  "matching": {
+    "strategy": "one_to_one_consumption",
+    "granularity": "physical_row",
+    "order": "tier asc -> best_row_cover desc -> fewer_candidates first -> document order",
+    "blocks_total": 22943,
+    "physical_rows_consumed": 104,
+    "parent_blocks_shared": 13,
+    "parent_blocks_with_duplicate_row": 0,
+    "rows_differing_from_v2": 1,
+    "rows_lost_vs_v2": 0
+  },
+  "gold_rows": 105,
+  "samples": 24,
+  "located_rows": 104,
+  "location_rate": 0.9905,
+  "strict_hit_rows": 82,
+  "strict_hit_rate": 0.781,
+  "soft_hit_rows": 7,
+  "soft_hit_rate": 0.0667,
+  "exact_rows": 82,
+  "exact_rate": 0.781,
+  "row_verified_hit_rows": 82,
+  "row_verified_hit_rate": 0.781,
+  "coarse_rows": 8,
+  "miss_rate": 0.0095,
+  "match_mode": {
+    "token": 67,
+    "value": 4,
+    "text": 28,
+    "by_value_symbol": 5,
+    "none": 1
+  },
+  "attribution": {
+    "完全一致": 89,
+    "数值错": 6,
+    "evidence page 错": 3,
+    "symbol 错配": 5,
+    "单位错": 1,
+    "漏提": 1
+  },
+  "reference_only": {
+    "condition_match": 87,
+    "note": "condition 仅作参考，不参与命中判定（Gold 的 condition 常来自列头，Parser 块文本不携带该语义）"
+  },
+  "candidates": {
+    "blocks_total": 22943,
+    "blocks_on_gold_pages": 430,
+    "extra_on_gold_pages": 348,
+    "dup_conflict": 3,
+    "candidate_per_gold_row": 4.1
+  },
+  "field_level": {
+    "num_ok": 95,
+    "unit_ok": 100,
+    "unit_ok_strict": 89,
+    "page_ok": 101
+  },
+  "definitions": {
+    "located_rows": "挂上候选块即算，不看值/单位/符号/页码",
+    "strict_hit_rows": "located 且 值/单位/页码 全过 且 NOT coarse",
+    "soft_hit_rows": "同上但 coarse=True（命中落在 >=5 行的大块里且非 token 匹配）",
+    "exact_rows": "同 strict_hit_rows，仅表示严格全字段一致",
+    "row_verified_hit_rows": "strict 且 Gold 的数值确实落在被指派的那一物理行上",
+    "condition_match": "参考指标，不计入任何命中率"
+  },
+  "per_sample": {
+    "V003": {
+      "pages": 224,
+      "tables": 364,
+      "blocks": 3950,
+      "gold_pages": 3,
+      "page_blocks": 68,
+      "extra_candidates": 63,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 4,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p101-t01-r03",
+          "page": 101,
+          "text": "VDDR_CORE RAM supply -0.3 1.05 V"
+        },
+        {
+          "block_id": "p101-t01-r04",
+          "page": 101,
+          "text": "VDD_MMC0 MMC0 PHY core supply -0.3 1.05 V"
+        },
+        {
+          "block_id": "p101-t01-r05",
+          "page": 101,
+          "text": "VDD_DLL_MMC0 MMC0 PLL analog supply -0.3 1.05 V"
+        },
+        {
+          "block_id": "p101-t01-r06",
+          "page": 101,
+          "text": "VDDA_0P85_SERDES0 SERDES0 0.85V analog supply -0.3 1.05 V"
+        },
+        {
+          "block_id": "p101-t01-r07",
+          "page": 101,
+          "text": "VDDA_0P85_SERDES0_C SERDES0 clock 0.85V analog supply -0.3 1.05 V"
+        }
+      ]
+    },
+    "V011": {
+      "pages": 16,
+      "tables": 20,
+      "blocks": 181,
+      "gold_pages": 1,
+      "page_blocks": 7,
+      "extra_candidates": 5,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 2,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r01",
+          "page": 3,
+          "text": "TEST\nCONDITIONS V CC 25 o C -40 o C TO 85 o C -55 o C TO 125 o C UNITS"
+        },
+        {
+          "block_id": "p003-t01-r10",
+          "page": 3,
+          "text": "High Level Output V OH V IH  or V IL -0.02 2 1.9 - - 1.9 - 1.9 - V Vol"
+        },
+        {
+          "block_id": "p003-t01-r16",
+          "page": 3,
+          "text": "Low Level Output V OL V IH  or V IL 0.02 2 - - 0.1 - 0.1 - 0.1 V Volta"
+        },
+        {
+          "block_id": "p003-t01-r22",
+          "page": 3,
+          "text": "Input Leakage\nCurrent I I V CC  or\nGND - 6 - - ± 0.1 - ± 1 - ± 1 µ A"
+        },
+        {
+          "block_id": "p003-t01-r23",
+          "page": 3,
+          "text": "Quiescent Device\nCurrent I CC V CC  or\nGND 0 6 - - 8 - 80 - 160 µ A"
+        }
+      ]
+    },
+    "V038": {
+      "pages": 97,
+      "tables": 199,
+      "blocks": 1141,
+      "gold_pages": 1,
+      "page_blocks": 10,
+      "extra_candidates": 5,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p009-t01-r07",
+          "page": 9,
+          "text": "VD11 (5) –0.3 1.32 (11) Voltage difference between any 1.9 V supply (V"
+        },
+        {
+          "block_id": "p009-t01-r12",
+          "page": 9,
+          "text": "SE_CLK (4) –0.5 VA19 + 0.5 (8) PLLREFO+, PLLREFO– (2) –0.5 VREFO + \n0."
+        },
+        {
+          "block_id": "p009-t01-r20",
+          "page": 9,
+          "text": "Peak RF input power (INA+, INA–, INB+, INB–, INC+, \nINC–, IND+, IND–) "
+        },
+        {
+          "block_id": "p009-t02-r02",
+          "page": 9,
+          "text": "Human-body model (HBM), per AEC Q100-002 (1)\nV Electrostatic discharge"
+        },
+        {
+          "block_id": "p009-t02-r03",
+          "page": 9,
+          "text": "(ESD)\nCharged-device model (CDM), per AEC Q100-011 750"
+        }
+      ]
+    },
+    "V077": {
+      "pages": 155,
+      "tables": 215,
+      "blocks": 2439,
+      "gold_pages": 1,
+      "page_blocks": 14,
+      "extra_candidates": 11,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 3,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 2,
+      "extra_examples": [
+        {
+          "block_id": "p038-t01-r02",
+          "page": 38,
+          "text": "Supply voltage, Core 375 MHz version 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p038-t01-r08",
+          "page": 38,
+          "text": "VSS Supply ground\n(VSS, PLL0_VSSA, OSCVSS (1) , RTC_VSS (1) ) 0 0 0 V "
+        },
+        {
+          "block_id": "p038-t01-r11",
+          "page": 38,
+          "text": "High-level input voltage, RTC_XI 0.7*RTC_CVDD V V (2)\nIL Low-level inp"
+        },
+        {
+          "block_id": "p038-t01-r14",
+          "page": 38,
+          "text": "Low-level input voltage, RTC_XI 0.3*RTC_CVDD V"
+        },
+        {
+          "block_id": "p038-t01-r15",
+          "page": 38,
+          "text": "V HYS Input Hysteresis 160 mV"
+        }
+      ]
+    },
+    "V097": {
+      "pages": 17,
+      "tables": 22,
+      "blocks": 188,
+      "gold_pages": 2,
+      "page_blocks": 43,
+      "extra_candidates": 40,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 3,
+      "soft": 0,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r02",
+          "page": 3,
+          "text": "V S–  to V S+ Power supply ±6.5 V DC Internal power dissipation See  T"
+        },
+        {
+          "block_id": "p003-t01-r05",
+          "page": 3,
+          "text": "V I Input voltage (V S– ) – 0.5V (V S+ ) + 0.3V V"
+        },
+        {
+          "block_id": "p003-t01-r06",
+          "page": 3,
+          "text": "T J Junction temperature 150 °C"
+        },
+        {
+          "block_id": "p003-t01-r07",
+          "page": 3,
+          "text": "T stg Storage temperature –65 125 °C"
+        },
+        {
+          "block_id": "p003-t02-r02",
+          "page": 3,
+          "text": "Human-body model (HBM), per ANSI/ESDA/JEDEC JS-001 (1)\nV Electrostatic"
+        }
+      ]
+    },
+    "V101": {
+      "pages": 11,
+      "tables": 14,
+      "blocks": 127,
+      "gold_pages": 1,
+      "page_blocks": 6,
+      "extra_candidates": 3,
+      "dup_conflict": 0,
+      "gold_rows": 9,
+      "located": 9,
+      "strict": 9,
+      "soft": 0,
+      "consumed_physical_rows": 9,
+      "parent_blocks_shared": 3,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r01",
+          "page": 3,
+          "text": "TEST\nCONDITIONS V CC 25 o C -40 o C TO 85 o C -55 o C TO 125 o C UNITS"
+        },
+        {
+          "block_id": "p003-t01-r16",
+          "page": 3,
+          "text": "Low Level Output V OL V IH  or V IL 0.02 2 - - 0.1 - 0.1 - 0.1 V Volta"
+        },
+        {
+          "block_id": "p003-t01-r22",
+          "page": 3,
+          "text": "Input Leakage\nCurrent I I V CC  or\nGND - 6 - - ± 0.1 - ± 1 - ± 1 µ A"
+        }
+      ]
+    },
+    "V111": {
+      "pages": 25,
+      "tables": 33,
+      "blocks": 239,
+      "gold_pages": 2,
+      "page_blocks": 21,
+      "extra_candidates": 18,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 1,
+      "soft": 2,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p006-t02-r02",
+          "page": 6,
+          "text": "Human-body model (HBM), per ANSI/ESDA/JEDEC JS-001\nV Electrostatic dis"
+        },
+        {
+          "block_id": "p006-t02-r03",
+          "page": 6,
+          "text": "(ESD)\nCharged-device model (CDM), per JEDEC specification JESD22-C101 "
+        },
+        {
+          "block_id": "p006-t03-r02",
+          "page": 6,
+          "text": "Supply Voltage 1.71 1.80 1.89 V"
+        },
+        {
+          "block_id": "p006-t03-r03",
+          "page": 6,
+          "text": "Operating Free Air Temperature (T A) −40 +25 +105 °C"
+        },
+        {
+          "block_id": "p006-t03-r04",
+          "page": 6,
+          "text": "Differential Load Impedance 80 100 120 Ω"
+        }
+      ]
+    },
+    "V145": {
+      "pages": 43,
+      "tables": 92,
+      "blocks": 559,
+      "gold_pages": 1,
+      "page_blocks": 15,
+      "extra_candidates": 12,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 3,
+      "soft": 0,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p012-t01-r02",
+          "page": 12,
+          "text": "IOUT active, 0 mA, ±24 mA range 1.2 mA"
+        },
+        {
+          "block_id": "p012-t01-r03",
+          "page": 12,
+          "text": "IVNEG_IN\nCurrent Flowing into VNEG_IN_x\n_x VOUT active, No load, 0 to "
+        },
+        {
+          "block_id": "p012-t01-r06",
+          "page": 12,
+          "text": "IVSENSE\nCurrent Flowing into VSENSEN\nN VOUT disabled 20 nA"
+        },
+        {
+          "block_id": "p012-t01-r09",
+          "page": 12,
+          "text": "0 to10 V, to ±0.03% FSR RL = 1K||CL\n= 200 pF 15 µs"
+        },
+        {
+          "block_id": "p012-t01-r10",
+          "page": 12,
+          "text": "0 to 5 V, to ±0.03% FSR RL = 1K||CL\n= 200 pF 10 µs"
+        }
+      ]
+    },
+    "V146": {
+      "pages": 11,
+      "tables": 14,
+      "blocks": 64,
+      "gold_pages": 1,
+      "page_blocks": 12,
+      "extra_candidates": 8,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 1,
+      "extra_examples": [
+        {
+          "block_id": "p004-t01-r06",
+          "page": 4,
+          "text": "VH All inputs 0.2 V"
+        },
+        {
+          "block_id": "p004-t01-r08",
+          "page": 4,
+          "text": "IIH VCC = 5.25 V, VIN = 2.7 V ± 1 µ A"
+        },
+        {
+          "block_id": "p004-t01-r09",
+          "page": 4,
+          "text": "IIL VCC = 5.25 V, VIN = 0.5 V ± 1 µ A IOS ‡ VCC = 5.25 V, VOUT = 0 V –"
+        },
+        {
+          "block_id": "p004-t01-r11",
+          "page": 4,
+          "text": "Ioff VCC = 0 V, VOUT = 4.5 V ± 1 µ A"
+        },
+        {
+          "block_id": "p004-t01-r12",
+          "page": 4,
+          "text": "ICC VCC = 5.25 V, VIN  ≤  0.2 V, VIN  ≥ VCC – 0.2 V 0.1 0.2 mA ∆ ICC V"
+        }
+      ]
+    },
+    "V162": {
+      "pages": 23,
+      "tables": 31,
+      "blocks": 246,
+      "gold_pages": 1,
+      "page_blocks": 0,
+      "extra_candidates": 0,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 0,
+      "soft": 0,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": []
+    },
+    "V173": {
+      "pages": 12,
+      "tables": 18,
+      "blocks": 103,
+      "gold_pages": 1,
+      "page_blocks": 11,
+      "extra_candidates": 9,
+      "dup_conflict": 1,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 1,
+      "soft": 2,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 1,
+      "extra_examples": [
+        {
+          "block_id": "p004-t01-r03",
+          "page": 4,
+          "text": "V I (2) Input voltage range –0.5 7 V"
+        },
+        {
+          "block_id": "p004-t02-r02",
+          "page": 4,
+          "text": "Human body model (HBM), per ANSI/ESDA/JEDEC JS-001, all pins (1) ±1500"
+        },
+        {
+          "block_id": "p004-t02-r03",
+          "page": 4,
+          "text": "V (ESD) Electrostatic discharge Charged device model (CDM), per JEDEC "
+        },
+        {
+          "block_id": "p004-t03-r02",
+          "page": 4,
+          "text": "V CC Supply voltage 4.5 5.5 V"
+        },
+        {
+          "block_id": "p004-t03-r03",
+          "page": 4,
+          "text": "V IH High-level input voltage 2 V"
+        }
+      ]
+    },
+    "V199": {
+      "pages": 7,
+      "tables": 11,
+      "blocks": 54,
+      "gold_pages": 1,
+      "page_blocks": 15,
+      "extra_candidates": 11,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 4,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 1,
+      "extra_examples": [
+        {
+          "block_id": "p001-t01-r01",
+          "page": 1,
+          "text": "T A  = 25°C TYPICAL VALUE UNIT"
+        },
+        {
+          "block_id": "p001-t01-r03",
+          "page": 1,
+          "text": "Q g Gate Charge Total (4.5V) 7.7 nC"
+        },
+        {
+          "block_id": "p001-t01-r04",
+          "page": 1,
+          "text": "Q gd Gate Charge Gate-to-Drain 2.4 nC R Drain-to-Source On-Resistance "
+        },
+        {
+          "block_id": "p001-t01-r06",
+          "page": 1,
+          "text": "DS(on) V GS  = 10V 5.3 mΩ"
+        },
+        {
+          "block_id": "p001-t01-r07",
+          "page": 1,
+          "text": "V GS(th) Threshold Voltage 1.9 V"
+        }
+      ]
+    },
+    "V242": {
+      "pages": 199,
+      "tables": 356,
+      "blocks": 1782,
+      "gold_pages": 1,
+      "page_blocks": 14,
+      "extra_candidates": 9,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p006-t01-r07",
+          "page": 6,
+          "text": "DCAP to DGND –0.3 2.2"
+        },
+        {
+          "block_id": "p006-t01-r08",
+          "page": 6,
+          "text": "RCAPy to AGND –0.3 2.2"
+        },
+        {
+          "block_id": "p006-t01-r09",
+          "page": 6,
+          "text": "Analog input voltage CPy, CNy, VPy, VNy, Vxy AGND – 1.6 AVDD + 0.3 V"
+        },
+        {
+          "block_id": "p006-t01-r10",
+          "page": 6,
+          "text": "CSn, SCLK, SDI, SDO, RESETn, DRDYn, CLK, GPIO0/MHD, \nGPIO1, GPIO2/FAUL"
+        },
+        {
+          "block_id": "p006-t01-r11",
+          "page": 6,
+          "text": "Digital input voltage GPIO0A, GPIO1A AGNDA – 0.3 AVDD + 0.3"
+        }
+      ]
+    },
+    "V244": {
+      "pages": 144,
+      "tables": 189,
+      "blocks": 2351,
+      "gold_pages": 1,
+      "page_blocks": 27,
+      "extra_candidates": 24,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 1,
+      "extra_examples": [
+        {
+          "block_id": "p044-t01-r07",
+          "page": 44,
+          "text": "PLL0_VDDA PLL0 Supply Voltage 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p044-t01-r08",
+          "page": 44,
+          "text": "PLL1_VDDA PLL1 Supply Voltage 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p044-t01-r09",
+          "page": 44,
+          "text": "USB_CVDD USB0 Core Logic Supply Voltage 1.14 1.2 1.32 V"
+        },
+        {
+          "block_id": "p044-t01-r10",
+          "page": 44,
+          "text": "USB0_VDDA18 USB0 PHY Supply Voltage 1.71 1.8 1.89 V"
+        },
+        {
+          "block_id": "p044-t01-r11",
+          "page": 44,
+          "text": "USB0_VDDA33 USB0 PHY Supply Voltage 3.15 3.3 3.45 V"
+        }
+      ]
+    },
+    "V256": {
+      "pages": 149,
+      "tables": 337,
+      "blocks": 1762,
+      "gold_pages": 1,
+      "page_blocks": 35,
+      "extra_candidates": 30,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 0,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p013-t01-r07",
+          "page": 13,
+          "text": "0V<V CELL < 5V; -40 o C<T A <125 o C -7.9 6.9 mV"
+        },
+        {
+          "block_id": "p013-t01-r08",
+          "page": 13,
+          "text": "0.08V<V IN <0.2V, 85 o C<T A <125 o C -0.20 0.20 %"
+        },
+        {
+          "block_id": "p013-t01-r09",
+          "page": 13,
+          "text": "V ACC_MAIN_GPIO_RA\nTIO Measured GPIO from Main ADC/\nmeasured TSREF fro"
+        },
+        {
+          "block_id": "p013-t01-r10",
+          "page": 13,
+          "text": "4.6V<V IN <4.8V, -40 o C<T A <-20 o C -0.30 0.30 %"
+        },
+        {
+          "block_id": "p013-t01-r11",
+          "page": 13,
+          "text": "0.08V<V IN <0.2V, 85 o C<T A <125 o C -0.20 0.20 %"
+        }
+      ]
+    },
+    "V271": {
+      "pages": 230,
+      "tables": 359,
+      "blocks": 5422,
+      "gold_pages": 1,
+      "page_blocks": 17,
+      "extra_candidates": 12,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p117-t01-r04",
+          "page": 117,
+          "text": "vdda_wkup_bg_bb Supply voltage range for wake-up domain (internal\nLDO)"
+        },
+        {
+          "block_id": "p117-t01-r05",
+          "page": 117,
+          "text": "vdda_dplls_dll Supply voltage for MPU, IVA, Core DPLLs, and DLL – 0.5 "
+        },
+        {
+          "block_id": "p117-t01-r06",
+          "page": 117,
+          "text": "vdda_dpll_per Supply voltage for DPLLs (peripherals) – 0.5 2.1 V"
+        },
+        {
+          "block_id": "p117-t01-r10",
+          "page": 117,
+          "text": "vdds_mem Supply voltage for memory buffers – 0.5 2.1 V"
+        },
+        {
+          "block_id": "p117-t01-r11",
+          "page": 117,
+          "text": "vdds_mmc1 Supply voltage range for mmc1 dual voltage IOs – 0.5 3.8 V"
+        }
+      ]
+    },
+    "V290": {
+      "pages": 4,
+      "tables": 6,
+      "blocks": 30,
+      "gold_pages": 1,
+      "page_blocks": 16,
+      "extra_candidates": 13,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 3,
+      "soft": 0,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p003-t01-r05",
+          "page": 3,
+          "text": "V IC Input Clamp Voltage V CC  = Min, I I  =  − 18 mA − 1.0 − 1.2 V"
+        },
+        {
+          "block_id": "p003-t01-r06",
+          "page": 3,
+          "text": "V OH Output Voltage HIGH V CC  = Min, I OH  =  − 10 mA 2.5 3.5 V V V I"
+        },
+        {
+          "block_id": "p003-t01-r09",
+          "page": 3,
+          "text": "I I Input Current at Maximum Input\nVoltage V CC  = Max, V I Max  = 5.5"
+        },
+        {
+          "block_id": "p003-t01-r10",
+          "page": 3,
+          "text": "I IH Input Current HIGH V CC  = Max, V IH  = 2.7V 25 μ A"
+        },
+        {
+          "block_id": "p003-t01-r11",
+          "page": 3,
+          "text": "I IL Input Current LOW V CC  = Max, V IL  = 0.5V − 200 μ A"
+        }
+      ]
+    },
+    "V304": {
+      "pages": 14,
+      "tables": 18,
+      "blocks": 89,
+      "gold_pages": 1,
+      "page_blocks": 11,
+      "extra_candidates": 10,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 0,
+      "soft": 3,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 1,
+      "extra_examples": [
+        {
+          "block_id": "p004-t01-r10",
+          "page": 4,
+          "text": "T stg Storage temperature –65 150 °C"
+        },
+        {
+          "block_id": "p004-t02-r02",
+          "page": 4,
+          "text": "Electrostatic Human body model (HBM), per ANSI/ESDA/JEDEC JS-001 (1) +"
+        },
+        {
+          "block_id": "p004-t02-r03",
+          "page": 4,
+          "text": "V (ESD) discharge Charged-device model (CDM), per JEDEC specification "
+        },
+        {
+          "block_id": "p004-t03-r02",
+          "page": 4,
+          "text": "V CC Supply voltage 2.3 3.6 V"
+        },
+        {
+          "block_id": "p004-t03-r03",
+          "page": 4,
+          "text": "V CC  = 2.3 V to\n2.7 V 1.7 5.5 V"
+        }
+      ]
+    },
+    "V319": {
+      "pages": 9,
+      "tables": 12,
+      "blocks": 49,
+      "gold_pages": 1,
+      "page_blocks": 5,
+      "extra_candidates": 2,
+      "dup_conflict": 0,
+      "gold_rows": 4,
+      "located": 3,
+      "strict": 1,
+      "soft": 0,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p005-t01-r02",
+          "page": 5,
+          "text": "D\nFK\nJ\nN\nPW\nW 950 mW\n1375 mW\n1375 mW\n1150 mW\n700 mW\n700 mW 7.6 mW/ ° C"
+        },
+        {
+          "block_id": "p005-t02-r06",
+          "page": 5,
+          "text": "TLV2354M –55 125"
+        }
+      ]
+    },
+    "V320": {
+      "pages": 58,
+      "tables": 101,
+      "blocks": 583,
+      "gold_pages": 1,
+      "page_blocks": 11,
+      "extra_candidates": 7,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 4,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 1,
+      "extra_examples": [
+        {
+          "block_id": "p012-t01-r08",
+          "page": 12,
+          "text": "Pin voltage (2) ALARM, SDO, SDIO, SCLK, SDENB, SLEEP, RESETB, TESTMODE"
+        },
+        {
+          "block_id": "p012-t01-r11",
+          "page": 12,
+          "text": "LPF 0.5 PLLAVDD + 0.5V V"
+        },
+        {
+          "block_id": "p012-t01-r12",
+          "page": 12,
+          "text": "Peak input current (any input) 20 mA Peak total input current (all inp"
+        },
+        {
+          "block_id": "p012-t02-r02",
+          "page": 12,
+          "text": "Human-body model (HBM), per ANSI/ESDA/JEDEC JS-001 (1) ±2000 V"
+        },
+        {
+          "block_id": "p012-t03-r02",
+          "page": 12,
+          "text": "Recommended operating junction temperature 105 °C"
+        }
+      ]
+    },
+    "V336": {
+      "pages": 8,
+      "tables": 11,
+      "blocks": 72,
+      "gold_pages": 1,
+      "page_blocks": 14,
+      "extra_candidates": 10,
+      "dup_conflict": 0,
+      "gold_rows": 4,
+      "located": 4,
+      "strict": 4,
+      "soft": 0,
+      "consumed_physical_rows": 4,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p005-t01-r09",
+          "page": 5,
+          "text": "V TL Differential-Input Low Threshold\nVoltage V CC  = 4.5V & 5.5V,\nV C"
+        },
+        {
+          "block_id": "p005-t01-r13",
+          "page": 5,
+          "text": "I IH Logical \"1\" Enable Input Current V CC  = 5.5V, V IH  = 2.7V 10 µA"
+        },
+        {
+          "block_id": "p005-t01-r14",
+          "page": 5,
+          "text": "I IL Logical \"0\" Enable Input Current V CC  = 5.5V, V IL  = 0.4V -100 "
+        },
+        {
+          "block_id": "p005-t01-r15",
+          "page": 5,
+          "text": "I Output Short Circuit Current V CC  = 4.5V, V O  = 0V See (3) -85 -15"
+        },
+        {
+          "block_id": "p005-t01-r16",
+          "page": 5,
+          "text": "OS V CC  = 5.5V, V O  = 0V -85 -15 mA 1, 2, 3"
+        }
+      ]
+    },
+    "V345": {
+      "pages": 51,
+      "tables": 77,
+      "blocks": 376,
+      "gold_pages": 1,
+      "page_blocks": 14,
+      "extra_candidates": 10,
+      "dup_conflict": 2,
+      "gold_rows": 4,
+      "located": 4,
+      "strict": 4,
+      "soft": 0,
+      "consumed_physical_rows": 4,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p004-t02-r02",
+          "page": 4,
+          "text": "Electrostatic  Human body model (HBM), per ANSI/ESDA/JEDEC JS-001, all"
+        },
+        {
+          "block_id": "p004-t02-r03",
+          "page": 4,
+          "text": "(ESD) discharge Charged device model (CDM), per ANSI/ESDA/JEDEC JS-002"
+        },
+        {
+          "block_id": "p004-t03-r02",
+          "page": 4,
+          "text": "V DD Positive supply voltage to ground (AGND) 1.7 5.5 V"
+        },
+        {
+          "block_id": "p004-t03-r03",
+          "page": 4,
+          "text": "V REF External reference to ground (AGND) 1.7 V DD V"
+        },
+        {
+          "block_id": "p004-t03-r04",
+          "page": 4,
+          "text": "V IH Digital input high voltage, 1.7 V < V DD  ≤ 5.5 V 1.62 V"
+        }
+      ]
+    },
+    "V346": {
+      "pages": 81,
+      "tables": 124,
+      "blocks": 670,
+      "gold_pages": 2,
+      "page_blocks": 14,
+      "extra_candidates": 9,
+      "dup_conflict": 0,
+      "gold_rows": 5,
+      "located": 5,
+      "strict": 5,
+      "soft": 0,
+      "consumed_physical_rows": 5,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p008-t02-r02",
+          "page": 8,
+          "text": "Human-body model (HBM), per ANSI/ESDA/JEDEC JS-001 (1)\nV Electrostatic"
+        },
+        {
+          "block_id": "p008-t02-r03",
+          "page": 8,
+          "text": "(ESD) Charged-device model (CDM), per JEDEC specification JESD22-C101 "
+        },
+        {
+          "block_id": "p009-t01-r03",
+          "page": 9,
+          "text": "Supply voltage range AVDD 1.8 1.9 2.0"
+        },
+        {
+          "block_id": "p009-t01-r04",
+          "page": 9,
+          "text": "DVDD 1.7 1.9 2.0"
+        },
+        {
+          "block_id": "p009-t01-r05",
+          "page": 9,
+          "text": "IOVDD 1.1 1.15 1.2"
+        }
+      ]
+    },
+    "V349": {
+      "pages": 51,
+      "tables": 78,
+      "blocks": 466,
+      "gold_pages": 2,
+      "page_blocks": 30,
+      "extra_candidates": 27,
+      "dup_conflict": 0,
+      "gold_rows": 3,
+      "located": 3,
+      "strict": 3,
+      "soft": 0,
+      "consumed_physical_rows": 3,
+      "parent_blocks_shared": 0,
+      "extra_examples": [
+        {
+          "block_id": "p005-t01-r02",
+          "page": 5,
+          "text": "Supply voltage range, AVDD, IOVDD –0.3 2.1 V"
+        },
+        {
+          "block_id": "p005-t01-r03",
+          "page": 5,
+          "text": "Supply voltage range, GND, IOGND, REFGND –0.3 0.3 V"
+        },
+        {
+          "block_id": "p005-t01-r04",
+          "page": 5,
+          "text": "Voltage applied to input AINP/M, CLKP/M, VREF, REFBUF, D3 (DCLKIN) –0."
+        },
+        {
+          "block_id": "p005-t01-r05",
+          "page": 5,
+          "text": "pins PDN, RESET, SCLK, SEN, SDIO –0.3 MIN(2.1, AVDD+0.3)"
+        },
+        {
+          "block_id": "p005-t01-r06",
+          "page": 5,
+          "text": "Junction temperature, T J 105 °C"
+        }
+      ]
+    }
+  }
+}
