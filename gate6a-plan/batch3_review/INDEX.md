@@ -810,3 +810,99 @@ CSV / PROVENANCE 字节一致，7 处 `approved_by` 与代录入行
 B4（5 件：V077 V130 V290 V347 V041）、SCAN（3 件按 SOP 标 EXCLUDED）
 仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main
 （`a11131a`）更新并 push。两仓 main 本轮仍未动。
+
+## 16. B3 定稿：notes 清理、19 列 FINAL 与 v1.6 双模式机检
+
+B3 从「20 行草稿」走到「可进语料的定稿」。本节只处理 B3，
+B1 / B2 的定稿数据一格未动。
+
+### 16.1 真源与 notes 清理
+
+唯一真源是 PM 签字的 `Batch3_B3_ANNOTATED.xlsx`（20 行 x 15 列，全部
+`CONFIRMED`、`reviewer` 全部 `wuxiaoxian`、空 `symbol` 0）。原件的逐格副本
+存为 `Batch3_B3_SIGNED_original.xlsx`，供 Reviewer 反查。
+
+20 行 notes 仍是草稿措辞（`VLM 草稿，须对左图核` / `low_confidence` /
+`请确认` 两类后缀）。按裁定统一改为 `人工已核对 PDF 原图并确认`，
+清理前全文留在 `Batch3_B3_notes_before_cleanup.txt`。
+
+与签字版逐格比对的结果（`Batch3_B3_regen_report.txt` 为原始 stdout）：
+
+| 列 | 变化格数 | 说明 |
+| --- | --- | --- |
+| `notes` | 20 | 全部改为定稿口径 |
+| `condition` | 5 | 仅 V256 五行，见 16.3 |
+| `min/typ/max/unit/symbol/parameter_name` | **0** | 核心数值一字未动 |
+| `row_status` / `reviewer` / `confidence_score` | **0** | 状态与签名一格未动 |
+
+定稿里 `VLM 草稿` / `low_confidence` / `请确认` 三类残留均为 0。
+
+### 16.2 device_model 逐件按 PDF 封面原文登记
+
+不按文件名猜，四件都回到 p1 原文核过：
+
+| 样本 | 归档名 | 封面原文依据 | device_model |
+| --- | --- | --- | --- |
+| V146 | `CY74FCT399ATSOCT__cy74fct399t.pdf` | p1 首行 `CY74FCT399T` | `CY74FCT399T` |
+| V271 | `DM3725CBC100__dm3725.pdf` | p1 首行 `DM3730, DM3725`，文件名带 DM3725CBC100 | `DM3725` |
+| V256 | `BQ79652PAPRQ1.pdf`（签字简写名） | p1 器件行 `BQ79656-Q1, BQ79654-Q1, BQ79652-Q1` | `BQ79652-Q1` |
+| V244 | `AM1802BZWTD3__am1802.pdf` | p1 `AM1802` | `AM1802` |
+
+V256 的封面主标题只写族名 `BQ7965x-Q1`（全书仅 4 处），器件行里能核到
+具体型号 `BQ79652-Q1`（全书 439 处），故取后者。签字名 `BQ79652PAPRQ1.pdf`
+与语料实文件名 `BQ79652PAPRQ1__bq79652-q1.pdf` 不同，按 B2 的做法在
+`b3_pdfs/` 下建硬链接（同一份字节），**不改签字的 file_name 一格**。
+
+### 16.3 V256 五行的 condition 落进定稿
+
+签字版的 `condition` 列**全为空**——那份导出于回填之前。定稿按 15.7 的
+原图绑定结果写入五行，且不重抄一份条件表：`_make_b3_final.py` 直接
+import 草稿生成器的 `CONDITION_BACKFILL`，与草稿共用唯一真源，
+并断言两边逐字相同、五行互不相同、行数不符即退出。
+
+原文断言用 v1.6 同一个 `nos()`，只对 `°C → oC` 做一次替换（PDF 文本层
+把度数符号抽成 `o`，实测 p13 写作 `2V<VCELL<4.5V; TA=25oC`）；
+落盘仍写 `°C`，因为 v1.6 只用 condition 做分组键、不做原文断言。
+
+效果：判重键 `(样本, 符号, condition, 单位, 页码, min, typ, max)` 20 行
+全唯一，V256 第 2、3 行（MIN/MAX 同为 -7.8 / 6.6）不再被判成重复占位。
+
+### 16.4 签名口径：5 格待补签，机器不代签
+
+这 5 格是签字之后新增的数据，PM 没看过，因此：
+
+* 15 列签字值逐格照抄，`reviewer` 与 `row_status` 不动；
+* 5 行 `entered_by=WB_Agent`（明确标出是 WB 按原图代录入），
+  `approved_by` **留空**，`human_adjudication` 全部清空；
+* 另出 `Batch3_B3_FINAL_TO_SIGN.xlsx`，把这 5 个 `condition` 格与对应
+  `approved_by` 格标红，PM 打开即可补签；
+* 待补签的稳定 ID 清单落在 `Batch3_B3_APPROVAL_PENDING.txt`（按
+  `sample_no+file_name+evidence_page+symbol+parameter_name+min+typ+max+unit`
+  九字段，不用行号）。
+
+补签后按 B2 同一套 `load_approval_map` / `apply_approval` 流程继承，
+不按行号、不自动补齐。**当前定稿是「待补签」状态，不是已封卷状态。**
+
+### 16.5 v1.6 机检：两种模式都 OK=20
+
+| 模式 | 页文本来源 | 溯源 | 结果 |
+| --- | --- | --- | --- |
+| PDF | PDF 原件 | 三处一致，PDF 实算哈希已比对 | **`OK=20`**，无 ERROR / SUSPECT / CANNOT_VERIFY |
+| 离线 | `page_text_batch3_b3.json` | 三处一致，哈希跳过（非 PDF 模式） | **`OK=20`**，同上 |
+
+原始 stdout：`b3_validation_raw/b3_final_pdf_mode.txt`、
+`b3_validation_raw/b3_final_sidecar_mode.txt`。
+
+### 16.6 本轮新增文件
+
+`Batch3_B3_FINAL.csv` / `.xlsx`（19 列 20 行）、`Batch3_B3_FINAL_TO_SIGN.xlsx`、
+`Batch3_B3_SIGNED_original.xlsx`、`Batch3_B3_notes_before_cleanup.txt`、
+`Batch3_B3_APPROVAL_PENDING.txt`、`Batch3_B3_PDF_PROVENANCE.csv`、
+`page_text_batch3_b3.json`、`Batch3_B3_regen_report.txt`、
+`b3_validation_raw/`（两份）、`_make_b3_final.py`。
+
+### 16.7 尚未做的事
+
+V256 五行 condition 的 PM 补签（`Batch3_B3_FINAL_TO_SIGN.xlsx` 红格）尚未完成，
+封卷前必须补；B4（5 件）与 SCAN（3 件）仍未生成；33 件全部标完且 Reviewer
+终审放行后，才更新 CodeUp 本地 main（`a11131a`）。两仓 main 本轮仍未动。

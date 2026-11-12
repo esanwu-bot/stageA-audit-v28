@@ -1,0 +1,60 @@
+B3 定稿重跑报告
+==============================================================================
+签字版：20 行 x 15 列（全部 CONFIRMED / reviewer 一致）
+定稿  ：20 行 x 19 列
+行数一致：True   表头为 19 列定稿结构：True
+
+逐格差异（15 列签字值 → 19 列定稿）：
+行      列                签字版                          定稿
+1      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | ' '人工已核对 PDF 原图并确认'
+2      notes            'VLM 草稿，须对左图核；vlm自报=0.90；VO' '人工已核对 PDF 原图并确认'
+3      notes            'VLM 草稿，须对左图核；vlm自报=0.90；VO' '人工已核对 PDF 原图并确认'
+4      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | ' '人工已核对 PDF 原图并确认'
+5      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | ' '人工已核对 PDF 原图并确认'
+6      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+7      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+8      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+9      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+10     notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+11     condition        ''                           '2V<VCELL<4.5V; TA=25°C'
+11     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+12     condition        ''                           '2V<VCELL<4.5V; -20°C<TA<65'
+12     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+13     condition        ''                           '2V<VCELL<4.5V; -40°C<TA<10'
+13     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+14     condition        ''                           '2V<VCELL<4.5V; -40°C<TA<12'
+14     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+15     condition        ''                           '1V<VCELL< 5V; -40°C<TA<125'
+15     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+16     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CV' '人工已核对 PDF 原图并确认'
+17     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CV' '人工已核对 PDF 原图并确认'
+18     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CV' '人工已核对 PDF 原图并确认'
+19     notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+20     notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+
+差异按列汇总： {'notes': 20, 'condition': 5}
+核心数值列（min/typ/max/unit/symbol/parameter_name）差异数：0
+reviewer / row_status / confidence_score 差异数：0
+
+notes 取值分布： {'人工已核对 PDF 原图并确认': 20}
+残留草稿措辞（VLM 草稿 / low_confidence / 请确认）： 0
+
+新增列填充情况：
+  device_model： {'BQ79652-Q1': 5, 'CY74FCT399T': 5, 'AM1802': 5, 'DM3725': 5}
+  entered_by=WB_Agent 行： [11, 12, 13, 14, 15]
+  approved_by 非空行： []
+  human_adjudication 非空行： []
+
+V256 五行 condition 与判重键：
+  行11  min=-7.1  max=6.1   condition=2V<VCELL<4.5V; TA=25°C
+  行12  min=-7.8  max=6.6   condition=2V<VCELL<4.5V; -20°C<TA<65°C
+  行13  min=-7.8  max=6.6   condition=2V<VCELL<4.5V; -40°C<TA<105°C
+  行14  min=-7.8  max=6.7   condition=2V<VCELL<4.5V; -40°C<TA<125°C
+  行15  min=-7.9  max=6.9   condition=1V<VCELL< 5V; -40°C<TA<125°C
+  判重键唯一（无重复占位）：True
+
+Batch3_B3_FINAL.csv                    4607 字节  sha256=a0c0ea8341d8f3eb…
+Batch3_B3_FINAL.xlsx                   7667 字节  sha256=9bb7f0cbb44e914d…
+Batch3_B3_FINAL_TO_SIGN.xlsx           7669 字节  sha256=fa0bc04d32528a80…
+Batch3_B3_PDF_PROVENANCE.csv            535 字节  sha256=a44b6415fe6e19c9…
+page_text_batch3_b3.json              28667 字节  sha256=6c6c43e8984d54c9…

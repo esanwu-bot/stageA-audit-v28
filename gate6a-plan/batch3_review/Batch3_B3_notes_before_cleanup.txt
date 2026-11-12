@@ -1,0 +1,30 @@
+B3 签字版原始 notes（清理前全文留痕）
+真源：Batch3_B3_SIGNED_original.xlsx（PM 签字原件副本，逐格未改）
+清理后统一为：人工已核对 PDF 原图并确认
+========================================================================
+物理行1   V146  VIK                | VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence
+物理行2   V146  VOH                | VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence
+物理行3   V146  VOH                | VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence
+物理行4   V146  VOL                | VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence
+物理行5   V146  II                 | VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence
+物理行6   V271  vdd_mpu_iva        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行7   V271  vdd_core           | VLM 草稿，须对左图核；vlm自报=1.00
+物理行8   V271  vdds_sram          | VLM 草稿，须对左图核；vlm自报=1.00
+物理行9   V271  vdda_dac           | VLM 草稿，须对左图核；vlm自报=1.00
+物理行10  V271  vdds               | VLM 草稿，须对左图核；vlm自报=1.00
+物理行11  V256  V(MAIN-AUX)        | VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行12  V256  V(MAIN-AUX)        | VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行13  V256  V(MAIN-AUX)        | VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行14  V256  V(MAIN-AUX)        | VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行15  V256  V(MAIN-AUX)        | VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行16  V244  CVDD               | VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行17  V244  CVDD               | VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行18  V244  CVDD               | VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行19  V244  RVDD               | VLM 草稿，须对左图核；vlm自报=1.00
+物理行20  V244  RTC_CVDD           | VLM 草稿，须对左图核；vlm自报=1.00
+========================================================================
+ 3 行 | VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence
+ 2 行 | VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence
+ 7 行 | VLM 草稿，须对左图核；vlm自报=1.00
+ 5 行 | VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认
+ 3 行 | VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认
