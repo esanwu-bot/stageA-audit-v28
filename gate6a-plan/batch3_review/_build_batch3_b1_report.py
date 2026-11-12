@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-"""把 B1 八份机检原始输出汇成一份可复核报告。
+"""把 B1 十份机检原始输出汇成一份可复核报告。
 
 原始输出固定在 b1_validation_raw/，报告里逐字贴出命令、输出、退出码。
 不重跑、不改写、不挑好看的贴 —— 签字版 ERROR=2 的那两份也在里面。
-B/D/F 段是三个历史版本各两份；G 段是最终定稿复跑的两份。
+B/D/F 段是三个历史版本各两份；G 段是定稿复跑两份；
+H 段是第三轮清理 20 行过期备注后的两份复跑。
 """
 from __future__ import print_function
 
@@ -58,6 +59,19 @@ FINAL = [
      "env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
      "--page-text page_text_batch3_b1.json --provenance Batch3_B1_PDF_PROVENANCE.csv",
      "b1_final_sidecar_mode.txt", 0),
+]
+
+# Reviewer 第三轮：PM 裁定把 20 行过期草稿 notes 换成定稿语后的复跑
+NOTES_CLEAN = [
+    ("H.2 备注清理后 · PDF 模式（实算哈希）",
+     "python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
+     "--page-text page_text_batch3_b1.json "
+     "--provenance Batch3_B1_PDF_PROVENANCE.csv --pdf-dir <PDF>",
+     "b1_notes_clean_pdf_mode.txt", 0),
+    ("H.3 备注清理后 · 离线模式（sidecar）",
+     "env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
+     "--page-text page_text_batch3_b1.json --provenance Batch3_B1_PDF_PROVENANCE.csv",
+     "b1_notes_clean_sidecar_mode.txt", 0),
 ]
 
 
@@ -202,7 +216,7 @@ def main():
     A("  其余 20 行是人工直接在 Excel 里签字录入，无代录入环节，两列留空。")
     A("  三行 notes 里「待人确认并重新签字」等过期表述已全部删除，统一为：")
     A("    「人工已核对 PDF p4 原图并确认此修正。」")
-    A("  其余 20 行 notes 保持人工签字时的原始记录，未改动。")
+    A("  其余 20 行 notes 当时保持人工签字时的原始记录；第三轮已按 PM 裁定统一清理，见 H 段。")
     A("  最终定稿由 _make_b1_resigned.py 一次产出，逐格断言 CSV == XLSX；")
     A("  前序版本 SIGNED / CONFIRMED / SUGGESTED_FIX 全部保留留痕。")
     for title, cmd, fn, code in FINAL:
@@ -214,8 +228,34 @@ def main():
         A("-" * 78)
         A("[退出码 %d]" % code)
     A("")
-    A("最终结论：最终定稿 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
+    A("第二轮结论：最终定稿 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
     A("新增两列与 table_title / notes 修正均未影响任何一条机检判据。")
+    A("")
+    A("H. 第三轮：清理 20 行过期备注与复跑")
+    A("-" * 78)
+    A("  PM 2026-11-12 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等草稿词汇，")
+    A("  一律替换为『人工已核对 PDF 原图并确认』；确保不再出现 low_confidence 与")
+    A("  CONFIRMED 并存的矛盾。」")
+    A("  执行脚本 _clean_b1_notes.py，以 ./Batch3_B1_RESIGNED.xlsx 为真源：")
+    A("    * 20 行含过期措辞的 notes → 「人工已核对 PDF 原图并确认」；")
+    A("    * 3 行 PM 授权代录入的定稿语「人工已核对 PDF p4 原图并确认此修正。」保持不变；")
+    A("    * 清理前 xlsx 原样留痕为 ./Batch3_B1_RESIGNED_pre_notes_cleanup.xlsx；")
+    A("    * 逐格断言：除 notes 外 18 列全部未变，min/max/typ、unit、condition、")
+    A("      row_status、reviewer、approved_by / entered_by、confidence_score 一字未动；")
+    A("    * 清理后 notes 里 low_confidence 残留 0；confidence_score 分布仍为")
+    A("      0.95×21 / 0.85×1 / 0.8×1，没有「低置信度却已 CONFIRMED」的矛盾；")
+    A("    * 逐格断言清理后 CSV == XLSX == 内存，文件名仍是 Batch3_B1_RESIGNED.*。")
+    for title, cmd, fn, code in NOTES_CLEAN:
+        A("")
+        A("### " + title)
+        A("$ " + cmd)
+        A("-" * 78)
+        A((RAW / fn).read_text(encoding="utf-8").rstrip())
+        A("-" * 78)
+        A("[退出码 %d]" % code)
+    A("")
+    A("第三轮结论：备注清理后 PDF / 离线双模式仍 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
+    A("备注改写不影响任何一条机检判据；机检全绿不是靠放宽判据换来的。")
     A("=" * 78)
 
     OUT.write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")

@@ -424,7 +424,7 @@ G.1  人工授权链字段与备注定稿
   其余 20 行是人工直接在 Excel 里签字录入，无代录入环节，两列留空。
   三行 notes 里「待人确认并重新签字」等过期表述已全部删除，统一为：
     「人工已核对 PDF p4 原图并确认此修正。」
-  其余 20 行 notes 保持人工签字时的原始记录，未改动。
+  其余 20 行 notes 当时保持人工签字时的原始记录；第三轮已按 PM 裁定统一清理，见 H 段。
   最终定稿由 _make_b1_resigned.py 一次产出，逐格断言 CSV == XLSX；
   前序版本 SIGNED / CONFIRMED / SUGGESTED_FIX 全部保留留痕。
 
@@ -532,6 +532,128 @@ $ env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.cs
 ------------------------------------------------------------------------------
 [退出码 0]
 
-最终结论：最终定稿 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。
+第二轮结论：最终定稿 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。
 新增两列与 table_title / notes 修正均未影响任何一条机检判据。
+
+H. 第三轮：清理 20 行过期备注与复跑
+------------------------------------------------------------------------------
+  PM 2026-11-12 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等草稿词汇，
+  一律替换为『人工已核对 PDF 原图并确认』；确保不再出现 low_confidence 与
+  CONFIRMED 并存的矛盾。」
+  执行脚本 _clean_b1_notes.py，以 ./Batch3_B1_RESIGNED.xlsx 为真源：
+    * 20 行含过期措辞的 notes → 「人工已核对 PDF 原图并确认」；
+    * 3 行 PM 授权代录入的定稿语「人工已核对 PDF p4 原图并确认此修正。」保持不变；
+    * 清理前 xlsx 原样留痕为 ./Batch3_B1_RESIGNED_pre_notes_cleanup.xlsx；
+    * 逐格断言：除 notes 外 18 列全部未变，min/max/typ、unit、condition、
+      row_status、reviewer、approved_by / entered_by、confidence_score 一字未动；
+    * 清理后 notes 里 low_confidence 残留 0；confidence_score 分布仍为
+      0.95×21 / 0.85×1 / 0.8×1，没有「低置信度却已 CONFIRMED」的矛盾；
+    * 逐格断言清理后 CSV == XLSX == 内存，文件名仍是 Batch3_B1_RESIGNED.*。
+
+### H.2 备注清理后 · PDF 模式（实算哈希）
+$ python validate_annotation.py --csv Batch3_B1_RESIGNED.csv --page-text page_text_batch3_b1.json --provenance Batch3_B1_PDF_PROVENANCE.csv --pdf-dir <PDF>
+------------------------------------------------------------------------------
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：已比对
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.6  Batch3_B1_RESIGNED.csv   行数 23   样本 6
+页文本来源: PDF 原件
+==============================================================================
+[OK      ] 行2    V319  
+[OK      ] 行3    V319  
+[OK      ] 行4    V319  
+[OK      ] 行5    V319  
+[OK      ] 行6    V304  
+[OK      ] 行7    V304  
+[OK      ] 行8    V304  
+[OK      ] 行9    V199  
+[OK      ] 行10   V199  
+[OK      ] 行11   V199  
+[OK      ] 行12   V199  
+[OK      ] 行13   V199  
+[OK      ] 行14   V336  
+[OK      ] 行15   V336  
+[OK      ] 行16   V336  
+[OK      ] 行17   V336  
+[OK      ] 行18   V173  
+[OK      ] 行19   V173  
+[OK      ] 行20   V173  
+[OK      ] 行21   V345  
+[OK      ] 行22   V345  
+[OK      ] 行23   V345  
+[OK      ] 行24   V345  
+
+人工裁定（human_adjudication）：
+  行22   V345   Current into any pin except the OUTx, VD ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=31  正负值=2
+统计: OK=23
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+------------------------------------------------------------------------------
+[退出码 0]
+
+### H.3 备注清理后 · 离线模式（sidecar）
+$ env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.csv --page-text page_text_batch3_b1.json --provenance Batch3_B1_PDF_PROVENANCE.csv
+------------------------------------------------------------------------------
+提示: 使用随包的 page_text.json（只含证据页，无法给出建议页）
+
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：跳过（非 PDF 模式）
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.6  Batch3_B1_RESIGNED.csv   行数 23   样本 6
+页文本来源: page_text.json
+==============================================================================
+[OK      ] 行2    V319  
+[OK      ] 行3    V319  
+[OK      ] 行4    V319  
+[OK      ] 行5    V319  
+[OK      ] 行6    V304  
+[OK      ] 行7    V304  
+[OK      ] 行8    V304  
+[OK      ] 行9    V199  
+[OK      ] 行10   V199  
+[OK      ] 行11   V199  
+[OK      ] 行12   V199  
+[OK      ] 行13   V199  
+[OK      ] 行14   V336  
+[OK      ] 行15   V336  
+[OK      ] 行16   V336  
+[OK      ] 行17   V336  
+[OK      ] 行18   V173  
+[OK      ] 行19   V173  
+[OK      ] 行20   V173  
+[OK      ] 行21   V345  
+[OK      ] 行22   V345  
+[OK      ] 行23   V345  
+[OK      ] 行24   V345  
+
+人工裁定（human_adjudication）：
+  行22   V345   Current into any pin except the OUTx, VD ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=31  正负值=2
+统计: OK=23
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+------------------------------------------------------------------------------
+[退出码 0]
+
+第三轮结论：备注清理后 PDF / 离线双模式仍 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。
+备注改写不影响任何一条机检判据；机检全绿不是靠放宽判据换来的。
 ==============================================================================

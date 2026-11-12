@@ -175,6 +175,144 @@ def _v003_symbols():
     assert I3.core_rank(row("TJ"))[0] == 4, "TJ 应是结温（优先级 4）"
 
 
+# —— Reviewer 第三轮：prescan3 的四个极端场景 ——
+# 用可控的「文本层 + 边框表格」对象，精确构造排版，而不是靠真实 PDF 碰运气。
+class FakeTable(object):
+    def __init__(self, rows):
+        self._rows = rows
+
+    def extract(self):
+        return self._rows
+
+
+class FakeTables(object):
+    def __init__(self, tables):
+        self.tables = tables
+
+
+class FakePage(object):
+    def __init__(self, lines, borders=()):
+        self._text = "\n".join(lines)
+        self._tables = [FakeTable(t) for t in borders]
+
+    def get_text(self, *a, **k):
+        return self._text
+
+    def find_tables(self):
+        return FakeTables(self._tables)
+
+
+class FakeDoc(object):
+    def __init__(self, page):
+        self._page = page
+        self.page_count = 1
+
+    def load_page(self, i):
+        assert i == 0
+        return self._page
+
+
+def prescan_fake(lines, borders=()):
+    return I3.prescan3(FakeDoc(FakePage(lines, borders)), 1)
+
+
+# a. 目标表（AMR）没有表头，同页另一处有个无关的 Pin Configuration 表格。
+CASE_A = [
+    "6.1 Absolute Maximum Ratings",
+    "VDD_CORE  -0.3  1.05  V",
+    "VDDR_CORE  -0.3  1.05  V",
+    "",
+    "Table 4-1 Pin Configuration",
+    "PIN", "MIN", "MAX", "UNIT",
+    "A1   1.0   2.0   V",
+]
+CASE_A_BORDER = [
+    [["PIN", "MIN", "MAX", "UNIT"], ["A1", "1.0", "2.0", "V"]],
+]
+
+# b. 标题词只出现在正文句子里，MIN/MAX 列词在页面另一区域。
+CASE_B = [
+    "Stresses beyond those listed under Absolute Maximum Ratings may cause permanent damage.",
+    "The MIN and MAX values are the limits of the operating range.",
+    "TYP and NOM are typical ratings, not MIN or MAX limits.",
+    "",
+    "PARAMETER", "MIN", "MAX", "UNIT",
+    "Some unrelated row without numbers",
+]
+
+# c. 有边框表格，但前两行是文档信息而不是表头；文本层的列词挤在同一行。
+CASE_C = [
+    "6.1 Absolute Maximum Ratings",
+    "PARAMETER   MIN   MAX   UNIT",
+    "The MIN and MAX ratings are listed below.",
+    "VDD_CORE  -0.3  1.05  V",
+]
+CASE_C_BORDER = [
+    [["Device Information", "Rev A", ""], ["Note", "Value", ""]],
+]
+
+# e. V003 p106 式跨页续表：没有独立标题行，靠真实边框表头进候选页。
+CASE_E = [
+    "Table 6-4 (continued). Recommended Operating Conditions over operating junction temperature range",
+    "SUPPLY NAME", "DESCRIPTION", "MIN(1)", "NOM", "MAX(1)", "UNIT",
+    "VDDSHV5", "Dual-voltage IO supply", "1.8V Operation",
+    "1.71", "1.8", "1.89", "V",
+]
+CASE_E_BORDER = [
+    [["SUPPLY NAME", "DESCRIPTION", "", "MIN(1)", "NOM", "MAX(1)", "UNIT"],
+     ["VDDSHV5", "Dual-voltage IO supply", "1.8V Operation",
+      "1.71 1.8 1.89", "", "", "V"]],
+]
+
+
+@case("反向极端 a 同页有无关表格、目标表没表头 → 拦截")
+def _extreme_a():
+    txt = "\n".join(CASE_A)
+    assert I3.title_anchor_lines(txt) == [0], "AMR 独立标题行没找到"
+    assert I3.has_table_header(txt, I3.title_anchor_lines(txt)) is False, \
+        "无关表格的 MIN/MAX 被当成目标表表头"
+    assert I3._table_header_from_borders(FakePage(CASE_A, CASE_A_BORDER)) is False, \
+        "无关边框表格（PIN/MIN/MAX/UNIT）被当成参数表"
+    assert prescan_fake(CASE_A, CASE_A_BORDER) == [], "整页被误放行"
+
+
+@case("反向极端 b 标题只在正文句子里、另一区域有 MIN/MAX → 拦截")
+def _extreme_b():
+    txt = "\n".join(CASE_B)
+    assert I3.title_anchor_lines(txt) == [], "正文句子被当成独立标题行"
+    assert I3.has_table_header(txt, I3.title_anchor_lines(txt)) is False
+    assert prescan_fake(CASE_B) == [], "标题与表头不同区域仍被误放行"
+
+
+@case("反向极端 c 有边框表格但前两行不是有效表头 → 拦截")
+def _extreme_c():
+    assert I3._table_header_from_borders(FakePage(CASE_C, CASE_C_BORDER)) is False
+    assert prescan_fake(CASE_C, CASE_C_BORDER) == [], "无效边框表头被误放行"
+
+
+@case("正向极端 d 真实无边框 AMR 表 → 保留")
+def _extreme_d_amr():
+    pg = FakePage(REAL_HEADER_AMR, ())
+    assert pg.find_tables().tables == [], "本用例应模拟无边框文本层表"
+    assert I3.prescan3(FakeDoc(pg), 1) == [1], "真 AMR 表被误杀"
+
+
+@case("正向极端 d 真实无边框 ROC 表 → 保留")
+def _extreme_d_roc():
+    pg = FakePage(REAL_HEADER_ROC, ())
+    assert pg.find_tables().tables == []
+    assert I3.prescan3(FakeDoc(pg), 1) == [1], "真 ROC 表被误杀"
+
+
+@case("正向 跨页续表（无独立标题行、有真实边框表头）仍保留，防误杀 V003 p106")
+def _extreme_continuation():
+    txt = "\n".join(CASE_E)
+    assert I3.title_anchor_lines(txt) == [], "续表不该有独立标题行"
+    assert I3.has_table_header(txt, []) is False
+    assert I3._table_header_from_borders(FakePage(CASE_E, CASE_E_BORDER)) is True
+    assert prescan_fake(CASE_E, CASE_E_BORDER) == [1], "p106 式续表被误杀"
+
+
 def main():
     print("=" * 72)
     print("CORE_ORDER 正则 + prescan3 表头结构判据 · 回归测试")

@@ -1,10 +1,13 @@
-# Batch 3 复审包 · B1 签字定稿 + B2 草稿（含 V003 错页修复）
+# Batch 3 复审包 · B1 / B2 双定稿 + 生成器底层加固
 
 分支 `feat/gate6a-batch3`，**不动 main、不动 `feat/gate6a-annotation`**。
-B1 已有人工签字，B2 仍是草稿，机器没有替人确认任何一行。
+B1、B2 均为人工签字定稿；机器没有替人确认任何一行，也没有替人改核心数值。
 2026-11-12 追加：Reviewer 指出 B2 的 V003 抓错页，已重定位重截，详见第 8 节。
 2026-11-12 第二轮追加：修正 V304 表头归属、补齐人工授权链、统一真源口径与两仓
 main SHA，详见第 9 节。
+2026-11-12 第三轮追加：修复 CORE_ORDER 通用正则漏洞并加固 prescan3，见第 10 节。
+2026-11-12 第四轮追加（本版）：清理 B1 过期备注、交付 B2 最终版与机检、
+补齐 prescan3 四个极端场景回归，见第 11、12 节。
 
 ## 0. 一句话结论
 
@@ -15,13 +18,19 @@ v1.6 双模式 `OK=23 / SUSPECT=0 / ERROR=0`，退出码 0。
 过程留痕不做删改：最初签字版 `OK=20 / SUSPECT=1 / ERROR=2`（退出码 1），
 按 PDF 原文给建议修正版后 `OK=23`，再由 PM 授权把那 3 行重新签字，
 最后按 Reviewer 第二轮意见补齐授权链与表头归属后复跑仍 `OK=23`。
-四个版本、八份原始 stdout 全部在本包里，详见 `Batch3_B1_validation_report.txt`。
+四个版本、十份原始 stdout 全部在本包里，详见 `Batch3_B1_validation_report.txt`。
+B2 最终定稿 `Batch3_B2_FINAL.xlsx` / `.csv`（30 行 × 19 列），
+v1.6 双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0，详见
+`Batch3_B2_validation_report.txt`。两份报告都逐字贴了原始 stdout。
 
 ## 1. 真源与行数
 
 - **唯一真源（最终定稿）：`Batch3_B1_RESIGNED.xlsx`**，23 行 × 19 列；
   同名 `.csv` 与之逐格同源（UTF-8 BOM）。`reviewer=wuxiaoxian` 全部签名、
   `row_status=CONFIRMED`，v1.6 双模式全绿。
+  第四轮把 20 行过期 notes 换成「人工已核对 PDF 原图并确认」后**文件名不变**，
+  清理前 xlsx 留痕为 `Batch3_B1_RESIGNED_pre_notes_cleanup.xlsx`；
+  除 notes 外 18 列逐格断言未变，复跑仍 `OK=23`，见第 11 节。
 - `Batch3_B1_SIGNED.xlsx`（PM 发来的原始人工签字 xlsx，23 行 × 15 列）
   只作**过程留痕**，不是最终真源；最终版由 `_make_b1_resigned.py` 从
   `Batch3_B1_SUGGESTED_FIX.csv` 一次产出。
@@ -52,7 +61,7 @@ PM 2026-11-12 07:28 肉眼复核后授权代签（「改的都 ok，不过没有
 2026-11-12 08:08 Reviewer 第二轮修正后，同一脚本 `_make_b1_resigned.py`
 已扩展为一次产出最终定稿（19 列），见第 9 节与报告 G 段。
 
-## 3. 机检结果（v1.6，八份原始输出在 `b1_validation_raw/`）
+## 3. B1 机检结果（v1.6，十份原始输出在 `b1_validation_raw/`）
 
 | 版本 | PDF 模式（实算哈希） | 离线模式（sidecar） |
 | --- | --- | --- |
@@ -60,6 +69,7 @@ PM 2026-11-12 07:28 肉眼复核后授权代签（「改的都 ok，不过没有
 | 建议修正版 23 行（3 行未签） | `OK=23 ERROR=0` 退出码 0 | 同左，退出码 0 |
 | 重签版 v1 23 行（全签） | `OK=23 ERROR=0` 退出码 0 | 同左，退出码 0 |
 | **最终定稿 23 行 × 19 列** | **`OK=23 ERROR=0` 退出码 0** | **同左，退出码 0** |
+| **备注清理后 23 行 × 19 列（本版）** | **`OK=23 ERROR=0` 退出码 0** | **同左，退出码 0** |
 
 新增 `approved_by` / `entered_by` 两列、`table_title` 与 `notes` 的修正
 均不影响任何一条机检判据；最终定稿的复跑是在改完之后重新实跑的，不是沿用旧结论。
@@ -72,18 +82,22 @@ SHA-256 / 页数从磁盘原件实算，页文本逐页抽取，PDF 模式再用
 局限：三处溯源写的是同一份实测数据，不是三个独立来源；真正独立的第三方证据
 是磁盘 PDF 原件。这一条请复核者知悉。
 
-## 4. B2 草稿（待点选）
+## 4. B2 最终定稿（已签字，机检全绿）
 
-`Batch3_B2_Viewer.html` + `Batch3_B2_DRAFT.csv`：6 件 / 30 行 / 16 张裁图，
-样本 `V038 V320 V346 V242 V003 V011`，每件只留 5 行核心参数。
-
-**V003 已按第 8 节重截重出**：原 5 行是 p14 的 Pin Attributes 术语解释（无参数），
-现替换为 p101/p105/p106 的 5 行文本层定向草稿，5 行全部 `low_confidence`
-（conf=0.60），**必须人工点选**；其余 5 件各 5 行未改动。
-其余 5 件各 5 行均 ≥0.85。
-
-置信度 0.95 只证明"抄的字在页面上都找得到"，**不证明数值归到了正确的列** ——
-B1 签字版漏掉的两处恰好都是这类问题（页码串页、条件混进数值列）。
+- **PM 签字原件副本：`Batch3_B2_SIGNED_original.xlsx`**，30 行 × 15 列，逐格未改；
+  同目录 Excel 另存的 .csv 不是真源。
+- **最终定稿：`Batch3_B2_FINAL.xlsx`**，30 行 × 19 列；同名 `.csv` 逐格同源，
+  是 v1.6 验证器输入。30 行全部 `CONFIRMED` + `reviewer=wuxiaoxian`，
+  6 件 × 5 行，`table_title` 仅 AMR 24 / ROC 6。
+- `Batch3_B2_Viewer.html` / `Batch3_B2_DRAFT.csv` 降级为**过程留痕**（圈选台与草稿），
+  不再是交付结论；审计包里不再只有 DRAFT 版。
+- 备注按 PM 裁定统一为「人工已核对 PDF 原图并确认」，30 行原始 notes 全文留痕在
+  `Batch3_B2_notes_before_cleanup.txt`；V003 的 `VDDSHV5 condition` 保留
+  `1.8V Operation`（p106 原文确有独立一行，脚本逐行断言后才落盘）。
+- 7 行空 symbol 按 B1 的 V345 先例补 `ACCEPTED_SOURCE_HAS_NO_SYMBOL`，
+  登记 `approved_by=wuxiaoxian` / `entered_by=WB_Agent`；语义边界见
+  `Batch3_B2_validation_report.txt` A.3。
+- 机检：PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0。
 
 ## 5. 目录
 
@@ -97,7 +111,16 @@ B1 签字版漏掉的两处恰好都是这类问题（页码串页、条件混�
 | `b1_validation_raw/*.txt` | 八份原始 stdout（未编辑，含 `b1_final_*.txt` 两份） |
 | `Batch3_B1_PDF_PROVENANCE.csv` / `page_text_batch3_b1.json` | 6 件 PDF 溯源与页文本 |
 | `Batch3_Viewer.html` / `Batch3_DRAFT.csv` | B1 圈选台与原始 30 行草稿 |
-| `Batch3_B2_Viewer.html` / `Batch3_B2_DRAFT.csv` | B2 圈选台与 30 行草稿（V003 已重截重出） |
+| `Batch3_B2_Viewer.html` / `Batch3_B2_DRAFT.csv` | B2 圈选台与 30 行草稿（过程留痕，V003 已重截重出） |
+| `Batch3_B2_SIGNED_original.xlsx` | PM 签字原件副本（30 行 × 15 列，逐格未改，唯一真源） |
+| `Batch3_B2_FINAL.csv` / `.xlsx` | **B2 最终定稿**，30 行 × 19 列，机检 OK=30 |
+| `Batch3_B2_validation_report.txt` | B2 两份机检原样 stdout + 处置说明 + 清理前 notes 留痕 |
+| `b2_validation_raw/*.txt` / `Batch3_B2_notes_before_cleanup.txt` | B2 原始 stdout / 原始备注 |
+| `page_text_batch3_b2.json` / `Batch3_B2_PDF_PROVENANCE.csv` | B2 六件 PDF 溯源与页文本 |
+| `Batch3_B1_RESIGNED_pre_notes_cleanup.xlsx` / `_clean_b1_notes.py` | B1 清理前留痕与清理脚本 |
+| `_make_b2_final.py` / `_build_batch3_b2_report.py` | B2 定稿生成与报告脚本 |
+| `_verify_v003_candidates.py` / `Batch3_prescan3_v003_evidence.txt` | prescan3 加固后 V003 全书候选页真实回归 |
+| `Batch3_prescan3_extreme_fix.diff` | 第四轮生成器 + 测试的真实增量补丁 |
 | `annotation_reports/**/b3_*.png` | B1+B2 共 31 张 300DPI 表格裁图；V003 旧 p14 图已删，换成 p101/p105/p106 三张 |
 | `Batch3_V003_diagnosis.txt` | **V003 抓错页诊断实证**（全文扫描、根因、断言、修复清单） |
 | `validate_annotation.py` | v1.6 机检脚本 |
@@ -123,6 +146,13 @@ python validate_annotation.py --csv Batch3_B1_RESIGNED.csv \
 env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.csv \
   --page-text page_text_batch3_b1.json \
   --provenance Batch3_B1_PDF_PROVENANCE.csv                      # 离线模式同样 OK=23
+python validate_annotation.py --csv Batch3_B2_FINAL.csv \
+  --page-text page_text_batch3_b2.json \
+  --provenance Batch3_B2_PDF_PROVENANCE.csv --pdf-dir b2_pdfs    # B2 定稿 OK=30
+env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B2_FINAL.csv \
+  --page-text page_text_batch3_b2.json \
+  --provenance Batch3_B2_PDF_PROVENANCE.csv                      # B2 离线同样 OK=30
+python _test_core_order_and_header.py                              # PASS=24 FAIL=0 SKIP=0
 ```
 
 ## 7. 导出文件名 Bug 已修
@@ -338,18 +368,22 @@ minimum / maximum 也会被当成参数表，属 Fail-Open。现在加第二层�
 
 | 测试 | 结果 |
 | --- | --- |
-| `_test_core_order_and_header.py` | **`PASS=18, FAIL=0, SKIP=0`**，退出码 0；原始输出 `Batch3_CORE_ORDER_regression.txt` |
+| `_test_core_order_and_header.py` | **`PASS=24, FAIL=0, SKIP=0`**（第四轮扩充后），退出码 0；原始输出 `Batch3_CORE_ORDER_regression.txt` |
 | `_selftest_validator_v2.py`（v1.6 验证器 31 例） | **`PASS=31, FAIL=0, SKIP=0`**，退出码 0；原始输出 `Batch3_validator_selftest.txt` |
 
 新测试全部使用内存对象与合成 PDF 页，不依赖外部 PDF 或环境变量，
-因此**不存在 SKIP**；跑不全就是 FAIL、退出码非零。18 例里含：
+因此**不存在 SKIP**；跑不全就是 FAIL、退出码非零。原 18 例含：
 5 个被点名符号的正向断言、带前缀符号、`^` 锚回归、
 AMR/ROC 两种真表头正向、纯正文多组 MIN/MAX 反向、
 合成整页的正向与反向、p14 式术语解释页反向。
+第四轮按 Reviewer 要求补 6 例（四个极端场景 AMR/ROC 各算一例，
+另加跨页续表防误杀），共 24 例，详见第 12 节。
 
 ### 10.5 真实代码 diff 与 B1 定稿确认
 
-- `Batch3_CORE_ORDER_fix.diff`：`git diff` 产出的真实补丁，143 行 / 96 行新增，
+- `Batch3_CORE_ORDER_fix.diff`：从 `9c0a81a` 到当前工作区的**累计真实补丁**，
+  550 行 / 498 行新增（含第四轮加固）；`Batch3_prescan3_extreme_fix.diff`
+  是第四轮相对 `9a3047f` 的增量补丁，258 行。两份都是 `git diff` 原样产出，
   Reviewer 可直接查看，不需要占位描述。
 - `Batch3_B1_RESIGNED.csv` / `.xlsx`（**23 行 × 19 列**）确为本包内的最终定稿：
   V304 物理行 8 的 `table_title` 已是 `Absolute Maximum Ratings`；
@@ -362,7 +396,96 @@ AMR/ROC 两种真表头正向、纯正文多组 MIN/MAX 反向、
 | 文件 | 作用 |
 | --- | --- |
 | `_build_batch3_interactive.py` | 修复后的生成器（本轮唯一改动的生产代码） |
-| `_test_core_order_and_header.py` | 18 例回归测试 |
-| `Batch3_CORE_ORDER_regression.txt` | 18 例真实 stdout |
+| `_test_core_order_and_header.py` | 24 例回归测试（含四个极端场景） |
+| `Batch3_CORE_ORDER_regression.txt` | 24 例真实 stdout |
 | `Batch3_validator_selftest.txt` | v1.6 自测 31 例真实 stdout |
 | `Batch3_CORE_ORDER_fix.diff` | 真实代码 diff |
+
+
+## 11. B1 备注清理 + B2 最终版交付（Reviewer 第四轮）
+
+### 11.1 B1：只清理 20 行过期备注，核心一格未动
+
+PM 裁定：「那 20 行 notes 里写的『须对左图核』『请确认』等草稿词汇，一律替换为
+『人工已核对 PDF 原图并确认』；确保不再出现 `low_confidence` 和 `CONFIRMED`
+并存的矛盾。」
+
+| 项 | 结果 |
+| --- | --- |
+| 改动范围 | 20 行 notes → 定稿语；3 行 PM 代录入定稿语保持不变 |
+| 其余字段 | 除 notes 外 18 列逐格断言未变（min/max/typ、unit、condition、row_status、reviewer、授权链、confidence_score） |
+| 矛盾消除 | notes 里 `low_confidence` 残留 0；confidence_score 仍为 0.95×21 / 0.85×1 / 0.8×1 |
+| 留痕 | `Batch3_B1_RESIGNED_pre_notes_cleanup.xlsx`（清理前 xlsx 原样） |
+| 复跑 | PDF / 离线双模式 `OK=23 / SUSPECT=0 / ERROR=0`，退出码 0；报告 H 段贴了原始 stdout |
+
+### 11.2 B2：签字版是唯一真源，定稿与机检一起打包
+
+| 项 | 结果 |
+| --- | --- |
+| 真源 | `Batch3_B2_SIGNED_original.xlsx`（PM 签字原件副本，30 行 × 15 列，逐格未改） |
+| 定稿 | `Batch3_B2_FINAL.csv` / `.xlsx`，30 行 × 19 列，**已是定稿而非 DRAFT** |
+| notes | 30 行统一为「人工已核对 PDF 原图并确认」；原文全文留痕在 `Batch3_B2_notes_before_cleanup.txt` |
+| V003 条件 | `VDDSHV5 condition=1.8V Operation` 保留；p106 文本层独立行断言通过 |
+| 空符号 | 7 行补 `ACCEPTED_SOURCE_HAS_NO_SYMBOL` + 授权链；原 15 列除 notes 外逐格未变 |
+| 简写文件名 | 3 件按 CSV 原名在 `b2_pdfs/` 建硬链接指向语料原件同一字节，签字真源一格未改 |
+| 机检 | PDF / 离线双模式 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
+
+`b2_pdfs/` 是本地硬链接验证环境，体积原因不入包；干净解压包用离线 sidecar
+模式（B.2 命令）即可复现 `OK=30`，需要 PDF 模式时用
+`_make_b2_final.py --xlsx <签字xlsx> --pdf-dir <语料目录>` 重建该目录。
+
+**语义边界如实报备**：裁定码字面是「源头无符号」，B2 这 7 行实际是
+「符号列过长被留空、原文移入 condition」，属同类人工接受。没有新增判据、
+没有放宽机检；PM 可随时要求改回或改填完整符号。
+
+### 11.3 本版新增文件
+
+`_clean_b1_notes.py`、`Batch3_B1_RESIGNED_pre_notes_cleanup.xlsx`、
+`b1_validation_raw/b1_notes_clean_*.txt`、
+`_make_b2_final.py`、`Batch3_B2_SIGNED_original.xlsx`、
+`Batch3_B2_FINAL.csv` / `.xlsx`、`Batch3_B2_notes_before_cleanup.txt`、
+`page_text_batch3_b2.json`、`Batch3_B2_PDF_PROVENANCE.csv`、
+`Batch3_B2_validation_report.txt`、`b2_validation_raw/b2_final_*.txt`、
+`_build_batch3_b2_report.py`、`_verify_v003_candidates.py`、
+`Batch3_prescan3_v003_evidence.txt`、`Batch3_prescan3_extreme_fix.diff`。
+
+## 12. prescan3 四个极端场景（Reviewer 第四轮）
+
+### 12.1 场景与实测结果
+
+| 场景 | 构造 | 期望 | 实测 |
+| --- | --- | --- | --- |
+| a 同页有无关表格，目标表没表头 | AMR 标题下只有数据行，页尾另有 `PIN/MIN/MAX/UNIT` 无关表（文本层 + 边框两条路径都给） | 拦截 | PASS |
+| b 标题在正文，另一区域有 MIN/MAX | 标题词嵌在 "Stresses beyond those listed under ..." 句子里，另一处有独立列词行 | 拦截 | PASS |
+| c 有边框表格但前两行不是有效表头 | 边框表前两行是 `Device Information / Rev A`、`Note / Value` | 拦截 | PASS |
+| d 真实无边框 AMR / ROC 表 | 文本层竖排独立列词行 + 独立标题行，无边框 | 保留 | PASS（AMR、ROC 各一例） |
+
+另加第 6 例：**跨页续表（无独立标题行、有真实边框表头）仍保留**，
+防止加固误杀 V003 的 p106。
+
+### 12.2 实现要点（不是只加测试用例凑数）
+
+1. `TITLE_LINE_RX` / `title_anchor_lines()`：整行必须基本就是参数表标题，
+   `Stresses beyond those listed under ...` 这类正文句子不算标题。
+2. `has_table_header(text, title_positions)`：带锚点时，表头窗口必须
+   **从第一个表头词行起算**、紧跟独立标题行（≤4 行），且标题与窗口之间
+   不能夹参数数据行。第一次实现时窗口起点可以退到标题后第 1 行，
+   场景 a 实测 FAIL 抓到了这个漏洞，修完才全绿。
+3. `_table_header_from_borders()`：除 ≥2 个数值列词外，表头还必须有
+   `PARAMETER` / `DESCRIPTION` / `SUPPLY NAME` / `TEST CONDITIONS` 之一，
+   `PIN/MIN/MAX/UNIT` 这种无关表格不再放行。
+4. 边框路径**不要求标题存在**：V003 p106 是跨页续表，页面上没有独立标题行，
+   靠边框表头进候选页；强行要求标题会误杀真表。
+
+### 12.3 测试与真实 PDF 回归
+
+| 测试 | 结果 |
+| --- | --- |
+| `_test_core_order_and_header.py` | **`PASS=24, FAIL=0, SKIP=0`**，退出码 0；全部内存对象 / 合成页，无 SKIP |
+| `_selftest_validator_v2.py`（v1.6 验证器 31 例） | **`PASS=31, FAIL=0, SKIP=0`**，退出码 0 |
+| `_verify_v003_candidates.py`（V003 全书 282 页） | 候选页仍为 `[101,102,105,106,108,109,110,111,112,113,115,117,119]` 共 13 页；p101/p105/p106 保留，p14 排除，结论「全部通过」 |
+| B1 复跑 | PDF / 离线 `OK=23`，退出码 0 |
+| B2 复跑 | PDF / 离线 `OK=30`，退出码 0 |
+
+真实补丁：`Batch3_CORE_ORDER_fix.diff`（累计 550 行 / 498 行新增）与
+`Batch3_prescan3_extreme_fix.diff`（第四轮增量 258 行）。

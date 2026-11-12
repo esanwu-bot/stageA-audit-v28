@@ -1,0 +1,44 @@
+B2 签字版原始 notes（清理前全文留痕）
+真源：Batch3_B2_SIGNED_original.xlsx（PM 签字原件副本，逐格未改）
+清理后统一为：人工已核对 PDF 原图并确认
+========================================================================
+物理行1   V038  VA19         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行2   V038  VPLL19       | VLM 草稿，须对左图核；vlm自报=1.00
+物理行3   V038  VREFO        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行4   V038  VTRIG        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行5   V038  VA11         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行6   V320  VFUSE        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行7   V320  IOVDD        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行8   V320  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行9   V320  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行10  V320  V(ESD)       | VLM 草稿，须对左图核；vlm自报=1.00
+物理行11  V346  AVDD3V       | VLM 草稿，须对左图核；vlm自报=1.00；AVDD3V 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行12  V346  AVDD         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行13  V346  DVDD         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行14  V346  IOVDD        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行15  V346  AVDD3V       | VLM 草稿，须对左图核；vlm自报=1.00；AVDD3V 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行16  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行17  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行18  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行19  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行20  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行21  V003  VDD_CORE     | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；MIN(1)/NOM/MAX(1) 三列；NOM 是否等同 typ 请人工确认
+物理行22  V003  VDDR_CORE    | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；MIN(1)/NOM/MAX(1) 三列；NOM 是否等同 typ 请人工确认
+物理行23  V003  VDDSHV5      | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；同一符号另有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V 模式
+物理行24  V003  TJ           | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；原文为 –40 / 125（EN DASH），已按验证器 MINUS 规则写作 -40
+物理行25  V003  VDD_CORE     | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；绝对最大额定值，与 p105 的推荐工作条件 0.81/0.85/0.895 V 不是同一概念，勿混
+物理行26  V011  VIH          | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行27  V011  VIH          | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行28  V011  VIH          | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行29  V011  VIL          | VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行30  V011  VIL          | VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认
+========================================================================
+11 行 | VLM 草稿，须对左图核；vlm自报=1.00
+ 7 行 | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+ 2 行 | VLM 草稿，须对左图核；vlm自报=1.00；AVDD3V 有多组取值（疑不同温度等级或 VLM 误标），请确认
+ 2 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；MIN(1)/NOM/MAX(1) 三列；NOM 是否等同 typ 请人工确认
+ 1 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；同一符号另有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V 模式
+ 1 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；原文为 –40 / 125（EN DASH），已按验证器 MINUS 规则写作 -40
+ 1 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；绝对最大额定值，与 p105 的推荐工作条件 0.81/0.85/0.895 V 不是同一概念，勿混
+ 3 行 | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+ 2 行 | VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认

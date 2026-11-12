@@ -166,14 +166,52 @@ MARK_HEAD_WORDS = {"UNIT", "PARAMETER", "DESCRIPTION", "SUPPLY NAME",
                    "TEST CONDITIONS"}
 HEADER_WINDOW = 8
 
+# Reviewer 第三轮追加的四个极端场景：页上别处有表头、标题只是正文里的词、
+# 有边框但前两行不是表头，都不能把整页放行。文本层表头因此必须与
+# **独立成行的参数表标题**紧邻，且标题与表头之间不能夹着数据行。
+# 注意 V003 的 p106 是跨页续表，页面上根本没有标题行：它靠下面的
+# 边框判据进来，所以边框路径不能要求标题存在，否则会误杀真表。
+TITLE_LINE_RX = re.compile(
+    r"^\s*(?:\d+(?:\.\d+)*\s+)?"
+    r"(?:absolute\s+maximum\s+ratings|maximum\s+ratings"
+    r"|recommended\s+operating\s+conditions"
+    r"|(?:electrical|dc\s+electrical|static|dc)\s+"
+    r"(?:characteristics|specifications))"
+    r"(?:\s*[-(].{0,40})?\s*$", re.I)
+TITLE_MAX_GAP = 4
+DATA_ROW_RX = re.compile(r"[-+]?\d+\.\d+|[-+]\d+(?:\s|$)")
+BORDER_MARK_RX = re.compile(
+    r"\b(PARAMETER|DESCRIPTION|SUPPLY\s+NAME|TEST\s+CONDITIONS)\b", re.I)
 
-def has_table_header(text):
+
+def title_anchor_lines(text):
+    """页面里「独立成行的参数表标题」所在行号（0 基）。
+
+    'Stresses beyond those listed under Absolute Maximum Ratings may ...'
+    这种把标题词嵌进句子的正文行不算标题，整行必须基本就是标题本身
+    （允许前导章节号和尾部短括注 / 破折号说明）。
+    """
+    lines = [" ".join(ln.split()) for ln in (text or "").splitlines()]
+    return [i for i, ln in enumerate(lines)
+            if ln and TITLE_LINE_RX.match(ln) and not REF_RX.search(ln)]
+
+
+def _looks_like_data_row(line):
+    return bool(DATA_ROW_RX.search(line))
+
+
+def has_table_header(text, title_positions=None, max_gap=TITLE_MAX_GAP):
     """MIN/MAX 是否真的以「列名」身份出现在表头结构里。
 
     在任意连续 HEADER_WINDOW 行的窗口内，要求至少 2 个不同的数值列词
     各自独立成行，且窗口内还有 UNIT / PARAMETER / DESCRIPTION /
     SUPPLY NAME / TEST CONDITIONS 之一作为表头标记。
     纯正文（含多少 MIN/MAX 词汇都算）不满足，返回 False。
+
+    `title_positions` 传入后（prescan3 用），表头窗口还必须紧跟
+    title_anchor_lines() 找到的独立标题行：距离不超过 max_gap 行，
+    且标题与窗口之间不能夹着参数数据行。单独调用本函数时
+    title_positions=None，保持旧的纯文本契约不变。
     """
     lines = [" ".join(ln.split()) for ln in (text or "").splitlines()]
     tags = []
@@ -181,10 +219,22 @@ def has_table_header(text):
         m = HEADER_WORD_RX.match(ln.strip())
         tags.append(" ".join(m.group(1).upper().split()) if m else None)
     for i in range(len(tags)):
+        # 带锚点时，窗口必须从「第一个表头词行」起算。否则窗口起点可以
+        # 退到标题后第 1 行，把 i - p 算成 1，页尾无关表格的 MIN/MAX
+        # 就会借着标题的距离被放行（Reviewer 场景 a 实测抓到过一次）。
+        if title_positions is not None and tags[i] is None:
+            continue
         win = [w for w in tags[i:i + HEADER_WINDOW] if w]
         nums = {w for w in win if w in NUM_HEAD_WORDS}
-        if len(nums) >= 2 and any(w in MARK_HEAD_WORDS for w in win):
+        if len(nums) < 2 or not any(w in MARK_HEAD_WORDS for w in win):
+            continue
+        if title_positions is None:
             return True
+        for p in title_positions:
+            if (0 <= i - p <= max_gap and
+                    not any(_looks_like_data_row(lines[j])
+                            for j in range(p + 1, i))):
+                return True
     return False
 
 
@@ -204,8 +254,12 @@ def _table_header_from_borders(page):
         except Exception:
             continue
         words = " ".join(str(c or "") for row in head for c in row).upper()
-        if len({w for w in ("MIN", "TYP", "MAX", "NOM")
-                if re.search(r"\b%s\b" % w, words)}) >= 2:
+        nums = {w for w in ("MIN", "TYP", "MAX", "NOM", "VALUE")
+                if re.search(r"\b%s\b" % w, words)}
+        # 光有 MIN/MAX 不够：无关表格（PIN / MIN / MAX / UNIT）也有两列词。
+        # 真参数表的表头一定还有 PARAMETER / DESCRIPTION / SUPPLY NAME /
+        # TEST CONDITIONS 之一，这是把「无关表格」挡在候选页外的关键。
+        if len(nums) >= 2 and BORDER_MARK_RX.search(words):
             return True
     return False
 
@@ -233,7 +287,10 @@ def prescan3(doc, npages, max_pages=0):
             continue
         if len(NUMCOL_RX.findall(t)) < 2 or not KIND_TITLE_RX.search(t):
             continue
-        if has_table_header(t) or _table_header_from_borders(page):
+        # 文本层表头必须锚在独立标题行附近；边框表头走独立判据，
+        # 这样 p106 那种「标题在上一页」的跨页续表仍能进候选页。
+        anchors = title_anchor_lines(t)
+        if has_table_header(t, anchors) or _table_header_from_borders(page):
             cand.append(pno)
     return cand
 

@@ -1,0 +1,58 @@
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：已比对
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.6  Batch3_B2_FINAL.csv   行数 30   样本 6
+页文本来源: PDF 原件
+==============================================================================
+[OK      ] 行2    V038  
+[OK      ] 行3    V038  
+[OK      ] 行4    V038  
+[OK      ] 行5    V038  
+[OK      ] 行6    V038  
+[OK      ] 行7    V320  
+[OK      ] 行8    V320  
+[OK      ] 行9    V320  
+[OK      ] 行10   V320  
+[OK      ] 行11   V320  
+[OK      ] 行12   V346  
+[OK      ] 行13   V346  
+[OK      ] 行14   V346  
+[OK      ] 行15   V346  
+[OK      ] 行16   V346  
+[OK      ] 行17   V242  
+[OK      ] 行18   V242  
+[OK      ] 行19   V242  
+[OK      ] 行20   V242  
+[OK      ] 行21   V242  
+[OK      ] 行22   V003  
+[OK      ] 行23   V003  
+[OK      ] 行24   V003  
+[OK      ] 行25   V003  
+[OK      ] 行26   V003  
+[OK      ] 行27   V011  
+[OK      ] 行28   V011  
+[OK      ] 行29   V011  
+[OK      ] 行30   V011  
+[OK      ] 行31   V011  
+
+人工裁定（human_adjudication）：
+  行9    V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行10   V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行17   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行18   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行19   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行20   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=57  正负值=1
+统计: OK=30
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。

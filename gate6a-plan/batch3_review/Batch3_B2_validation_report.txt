@@ -1,0 +1,233 @@
+==============================================================================
+Batch 3 · B2 人工签字定稿 —— v1.6 验证器机检报告
+==============================================================================
+
+真源：./Batch3_B2_SIGNED_original.xlsx（PM 签字的 xlsx 原件副本，30 行 × 15 列，逐格未改）
+      同目录 Excel 另存的 .csv 不作为真源（GBK 编码 / 导出格式）。
+定稿：./Batch3_B2_FINAL.xlsx（30 行 × 19 列；同名 .csv 逐格同源，为验证器输入）
+签字：reviewer=wuxiaoxian，30 行全部 CONFIRMED，6 件 × 5 行
+      table_title 分布：Absolute Maximum Ratings 24 / Recommended Operating Conditions 6
+机检对象 = 定稿 30 行 / 6 样本（V038 V320 V346 V242 V003 V011）。
+
+A. 从签字版到定稿做了什么（没做什么）
+------------------------------------------------------------------------------
+A.1 notes：30 行含「须对左图核 / 请确认 / low_confidence」等过期措辞，
+    按 PM 2026-11-12 裁定统一改为「人工已核对 PDF 原图并确认」。
+    原始 notes 全文逐行留痕在 ./Batch3_B2_notes_before_cleanup.txt，
+    其中 V003 的 3.3V Operation、EN DASH 转写、AMR 勿混等排查线索不丢失。
+A.2 V003 / VDDSHV5 的 condition 保留 `1.8V Operation`：
+    AM2431BSDFHIALXR__am2431.pdf 第 106 页文本层确有独立一行 `1.8V Operation`
+    （同页另有 `3.3V Operation`），生成脚本逐行断言后才允许落盘，
+    不改成 `VDD=1.8V`，语义一致且更贴原文。
+A.3 7 行空 symbol（V320 两行、V242 五行）按 B1 的 V345 先例补
+    human_adjudication=ACCEPTED_SOURCE_HAS_NO_SYMBOL，并登记
+    approved_by=wuxiaoxian / entered_by=WB_Agent。
+    ※ 语义边界如实说明：裁定码字面是「源头无符号」，本批实际是
+      「符号列过长被留空、原文移入 condition」，属同类人工接受；
+      没有新增判据、没有放宽机检，PM 可随时要求改回或改填完整符号。
+A.4 3 件签字版 file_name 是简写，语料目录无同名文件：
+      ADC12QJ1600ALREP.pdf → ADC12QJ1600ALREP__adc12qj1600-ep.pdf
+      ADS54J40IRMPT.pdf    → ADS54J40IRMPT__ads54j40.pdf
+      ADS131B26-Q1.pdf     → ADS131B26QPHPRQ1__ads131b26-q1.pdf
+    不改写签字真源任何一格：按 CSV 原名在 b2_pdfs/ 下建硬链接指向同一份 PDF 字节，
+    PDF 模式据此实算 SHA-256，离线模式用 sidecar，三处 file_name 仍是签字原值。
+    ※ b2_pdfs/ 是本地验证环境（硬链接，不是数据副本），体积原因不入审计包。
+      干净解压包请用离线 sidecar 模式复现（B.2 命令，不需要语料目录）；
+      要复跑 PDF 模式，用 _make_b2_final.py --xlsx <签字xlsx> --pdf-dir <语料目录>
+      重建 b2_pdfs/ 后执行 B.1 命令，哈希会与 sidecar 逐字节对齐。
+A.5 逐格断言：原 15 列里除 notes 外全部未变 —— min / typ / max、unit、
+    condition、symbol、evidence_page、table_title、row_status、reviewer、
+    confidence_score 一字未动。另追加 approved_by / entered_by /
+    device_model / human_adjudication 四列，与 B1 定稿的 19 列结构对齐。
+    型号取各 PDF 第 1 页封面原文；V003 封面只印族名 AM243x，
+    另有「AM2434, AM2432, AM2431」一行，故登记为 AM2431。
+A.6 溯源三处互校：CSV ↔ sidecar 比 file_name / device_model；
+    sidecar ↔ provenance 比 file_name / device_model / sha256 / page_count；
+    sha256 与页数从磁盘原件实算，页文本逐页抽取，PDF 模式再复算一次哈希。
+
+B. 机检原始输出（未编辑）
+------------------------------------------------------------------------------
+
+### B.1 最终定稿 · PDF 模式（实算哈希）
+$ python validate_annotation.py --csv Batch3_B2_FINAL.csv --page-text page_text_batch3_b2.json --provenance Batch3_B2_PDF_PROVENANCE.csv --pdf-dir b2_pdfs
+------------------------------------------------------------------------------
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：已比对
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.6  Batch3_B2_FINAL.csv   行数 30   样本 6
+页文本来源: PDF 原件
+==============================================================================
+[OK      ] 行2    V038  
+[OK      ] 行3    V038  
+[OK      ] 行4    V038  
+[OK      ] 行5    V038  
+[OK      ] 行6    V038  
+[OK      ] 行7    V320  
+[OK      ] 行8    V320  
+[OK      ] 行9    V320  
+[OK      ] 行10   V320  
+[OK      ] 行11   V320  
+[OK      ] 行12   V346  
+[OK      ] 行13   V346  
+[OK      ] 行14   V346  
+[OK      ] 行15   V346  
+[OK      ] 行16   V346  
+[OK      ] 行17   V242  
+[OK      ] 行18   V242  
+[OK      ] 行19   V242  
+[OK      ] 行20   V242  
+[OK      ] 行21   V242  
+[OK      ] 行22   V003  
+[OK      ] 行23   V003  
+[OK      ] 行24   V003  
+[OK      ] 行25   V003  
+[OK      ] 行26   V003  
+[OK      ] 行27   V011  
+[OK      ] 行28   V011  
+[OK      ] 行29   V011  
+[OK      ] 行30   V011  
+[OK      ] 行31   V011  
+
+人工裁定（human_adjudication）：
+  行9    V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行10   V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行17   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行18   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行19   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行20   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=57  正负值=1
+统计: OK=30
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+------------------------------------------------------------------------------
+[退出码 0]
+
+### B.2 最终定稿 · 离线模式（sidecar）
+$ env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B2_FINAL.csv --page-text page_text_batch3_b2.json --provenance Batch3_B2_PDF_PROVENANCE.csv
+------------------------------------------------------------------------------
+提示: 使用随包的 page_text.json（只含证据页，无法给出建议页）
+
+==============================================================================
+溯源一致性检查
+==============================================================================
+  provenance 表：6 个样本
+  sidecar：6 个样本
+  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
+  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
+  PDF 实算哈希：跳过（非 PDF 模式）
+  结论：三处溯源一致
+
+==============================================================================
+标注机检 v1.6  Batch3_B2_FINAL.csv   行数 30   样本 6
+页文本来源: page_text.json
+==============================================================================
+[OK      ] 行2    V038  
+[OK      ] 行3    V038  
+[OK      ] 行4    V038  
+[OK      ] 行5    V038  
+[OK      ] 行6    V038  
+[OK      ] 行7    V320  
+[OK      ] 行8    V320  
+[OK      ] 行9    V320  
+[OK      ] 行10   V320  
+[OK      ] 行11   V320  
+[OK      ] 行12   V346  
+[OK      ] 行13   V346  
+[OK      ] 行14   V346  
+[OK      ] 行15   V346  
+[OK      ] 行16   V346  
+[OK      ] 行17   V242  
+[OK      ] 行18   V242  
+[OK      ] 行19   V242  
+[OK      ] 行20   V242  
+[OK      ] 行21   V242  
+[OK      ] 行22   V003  
+[OK      ] 行23   V003  
+[OK      ] 行24   V003  
+[OK      ] 行25   V003  
+[OK      ] 行26   V003  
+[OK      ] 行27   V011  
+[OK      ] 行28   V011  
+[OK      ] 行29   V011  
+[OK      ] 行30   V011  
+[OK      ] 行31   V011  
+
+人工裁定（human_adjudication）：
+  行9    V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行10   V320   Supply voltage                           ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行17   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行18   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行19   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行20   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+  行21   V242   Power-supply voltage                     ACCEPTED_SOURCE_HAS_NO_SYMBOL
+
+数值分类: 数值=57  正负值=1
+统计: OK=30
+
+无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+------------------------------------------------------------------------------
+[退出码 0]
+
+C. 结论
+------------------------------------------------------------------------------
+  PDF 模式与离线 sidecar 模式均为 OK=30 / SUSPECT=0 / ERROR=0，退出码 0。
+  达成 PM 要求的 OK=30 / ERROR=0，没有靠关闭或放宽任何一条 v1.6 判据。
+  B2 定稿文件与本报告一并打包，审计包里不再只有 DRAFT 版。
+
+D. 清理前的 30 行 notes 留痕（逐行）
+------------------------------------------------------------------------------
+B2 签字版原始 notes（清理前全文留痕）
+真源：Batch3_B2_SIGNED_original.xlsx（PM 签字原件副本，逐格未改）
+清理后统一为：人工已核对 PDF 原图并确认
+========================================================================
+物理行1   V038  VA19         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行2   V038  VPLL19       | VLM 草稿，须对左图核；vlm自报=1.00
+物理行3   V038  VREFO        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行4   V038  VTRIG        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行5   V038  VA11         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行6   V320  VFUSE        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行7   V320  IOVDD        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行8   V320  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行9   V320  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行10  V320  V(ESD)       | VLM 草稿，须对左图核；vlm自报=1.00
+物理行11  V346  AVDD3V       | VLM 草稿，须对左图核；vlm自报=1.00；AVDD3V 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行12  V346  AVDD         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行13  V346  DVDD         | VLM 草稿，须对左图核；vlm自报=1.00
+物理行14  V346  IOVDD        | VLM 草稿，须对左图核；vlm自报=1.00
+物理行15  V346  AVDD3V       | VLM 草稿，须对左图核；vlm自报=1.00；AVDD3V 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行16  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行17  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行18  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行19  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行20  V242  (空)          | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+物理行21  V003  VDD_CORE     | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；MIN(1)/NOM/MAX(1) 三列；NOM 是否等同 typ 请人工确认
+物理行22  V003  VDDR_CORE    | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；MIN(1)/NOM/MAX(1) 三列；NOM 是否等同 typ 请人工确认
+物理行23  V003  VDDSHV5      | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；同一符号另有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V 模式
+物理行24  V003  TJ           | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；原文为 –40 / 125（EN DASH），已按验证器 MINUS 规则写作 -40
+物理行25  V003  VDD_CORE     | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；绝对最大额定值，与 p105 的推荐工作条件 0.81/0.85/0.895 V 不是同一概念，勿混
+物理行26  V011  VIH          | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行27  V011  VIH          | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行28  V011  VIH          | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行29  V011  VIL          | VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认
+物理行30  V011  VIL          | VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认
+========================================================================
+11 行 | VLM 草稿，须对左图核；vlm自报=1.00
+ 7 行 | VLM 草稿，须对左图核；vlm自报=1.00；symbol 过长已留空，原文移入 condition
+ 2 行 | VLM 草稿，须对左图核；vlm自报=1.00；AVDD3V 有多组取值（疑不同温度等级或 VLM 误标），请确认
+ 2 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；MIN(1)/NOM/MAX(1) 三列；NOM 是否等同 typ 请人工确认
+ 1 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；同一符号另有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V 模式
+ 1 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；原文为 –40 / 125（EN DASH），已按验证器 MINUS 规则写作 -40
+ 1 行 | 文本层定向抽取（非 VLM）：原 p14 是 Pin Attributes 术语解释页（无参数），已按第 6 章 Specifications 重定位；须对左图复核 | low_confidence；绝对最大额定值，与 p105 的推荐工作条件 0.81/0.85/0.895 V 不是同一概念，勿混
+ 3 行 | VLM 草稿，须对左图核；vlm自报=1.00；VIH 有多组取值（疑不同温度等级或 VLM 误标），请确认
+ 2 行 | VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认
+==============================================================================
