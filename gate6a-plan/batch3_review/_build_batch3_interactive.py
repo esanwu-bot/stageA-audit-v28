@@ -60,19 +60,34 @@ DONE = {"V097", "V101", "V111", "V145", "V162", "V349"}
 # 再去碰多级表头/跨页那批硬骨头。
 BATCH1 = ["V319", "V304", "V199", "V336", "V173", "V345"]
 
+# 供电电压符号。旧版写的是 `^v(cc|dd|s)\b|\bv(cc|dd)\b`：
+# `\b` 要求 VDD 后面紧跟非单词字符，可 VDD_CORE / VDDR_CORE / VDDSHV5
+# 的后缀以下划线或字母开头，全都是单词字符，词边界根本不成立 ——
+# 于是这些行被判成 pri=99 的非核心参数，pick_core 直接丢掉。
+# 现在改成「VCC / VDD / VS + 任意字母数字下划线后缀」，另兼容
+# AVDD / DVDD / IOVDD 这类带前缀的写法；参数名里的 supply voltage 仍照旧。
+SUPPLY_RX = re.compile(
+    r"supply\s+voltage|power[- ]supply\s+voltage"
+    r"|\bv(?:cc|dd|s)[a-z0-9_]*\b"
+    r"|\b[a-z]{1,3}v(?:cc|dd)[a-z0-9_]*\b",
+    re.I)
+
 # 核心参数优先级。数字越小越先留；命不中的行排在后面。
 # 只收这几类：供电、温度（工作/存储/结温）、电流（输出/输入）、功耗、输入电压。
 CORE_ORDER = [
-    (re.compile(r"supply\s+voltage|^v(cc|dd|s)\b|\bv(cc|dd)\b", re.I), 1,
-     "供电电压"),
+    # 以下几条的符号分支原先也用了 `^` 锚。core_rank() 拼的是
+    # 「parameter_name + 空格 + symbol」，串几乎不以符号开头，
+    # `^t\s*j\b` 之类永远命中不了符号位（TJ 因此被判 pri=99 漏掉）。
+    # 与供电的 `\b` 是同一类缺陷，一并改成词边界锚。
+    (SUPPLY_RX, 1, "供电电压"),
     (re.compile(r"operating\s+(free[- ]air\s+)?temperature|ambient\s+temperature"
-                r"|^t\s*a$", re.I), 2, "工作温度"),
-    (re.compile(r"storage\s+temperature|^t\s*stg\b", re.I), 3, "存储温度"),
-    (re.compile(r"junction\s+temperature|^t\s*j\b", re.I), 4, "结温"),
-    (re.compile(r"(continuous\s+)?output\s+current|^i\s*o\b", re.I), 5, "输出电流"),
-    (re.compile(r"input\s+current|^i\s*i\b", re.I), 6, "输入电流"),
+                r"|\bt\s*a\b", re.I), 2, "工作温度"),
+    (re.compile(r"storage\s+temperature|\bt\s*stg\b", re.I), 3, "存储温度"),
+    (re.compile(r"junction\s+temperature|\bt\s*j\b", re.I), 4, "结温"),
+    (re.compile(r"(continuous\s+)?output\s+current|\bi\s*o\b", re.I), 5, "输出电流"),
+    (re.compile(r"input\s+current|\bi\s*i\b", re.I), 6, "输入电流"),
     (re.compile(r"power\s+dissipation", re.I), 7, "功耗"),
-    (re.compile(r"input\s+voltage|^v\s*i\b", re.I), 8, "输入电压"),
+    (re.compile(r"input\s+voltage|\bv\s*i\b", re.I), 8, "输入电压"),
 ]
 
 
@@ -136,23 +151,89 @@ REF_RX = re.compile(
     r"which\s+.{0,40}\btable\b)\b", re.I)
 TOC_PAGE_LIMIT = 10        # 目录只可能在最前面，正文页不参与目录判定
 
+# —— 表头结构判据（Reviewer 2026-11-12 指出旧版只看「页面出现 >=2 个
+# MIN/MAX 字样」太松：正文里反复提 minimum / maximum 也会误放行）——
+# 真表的表头词在 PDF 文本层里是**竖排独立短行**：
+#   p101: PARAMETER / MIN / MAX / UNIT
+#   p105: SUPPLY NAME / DESCRIPTION / MIN(1) / NOM / MAX(1) / UNIT
+# 而正文句子 "The MIN and MAX values ..." 中的词嵌在长行里，
+# 一个独立列词行都没有。用「独立成行 + 表头标记词」当结构化证据。
+HEADER_WORD_RX = re.compile(
+    r"(?i)^(MIN|MAX|TYP|NOM|UNIT|VALUE|PARAMETER|DESCRIPTION|"
+    r"SUPPLY\s+NAME|TEST\s+CONDITIONS)(\(\d+\))?\.?$")
+NUM_HEAD_WORDS = {"MIN", "TYP", "MAX", "NOM", "VALUE"}
+MARK_HEAD_WORDS = {"UNIT", "PARAMETER", "DESCRIPTION", "SUPPLY NAME",
+                   "TEST CONDITIONS"}
+HEADER_WINDOW = 8
+
+
+def has_table_header(text):
+    """MIN/MAX 是否真的以「列名」身份出现在表头结构里。
+
+    在任意连续 HEADER_WINDOW 行的窗口内，要求至少 2 个不同的数值列词
+    各自独立成行，且窗口内还有 UNIT / PARAMETER / DESCRIPTION /
+    SUPPLY NAME / TEST CONDITIONS 之一作为表头标记。
+    纯正文（含多少 MIN/MAX 词汇都算）不满足，返回 False。
+    """
+    lines = [" ".join(ln.split()) for ln in (text or "").splitlines()]
+    tags = []
+    for ln in lines:
+        m = HEADER_WORD_RX.match(ln.strip())
+        tags.append(" ".join(m.group(1).upper().split()) if m else None)
+    for i in range(len(tags)):
+        win = [w for w in tags[i:i + HEADER_WINDOW] if w]
+        nums = {w for w in win if w in NUM_HEAD_WORDS}
+        if len(nums) >= 2 and any(w in MARK_HEAD_WORDS for w in win):
+            return True
+    return False
+
+
+def _table_header_from_borders(page):
+    """有表格边框时，直接看表头区域单元格里有没有 >=2 个数值列词。
+
+    这是文本判据之外的第二条结构化证据。老手册的点线式 AMR 表没有边框，
+    所以两条是「或」关系，不是「与」—— 不能把无边框的真表误杀。
+    """
+    try:
+        tables = page.find_tables().tables
+    except Exception:
+        return False
+    for t in tables:
+        try:
+            head = t.extract()[:2]
+        except Exception:
+            continue
+        words = " ".join(str(c or "") for row in head for c in row).upper()
+        if len({w for w in ("MIN", "TYP", "MAX", "NOM")
+                if re.search(r"\b%s\b" % w, words)}) >= 2:
+            return True
+    return False
+
 
 def prescan3(doc, npages, max_pages=0):
-    """全书文本快筛：只留「有表标题词 + 至少两个 MIN/TYP/MAX/NOM 列词」的页。
+    """全书文本快筛：只留「有表标题词 + 真实表头结构」的页。
 
     为什么分两阶段：find_tables()/parse_page() 对 282 页全做一遍很慢，
-    get_text("text") 是纯文本，全书扫一遍几乎不耗时。
-    纯术语解释页（V003 p14）连一个 MIN/MAX 列词都没有，第一关就出局；
-    p101/p105/p106 都有 PARAMETER MIN MAX UNIT / MIN(1) NOM MAX(1)，稳过。
+    get_text("text") 是纯文本，全书扫一遍几乎不耗时；只有过了文本关的
+    少数页才值得做边框取证。
+
+    两层判据：
+      1. NUMCOL_RX 快筛 —— 页面至少 2 个数值列词，且出现表标题词；
+      2. has_table_header(t) 或 _table_header_from_borders(page) ——
+         这些词必须真的以列名身份出现在表头结构里。
+    V003 p14 的 Pin Attributes 术语解释页两层都过不了。
     max_pages=0 表示全书；调试时可传小值做回归。
     """
     limit = npages if max_pages <= 0 else min(npages, max_pages)
     cand = []
     for pno in range(1, limit + 1):
-        t = doc.load_page(pno - 1).get_text("text")
+        page = doc.load_page(pno - 1)
+        t = page.get_text("text")
         if not t.strip():
             continue
-        if len(NUMCOL_RX.findall(t)) >= 2 and KIND_TITLE_RX.search(t):
+        if len(NUMCOL_RX.findall(t)) < 2 or not KIND_TITLE_RX.search(t):
+            continue
+        if has_table_header(t) or _table_header_from_borders(page):
             cand.append(pno)
     return cand
 

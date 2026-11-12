@@ -8,6 +8,7 @@
 from __future__ import print_function
 
 import hashlib
+import os
 import shutil
 import zipfile
 from pathlib import Path
@@ -29,7 +30,11 @@ SYNC = [
     "Batch3_B2_DRAFT.csv",
     "Batch3_B2_Viewer.html",
     "Batch3_V003_diagnosis.txt",
+    # CORE_ORDER 正则 + prescan3 表头加固与回归测试
     "_build_batch3_interactive.py",
+    "_test_core_order_and_header.py",
+    "Batch3_CORE_ORDER_regression.txt",
+    "Batch3_validator_selftest.txt",
     "_fix_v003_b2.py",
     "_sync_batch3_review.py",
     "annotation_reports/V003/b3_AMR_p0101.png",
@@ -46,6 +51,32 @@ def sha(p):
         for chunk in iter(lambda: fh.read(1 << 20), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+def copy_preserving(src, dst):
+    """目标被 Excel / 预览占用时 shutil.copy2 会 WinError 32。
+
+    改成「写同目录临时文件 + os.replace 原子替换」。若目标仍被独占、
+    replace 也失败，只有在**源文件与目标字节完全一致**时才允许跳过，
+    并把这个事实返回给调用方打印出来 —— 绝不静默放过内容不一致的文件。
+    """
+    tmp = dst.with_name(dst.name + ".wb_tmp")
+    try:
+        shutil.copy2(src, tmp)
+        try:
+            os.replace(tmp, dst)
+            return "覆盖"
+        except PermissionError:
+            if sha(src) == sha(dst):
+                return "跳过（目标被占用，字节一致）"
+            raise PermissionError(
+                "目标被占用且内容不一致，拒绝静默跳过：%s" % dst)
+    finally:
+        if tmp.exists():
+            try:
+                tmp.unlink()
+            except OSError:
+                pass
 
 
 def payloads():
@@ -67,9 +98,9 @@ def main():
         dst = DST / rel
         assert src.is_file(), "缺少源文件：%s" % src
         dst.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src, dst)
-        assert sha(src) == sha(dst), "复制后哈希不一致：%s" % rel
-        print("  同步 %-58s %8d 字节" % (rel, dst.stat().st_size))
+        how = copy_preserving(src, dst)
+        assert sha(src) == sha(dst), "%s 后哈希不一致：%s" % (how, rel)
+        print("  同步 %-58s %8d 字节  %s" % (rel, dst.stat().st_size, how))
     for rel in DROP:
         p = DST / rel
         if p.exists():

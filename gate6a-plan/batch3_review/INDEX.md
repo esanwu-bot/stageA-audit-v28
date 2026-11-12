@@ -285,3 +285,84 @@ V003 五行的 `table_title` 仍严格是 4 行 `Recommended Operating Condition
 均 `OK=23 / SUSPECT=0 / ERROR=0`、退出码 0，原始 stdout 见
 `b1_validation_raw/b1_final_pdf_mode.txt` 与 `b1_final_sidecar_mode.txt`，
 报告 G 段逐字贴出。改列、改表头、改备注均未影响任何一条判据。
+
+## 10. CORE_ORDER 正则 + prescan3 表头加固（Reviewer 第三轮）
+
+这一轮修的是**底层生成器**，不是 V003 的定向脚本；B1/B2 已定稿产物一律不重跑。
+
+### 10.1 漏洞一：供电符号正则的 `\b` 挡住带后缀的符号
+
+旧版 `CORE_ORDER[0]` 是 `^v(cc|dd|s)\b|\bv(cc|dd)\b`。`\b` 要求 `VDD` 后面紧跟
+非单词字符，但 `VDD_CORE` / `VDDR_CORE` / `VDDSHV5` 的后缀以下划线或字母开头，
+全都是单词字符 —— 词边界不成立，这几行被判 `pri=99`，`pick_core()` 直接丢掉。
+
+现改为独立的 `SUPPLY_RX`：
+
+```python
+SUPPLY_RX = re.compile(
+    r"supply\s+voltage|power[- ]supply\s+voltage"
+    r"|\bv(?:cc|dd|s)[a-z0-9_]*\b"
+    r"|\b[a-z]{1,3}v(?:cc|dd)[a-z0-9_]*\b", re.I)
+```
+
+覆盖 `VDD_CORE`、`VDDR_CORE`、`VDDSHV5`、`VCC`、`VDD`，并兼容
+`AVDD3V` / `DVDD` / `IOVDD` 这类带前缀写法；参数名里的 `Supply voltage range`
+仍照旧命中。**回归测试里 parameter_name 故意留空**，确保只靠符号也能判为核心。
+
+### 10.2 漏洞二（同源，顺带修掉）：`^` 锚在拼接串里永远不命中
+
+回归测试第一次跑就抓到 `TJ` 仍落 `pri=99`：温度/电流那几条写的是
+`^t\s*j\b` / `^t\s*stg\b` / `^i\s*o\b` 等，而 `core_rank()` 拼的是
+「`parameter_name` + 空格 + `symbol`」，串几乎不以符号开头，`^` 永远匹配不到。
+已把 `TA / Tstg / TJ / IO / II` 的符号分支统一改成 `\b` 词边界锚。
+
+### 10.3 prescan3() 的表头识别加固
+
+旧版只数「页面出现 ≥2 个 `MIN/TYP/MAX/NOM`」，正文里反复提
+minimum / maximum 也会被当成参数表，属 Fail-Open。现在加第二层结构判据：
+
+| 判据 | 内容 |
+| --- | --- |
+| `has_table_header(text)` | 连续 8 行窗口内，≥2 个不同数值列词**各自独立成行**（允许 `MIN(1)` 脚注），且窗口内有 `UNIT` / `PARAMETER` / `DESCRIPTION` / `SUPPLY NAME` / `TEST CONDITIONS` 之一 |
+| `_table_header_from_borders(page)` | 有表格边框时，直接看表头区域单元格里是否含 ≥2 个数值列词 |
+
+两条是「或」关系：老手册的点线式 AMR 表没有边框，不能因为查不到边框就误杀真表。
+`has_table_header` 是纯文本函数，可被回归测试直接调用。
+
+**回归验证**：V003 全书候选页加固后仍是
+`[101,102,105,106,108,109,110,111,112,113,115,117,119]` 共 13 页，
+`p14` 仍被排除，`p101/p105/p106` 全部保留；`_fix_v003_b2.py` 的 5 行证据断言
+全部仍通过，B2 产物与加固后生成器一致。
+
+### 10.4 测试输出（真实 stdout，未编辑）
+
+| 测试 | 结果 |
+| --- | --- |
+| `_test_core_order_and_header.py` | **`PASS=18, FAIL=0, SKIP=0`**，退出码 0；原始输出 `Batch3_CORE_ORDER_regression.txt` |
+| `_selftest_validator_v2.py`（v1.6 验证器 31 例） | **`PASS=31, FAIL=0, SKIP=0`**，退出码 0；原始输出 `Batch3_validator_selftest.txt` |
+
+新测试全部使用内存对象与合成 PDF 页，不依赖外部 PDF 或环境变量，
+因此**不存在 SKIP**；跑不全就是 FAIL、退出码非零。18 例里含：
+5 个被点名符号的正向断言、带前缀符号、`^` 锚回归、
+AMR/ROC 两种真表头正向、纯正文多组 MIN/MAX 反向、
+合成整页的正向与反向、p14 式术语解释页反向。
+
+### 10.5 真实代码 diff 与 B1 定稿确认
+
+- `Batch3_CORE_ORDER_fix.diff`：`git diff` 产出的真实补丁，143 行 / 96 行新增，
+  Reviewer 可直接查看，不需要占位描述。
+- `Batch3_B1_RESIGNED.csv` / `.xlsx`（**23 行 × 19 列**）确为本包内的最终定稿：
+  V304 物理行 8 的 `table_title` 已是 `Absolute Maximum Ratings`；
+  V304 / V173 / V345 三行 `reviewer=wuxiaoxian`、
+  `approved_by=wuxiaoxian`、`entered_by=WB_Agent`；
+  23 行全部 `CONFIRMED`，v1.6 双模式全绿。
+
+### 10.6 新增文件
+
+| 文件 | 作用 |
+| --- | --- |
+| `_build_batch3_interactive.py` | 修复后的生成器（本轮唯一改动的生产代码） |
+| `_test_core_order_and_header.py` | 18 例回归测试 |
+| `Batch3_CORE_ORDER_regression.txt` | 18 例真实 stdout |
+| `Batch3_validator_selftest.txt` | v1.6 自测 31 例真实 stdout |
+| `Batch3_CORE_ORDER_fix.diff` | 真实代码 diff |

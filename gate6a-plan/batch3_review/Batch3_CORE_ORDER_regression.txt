@@ -1,0 +1,25 @@
+========================================================================
+CORE_ORDER 正则 + prescan3 表头结构判据 · 回归测试
+========================================================================
+PASS  正向 供电符号 VDD_CORE   → pri=1 且被 pick_core 保留
+PASS  正向 供电符号 VDDR_CORE  → pri=1 且被 pick_core 保留
+PASS  正向 供电符号 VDDSHV5    → pri=1 且被 pick_core 保留
+PASS  正向 供电符号 VCC        → pri=1 且被 pick_core 保留
+PASS  正向 供电符号 VDD        → pri=1 且被 pick_core 保留
+PASS  正向 带前缀的供电符号 AVDD3V / DVDD / IOVDD 同样命中
+PASS  正向 参数名里的 Supply voltage range 仍能命中（不依赖符号）
+PASS  反向 非供电的术语条目不得被放宽的正则误判为核心
+PASS  正向表头 AMR 型（PARAMETER / MIN / MAX / UNIT）识别为表头
+PASS  正向表头 ROC 型（MIN(1) / NOM / MAX(1) / UNIT）识别为表头
+PASS  反向表头 只有 1 个独立列词行时不放行
+PASS  反向表头 含多个 MIN/MAX 词汇的纯正文不识别为表头
+PASS  反向整页 纯正文（含多组 MIN/MAX + 表标题词）不进候选页
+PASS  正向整页 真 AMR 表头页进候选页
+PASS  正向整页 真 ROC 表头页进候选页
+PASS  反向整页 p14 式术语解释页（无 MIN/MAX 表头）不进候选页
+PASS  回归 温度/电流符号不再被 ^ 锚漏判（TA/Tstg/TJ/IO/II）
+PASS  回归 V003 的 VDD_CORE/VDDR_CORE/VDDSHV5/TJ 全部仍为核心参数
+------------------------------------------------------------------------
+PASS=18, FAIL=0, SKIP=0
+测试全部使用内存对象 / 合成 PDF 页，不依赖外部 PDF，故 SKIP 必须为 0。
+结论：全部通过
