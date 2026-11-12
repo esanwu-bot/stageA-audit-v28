@@ -5,7 +5,7 @@
   ... V256 → 核心 5 行（low=0，丢弃 19）
   ... V244 → 核心 5 行（low=0，丢弃 11）
 
-圈选台: Batch3_B3_Viewer.html (100.2 KB, 6 件)
+圈选台: Batch3_B3_Viewer.html (100.4 KB, 6 件)
 草稿  : Batch3_B3_DRAFT.csv (20 行)
   V328  无文本层   核心=0 low=0 丢弃=0  全书 12/29 页无文本层，前 12 页有连续 4 页空白；EXCLU
   V146  需重点看   核心=5 low=5 丢弃=3  核心 5 行中 5 行 low_confidence，先核这些

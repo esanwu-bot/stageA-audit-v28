@@ -55,6 +55,53 @@ KINDS = ("AMR", "ROC", "ELC")
 # Batch 2 已定稿的 6 件，绝不再进 Batch 3
 DONE = {"V097", "V101", "V111", "V145", "V162", "V349"}
 
+# —— TEST CONDITIONS 定向回填（Reviewer 第七轮）——
+# VLM 只抄 PARAMETER / MIN / TYP / MAX 列，TEST CONDITIONS 留在图里没抄，
+# 导致草稿 condition 全空。V256 p13 的 V(MAIN-AUX) 五行各自对应不同的
+# 测试条件，其中第 2、3 行 min/max 完全相同（-7.8 / 6.6），只能按
+# 「同一参数块内的出现顺序」逐行绑定：不能按数值反推，更不能当重复数据合并。
+# 以下逐字取自 bq79652 p13 原图裁图 annotation_reports/V256/b3_ELC_p0013.png，
+# 度符号按原图写 °C；PDF 文本层把 ° 抽成 o（`25oC`），仅影响 OCR 显示，
+# v1.6 只用 condition 做分组键，不做原文断言，故按原图语义落盘。
+CONDITION_BACKFILL = {
+    ("V256", "13", "V(MAIN-AUX)"): [
+        "2V<VCELL<4.5V; TA=25°C",
+        "2V<VCELL<4.5V; -20°C<TA<65°C",
+        "2V<VCELL<4.5V; -40°C<TA<105°C",
+        "2V<VCELL<4.5V; -40°C<TA<125°C",
+        "1V<VCELL< 5V; -40°C<TA<125°C",
+    ],
+}
+
+
+def apply_condition_backfill(rows, sno):
+    """按参数块内出现顺序回填 condition；行数不符直接 Fail-Closed，绝不盲配。
+
+    只处理 sno 这一件的条目。B3 是多件串行生成，若遍历全局回填表，
+    一件整件 EXCLUDED（keep 为空，如 V328 无文本层）就会被误判成
+    「另一件的条件块丢失」而错误退出。
+    分工必须分清：
+      - 整件没有参数行 → 由 EXCLUDED 结论承接，回填不适用；
+      - 有参数行但条件块对不上 → 必须 SystemExit，绝不盲配。
+    """
+    here = [r for r in rows if r.get("sample_no") == sno]
+    for (bsno, page, sym), conds in CONDITION_BACKFILL.items():
+        if bsno != sno:
+            continue
+        hit = [r for r in here
+               if str(r.get("evidence_page")) == page
+               and (r.get("symbol") or "").strip() == sym]
+        if not hit and not here:
+            print("  ... %s 整件无参数行（EXCLUDED），condition 回填不适用" % sno)
+            continue
+        if len(hit) != len(conds):
+            raise SystemExit(
+                "FAIL %s p%s %s 保留 %d 行，与 condition 表 %d 条不一致，"
+                "拒绝按顺序盲配" % (sno, page, sym, len(hit), len(conds)))
+        for r, c in zip(hit, conds):
+            r["condition"] = c
+    return rows
+
 # 第一梯队：原 Batch 1 名单（5 件普通文本型）+ 1 件复杂参数表。
 # 选它们打头的原因：表格结构最规整，先用它们校准"核心 3~5 行"的取舍标准，
 # 再去碰多级表头/跨页那批硬骨头。
@@ -422,12 +469,18 @@ def _page_table_signatures(page):
     except Exception:
         page_text = ""
     try:
-        tables = page.find_tables(clip=fitz.Rect(*clip)).tables
-    except TypeError:
-        # 兼容不接受 clip 的旧版 PyMuPDF / 极简合成对象
-        tables = page.find_tables().tables
+        result = page.find_tables(clip=fitz.Rect(*clip))
+    except TypeError as e:
+        # Reviewer 第七轮：绝不退回 `page.find_tables()` 无 clip 调用。
+        # 无 clip 等于放弃隔离 1，跨页污染会原路回来，属于静默降级 → 直接退出。
+        raise SystemExit(
+            "FAIL find_tables() 不接受 clip 参数，拒绝静默降级：%s" % e)
     except Exception:
+        # 页面本身无法解析（加密 / 结构损坏）按「本页无表」处理，不是降级
         return []
+    tables = getattr(result, "tables", None)
+    if tables is None:
+        raise SystemExit("FAIL find_tables() 返回值缺少 tables 属性，拒绝降级")
     out = []
     for t in tables:
         sig = _table_signature(t, clip, page_text)
@@ -975,6 +1028,8 @@ def one_sample(meta, args):
 
     # —— 只留核心 3~5 行 ——
     keep, drop, _ = pick_core(rows)
+    # VLM 不抄 TEST CONDITIONS：按参数块内出现顺序从原图回填（Fail-Closed）
+    apply_condition_backfill(keep, sno)
     mark_dups(keep)
 
     # low_confidence 标记：低于阈值的行在 notes 里打词，方便 Excel 筛。

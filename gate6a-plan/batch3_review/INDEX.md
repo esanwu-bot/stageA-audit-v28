@@ -671,6 +671,13 @@ p101 的 `t.extract()` 会吐出 p100 的正文，p102 甚至变成全空行。�
 再加结构约束：`Table` 对象绝不跨出 `_page_table_signatures()`；本页全部
 extract 完成、`PageContext` 释放 `page` 引用后，才允许访问上一页。
 
+隔离 1 的执行口径（Reviewer 第七轮补：此处**不允许静默降级**）：若运行
+环境的 `find_tables()` 不接受 `clip` 关键字而抛 `TypeError`，程序直接
+`SystemExit` 退出，绝不退回 `page.find_tables()` 无 clip 调用——没有 clip
+等于放弃隔离 1，跨页污染会原路回来。返回值缺 `tables` 属性同样退出。
+回归里用 `NoClipPage`（`find_tables` 只接受 `self`）证明会退出，且退出
+消息必须点明 `clip`。
+
 ### 15.2 prescan3 三段式任务队列与页级分流
 
 `页级分类（Page_Title）` → `表头匹配（TableSignature / 指纹）` →
@@ -734,7 +741,7 @@ CSV / PROVENANCE 字节一致，7 处 `approved_by` 与代录入行
 
 | 样本 | 结果 | 说明 |
 | --- | --- | --- |
-| V271 / V256 / V244 | 各 5 行草稿 | 跨页表格类，VLM 真调用，裁图 p117/p13/p44 等 |
+| V271 / V256 / V244 | 各 5 行草稿 | 跨页表格类，VLM 真调用，裁图 p117/p13/p44 等；V256 p13 五行 `condition` 已按原图逐行绑定（见 15.7） |
 | V146 | 5 行草稿 | 修复描述型表题后命中 p4；5 行全 `low_confidence`，需重点核对列对齐 |
 | V328 | `EXCLUDED` | 29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold |
 | V222 | `EXCLUDED` | 9 页全为封装/板图/卷带资料，`0.05 MIN/MAX` 是机械尺寸标注，无电气参数表 |
@@ -746,7 +753,7 @@ CSV / PROVENANCE 字节一致，7 处 `approved_by` 与代录入行
 
 | 项目 | 结果 |
 | --- | --- |
-| `_test_core_order_and_header.py` | **`PASS=39, FAIL=0, SKIP=0`** |
+| `_test_core_order_and_header.py` | **`PASS=43, FAIL=0, SKIP=0`** |
 | `_test_b2_approval.py`（新增） | **`PASS=9, FAIL=0, SKIP=0`** |
 | `_selftest_validator_v2.py` | `PASS=31, FAIL=0, SKIP=0` |
 | `_verify_v003_candidates.py` | 13 页真表全中、p14 排除、无多余页；恰好 2 页走指纹继承 |
@@ -754,7 +761,51 @@ CSV / PROVENANCE 字节一致，7 处 `approved_by` 与代录入行
 | B2 定稿重跑 | 逐格一致、授权链闭合、冻结数据未改 |
 | B1 | 已冻结，本轮未改动 |
 
-### 15.7 尚未做的事
+`Batch3_V003_regression.txt` 与 `Batch3_prescan3_v003_evidence.txt` 逐字节
+相同（`dc355884483f7c14…`）：V003 全书回归重跑可复现，不是人工整理过的文本。
+
+### 15.7 Reviewer 第七轮两条硬伤：`clip` 静默降级与 V256 condition 缺失
+
+**硬伤 1 —— `clip` 静默降级。** 旧代码 `except TypeError` 后退回
+`page.find_tables()` 无 clip 调用，等于把隔离 1 悄悄关掉。已改为
+`SystemExit`（见 15.1 末段），并补 `NoClipPage` 回归证明真的会退出。
+
+**硬伤 2 —— V256 `V(MAIN-AUX)` 五行 condition 全空。** VLM 不抄
+`TEST CONDITIONS` 列，草稿里五行 condition 都是空串。核对原图
+`annotation_reports/V256/b3_ELC_p0013.png`，五行各对应一个不同的测试条件；
+其中**第 2、3 行的 MIN/MAX 完全相同（-7.8 / 6.6 mV），无法按数值反推**，
+只能按参数块内出现顺序绑定：
+
+| # | MIN | TYP | MAX | TEST CONDITION（原图逐行） |
+| --- | --- | --- | --- | --- |
+| 1 | -7.1 | — | 6.1 | `2V<VCELL<4.5V; TA=25°C` |
+| 2 | -7.8 | — | 6.6 | `2V<VCELL<4.5V; -20°C<TA<65°C` |
+| 3 | -7.8 | — | 6.6 | `2V<VCELL<4.5V; -40°C<TA<105°C` |
+| 4 | -7.8 | — | 6.7 | `2V<VCELL<4.5V; -40°C<TA<125°C` |
+| 5 | -7.9 | — | 6.9 | `1V<VCELL< 5V; -40°C<TA<125°C` |
+
+实现为 `CONDITION_BACKFILL` + `apply_condition_backfill()`：命中行数与
+条件条数不等即 `SystemExit("…拒绝按顺序盲配")`，不做任何数值匹配猜测。
+**五行 condition 互不相同、第 2/3 行未被当成重复数据合并**，这两点都写成
+断言，不是靠肉眼。
+
+`mark_dups()` 仍按参数块内「符号 + 条件 + 单位」判重，因此这五行在
+`duplicate_group` 上依然是 5 个不同值，不会被误合并。
+
+**回归中发现并修掉的一个新问题（如实记录）：** `apply_condition_backfill`
+最初遍历**全局**回填表。B3 是六件串行生成，V328 整件无文本层 → `keep`
+为空，于是被误判成「V256 条件块丢失」而 Fail-Closed 退出。这不是纪律
+问题而是作用域缺陷，改为按 `sample_no` 隔离，并明确分工：
+整件无参数行由 `EXCLUDED` 结论承接、回填不适用；**有参数行但条件块对不上
+仍必须退出**。补 `反向 V256 condition 回填 按样本隔离` 用例，同时断言
+「V256 自己只剩 2 行时仍退出」，防止把隔离写成放宽。
+
+本轮对 B3 草稿的净影响：与留痕
+`Batch3_DRAFT_before_condition_backfill.csv` 逐格比对，**只有 5 格变化，
+全部是 V256 这五行的 `condition`**；其余 15 行、20 行的所有数值 / 符号 /
+单位一字未动。
+
+### 15.8 尚未做的事
 
 B4（5 件：V077 V130 V290 V347 V041）、SCAN（3 件按 SOP 标 EXCLUDED）
 仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main

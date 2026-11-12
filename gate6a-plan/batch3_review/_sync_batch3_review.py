@@ -83,6 +83,10 @@ SYNC = [
     "Batch3_B3_Viewer.html",            # B3 专属副本（与正式版同字节）
     "Batch3_B3_DRAFT.csv",
     "Batch3_BATCH_PLAN.csv",
+    # 第七轮补齐（Reviewer 两条硬伤）：clip 静默降级改 Fail-Closed + V256 condition 逐行绑定
+    "Batch3_V003_regression.txt",
+    "Batch3_DRAFT_before_condition_backfill.csv",
+    "Batch3_Viewer_before_condition_backfill.html",
     # B3 圈选台左图依赖：9 张裁图必须与 HTML 同包，否则解压后看不到图
     "annotation_reports/V146/b3_ELC_p0004.png",
     "annotation_reports/V244/b3_ELC_p0047.png",

@@ -36,11 +36,15 @@ PASS  定向修复 隔离3 extract 吐出上一页正文 → 文本归属校验�
 PASS  定向修复 页级分流 STRONG 页完全不读取上一页（11 页走正常提取）
 PASS  反向 页首表格表头指纹与上一页不匹配 → FINGERPRINT_MISMATCH 拦截
 PASS  反向 合成反例回归 页首无关完整参数表 + 上方 AMR 标题仍被拦截
+PASS  定向修复 clip 静默降级 环境不支持 clip → Fail-Closed 退出，绝不退回无 clip 调用
+PASS  定向修复 V256 V(MAIN-AUX) 五行按参数块内顺序绑定 condition
+PASS  反向 V256 condition 回填 行数不符 → Fail-Closed，绝不盲配
+PASS  反向 V256 condition 回填 按样本隔离 别件整件 EXCLUDED 不得误伤
 PASS  正向 B3 V146 描述型表题 + 紧邻完整表头 → 真表放行（修复误杀）
 PASS  反向 B3 描述型表题 正文句子与章节交叉引用不得被当成表题
 PASS  反向 B3 描述型表题 + 无表头结构 → 仍拦截（不能靠新正则 Fail-Open）
 PASS  反向 B3 描述型表题 + 远处无关表头（超过 TITLE_MAX_GAP）→ 拦截
 ------------------------------------------------------------------------
-PASS=39, FAIL=0, SKIP=0
+PASS=43, FAIL=0, SKIP=0
 测试全部使用内存对象 / 合成 PDF 页，不依赖外部 PDF，故 SKIP 必须为 0。
 结论：全部通过

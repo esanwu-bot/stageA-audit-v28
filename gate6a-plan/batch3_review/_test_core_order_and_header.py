@@ -584,6 +584,76 @@ def _reviewer_negative_still_blocked():
         FakePage(CASE_H, CASE_H_BORDER)) is False
 
 
+class NoClipPage(FakePage):
+    """模拟「环境不支持 find_tables(clip=...)」的旧版库 / 受限对象。"""
+
+    def find_tables(self):
+        raise TypeError(
+            "find_tables() got an unexpected keyword argument 'clip'")
+
+
+@case("定向修复 clip 静默降级 环境不支持 clip → Fail-Closed 退出，绝不退回无 clip 调用")
+def _clip_fail_closed():
+    pg = NoClipPage(STRONG_LINES, STRONG_BORDER)
+    try:
+        I3._page_table_signatures(pg)
+    except SystemExit as e:
+        assert "clip" in str(e), "退出原因未点明 clip：%r" % str(e)
+    else:
+        raise AssertionError(
+            "不支持 clip 时仍静默降级回无 clip 调用，未 Fail-Closed")
+
+
+@case("定向修复 V256 V(MAIN-AUX) 五行按参数块内顺序绑定 condition")
+def _v256_condition():
+    specs = [("-7.1", "6.1"), ("-7.8", "6.6"), ("-7.8", "6.6"),
+             ("-7.8", "6.7"), ("-7.9", "6.9")]
+    rows = [{"sample_no": "V256", "evidence_page": "13",
+             "symbol": "V(MAIN-AUX)", "min_value": mn, "max_value": mx,
+             "condition": ""} for mn, mx in specs]
+    I3.apply_condition_backfill(rows, "V256")
+    want = I3.CONDITION_BACKFILL[("V256", "13", "V(MAIN-AUX)")]
+    assert [r["condition"] for r in rows] == want, "condition 没有逐行绑定"
+    assert rows[1]["condition"] != rows[2]["condition"], \
+        "min/max 完全相同的第 2/3 行被当成重复数据"
+    assert len({r["condition"] for r in rows}) == 5, \
+        "五行 condition 必须互不相同，不能合并"
+
+
+@case("反向 V256 condition 回填 行数不符 → Fail-Closed，绝不盲配")
+def _v256_condition_mismatch():
+    rows = [{"sample_no": "V256", "evidence_page": "13",
+             "symbol": "V(MAIN-AUX)", "min_value": "-7.1",
+             "max_value": "6.1", "condition": ""}]
+    try:
+        I3.apply_condition_backfill(rows, "V256")
+    except SystemExit as e:
+        assert "不一致" in str(e), "退出原因未说明不一致：%r" % str(e)
+    else:
+        raise AssertionError("行数不符仍按顺序盲配，未 Fail-Closed")
+
+
+@case("反向 V256 condition 回填 按样本隔离 别件整件 EXCLUDED 不得误伤")
+def _v256_condition_scope():
+    # B3 串行生成时真实事故：V328 整件无文本层 → keep 为空，
+    # 旧版遍历全局回填表，把 V328 的空 keep 当成「V256 条件块丢失」而退出。
+    empty = []
+    assert I3.apply_condition_backfill(empty, "V328") == []
+    # 同一次调用里 V256 有行、另一件为空 → V256 仍须正常绑定
+    rows = [{"sample_no": "V256", "evidence_page": "13",
+             "symbol": "V(MAIN-AUX)", "min_value": "-7.1",
+             "max_value": "6.1", "condition": ""} for _ in range(5)]
+    assert I3.apply_condition_backfill(rows, "V256") is rows
+    assert all(r["condition"] for r in rows), "样本隔离后 V256 反而没绑上"
+    # 但 V256 自己只剩 2 行时仍必须退出，不能借隔离放行
+    try:
+        I3.apply_condition_backfill(rows[:2], "V256")
+    except SystemExit as e:
+        assert "不一致" in str(e), "隔离开得过宽，缺行仍放行：%r" % str(e)
+    else:
+        raise AssertionError("样本隔离被写成了放宽，缺行也放行")
+
+
 # —— B3 V146：老式手册「描述型表题」的口径统一（结构化补判据，非放宽阈值）——
 V146_LINES = [
     "CY74FCT399T",

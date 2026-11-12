@@ -1,0 +1,43 @@
+V003 真实 PDF 回归：AM2431BSDFHIALXR__am2431.pdf
+页数：282
+加固后候选页：[101, 102, 105, 106, 108, 109, 110, 111, 112, 113, 115, 117, 119]（13 页）
+PASS p101（第 6 章真表）保留
+PASS p102（第 6 章真表）保留
+PASS p105（第 6 章真表）保留
+PASS p106（第 6 章真表）保留
+PASS p108（第 6 章真表）保留
+PASS p109（第 6 章真表）保留
+PASS p110（第 6 章真表）保留
+PASS p111（第 6 章真表）保留
+PASS p112（第 6 章真表）保留
+PASS p113（第 6 章真表）保留
+PASS p115（第 6 章真表）保留
+PASS p117（第 6 章真表）保留
+PASS p119（第 6 章真表）保留
+PASS p14（术语解释页）排除
+PASS 候选页集合与 13 页真表清单一致，无多余页
+
+==========================================================================================================================
+13 页真实表的上下文链路证据（页级分类 → 表头指纹 → 上下文关联）
+==========================================================================================================================
+pno    本页类别     本页 Page_Title                                上一页类别/标题                              指纹sim  放行链路
+--------------------------------------------------------------------------------------------------------------------------
+p101   STRONG   6.1 Absolute Maximum Ratings                 NONE / (无)                               --  LOCAL_TITLE
+p102   NONE     (无)                                          STRONG / 6.1 Absolute Maximum          1.00  INHERITED_TITLE_FINGERPRINT
+p105   STRONG   6.4 Recommended Operating Conditions         NONE / (无)                               --  LOCAL_TITLE
+p106   NONE     (无)                                          STRONG / 6.4 Recommended Opera         1.00  INHERITED_TITLE_FINGERPRINT
+p108   STRONG   6.7 Electrical Characteristics               NONE / (无)                               --  LOCAL_TITLE
+p109   STRONG   6.7.2 Fail-Safe Reset (FS RESET) Electrica   STRONG / 6.7 Electrical Charac           --  LOCAL_TITLE,LOCAL_TITLE
+p110   STRONG   6.7.4 eMMCPHY Electrical Characteristics     STRONG / 6.7.2 Fail-Safe Reset           --  LOCAL_TITLE
+p111   STRONG   6.7.5 SDIO Electrical Characteristics        STRONG / 6.7.4 eMMCPHY Electri           --  LOCAL_TITLE
+p112   STRONG   6.7.6 LVCMOS Electrical Characteristics      STRONG / 6.7.5 SDIO Electrical           --  LOCAL_TITLE
+p113   STRONG   6.7.7 ADC12B Electrical Characteristics (A   STRONG / 6.7.6 LVCMOS Electric           --  LOCAL_TITLE
+p115   STRONG   6.7.8 ADC10B Electrical Characteristics (A   NONE / (无)                               --  LOCAL_TITLE
+p117   STRONG   6.8 VPP Specifications for One-Time Progra   STRONG / 6.7.9 USB2PHY Electri           --  LOCAL_TITLE
+p119   STRONG   Table 6-3. VTM Die Temperature Sensor Char   STRONG / Table 6-2. Thermal Re           --  LOCAL_TITLE
+--------------------------------------------------------------------------------------------------------------------------
+PASS 恰好 2 页走指纹继承：[102, 106]（PM 指定 p102 / p106）
+PASS 11 页有本页独立标题，走 LOCAL_TITLE 正常提取：[101, 105, 108, 109, 110, 111, 112, 113, 115, 117, 119]
+PASS 13 页共 14 张表签名 bbox 全在本页 clip 内（隔离 2 / Y 轴越界）
+PASS 13 页表头词均在本页文本核到（隔离 3 / 跨页正文串入）
+结论：全部通过
