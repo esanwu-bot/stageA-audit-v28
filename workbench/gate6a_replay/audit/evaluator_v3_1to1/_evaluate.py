@@ -495,6 +495,68 @@ def cond_attribution(cond: str, block: dict, row: dict) -> dict:
     return out
 
 
+# ------------------------------------------------------------ 未落行的成因分类
+#
+# 条件没落到命中行时，光说「未定位」等于没说。这里的四个成因对应四种完全不同的
+# 责任方，混在一起会让人以为是同一个毛病：
+#   table_title        条件是表题/整表共用条件 —— 本来就不该按行去找（Gold 字段问题）
+#   grouped_subheader  条件印在分组子列头上，Parser 的 header_cells 只到顶层列（Parser 表头建模）
+#   other_row_in_block 条件在同一个父块的其他行上 —— 行指派错了（分配算法）
+#   other_block        条件在同一个样本的另一块里 —— 行/块指派错了（分配算法）
+#   unresolved         哪里都找不到（真·未定位）
+MISS_TABLE_TITLE = "table_title"
+MISS_GROUPED_SUBHEADER = "grouped_subheader"
+MISS_OTHER_ROW = "other_row_in_block"
+MISS_OTHER_BLOCK = "other_block"
+MISS_SECTION_HEADING = "section_heading"
+MISS_UNRESOLVED = "unresolved"
+
+# 章节标题的形态：`6.1 Absolute Maximum Ratings` / `5 Recommended Operating Conditions`。
+# 这类字符串不属任何一张表，是文档结构标题，被 Gold 的 condition 字段误收进来。
+SECTION_HEADING_RX = re.compile(r"^\d+(?:\.\d+)*\s+[A-Za-z]")
+
+
+def condition_miss_kind(cond: str, block: dict, blocks: list[dict]) -> str:
+    """条件未落到命中行时，判定它到底在哪一层。纯证据判定，不看样本号。"""
+    flat = _flat(cond)
+    if not flat:
+        return ""
+    toks = [x for x in re.split(r"[^0-9a-z]+", flat) if len(x) >= 2 and x not in COND_STOP]
+    if not toks:
+        toks = [flat]
+
+    def _all_in(hay: str) -> bool:
+        return flat in hay or all(t in hay for t in toks)
+
+    # 1) 表题 / 整表共用
+    if _all_in(_flat(block.get("header_text", ""))):
+        return MISS_TABLE_TITLE
+
+    # 2) 同块其他行（行指派错位）
+    for r2 in block.get("rows_detail") or []:
+        if _all_in(_flat(r2.get("text", ""))):
+            return MISS_OTHER_ROW
+
+    # 3) 表头单元格能部分命中（分组子列头：只有碎片落在 header_cells 里）
+    hcs = block.get("header_cells") or []
+    for t in toks:
+        if any(t in _flat(hc.get("text", "")) for hc in hcs):
+            return MISS_GROUPED_SUBHEADER
+
+    # 4) 本样本其他块（块指派错位）
+    for b2 in blocks:
+        if b2["block_id"] == block["block_id"]:
+            continue
+        if _all_in(_flat(b2.get("text", ""))) or _all_in(_flat(b2.get("header_text", ""))):
+            return MISS_OTHER_BLOCK
+
+    # 5) 章节标题形态，且全样本任何表里都没有 —— 说明它压根不是行级条件
+    if SECTION_HEADING_RX.match(C.norm_text(cond)):
+        return MISS_SECTION_HEADING
+
+    return MISS_UNRESOLVED
+
+
 def cover_count(b: dict, need: list[float]) -> int:    return sum(1 for v in need if any(close(v, x) for x in b["numbers"]))
 
 
@@ -648,6 +710,7 @@ def judge(g: dict, asg: dict) -> dict:
            "by_value": by_value,
            "row_value_ok": asg["fully_covered"],
            "coarse": b["n_rows"] >= COARSE_MIN_ROWS and mode != "token",
+           "condition_miss_kind": "",
            }
 
     rec["page_ok"] = str(b["page_number"]) == page
@@ -707,6 +770,34 @@ def judge(g: dict, asg: dict) -> dict:
     rec["flags"] = ",".join(k for k, v in (
         ("page", rec["page_ok"]), ("num", rec["num_ok"]),
         ("unit", rec["unit_ok"])) if not v) or "ok"
+
+    # ---- 语义门槛阶梯（v3.3）---------------------------------------------
+    # 三级，逐级更严，全部单列成字段，谁都不许混着引用：
+    #   exact_hit                    值/单位/页码/符号在**块级**全过
+    #   symbol_gated_strict_hit      再加「符号归属在命中物理行上可证」
+    #   condition_gated_strict_hit   再加「condition 落在命中行或按列对齐」
+    # 每行给出唯一一条**阻断原因**，顺序即阶梯顺序，先撞上哪道就记哪道。
+    rec["symbol_gated_strict_hit"] = rec["strict_hit"]
+    cond_txt = (g.get("condition") or "").strip()
+    cond_row_ok = bool(rec["condition_row_match"] or rec["condition_header_match"])
+    rec["condition_gated_strict_hit"] = bool(
+        rec["strict_hit"] and (not cond_txt or cond_row_ok))
+
+    if not rec["hit"]:
+        reason = "not_located"
+    elif rec["primary"] != "完全一致":
+        reason = "field_mismatch"
+    elif rec["coarse"]:
+        reason = "coarse_block"
+    elif not inh["symbol_row_verified"]:
+        reason = "symbol_not_on_row"
+    elif cond_txt and not cond_row_ok:
+        # 具体成因要拿同一样本的全部块去查，judge() 里看不到，留待 main() 补全
+        reason = "condition_not_on_row"
+    else:
+        reason = ""
+    rec["semantic_hit_reason"] = reason
+    rec["_cond_miss_pending"] = (reason == "condition_not_on_row")
     return rec
 
 
@@ -732,7 +823,11 @@ def miss_record(g: dict) -> dict:
         "condition_row_match": False, "condition_header_match": False,
         "condition_block_match": False, "condition_unresolved": False,
         "block_rows": 0, "assign_tier": 99, "assign_tier_label": "no_candidate",
-        "assign_seq": "", "primary": "漏提", "flags": "miss"})
+        "assign_seq": "", "primary": "漏提", "flags": "miss",
+        "symbol_gated_strict_hit": False,
+        "condition_gated_strict_hit": False,
+        "condition_miss_kind": "",
+        "semantic_hit_reason": "not_located", "_cond_miss_pending": False})
     return rec
 
 
@@ -797,6 +892,16 @@ def main() -> int:
         for g in rows:
             a = asg.get(g["_uid"])
             samples.append(judge(g, a) if a else miss_record(g))
+
+        # 补全「condition 未落行」的具体成因。judge() 只看到父块，看不到同一样本的
+        # 其他块，而「条件其实在另一块里」正是分配错位的证据，必须在这一层判。
+        blk_by_id = {b["block_id"]: b for b in blocks}
+        for d in samples:
+            if d.get("_cond_miss_pending"):
+                blk = blk_by_id.get(d["matched_block_id"])
+                kind = condition_miss_kind(d["condition"], blk, blocks) if blk else MISS_UNRESOLVED
+                d["condition_miss_kind"] = kind
+                d["semantic_hit_reason"] = "condition_not_on_row:" + kind
         details.extend(samples)
 
         # 父块被多条 Gold 行共用的情况：必须是不同物理行，否则就是 bug
@@ -918,8 +1023,15 @@ def main() -> int:
     strict_if_cross_accepted = strict + sum(
         1 for d in demoted if d["symbol_inheritance"] == INH_UNPROVEN and not _is_first(d))
 
+    # ---- 语义门槛（v3.3）：符号门 → 条件门 ---------------------------------
+    sym_gated = sum(1 for d in details if d["symbol_gated_strict_hit"])
+    cond_gated = sum(1 for d in details if d["condition_gated_strict_hit"])
+    sem_reasons = Counter(d["semantic_hit_reason"] or "passed" for d in details)
+    miss_kinds = Counter(d["condition_miss_kind"] for d in details if d["condition_miss_kind"])
+    cond_fail = [d for d in details if d["semantic_hit_reason"].startswith("condition_not_on_row")]
+
     metrics = {
-        "schema_version": "3.2",
+        "schema_version": "3.3",
         "evaluator": "evaluator_v3_1to1",
         "parser_root": str(C.PARSER_ROOT),
         "parser_rerun": False,
@@ -940,6 +1052,12 @@ def main() -> int:
         "location_rate": round(located / n, 4),
         "strict_hit_rows": strict,
         "strict_hit_rate": round(strict / n, 4),
+        "symbol_gated_strict_hit_rows": sym_gated,
+        "symbol_gated_strict_hit_rate": round(sym_gated / n, 4),
+        "condition_gated_strict_hit_rows": cond_gated,
+        "condition_gated_strict_hit_rate": round(cond_gated / n, 4),
+        "semantic_hit_rows": cond_gated,
+        "semantic_hit_rate": round(cond_gated / n, 4),
         "soft_hit_rows": soft,
         "soft_hit_rate": round(soft / n, 4),
         "exact_rows": exact_n,
@@ -981,6 +1099,26 @@ def main() -> int:
             },
         },
         "soft_hit_breakdown": dict(soft_reasons),
+        "semantic_gate": {
+            "ladder": {
+                "exact_rows": exact_n,
+                "symbol_gated_strict_hit_rows": sym_gated,
+                "condition_gated_strict_hit_rows": cond_gated,
+            },
+            "dropped_by_symbol_gate": exact_n - sym_gated,
+            "dropped_by_condition_gate": sym_gated - cond_gated,
+            "reason_counts": dict(sem_reasons),
+            "condition_miss_kinds": dict(miss_kinds),
+            "condition_failed_rows": [
+                {"sample_no": d["sample_no"], "gold_key": d["gold_key"],
+                 "symbol": d["symbol"], "condition": d["condition"],
+                 "condition_attribution": d["condition_attribution"],
+                 "kind": d["condition_miss_kind"],
+                 "evidence": d["condition_evidence"]} for d in cond_fail],
+            "note": ("三级阶梯逐级更严：exact（块级全过）→ symbol_gated（符号归属在命中行可证）"
+                     "→ condition_gated（condition 也落在命中行或按列对齐）。"
+                     "每行只记一条**首个**阻断原因，见 eval_detail.semantic_hit_reason。"),
+        },
         "candidates": {
             "blocks_total": len(all_blocks),
             "blocks_on_gold_pages": sum(v.get("page_blocks", 0) for v in per_sample.values()),
@@ -999,6 +1137,9 @@ def main() -> int:
             "located_rows": "挂上候选块即算，不看值/单位/符号/页码",
             "exact_rows": "值/单位/页码/符号（块级）全过，不问证据形态",
             "strict_hit_rows": "exact 且 NOT coarse 且 符号归属在命中物理行上可证（同一行/几何覆盖/显式合并）",
+            "symbol_gated_strict_hit": "同 strict_hit_rows，改名为强调「符号归属约束」",
+            "condition_gated_strict_hit": "在 symbol_gated 之上再加：Gold condition 非空时必须落在命中行或按列对齐；这是完全语义命中",
+            "semantic_hit_reason": "首个阻断原因：not_located / field_mismatch / coarse_block / symbol_not_on_row / condition_not_on_row:<kind>",
             "soft_hit_rows": "exact 但不满足 strict，需人工复核；原因见 soft_hit_breakdown",
             "row_verified_hit_rows": "strict 且 Gold 的数值确实落在被指派的那一物理行上",
             "symbol_inheritance": "符号从哪来：同一行直接命中 / 跨行合并单元格继承 / 无依据跨行继承",
@@ -1022,6 +1163,8 @@ def main() -> int:
     COLS = ["sample_no", "batch", "gold_key", "symbol", "gold_page",
             "min", "typ", "max", "unit", "condition",
             "hit", "located", "strict_hit", "soft_hit", "exact_hit", "soft_reason",
+            "symbol_gated_strict_hit", "condition_gated_strict_hit",
+            "semantic_hit_reason", "condition_miss_kind",
             "page_ok", "num_ok", "unit_ok", "unit_strict",
             "row_value_ok", "coarse", "match_mode", "assign_tier",
             "assign_tier_label", "assign_seq", "by_value",

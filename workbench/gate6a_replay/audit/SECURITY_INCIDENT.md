@@ -125,6 +125,41 @@ GitGuardian 对公开仓库报告了两类告警：Generic Password 与 High Ent
 | `feat/gate6a-annotation` | `5bb947a` | `6803c3f` |
 | `feat/gate6a-batch3` | `40888e4` | `6086d3e` |
 
+> 上表是**重写当次**的 HEAD。`feat/gate6a-audit` 其后又落了 v3.3 语义门槛提交
+> （`460ea0f`），当前 HEAD 以 `audit/README.md` 的直链为准。
+
+#### `main` 的 SHA 变化：需要单独澄清
+
+`main` 的 `e3c9b64 → ae4ef12` 是本次安全脱敏执行历史重写产生的**副产物**。
+
+**该操作不等于把 Gate 6A 功能代码合并进 `main`。**
+
+逐文件比对重写前后的 `main` 树（备份仓原始 `main` vs 重写后 `main`）：
+
+| 项 | 结果 |
+| --- | --- |
+| 文件总数 | 270 → 267 |
+| 新增 | **0** |
+| 删除 | 3（`r3/b64_parts_r3/` 的 3 个 Base64 分卷） |
+| 内容变化 | 7 个文件，差异合计 **12 行** |
+
+这 7 个文件的 12 行差异**全部**是内网地址与 commit SHA 的 `[REDACTED-INTERNAL-REPO]`
+替换，没有任何一行涉及功能代码：
+
+| 文件 | 差异行数 |
+| --- | --- |
+| `gate6/r2/GIT_BASELINE.json` | 1 |
+| `gate6/r2/GIT_BASELINE_ISOLATION.md` | 1 |
+| `gate6/r2_p1p2_fix/git_ancestry_verify/GIT_ANCESTRY_VERIFICATION.md` | 2 |
+| `gate6/r2_p1p2_fix/git_ancestry_verify/git_verify_raw.log` | 2 |
+| `gate6a-plan/PUSH_REVIEW_45_COMMITS.md` | 3 |
+| `gate6a-plan/_build_evidence_v11.py` | 1 |
+| `gate6a-plan/push_review_raw.log` | 2 |
+
+Gate 6A 的解析与判定代码仍然只在 `feat/gate6a-audit` 上。`main` 的内容组成与重写前
+一致——只是少了被剔除的 Base64 分卷、少了内网地址字面量。**SHA 变化是重写的结果，
+不是合并的结果。**
+
 ---
 
 ## 五、验证结果
@@ -135,7 +170,7 @@ GitGuardian 对公开仓库报告了两类告警：Generic Password 与 High Ent
 | 7 类凭据正则 | 全部 0 命中 |
 | `r3/b64_parts_r3` | 已不存在 |
 | 远端 refs 与本地 refs | 4/4 逐个 SHA 相同 |
-| `SHA256SUMS.txt` | 56/56 校验通过 |
+| `SHA256SUMS.txt` | 57/57 校验通过 |
 | 可达提交 / 对象数 | 112 / 1253 |
 
 > **关于验证方式**：Git 是内容寻址存储，远端 ref 与本地 ref 的 SHA 相同即意味着对应对象树逐字节相同。因此「远端 4 个 refs 与本地一致」+「本地全历史扫描 0 命中」已构成对线上状态的充分证明，无需全量克隆复验。

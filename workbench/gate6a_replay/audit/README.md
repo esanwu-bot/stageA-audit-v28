@@ -132,11 +132,13 @@ Reviewer 扒开评估器后指出两个致命伤，两条都成立：
 在 `audit/` 目录下执行：
 
 ```bash
-sha256sum -c SHA256SUMS.txt     # 53 个文件应全部 OK
+sha256sum -c SHA256SUMS.txt     # 57 个文件应全部 OK
 ```
 
-已实测：在 `core.autocrlf=true`（Windows 默认）下克隆 GitHub 镜像后执行，
-53 / 53 全部 OK。
+已实测：台账 57 条逐条与工作区文件、与 `HEAD` 中的 blob **双向比对全部一致**。
+`audit/**` 在 `.gitattributes` 中标为 `-text`，提交与检出都不做换行转换，
+因此在 `core.autocrlf=true`（Windows 默认）的机器上克隆后执行，结果同样是
+57 / 57 全部 OK。
 
 为此有一项前置约定：`workbench/gate6a_replay/.gitattributes` 把 `audit/**` 与
 `artifacts/**` 标记为 `-text`，**禁止 git 做任何行尾转换**。
