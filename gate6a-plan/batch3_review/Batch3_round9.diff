@@ -1,0 +1,734 @@
+# Batch 3 第九轮：B3 封卷（5 处 PM 补签按稳定 ID 继承）
+# 覆盖范围：fd0555c..工作区
+# 排除：ZIP / SHA256SUMS / png / xlsx / *.diff 自身（避免自引用）
+
+## git status --short
+A  gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
+M  gate6a-plan/batch3_review/Batch3_B3_FINAL.csv
+M  gate6a-plan/batch3_review/Batch3_B3_FINAL.xlsx
+A  gate6a-plan/batch3_review/Batch3_B3_FINAL_SIGNED.xlsx
+M  gate6a-plan/batch3_review/Batch3_B3_FINAL_TO_SIGN.xlsx
+A  gate6a-plan/batch3_review/Batch3_B3_FINAL_pre_seal.csv
+A  gate6a-plan/batch3_review/Batch3_B3_approval_authorization.txt
+M  gate6a-plan/batch3_review/Batch3_B3_regen_report.txt
+M  gate6a-plan/batch3_review/Batch3_review.zip
+M  gate6a-plan/batch3_review/INDEX.md
+M  gate6a-plan/batch3_review/SHA256SUMS.txt
+A  gate6a-plan/batch3_review/_b3_regen_report.py
+M  gate6a-plan/batch3_review/_make_b3_final.py
+M  gate6a-plan/batch3_review/_sync_batch3_review.py
+M  gate6a-plan/batch3_review/page_text_batch3_b3.json
+?? gate6a-plan/batch3_review/Batch3_round9.diff
+
+## git diff --cached fd0555c
+diff --git a/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt b/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
+new file mode 100644
+index 0000000..addfc9d
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
+@@ -0,0 +1,22 @@
++B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）
++========================================================================
++唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）
++继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。
++------------------------------------------------------------------------
++物理行11  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.1||6.1|mV|2V<VCELL<4.5V; TA=25°C
++        condition = 2V<VCELL<4.5V; TA=25°C
++        approved_by = wuxiaoxian（entered_by = WB_Agent）
++物理行12  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.8||6.6|mV|2V<VCELL<4.5V; -20°C<TA<65°C
++        condition = 2V<VCELL<4.5V; -20°C<TA<65°C
++        approved_by = wuxiaoxian（entered_by = WB_Agent）
++物理行13  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.8||6.6|mV|2V<VCELL<4.5V; -40°C<TA<105°C
++        condition = 2V<VCELL<4.5V; -40°C<TA<105°C
++        approved_by = wuxiaoxian（entered_by = WB_Agent）
++物理行14  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.8||6.7|mV|2V<VCELL<4.5V; -40°C<TA<125°C
++        condition = 2V<VCELL<4.5V; -40°C<TA<125°C
++        approved_by = wuxiaoxian（entered_by = WB_Agent）
++物理行15  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.9||6.9|mV|1V<VCELL< 5V; -40°C<TA<125°C
++        condition = 1V<VCELL< 5V; -40°C<TA<125°C
++        approved_by = wuxiaoxian（entered_by = WB_Agent）
++------------------------------------------------------------------------
++其余 15 行 V146/V244/V256/V271 的签字由 PM 在签字版确认，entered_by/approved_by 均空。
+diff --git a/gate6a-plan/batch3_review/Batch3_B3_FINAL.csv b/gate6a-plan/batch3_review/Batch3_B3_FINAL.csv
+index 0f5da95..a6769f8 100644
+--- a/gate6a-plan/batch3_review/Batch3_B3_FINAL.csv
++++ b/gate6a-plan/batch3_review/Batch3_B3_FINAL.csv
+@@ -9,11 +9,11 @@ V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdd_core,Supply volta
+ V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdds_sram,Supply voltage for SRAM LDOs,-0.5,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
+ V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdda_dac,Supply voltage for video buffers and DAC,-0.5,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
+ V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdds,Supply voltage for 1.8-V I/O macros,-0.5,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
+-V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.1,,6.1,mV,2V<VCELL<4.5V; TA=25°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
+-V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,2V<VCELL<4.5V; -20°C<TA<65°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
+-V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,2V<VCELL<4.5V; -40°C<TA<105°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
+-V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.7,mV,2V<VCELL<4.5V; -40°C<TA<125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
+-V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.9,,6.9,mV,1V<VCELL< 5V; -40°C<TA<125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.1,,6.1,mV,2V<VCELL<4.5V; TA=25°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,2V<VCELL<4.5V; -20°C<TA<65°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,2V<VCELL<4.5V; -40°C<TA<105°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.7,mV,2V<VCELL<4.5V; -40°C<TA<125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.9,,6.9,mV,1V<VCELL< 5V; -40°C<TA<125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,wuxiaoxian,WB_Agent,0.9,BQ79652-Q1,
+ V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.14,1.2,1.32,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
+ V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.05,1.1,1.16,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
+ V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),0.95,1,1.05,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
+diff --git a/gate6a-plan/batch3_review/Batch3_B3_FINAL_pre_seal.csv b/gate6a-plan/batch3_review/Batch3_B3_FINAL_pre_seal.csv
+new file mode 100644
+index 0000000..0f5da95
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B3_FINAL_pre_seal.csv
+@@ -0,0 +1,21 @@
++﻿sample_no,file_name,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,approved_by,entered_by,confidence_score,device_model,human_adjudication
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VIK,"VCC = 4.75, IIN = -18 mA",,-0.7,-1.2,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.8,CY74FCT399T,
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VOH,"VCC = 4.75, IOH = -32 mA",2,,,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.8,CY74FCT399T,
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VOH,"VCC = 4.75, IOH = -15 mA",2.4,3.3,,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.8,CY74FCT399T,
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VOL,"VCC = 4.75, IOL = 64 mA",,0.3,0.55,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.8,CY74FCT399T,
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,II,"VCC = 5.25 V, VIN = VCC",,,5,μA,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.8,CY74FCT399T,
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdd_mpu_iva,Supply voltage range for MPU / IVA domain,-0.5,,1.5,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdd_core,Supply voltage range for core domain,-0.5,,1.5,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdds_sram,Supply voltage for SRAM LDOs,-0.5,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdda_dac,Supply voltage for video buffers and DAC,-0.5,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdds,Supply voltage for 1.8-V I/O macros,-0.5,,2.1,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DM3725,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.1,,6.1,mV,2V<VCELL<4.5V; TA=25°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,2V<VCELL<4.5V; -20°C<TA<65°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,2V<VCELL<4.5V; -40°C<TA<105°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.7,mV,2V<VCELL<4.5V; -40°C<TA<125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.9,,6.9,mV,1V<VCELL< 5V; -40°C<TA<125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,WB_Agent,0.9,BQ79652-Q1,
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.14,1.2,1.32,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.05,1.1,1.16,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),0.95,1,1.05,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,RVDD,Internal RAM Supply Voltage,1.14,1.2,1.32,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,RTC_CVDD,RTC Core Logic Supply Voltage,0.9,1.2,1.32,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1802,
+diff --git a/gate6a-plan/batch3_review/Batch3_B3_approval_authorization.txt b/gate6a-plan/batch3_review/Batch3_B3_approval_authorization.txt
+new file mode 100644
+index 0000000..0914c72
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B3_approval_authorization.txt
+@@ -0,0 +1,33 @@
++B3 五行 condition 补签：授权与签名来源记录
++==============================================================================
++
++【PM 授权】
++时间：2026-11-12 12:14（GMT+8），随截图说明：
++  「最后一行好像填写不了，我已核对，授权你帮我填写。签好了，走封卷流程，给我最终 SHA。」
++授权范围：仅 V256 p13 V(MAIN-AUX) 第 5 行的 approved_by（condition =
++  `1V<VCELL< 5V; -40°C<TA<125°C`），且以 PM 已核对为前提。
++
++【实际处置：未执行代填】
++读取 PM 保存的 Batch3_B3_FINAL_TO_SIGN.xlsx（12:14:07 保存，7669 → 11872 字节），
++5 个签名格其实**全部已有 wuxiaoxian**，包括第 15 行。原始 XML 佐证：
++  O12..O15 = <c r="O1x" s="2" t="s"><v>105</v></c>
++  O16      = <c r="O16" s="3" t="s"><v>105</v></c>
++  105 为共享字符串 wuxiaoxian；第 15 行仅样式索引 s=3 与上面四格 s=2 不同，
++  判断为录入方式差异（可能经回车/粘贴），值本身确实写入。
++结论：屏幕上看不到刷新，但文件里已经签上；因此 WB 没有代填任何一格，
++也未改动任何签名格。授权留档于此，若日后发现该格确为空，可按此授权补填。
++
++【签名源】
++文件：Batch3_B3_FINAL_TO_SIGN.xlsx（补签后即唯一签名源）
++副本：Batch3_B3_FINAL_SIGNED.xlsx（逐字节相同）
++SHA-256：306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7
++字节：11872
++
++【继承方式】
++九字段 + condition 共十字段稳定 ID 匹配，不按行号。B3 必须并入 condition：
++V256 p13 V(MAIN-AUX) 第 2、3 行 MIN/MAX 完全相同（-7.8/6.6 mV），
++其余九字段一模一样，只能靠 TEST CONDITIONS 区分。
++
++【落点校验】
++signed_ids == entered_by=WB_Agent 行集合（各 5 行）；
++若 PM 改过 condition 导致 ID 对不上，脚本 Fail-Closed 报「落点不一致」。
+diff --git a/gate6a-plan/batch3_review/Batch3_B3_regen_report.txt b/gate6a-plan/batch3_review/Batch3_B3_regen_report.txt
+index 988d0f3..6697d84 100644
+--- a/gate6a-plan/batch3_review/Batch3_B3_regen_report.txt
++++ b/gate6a-plan/batch3_review/Batch3_B3_regen_report.txt
+@@ -1,51 +1,53 @@
+-B3 定稿重跑报告
++B3 封卷后逐格差异报告
+ ==============================================================================
+-签字版：20 行 x 15 列（全部 CONFIRMED / reviewer 一致）
++签字版：20 行 x 15 列（CONFIRMED / reviewer 全一致）
+ 定稿  ：20 行 x 19 列
+-行数一致：True   表头为 19 列定稿结构：True
++行数一致：True   19 列定稿结构：True
+ 
+ 逐格差异（15 列签字值 → 19 列定稿）：
+-行      列                签字版                          定稿
+-1      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | ' '人工已核对 PDF 原图并确认'
+-2      notes            'VLM 草稿，须对左图核；vlm自报=0.90；VO' '人工已核对 PDF 原图并确认'
+-3      notes            'VLM 草稿，须对左图核；vlm自报=0.90；VO' '人工已核对 PDF 原图并确认'
+-4      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | ' '人工已核对 PDF 原图并确认'
+-5      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | ' '人工已核对 PDF 原图并确认'
+-6      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+-7      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+-8      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+-9      notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+-10     notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+-11     condition        ''                           '2V<VCELL<4.5V; TA=25°C'
+-11     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+-12     condition        ''                           '2V<VCELL<4.5V; -20°C<TA<65'
+-12     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+-13     condition        ''                           '2V<VCELL<4.5V; -40°C<TA<10'
+-13     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+-14     condition        ''                           '2V<VCELL<4.5V; -40°C<TA<12'
+-14     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+-15     condition        ''                           '1V<VCELL< 5V; -40°C<TA<125'
+-15     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(' '人工已核对 PDF 原图并确认'
+-16     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CV' '人工已核对 PDF 原图并确认'
+-17     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CV' '人工已核对 PDF 原图并确认'
+-18     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CV' '人工已核对 PDF 原图并确认'
+-19     notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
+-20     notes            'VLM 草稿，须对左图核；vlm自报=1.00'    '人工已核对 PDF 原图并确认'
++行      列                签字版                            定稿
++1      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | lo…' '人工已核对 PDF 原图并确认'
++2      notes            'VLM 草稿，须对左图核；vlm自报=0.90；VOH …' '人工已核对 PDF 原图并确认'
++3      notes            'VLM 草稿，须对左图核；vlm自报=0.90；VOH …' '人工已核对 PDF 原图并确认'
++4      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | lo…' '人工已核对 PDF 原图并确认'
++5      notes            'VLM 草稿，须对左图核；vlm自报=1.00 | lo…' '人工已核对 PDF 原图并确认'
++6      notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
++7      notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
++8      notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
++9      notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
++10     notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
++11     condition        ''                             '2V<VCELL<4.5V; TA=25°C'
++11     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(MA…' '人工已核对 PDF 原图并确认'
++12     condition        ''                             '2V<VCELL<4.5V; -20°C<TA<65°C'
++12     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(MA…' '人工已核对 PDF 原图并确认'
++13     condition        ''                             '2V<VCELL<4.5V; -40°C<TA<105°'
++13     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(MA…' '人工已核对 PDF 原图并确认'
++14     condition        ''                             '2V<VCELL<4.5V; -40°C<TA<125°'
++14     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(MA…' '人工已核对 PDF 原图并确认'
++15     condition        ''                             '1V<VCELL< 5V; -40°C<TA<125°C'
++15     notes            'VLM 草稿，须对左图核；vlm自报=1.00；V(MA…' '人工已核对 PDF 原图并确认'
++16     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CVDD…' '人工已核对 PDF 原图并确认'
++17     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CVDD…' '人工已核对 PDF 原图并确认'
++18     notes            'VLM 草稿，须对左图核；vlm自报=1.00；CVDD…' '人工已核对 PDF 原图并确认'
++19     notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
++20     notes            'VLM 草稿，须对左图核；vlm自报=1.00'      '人工已核对 PDF 原图并确认'
+ 
+ 差异按列汇总： {'notes': 20, 'condition': 5}
+-核心数值列（min/typ/max/unit/symbol/parameter_name）差异数：0
+-reviewer / row_status / confidence_score 差异数：0
++核心数值列（min_value/typ_value/max_value/unit/symbol/parameter_name）差异数：0
++状态与签名列（row_status/reviewer/confidence_score）差异数：0
+ 
+ notes 取值分布： {'人工已核对 PDF 原图并确认': 20}
+ 残留草稿措辞（VLM 草稿 / low_confidence / 请确认）： 0
+ 
+ 新增列填充情况：
+-  device_model： {'BQ79652-Q1': 5, 'CY74FCT399T': 5, 'AM1802': 5, 'DM3725': 5}
++  device_model： {'DM3725': 5, 'AM1802': 5, 'BQ79652-Q1': 5, 'CY74FCT399T': 5}
+   entered_by=WB_Agent 行： [11, 12, 13, 14, 15]
+-  approved_by 非空行： []
++  approved_by 非空行    ： [11, 12, 13, 14, 15]
++  两列行号完全对齐      ： True
++  approved_by 取值集合  ： ['wuxiaoxian']
+   human_adjudication 非空行： []
+ 
+-V256 五行 condition 与判重键：
++V256 五行 condition：
+   行11  min=-7.1  max=6.1   condition=2V<VCELL<4.5V; TA=25°C
+   行12  min=-7.8  max=6.6   condition=2V<VCELL<4.5V; -20°C<TA<65°C
+   行13  min=-7.8  max=6.6   condition=2V<VCELL<4.5V; -40°C<TA<105°C
+@@ -53,8 +55,11 @@ V256 五行 condition 与判重键：
+   行15  min=-7.9  max=6.9   condition=1V<VCELL< 5V; -40°C<TA<125°C
+   判重键唯一（无重复占位）：True
+ 
+-Batch3_B3_FINAL.csv                    4607 字节  sha256=a0c0ea8341d8f3eb…
+-Batch3_B3_FINAL.xlsx                   7667 字节  sha256=9bb7f0cbb44e914d…
+-Batch3_B3_FINAL_TO_SIGN.xlsx           7669 字节  sha256=fa0bc04d32528a80…
++结论：notes 20 格 + condition 5 格按登记改动，核心数值与签名状态 0 差异；5 处补签落在 WB 代录入行上。
++
++Batch3_B3_FINAL.csv                    4657 字节  sha256=b940e2e4802d505f…
++Batch3_B3_FINAL.xlsx                   7667 字节  sha256=b437658dc8d2f8f3…
++Batch3_B3_FINAL_TO_SIGN.xlsx          11872 字节  sha256=306266374fa4535e…
++Batch3_B3_FINAL_SIGNED.xlsx           11872 字节  sha256=306266374fa4535e…
+ Batch3_B3_PDF_PROVENANCE.csv            535 字节  sha256=a44b6415fe6e19c9…
+-page_text_batch3_b3.json              28667 字节  sha256=6c6c43e8984d54c9…
++page_text_batch3_b3.json              28667 字节  sha256=fca6fe2f6a896bdb…
+diff --git a/gate6a-plan/batch3_review/INDEX.md b/gate6a-plan/batch3_review/INDEX.md
+index f69910c..1dc33ef 100644
+--- a/gate6a-plan/batch3_review/INDEX.md
++++ b/gate6a-plan/batch3_review/INDEX.md
+@@ -867,7 +867,7 @@ import 草稿生成器的 `CONDITION_BACKFILL`，与草稿共用唯一真源，
+ 效果：判重键 `(样本, 符号, condition, 单位, 页码, min, typ, max)` 20 行
+ 全唯一，V256 第 2、3 行（MIN/MAX 同为 -7.8 / 6.6）不再被判成重复占位。
+ 
+-### 16.4 签名口径：5 格待补签，机器不代签
++### 16.4 签名口径：5 格待补签，机器不代签（第八轮当时的状态，已于第 17 节封卷）
+ 
+ 这 5 格是签字之后新增的数据，PM 没看过，因此：
+ 
+@@ -901,8 +901,72 @@ import 草稿生成器的 `CONDITION_BACKFILL`，与草稿共用唯一真源，
+ `page_text_batch3_b3.json`、`Batch3_B3_regen_report.txt`、
+ `b3_validation_raw/`（两份）、`_make_b3_final.py`。
+ 
+-### 16.7 尚未做的事
++### 16.7 尚未做的事（第八轮当时的状态）
+ 
+ V256 五行 condition 的 PM 补签（`Batch3_B3_FINAL_TO_SIGN.xlsx` 红格）尚未完成，
+ 封卷前必须补；B4（5 件）与 SCAN（3 件）仍未生成；33 件全部标完且 Reviewer
+ 终审放行后，才更新 CodeUp 本地 main（`a11131a`）。两仓 main 本轮仍未动。
++
++## 17. B3 封卷：5 处 PM 补签按稳定 ID 继承
++
++### 17.1 签名来源与「最后一格」的事实核对
++
++PM 2026-11-12 12:14 交回签好的 `Batch3_B3_FINAL_TO_SIGN.xlsx`，并说明
++「最后一行好像填写不了，我已核对，授权你帮我填写」。据此逐格核对：
++
++* 打开 PM 保存的原件（12:14:07 落盘，7,669 → 11,872 字节），
++  **5 个签名格其实全部已有 `wuxiaoxian`，包括第 15 行**；
++* 原始 XML 佐证：`O12..O15` 为 `<c r="O1x" s="2" t="s"><v>105</v></c>`，
++  `O16` 为 `<c r="O16" s="3" t="s"><v>105</v></c>`；105 是共享字符串
++  `wuxiaoxian`。第 15 行只有样式索引 `s="3"` 与上面四格 `s="2"` 不同，
++  属录入方式差异，值本身确已写入；
++* 结论：屏幕未刷新，文件里已经签上。**WB 没有代填任何一格，也未改动
++  任何签名格**。授权仍留档：若日后发现该格确为空，可按此授权补填。
++
++记录见 `Batch3_B3_approval_authorization.txt`（含签名源 SHA-256）。
++
++### 17.2 稳定 ID 必须并入 condition
++
++B2 的九字段稳定 ID 在 B3 上不够：V256 p13 的 `V(MAIN-AUX)` 第 2、3 行
++MIN/MAX 完全相同（-7.8 / 6.6 mV），九个字段一模一样，唯一能区分的是
++TEST CONDITIONS。若不并入 `condition`，字典会静默覆盖重复键——
++又是一种 Fail-Open。因此 B3 的稳定 ID 取十字段（九字段 + `condition`）。
++
++并入不会误放行：若 PM 改过 condition，ID 就对不上，脚本直接报
++「签名落点与 WB 代录入行不一致」。
++
++### 17.3 封卷断言与结果
++
++| 项目 | 结果 |
++| --- | --- |
++| 签名源 | `Batch3_B3_FINAL_TO_SIGN.xlsx`，SHA-256 `306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7`，11,872 字节 |
++| 副本 | `Batch3_B3_FINAL_SIGNED.xlsx`，与签名源逐字节相同 |
++| 签名值 | 5 处全部 `wuxiaoxian`（无其他签名者） |
++| 落点校验 | `signed_ids` == `entered_by=WB_Agent` 行集合，均为第 11–15 行 |
++| 封卷前后差异 | 只有 5 格 `approved_by`（空 → `wuxiaoxian`），其余 15 列一字未动 |
++| `human_adjudication` | 全部为空 |
++
++### 17.4 封卷后机检
++
++| 模式 | 结果 |
++| --- | --- |
++| PDF（实算哈希） | **`OK=20`**，无 ERROR / SUSPECT / CANNOT_VERIFY，溯源三处一致 |
++| 离线（sidecar） | **`OK=20`**，同上 |
++
++原始 stdout 已覆盖更新：`b3_validation_raw/b3_final_pdf_mode.txt`、
++`b3_validation_raw/b3_final_sidecar_mode.txt`；逐格差异报告为
++`Batch3_B3_regen_report.txt`（生成器 `_b3_regen_report.py`）。
++
++### 17.5 脚本的一处安全性修正
++
++`_make_b3_final.py` 原先会重写 `Batch3_B3_FINAL_TO_SIGN.xlsx`。该文件补签后
++就是唯一签名源，重跑会覆盖 PM 的签名。现已改为**不再生成 TO_SIGN**，
++未签模板只保留在 git 历史 `fd0555c` 中。签名继承走
++`load_approval_map` / `apply_approval`，与 B2 同一套，Fail-Closed 条件为：
++源缺失 / 表头不符 / 行数不是 20 / 稳定 ID 重复 / 非 PM 签名 / 落点不一致。
++
++### 17.6 尚未做的事
++
++B4（5 件：V077 V130 V290 V347 V041）与 SCAN（3 件按 SOP 标 EXCLUDED）
++仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main
++（`a11131a`）更新并 push。两仓 main 本轮仍未动。
+diff --git a/gate6a-plan/batch3_review/_b3_regen_report.py b/gate6a-plan/batch3_review/_b3_regen_report.py
+new file mode 100644
+index 0000000..976436c
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_b3_regen_report.py
+@@ -0,0 +1,145 @@
++# -*- coding: utf-8 -*-
++"""B3 定稿与签字版的逐格差异报告（原始 stdout 即 Batch3_B3_regen_report.txt）。
++
++只做核对与打印，不改任何文件。判据：
++  * 原 15 列里只允许 notes 全行变、condition 仅 V256 那五行变；
++  * 核心数值列与 row_status / reviewer / confidence_score 必须 0 差异；
++  * approved_by 只允许出现在 entered_by=WB_Agent 的行上，且两列行号必须一致。
++"""
++from __future__ import print_function
++
++import csv
++import hashlib
++import sys
++from pathlib import Path
++
++import openpyxl
++
++PREP = Path(__file__).resolve().parent
++
++ORIG_COLS = [
++    "sample_no", "file_name", "evidence_page", "table_title", "symbol",
++    "parameter_name", "min_value", "typ_value", "max_value", "unit",
++    "condition", "row_status", "notes", "reviewer", "confidence_score",
++]
++FINAL_COLS = [
++    "sample_no", "file_name", "evidence_page", "table_title", "symbol",
++    "parameter_name", "min_value", "typ_value", "max_value", "unit",
++    "condition", "row_status", "notes", "reviewer", "approved_by",
++    "entered_by", "confidence_score", "device_model", "human_adjudication",
++]
++CORE = ("min_value", "typ_value", "max_value", "unit", "symbol",
++        "parameter_name")
++SIGN_COLS = ("row_status", "reviewer", "confidence_score")
++
++
++def cell(v):
++    if v is None:
++        return ""
++    if isinstance(v, float) and v.is_integer():
++        return str(int(v))
++    return str(v).strip()
++
++
++def main():
++    signed_xlsx = PREP / "Batch3_B3_SIGNED_original.xlsx"
++    new_csv = PREP / "Batch3_B3_FINAL.csv"
++    for p in (signed_xlsx, new_csv):
++        if not p.exists():
++            raise SystemExit("缺少输入：%s" % p)
++
++    ws = openpyxl.load_workbook(str(signed_xlsx), data_only=True).active
++    vals = list(ws.values)
++    hdr = [str(x or "").strip() for x in vals[0]]
++    signed = [{k: cell(v[hdr.index(k)]) for k in ORIG_COLS}
++              for v in vals[1:]
++              if any(x is not None and str(x).strip() for x in v)]
++    with open(new_csv, encoding="utf-8-sig", newline="") as fh:
++        final = list(csv.DictReader(fh))
++
++    print("B3 封卷后逐格差异报告")
++    print("=" * 78)
++    print("签字版：%d 行 x %d 列（CONFIRMED / reviewer 全一致）"
++          % (len(signed), len(hdr)))
++    print("定稿  ：%d 行 x %d 列" % (len(final), len(final[0])))
++    print("行数一致：%s   19 列定稿结构：%s"
++          % (len(signed) == len(final), list(final[0]) == FINAL_COLS))
++    print()
++
++    diff, stat = [], {}
++    for i, (a, b) in enumerate(zip(signed, final), 1):
++        for k in ORIG_COLS:
++            if a[k] != b[k]:
++                diff.append((i, k, a[k], b[k]))
++                stat[k] = stat.get(k, 0) + 1
++
++    print("逐格差异（15 列签字值 → 19 列定稿）：")
++    print("%-6s %-16s %-30s %s" % ("行", "列", "签字版", "定稿"))
++    for i, k, x, y in diff:
++        print("%-6d %-16s %-30r %r"
++              % (i, k, (x[:28] + "…") if len(x) > 28 else x, y[:28]))
++    print()
++    print("差异按列汇总：", stat)
++    print("核心数值列（%s）差异数：%d"
++          % ("/".join(CORE), sum(stat.get(k, 0) for k in CORE)))
++    print("状态与签名列（%s）差异数：%d"
++          % ("/".join(SIGN_COLS), sum(stat.get(k, 0) for k in SIGN_COLS)))
++    print()
++
++    bad = [k for k in CORE + SIGN_COLS if stat.get(k)]
++    if bad:
++        print("FAIL 不允许改动的列出现了差异：%s" % bad)
++        return 2
++    if set(stat) - {"notes", "condition"}:
++        print("FAIL 出现未登记的改动列：%s" % (set(stat) - {"notes", "condition"}))
++        return 2
++
++    print("notes 取值分布：", dict((k, sum(1 for r in final if r["notes"] == k))
++                               for k in set(r["notes"] for r in final)))
++    print("残留草稿措辞（VLM 草稿 / low_confidence / 请确认）：",
++          sum(1 for r in final
++              if any(t in r["notes"] for t in ("VLM 草稿", "low_confidence", "请确认"))))
++    print()
++    print("新增列填充情况：")
++    print("  device_model：", dict((k, sum(1 for r in final if r["device_model"] == k))
++                              for k in set(r["device_model"] for r in final)))
++    entered = [i for i, r in enumerate(final, 1) if r["entered_by"]]
++    approved = [i for i, r in enumerate(final, 1) if r["approved_by"]]
++    print("  entered_by=WB_Agent 行：", entered)
++    print("  approved_by 非空行    ：", approved)
++    print("  两列行号完全对齐      ：", entered == approved)
++    print("  approved_by 取值集合  ：",
++          sorted({r["approved_by"] for r in final if r["approved_by"]}))
++    print("  human_adjudication 非空行：",
++          [i for i, r in enumerate(final, 1) if r["human_adjudication"]])
++    print()
++    print("V256 五行 condition：")
++    for i, r in enumerate(final, 1):
++        if r["sample_no"] == "V256":
++            print("  行%-3d min=%-5s max=%-5s condition=%s"
++                  % (i, r["min_value"], r["max_value"], r["condition"]))
++    dkeys = [(r["sample_no"], r["symbol"], r["condition"], r["unit"],
++              r["evidence_page"], r["min_value"], r["typ_value"],
++              r["max_value"]) for r in final]
++    print("  判重键唯一（无重复占位）：%s" % (len(set(dkeys)) == len(dkeys)))
++    print()
++
++    if entered != approved:
++        print("FAIL approved_by 与 entered_by 行号不一致")
++        return 2
++    print("结论：notes 20 格 + condition 5 格按登记改动，"
++          "核心数值与签名状态 0 差异；5 处补签落在 WB 代录入行上。")
++    print()
++    for p in ("Batch3_B3_FINAL.csv", "Batch3_B3_FINAL.xlsx",
++              "Batch3_B3_FINAL_TO_SIGN.xlsx", "Batch3_B3_FINAL_SIGNED.xlsx",
++              "Batch3_B3_PDF_PROVENANCE.csv", "page_text_batch3_b3.json"):
++        f = PREP / p
++        if f.exists():
++            print("%-34s %8d 字节  sha256=%s…"
++                  % (p, f.stat().st_size,
++                     hashlib.sha256(f.read_bytes()).hexdigest()[:16]))
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/gate6a-plan/batch3_review/_make_b3_final.py b/gate6a-plan/batch3_review/_make_b3_final.py
+index f23067e..44fa206 100644
+--- a/gate6a-plan/batch3_review/_make_b3_final.py
++++ b/gate6a-plan/batch3_review/_make_b3_final.py
+@@ -26,14 +26,18 @@
+     行数不符即 Fail-Closed，绝不盲配。
+ 
+ 四、签名口径（绝不由机器替人确认）
+-    这 5 格是签字之后新增的数据，PM 没看过。因此：
++    这 5 格是签字之后新增的数据。处置与 B2 完全同构：
+       * 15 列签字值逐格照抄；
+-      * 5 行 condition 由 WB 按原图代录入，entered_by=WB_Agent，
+-        approved_by 留空；
+-      * 另出 `Batch3_B3_FINAL_TO_SIGN.xlsx`，把这 5 个 condition 格与
+-        对应 approved_by 格标红，等 PM 补签后按稳定 ID 继承（同 B2 流程）。
+-    v1.6 不校验 approved_by，所以机检仍能 OK=20；但"未补签"这件事写在
+-    `Batch3_B3_APPROVAL_PENDING.txt` 里，不靠记忆、不悄悄算已完成。
++      * 5 行 condition 由 WB 按原图代录入，entered_by=WB_Agent；
++      * `Batch3_B3_FINAL_TO_SIGN.xlsx` 的 5 个 condition 格与对应
++        approved_by 格标红交给 PM，PM 补签后该文件即**唯一签名源**；
++      * 本脚本按九字段稳定 ID 从签名源继承 approved_by，绝不按行号、
++        绝不代填、绝不自动补齐：源缺失 / 表头不符 / 行数不是 20 /
++        ID 重复 / 非 PM 签名 / 落点与 entered_by=WB_Agent 行不一致，
++        一律 Fail-Closed 退出。
++
++    脚本**不再重写 TO_SIGN**：它补签后就是签名源，重跑会覆盖掉 PM 的签名。
++    未签模板可在 git 历史（fd0555c）里取回。
+ 
+ file_name 简写处置（不改签字真源一格）
+     V256 签字名 `BQ79652PAPRQ1.pdf` 在语料目录不存在，实际文件是
+@@ -44,8 +48,7 @@ file_name 简写处置（不改签字真源一格）
+     Batch3_B3_SIGNED_original.xlsx     PM 签字原件副本（逐格未改）
+     Batch3_B3_FINAL.csv / .xlsx        19 列最终定稿（验证器直接吃）
+     Batch3_B3_notes_before_cleanup.txt 20 行原始 notes 留痕
+-    Batch3_B3_FINAL_TO_SIGN.xlsx       5 格待补签目标（红格）
+-    Batch3_B3_APPROVAL_PENDING.txt     待补签稳定 ID 清单
++    Batch3_B3_APPROVAL_TARGETS.txt     5 处补签落点（稳定 ID + 继承结果）
+     Batch3_B3_PDF_PROVENANCE.csv       第三方溯源表
+     page_text_batch3_b3.json           页文本 + 溯源期望值
+ """
+@@ -80,7 +83,7 @@ NOTES_BEFORE = PREP / "Batch3_B3_notes_before_cleanup.txt"
+ OUT_SIDE = PREP / "page_text_batch3_b3.json"
+ OUT_PROV = PREP / "Batch3_B3_PDF_PROVENANCE.csv"
+ TO_SIGN = PREP / "Batch3_B3_FINAL_TO_SIGN.xlsx"
+-PENDING = PREP / "Batch3_B3_APPROVAL_PENDING.txt"
++TARGETS = PREP / "Batch3_B3_APPROVAL_TARGETS.txt"
+ 
+ ORIG_COLS = [
+     "sample_no", "file_name", "evidence_page", "table_title", "symbol",
+@@ -112,12 +115,23 @@ ENTERED_BY = "WB_Agent"
+ EXPECT_ROWS = 20
+ EXPECT_SAMPLES = 4
+ 
++# 唯一签名源：PM 在 5 个红格补签后的原件（2026-11-12 12:14 保存）。
++# 补签后按稳定 ID 继承，绝不按行号、绝不代填、绝不自动补齐。
++APPROVAL_SRC = PREP / "Batch3_B3_FINAL_TO_SIGN.xlsx"
++SIGNERS = {"wuxiaoxian"}
++
+ # 唯一条件真源在本体生成器里，这里只声明"取哪一块"
+ CONDITION_KEY = ("V256", "13", "V(MAIN-AUX)")
+ 
+ STABLE_ID_FIELDS = (
+     "sample_no", "file_name", "evidence_page", "symbol", "parameter_name",
+     "min_value", "typ_value", "max_value", "unit",
++    # B3 必须再并入 condition：V256 p13 的 V(MAIN-AUX) 第 2、3 行
++    # MIN/MAX 完全相同（-7.8 / 6.6 mV），九个字段一模一样，
++    # 唯一能区分的就是 TEST CONDITIONS。B2 靠 min/typ/max/unit 就能消歧，
++    # B3 这两行消不掉，若不加会把同一 ID 静默覆盖成一条 —— 正是要堵的 Fail-Open。
++    # 加了也不会误放行：若 PM 改过 condition，ID 就对不上，直接报「落点不一致」。
++    "condition",
+ )
+ 
+ sys.path.insert(0, str(PREP))
+@@ -245,6 +259,67 @@ def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
+     atomic_replace(tmp, path)
+ 
+ 
++def load_approval_map(path=None):
++    """Fail-Closed 读取唯一签名源，返回 {稳定ID: approved_by}。
++
++    以下任一情况直接报错退出，绝不「读不到就按无签名处理」：
++      源文件不存在 / 表头不是 19 列定稿结构 / 数据行数不是 20 /
++      稳定 ID 重复 / 出现非 PM 本人签名。
++    """
++    src = Path(path) if path is not None else APPROVAL_SRC
++    if not src.exists():
++        raise SystemExit("FAIL 找不到唯一签名源：%s" % src)
++    wb = openpyxl.load_workbook(str(src), data_only=True, read_only=True)
++    try:
++        vals = list(wb.active.values)
++    finally:
++        wb.close()
++    if not vals:
++        raise SystemExit("FAIL 签名源是空表：%s" % src)
++    hdr = [str(x or "").strip() for x in vals[0]]
++    if hdr != FINAL_COLS:
++        raise SystemExit("FAIL 签名源表头不符（应为 19 列定稿结构）：%s" % hdr)
++    data = [v for v in vals[1:] if any(x is not None and str(x).strip() for x in v)]
++    if len(data) != EXPECT_ROWS:
++        raise SystemExit("FAIL 签名源数据行数异常：%d（应为 %d）"
++                         % (len(data), EXPECT_ROWS))
++    amap = {}
++    for v in data:
++        r = {k: cell(v[hdr.index(k)]) for k in FINAL_COLS}
++        sid = stable_id(r)
++        if sid in amap:
++            raise SystemExit("FAIL 签名源稳定 ID 重复：%s" % sid)
++        sig = r["approved_by"].strip()
++        if sig and sig not in SIGNERS:
++            raise SystemExit("FAIL 签名源出现非 PM 签名：%r（行 %s）"
++                             % (sig, r["sample_no"]))
++        amap[sid] = sig
++    return amap
++
++
++def apply_approval(rows, approval_map):
++    """按稳定 ID 把 PM 补签落到定稿；落点与 WB 代录入行必须完全一致。"""
++    signed_ids = {k for k, v in approval_map.items() if v}
++    wb_ids = {stable_id(r) for r in rows if r["entered_by"] == ENTERED_BY}
++    if not signed_ids:
++        raise SystemExit("FAIL 签名源里没有任何 approved_by，拒绝出「已封卷」定稿")
++    if signed_ids != wb_ids:
++        miss = wb_ids - signed_ids
++        extra = signed_ids - wb_ids
++        raise SystemExit(
++            "FAIL 签名落点与 WB 代录入行不一致：漏签 %d 行 %r；多处签名 %d 行 %r"
++            % (len(miss), sorted(x.split("|")[0] for x in miss),
++               len(extra), sorted(x.split("|")[0] for x in extra)))
++    for r in rows:
++        if r["entered_by"] != ENTERED_BY:
++            continue
++        sid = stable_id(r)
++        if sid not in approval_map:
++            raise SystemExit("FAIL 定稿行在签名源里找不到稳定 ID：%s" % sid)
++        r["approved_by"] = approval_map[sid]
++    return rows
++
++
+ def main():
+     global SRC_XLSX, PDF_DIR
+     ap = argparse.ArgumentParser()
+@@ -252,6 +327,8 @@ def main():
+                     help="PM 签字的 xlsx（唯一真源）")
+     ap.add_argument("--pdf-dir", default=str(PDF_DIR),
+                     help="PDF 语料目录")
++    ap.add_argument("--approval", default=str(APPROVAL_SRC),
++                    help="PM 补签后的 TO_SIGN 原件（唯一签名源）")
+     args = ap.parse_args()
+     SRC_XLSX, PDF_DIR = Path(args.xlsx), Path(args.pdf_dir)
+     if not SRC_XLSX.exists():
+@@ -328,10 +405,14 @@ def main():
+         raise SystemExit("device_model 全空")
+     if any(not r["device_model"] for r in rows):
+         raise SystemExit("存在未登记型号的样本")
+-    if any(r["approved_by"] for r in rows):
+-        raise SystemExit("定稿不该有 approved_by：PM 尚未对 5 格补签")
+     if sum(1 for r in rows if r["entered_by"]) != 5:
+         raise SystemExit("entered_by 应恰好 5 行")
++
++    # 签名继承：唯一源是 PM 补签后的 TO_SIGN 原件，按稳定 ID 落位，不按行号。
++    approval_map = load_approval_map(args.approval)
++    apply_approval(rows, approval_map)
++    if sum(1 for r in rows if r["approved_by"]) != 5:
++        raise SystemExit("定稿应恰好继承 5 处 PM 补签")
+     if any("low_confidence" in r["notes"].lower() for r in rows):
+         raise SystemExit("notes 仍有 low_confidence 残留")
+     if any(r["notes"] != FINAL_NOTE for r in rows):
+@@ -447,28 +528,28 @@ def main():
+                highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
+                | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})
+ 
+-    # TO_SIGN：只把这 5 格标红，PM 打开就能看到要签哪儿
+-    write_xlsx(TO_SIGN, rows, "B3_TO_SIGN",
+-               highlights={(i, "condition"): "FFC7CE" for i in cond_row_ids}
+-               | {(i, "approved_by"): "FFC7CE" for i in cond_row_ids},
+-               head_color="C00000")
++    # 注意：这里刻意不再重写 TO_SIGN。
++    # 该文件补签后就是唯一签名源（APPROVAL_SRC），重跑会覆盖掉 PM 的签名。
++    # 未签模板只存在于 git 历史（fd0555c）；需要重出时手工另存新名，别覆盖它。
+ 
+-    # 待补签清单：稳定 ID 落纸，补签后按 ID 继承，不按行号
++    # 补签落点清单：稳定 ID 落纸，补签按 ID 继承，不按行号
+     plines = [
+-        "B3 待 PM 补签清单（V256 五行 condition 由 WB 按原图代录入）",
++        "B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）",
+         "=" * 72,
+-        "补签目标文件：Batch3_B3_FINAL_TO_SIGN.xlsx（红格 = condition + approved_by）",
+-        "补签后由 _make_b3_final 的继承逻辑按稳定 ID 落位，不按行号。",
++        "唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）",
++        "继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。",
+         "-" * 72,
+     ]
+     for i, c in cond_lines:
+         r = rows[i - 1]
+         plines.append("物理行%-3d %s" % (i, stable_id(r)))
+         plines.append("        condition = %s" % c)
++        plines.append("        approved_by = %s（entered_by = %s）"
++                      % (r["approved_by"] or "(空)", r["entered_by"] or "(空)"))
+     plines.append("-" * 72)
+-    plines.append("其余 %d 行 %s 的签字已由 PM 在签字版确认，无需补签。"
++    plines.append("其余 %d 行 %s 的签字由 PM 在签字版确认，entered_by/approved_by 均空。"
+                   % (len(rows) - 5, "/".join(sorted(samples))))
+-    PENDING.write_text("\n".join(plines) + "\n", encoding="utf-8", newline="\n")
++    TARGETS.write_text("\n".join(plines) + "\n", encoding="utf-8", newline="\n")
+ 
+     # 落盘后逐格断言 CSV == XLSX
+     vals = list(openpyxl.load_workbook(str(OUT_XLSX), data_only=True).active.values)
+@@ -491,9 +572,11 @@ def main():
+     print("  V256 五行 condition 按原图逐行绑定（与草稿生成器同源）：")
+     for i, c in cond_lines:
+         print("    行%-3d %s" % (i, c))
+-    print("  代录入 %d 行 entered_by=%s；approved_by 留空待 PM 补签。" %
+-          (len(cond_row_ids), ENTERED_BY))
+-    print("  待补签目标：%s" % TO_SIGN.name)
++    print("  代录入 %d 行 entered_by=%s；已按稳定 ID 继承 %d 处 PM 补签。"
++          % (len(cond_row_ids), ENTERED_BY,
++             sum(1 for r in rows if r["approved_by"])))
++    print("  签名源：%s" % Path(args.approval).name)
++    print("  补签落点清单：%s" % TARGETS.name)
+     return 0
+ 
+ 
+diff --git a/gate6a-plan/batch3_review/_sync_batch3_review.py b/gate6a-plan/batch3_review/_sync_batch3_review.py
+index be9b04c..7f60f77 100644
+--- a/gate6a-plan/batch3_review/_sync_batch3_review.py
++++ b/gate6a-plan/batch3_review/_sync_batch3_review.py
+@@ -104,6 +104,12 @@ SYNC = [
+     "page_text_batch3_b3.json",
+     "b3_validation_raw/b3_final_pdf_mode.txt",
+     "b3_validation_raw/b3_final_sidecar_mode.txt",
++    # 第九轮：B3 封卷（5 处 PM 补签按稳定 ID 继承）
++    "Batch3_B3_FINAL_SIGNED.xlsx",
++    "Batch3_B3_APPROVAL_TARGETS.txt",
++    "Batch3_B3_approval_authorization.txt",
++    "Batch3_B3_FINAL_pre_seal.csv",
++    "_b3_regen_report.py",
+     # B3 圈选台左图依赖：9 张裁图必须与 HTML 同包，否则解压后看不到图
+     "annotation_reports/V146/b3_ELC_p0004.png",
+     "annotation_reports/V244/b3_ELC_p0047.png",
+diff --git a/gate6a-plan/batch3_review/page_text_batch3_b3.json b/gate6a-plan/batch3_review/page_text_batch3_b3.json
+index f101d92..624c29f 100644
+--- a/gate6a-plan/batch3_review/page_text_batch3_b3.json
++++ b/gate6a-plan/batch3_review/page_text_batch3_b3.json
+@@ -1,5 +1,5 @@
+ {
+-  "generated_at": "2026-11-12T12:08:09.768820+08:00",
++  "generated_at": "2026-11-12T12:18:46.605626+08:00",
+   "source_xlsx": "Batch3_B3_SIGNED_original.xlsx",
+   "extractor": "_make_b3_final.py",
+   "note": "file_name 沿用 PM 签字原值；V256 简写名通过 b3_pdfs/ 硬链接指向语料原件同一字节。sha256/页数从磁盘实算，页文本逐页抽取，验证器 PDF 模式会再复算一次哈希。",

@@ -867,7 +867,7 @@ import 草稿生成器的 `CONDITION_BACKFILL`，与草稿共用唯一真源，
 效果：判重键 `(样本, 符号, condition, 单位, 页码, min, typ, max)` 20 行
 全唯一，V256 第 2、3 行（MIN/MAX 同为 -7.8 / 6.6）不再被判成重复占位。
 
-### 16.4 签名口径：5 格待补签，机器不代签
+### 16.4 签名口径：5 格待补签，机器不代签（第八轮当时的状态，已于第 17 节封卷）
 
 这 5 格是签字之后新增的数据，PM 没看过，因此：
 
@@ -901,8 +901,72 @@ import 草稿生成器的 `CONDITION_BACKFILL`，与草稿共用唯一真源，
 `page_text_batch3_b3.json`、`Batch3_B3_regen_report.txt`、
 `b3_validation_raw/`（两份）、`_make_b3_final.py`。
 
-### 16.7 尚未做的事
+### 16.7 尚未做的事（第八轮当时的状态）
 
 V256 五行 condition 的 PM 补签（`Batch3_B3_FINAL_TO_SIGN.xlsx` 红格）尚未完成，
 封卷前必须补；B4（5 件）与 SCAN（3 件）仍未生成；33 件全部标完且 Reviewer
 终审放行后，才更新 CodeUp 本地 main（`a11131a`）。两仓 main 本轮仍未动。
+
+## 17. B3 封卷：5 处 PM 补签按稳定 ID 继承
+
+### 17.1 签名来源与「最后一格」的事实核对
+
+PM 2026-11-12 12:14 交回签好的 `Batch3_B3_FINAL_TO_SIGN.xlsx`，并说明
+「最后一行好像填写不了，我已核对，授权你帮我填写」。据此逐格核对：
+
+* 打开 PM 保存的原件（12:14:07 落盘，7,669 → 11,872 字节），
+  **5 个签名格其实全部已有 `wuxiaoxian`，包括第 15 行**；
+* 原始 XML 佐证：`O12..O15` 为 `<c r="O1x" s="2" t="s"><v>105</v></c>`，
+  `O16` 为 `<c r="O16" s="3" t="s"><v>105</v></c>`；105 是共享字符串
+  `wuxiaoxian`。第 15 行只有样式索引 `s="3"` 与上面四格 `s="2"` 不同，
+  属录入方式差异，值本身确已写入；
+* 结论：屏幕未刷新，文件里已经签上。**WB 没有代填任何一格，也未改动
+  任何签名格**。授权仍留档：若日后发现该格确为空，可按此授权补填。
+
+记录见 `Batch3_B3_approval_authorization.txt`（含签名源 SHA-256）。
+
+### 17.2 稳定 ID 必须并入 condition
+
+B2 的九字段稳定 ID 在 B3 上不够：V256 p13 的 `V(MAIN-AUX)` 第 2、3 行
+MIN/MAX 完全相同（-7.8 / 6.6 mV），九个字段一模一样，唯一能区分的是
+TEST CONDITIONS。若不并入 `condition`，字典会静默覆盖重复键——
+又是一种 Fail-Open。因此 B3 的稳定 ID 取十字段（九字段 + `condition`）。
+
+并入不会误放行：若 PM 改过 condition，ID 就对不上，脚本直接报
+「签名落点与 WB 代录入行不一致」。
+
+### 17.3 封卷断言与结果
+
+| 项目 | 结果 |
+| --- | --- |
+| 签名源 | `Batch3_B3_FINAL_TO_SIGN.xlsx`，SHA-256 `306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7`，11,872 字节 |
+| 副本 | `Batch3_B3_FINAL_SIGNED.xlsx`，与签名源逐字节相同 |
+| 签名值 | 5 处全部 `wuxiaoxian`（无其他签名者） |
+| 落点校验 | `signed_ids` == `entered_by=WB_Agent` 行集合，均为第 11–15 行 |
+| 封卷前后差异 | 只有 5 格 `approved_by`（空 → `wuxiaoxian`），其余 15 列一字未动 |
+| `human_adjudication` | 全部为空 |
+
+### 17.4 封卷后机检
+
+| 模式 | 结果 |
+| --- | --- |
+| PDF（实算哈希） | **`OK=20`**，无 ERROR / SUSPECT / CANNOT_VERIFY，溯源三处一致 |
+| 离线（sidecar） | **`OK=20`**，同上 |
+
+原始 stdout 已覆盖更新：`b3_validation_raw/b3_final_pdf_mode.txt`、
+`b3_validation_raw/b3_final_sidecar_mode.txt`；逐格差异报告为
+`Batch3_B3_regen_report.txt`（生成器 `_b3_regen_report.py`）。
+
+### 17.5 脚本的一处安全性修正
+
+`_make_b3_final.py` 原先会重写 `Batch3_B3_FINAL_TO_SIGN.xlsx`。该文件补签后
+就是唯一签名源，重跑会覆盖 PM 的签名。现已改为**不再生成 TO_SIGN**，
+未签模板只保留在 git 历史 `fd0555c` 中。签名继承走
+`load_approval_map` / `apply_approval`，与 B2 同一套，Fail-Closed 条件为：
+源缺失 / 表头不符 / 行数不是 20 / 稳定 ID 重复 / 非 PM 签名 / 落点不一致。
+
+### 17.6 尚未做的事
+
+B4（5 件：V077 V130 V290 V347 V041）与 SCAN（3 件按 SOP 标 EXCLUDED）
+仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main
+（`a11131a`）更新并 push。两仓 main 本轮仍未动。

@@ -26,14 +26,18 @@
     行数不符即 Fail-Closed，绝不盲配。
 
 四、签名口径（绝不由机器替人确认）
-    这 5 格是签字之后新增的数据，PM 没看过。因此：
+    这 5 格是签字之后新增的数据。处置与 B2 完全同构：
       * 15 列签字值逐格照抄；
-      * 5 行 condition 由 WB 按原图代录入，entered_by=WB_Agent，
-        approved_by 留空；
-      * 另出 `Batch3_B3_FINAL_TO_SIGN.xlsx`，把这 5 个 condition 格与
-        对应 approved_by 格标红，等 PM 补签后按稳定 ID 继承（同 B2 流程）。
-    v1.6 不校验 approved_by，所以机检仍能 OK=20；但"未补签"这件事写在
-    `Batch3_B3_APPROVAL_PENDING.txt` 里，不靠记忆、不悄悄算已完成。
+      * 5 行 condition 由 WB 按原图代录入，entered_by=WB_Agent；
+      * `Batch3_B3_FINAL_TO_SIGN.xlsx` 的 5 个 condition 格与对应
+        approved_by 格标红交给 PM，PM 补签后该文件即**唯一签名源**；
+      * 本脚本按九字段稳定 ID 从签名源继承 approved_by，绝不按行号、
+        绝不代填、绝不自动补齐：源缺失 / 表头不符 / 行数不是 20 /
+        ID 重复 / 非 PM 签名 / 落点与 entered_by=WB_Agent 行不一致，
+        一律 Fail-Closed 退出。
+
+    脚本**不再重写 TO_SIGN**：它补签后就是签名源，重跑会覆盖掉 PM 的签名。
+    未签模板可在 git 历史（fd0555c）里取回。
 
 file_name 简写处置（不改签字真源一格）
     V256 签字名 `BQ79652PAPRQ1.pdf` 在语料目录不存在，实际文件是
@@ -44,8 +48,7 @@ file_name 简写处置（不改签字真源一格）
     Batch3_B3_SIGNED_original.xlsx     PM 签字原件副本（逐格未改）
     Batch3_B3_FINAL.csv / .xlsx        19 列最终定稿（验证器直接吃）
     Batch3_B3_notes_before_cleanup.txt 20 行原始 notes 留痕
-    Batch3_B3_FINAL_TO_SIGN.xlsx       5 格待补签目标（红格）
-    Batch3_B3_APPROVAL_PENDING.txt     待补签稳定 ID 清单
+    Batch3_B3_APPROVAL_TARGETS.txt     5 处补签落点（稳定 ID + 继承结果）
     Batch3_B3_PDF_PROVENANCE.csv       第三方溯源表
     page_text_batch3_b3.json           页文本 + 溯源期望值
 """
@@ -80,7 +83,7 @@ NOTES_BEFORE = PREP / "Batch3_B3_notes_before_cleanup.txt"
 OUT_SIDE = PREP / "page_text_batch3_b3.json"
 OUT_PROV = PREP / "Batch3_B3_PDF_PROVENANCE.csv"
 TO_SIGN = PREP / "Batch3_B3_FINAL_TO_SIGN.xlsx"
-PENDING = PREP / "Batch3_B3_APPROVAL_PENDING.txt"
+TARGETS = PREP / "Batch3_B3_APPROVAL_TARGETS.txt"
 
 ORIG_COLS = [
     "sample_no", "file_name", "evidence_page", "table_title", "symbol",
@@ -112,12 +115,23 @@ ENTERED_BY = "WB_Agent"
 EXPECT_ROWS = 20
 EXPECT_SAMPLES = 4
 
+# 唯一签名源：PM 在 5 个红格补签后的原件（2026-11-12 12:14 保存）。
+# 补签后按稳定 ID 继承，绝不按行号、绝不代填、绝不自动补齐。
+APPROVAL_SRC = PREP / "Batch3_B3_FINAL_TO_SIGN.xlsx"
+SIGNERS = {"wuxiaoxian"}
+
 # 唯一条件真源在本体生成器里，这里只声明"取哪一块"
 CONDITION_KEY = ("V256", "13", "V(MAIN-AUX)")
 
 STABLE_ID_FIELDS = (
     "sample_no", "file_name", "evidence_page", "symbol", "parameter_name",
     "min_value", "typ_value", "max_value", "unit",
+    # B3 必须再并入 condition：V256 p13 的 V(MAIN-AUX) 第 2、3 行
+    # MIN/MAX 完全相同（-7.8 / 6.6 mV），九个字段一模一样，
+    # 唯一能区分的就是 TEST CONDITIONS。B2 靠 min/typ/max/unit 就能消歧，
+    # B3 这两行消不掉，若不加会把同一 ID 静默覆盖成一条 —— 正是要堵的 Fail-Open。
+    # 加了也不会误放行：若 PM 改过 condition，ID 就对不上，直接报「落点不一致」。
+    "condition",
 )
 
 sys.path.insert(0, str(PREP))
@@ -245,6 +259,67 @@ def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
     atomic_replace(tmp, path)
 
 
+def load_approval_map(path=None):
+    """Fail-Closed 读取唯一签名源，返回 {稳定ID: approved_by}。
+
+    以下任一情况直接报错退出，绝不「读不到就按无签名处理」：
+      源文件不存在 / 表头不是 19 列定稿结构 / 数据行数不是 20 /
+      稳定 ID 重复 / 出现非 PM 本人签名。
+    """
+    src = Path(path) if path is not None else APPROVAL_SRC
+    if not src.exists():
+        raise SystemExit("FAIL 找不到唯一签名源：%s" % src)
+    wb = openpyxl.load_workbook(str(src), data_only=True, read_only=True)
+    try:
+        vals = list(wb.active.values)
+    finally:
+        wb.close()
+    if not vals:
+        raise SystemExit("FAIL 签名源是空表：%s" % src)
+    hdr = [str(x or "").strip() for x in vals[0]]
+    if hdr != FINAL_COLS:
+        raise SystemExit("FAIL 签名源表头不符（应为 19 列定稿结构）：%s" % hdr)
+    data = [v for v in vals[1:] if any(x is not None and str(x).strip() for x in v)]
+    if len(data) != EXPECT_ROWS:
+        raise SystemExit("FAIL 签名源数据行数异常：%d（应为 %d）"
+                         % (len(data), EXPECT_ROWS))
+    amap = {}
+    for v in data:
+        r = {k: cell(v[hdr.index(k)]) for k in FINAL_COLS}
+        sid = stable_id(r)
+        if sid in amap:
+            raise SystemExit("FAIL 签名源稳定 ID 重复：%s" % sid)
+        sig = r["approved_by"].strip()
+        if sig and sig not in SIGNERS:
+            raise SystemExit("FAIL 签名源出现非 PM 签名：%r（行 %s）"
+                             % (sig, r["sample_no"]))
+        amap[sid] = sig
+    return amap
+
+
+def apply_approval(rows, approval_map):
+    """按稳定 ID 把 PM 补签落到定稿；落点与 WB 代录入行必须完全一致。"""
+    signed_ids = {k for k, v in approval_map.items() if v}
+    wb_ids = {stable_id(r) for r in rows if r["entered_by"] == ENTERED_BY}
+    if not signed_ids:
+        raise SystemExit("FAIL 签名源里没有任何 approved_by，拒绝出「已封卷」定稿")
+    if signed_ids != wb_ids:
+        miss = wb_ids - signed_ids
+        extra = signed_ids - wb_ids
+        raise SystemExit(
+            "FAIL 签名落点与 WB 代录入行不一致：漏签 %d 行 %r；多处签名 %d 行 %r"
+            % (len(miss), sorted(x.split("|")[0] for x in miss),
+               len(extra), sorted(x.split("|")[0] for x in extra)))
+    for r in rows:
+        if r["entered_by"] != ENTERED_BY:
+            continue
+        sid = stable_id(r)
+        if sid not in approval_map:
+            raise SystemExit("FAIL 定稿行在签名源里找不到稳定 ID：%s" % sid)
+        r["approved_by"] = approval_map[sid]
+    return rows
+
+
 def main():
     global SRC_XLSX, PDF_DIR
     ap = argparse.ArgumentParser()
@@ -252,6 +327,8 @@ def main():
                     help="PM 签字的 xlsx（唯一真源）")
     ap.add_argument("--pdf-dir", default=str(PDF_DIR),
                     help="PDF 语料目录")
+    ap.add_argument("--approval", default=str(APPROVAL_SRC),
+                    help="PM 补签后的 TO_SIGN 原件（唯一签名源）")
     args = ap.parse_args()
     SRC_XLSX, PDF_DIR = Path(args.xlsx), Path(args.pdf_dir)
     if not SRC_XLSX.exists():
@@ -328,10 +405,14 @@ def main():
         raise SystemExit("device_model 全空")
     if any(not r["device_model"] for r in rows):
         raise SystemExit("存在未登记型号的样本")
-    if any(r["approved_by"] for r in rows):
-        raise SystemExit("定稿不该有 approved_by：PM 尚未对 5 格补签")
     if sum(1 for r in rows if r["entered_by"]) != 5:
         raise SystemExit("entered_by 应恰好 5 行")
+
+    # 签名继承：唯一源是 PM 补签后的 TO_SIGN 原件，按稳定 ID 落位，不按行号。
+    approval_map = load_approval_map(args.approval)
+    apply_approval(rows, approval_map)
+    if sum(1 for r in rows if r["approved_by"]) != 5:
+        raise SystemExit("定稿应恰好继承 5 处 PM 补签")
     if any("low_confidence" in r["notes"].lower() for r in rows):
         raise SystemExit("notes 仍有 low_confidence 残留")
     if any(r["notes"] != FINAL_NOTE for r in rows):
@@ -447,28 +528,28 @@ def main():
                highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
                | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})
 
-    # TO_SIGN：只把这 5 格标红，PM 打开就能看到要签哪儿
-    write_xlsx(TO_SIGN, rows, "B3_TO_SIGN",
-               highlights={(i, "condition"): "FFC7CE" for i in cond_row_ids}
-               | {(i, "approved_by"): "FFC7CE" for i in cond_row_ids},
-               head_color="C00000")
+    # 注意：这里刻意不再重写 TO_SIGN。
+    # 该文件补签后就是唯一签名源（APPROVAL_SRC），重跑会覆盖掉 PM 的签名。
+    # 未签模板只存在于 git 历史（fd0555c）；需要重出时手工另存新名，别覆盖它。
 
-    # 待补签清单：稳定 ID 落纸，补签后按 ID 继承，不按行号
+    # 补签落点清单：稳定 ID 落纸，补签按 ID 继承，不按行号
     plines = [
-        "B3 待 PM 补签清单（V256 五行 condition 由 WB 按原图代录入）",
+        "B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）",
         "=" * 72,
-        "补签目标文件：Batch3_B3_FINAL_TO_SIGN.xlsx（红格 = condition + approved_by）",
-        "补签后由 _make_b3_final 的继承逻辑按稳定 ID 落位，不按行号。",
+        "唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）",
+        "继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。",
         "-" * 72,
     ]
     for i, c in cond_lines:
         r = rows[i - 1]
         plines.append("物理行%-3d %s" % (i, stable_id(r)))
         plines.append("        condition = %s" % c)
+        plines.append("        approved_by = %s（entered_by = %s）"
+                      % (r["approved_by"] or "(空)", r["entered_by"] or "(空)"))
     plines.append("-" * 72)
-    plines.append("其余 %d 行 %s 的签字已由 PM 在签字版确认，无需补签。"
+    plines.append("其余 %d 行 %s 的签字由 PM 在签字版确认，entered_by/approved_by 均空。"
                   % (len(rows) - 5, "/".join(sorted(samples))))
-    PENDING.write_text("\n".join(plines) + "\n", encoding="utf-8", newline="\n")
+    TARGETS.write_text("\n".join(plines) + "\n", encoding="utf-8", newline="\n")
 
     # 落盘后逐格断言 CSV == XLSX
     vals = list(openpyxl.load_workbook(str(OUT_XLSX), data_only=True).active.values)
@@ -491,9 +572,11 @@ def main():
     print("  V256 五行 condition 按原图逐行绑定（与草稿生成器同源）：")
     for i, c in cond_lines:
         print("    行%-3d %s" % (i, c))
-    print("  代录入 %d 行 entered_by=%s；approved_by 留空待 PM 补签。" %
-          (len(cond_row_ids), ENTERED_BY))
-    print("  待补签目标：%s" % TO_SIGN.name)
+    print("  代录入 %d 行 entered_by=%s；已按稳定 ID 继承 %d 处 PM 补签。"
+          % (len(cond_row_ids), ENTERED_BY,
+             sum(1 for r in rows if r["approved_by"])))
+    print("  签名源：%s" % Path(args.approval).name)
+    print("  补签落点清单：%s" % TARGETS.name)
     return 0
 
 

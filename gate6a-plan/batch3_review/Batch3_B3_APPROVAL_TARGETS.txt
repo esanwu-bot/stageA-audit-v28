@@ -1,0 +1,22 @@
+B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）
+========================================================================
+唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）
+继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。
+------------------------------------------------------------------------
+物理行11  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.1||6.1|mV|2V<VCELL<4.5V; TA=25°C
+        condition = 2V<VCELL<4.5V; TA=25°C
+        approved_by = wuxiaoxian（entered_by = WB_Agent）
+物理行12  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.8||6.6|mV|2V<VCELL<4.5V; -20°C<TA<65°C
+        condition = 2V<VCELL<4.5V; -20°C<TA<65°C
+        approved_by = wuxiaoxian（entered_by = WB_Agent）
+物理行13  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.8||6.6|mV|2V<VCELL<4.5V; -40°C<TA<105°C
+        condition = 2V<VCELL<4.5V; -40°C<TA<105°C
+        approved_by = wuxiaoxian（entered_by = WB_Agent）
+物理行14  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.8||6.7|mV|2V<VCELL<4.5V; -40°C<TA<125°C
+        condition = 2V<VCELL<4.5V; -40°C<TA<125°C
+        approved_by = wuxiaoxian（entered_by = WB_Agent）
+物理行15  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.9||6.9|mV|1V<VCELL< 5V; -40°C<TA<125°C
+        condition = 1V<VCELL< 5V; -40°C<TA<125°C
+        approved_by = wuxiaoxian（entered_by = WB_Agent）
+------------------------------------------------------------------------
+其余 15 行 V146/V244/V256/V271 的签字由 PM 在签字版确认，entered_by/approved_by 均空。

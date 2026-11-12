@@ -104,6 +104,12 @@ SYNC = [
     "page_text_batch3_b3.json",
     "b3_validation_raw/b3_final_pdf_mode.txt",
     "b3_validation_raw/b3_final_sidecar_mode.txt",
+    # 第九轮：B3 封卷（5 处 PM 补签按稳定 ID 继承）
+    "Batch3_B3_FINAL_SIGNED.xlsx",
+    "Batch3_B3_APPROVAL_TARGETS.txt",
+    "Batch3_B3_approval_authorization.txt",
+    "Batch3_B3_FINAL_pre_seal.csv",
+    "_b3_regen_report.py",
     # B3 圈选台左图依赖：9 张裁图必须与 HTML 同包，否则解压后看不到图
     "annotation_reports/V146/b3_ELC_p0004.png",
     "annotation_reports/V244/b3_ELC_p0047.png",
