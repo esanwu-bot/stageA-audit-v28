@@ -180,6 +180,56 @@ def pick_core(rows, lo=3, hi=5):
     return keep, drop, [c for _, _, c in CORE_ORDER]
 
 
+# —— 二轮兜底：一等电气特性（B4 的 V130 / V347 暴露的盲区）——
+# CORE_ORDER 只收供电 / 温度 / 电流 / 功耗 / 输入电压，是给"电源类"器件定的。
+# MOSFET 数据手册（V130 的 BVDSS / VGS(th) / RDS(on) / Ciss）与军标运放
+# （V347 的 VIN / IIO / AV / tPD）同样有合规参数表，但一个符号都不在白名单里，
+# 于是首轮 usable 为空，整件被误判成"没有参数表"。
+#
+# 纪律：这一轮**只在首轮一行都没留下时**才跑，命中即标注「非白名单核心参数」，
+# 让人知道这几行不是按既定白名单选的、要重点核。已能出草稿的样本行为完全不变，
+# B1/B2/B3 的封卷结果不受影响。
+CORE_ORDER_EXT = [
+    (re.compile(r"breakdown|drain[- ]to[- ]source\s+voltage|\bbv\s*dss\b", re.I), 20, "击穿/耐压"),
+    (re.compile(r"threshold\s+voltage|\bv\s*gs\s*\(?\s*th", re.I), 21, "阈值电压"),
+    (re.compile(r"on[- ]resistance|\br\s*ds\s*\(?\s*on", re.I), 22, "导通电阻"),
+    (re.compile(r"leakage\s+current|\bi\s*dss\b|\bi\s*gss\b|\bi\s*io\b|\bi\s*ib\b", re.I), 23, "漏电流"),
+    (re.compile(r"capacitance|\bc\s*(?:iss|oss|rss)\b", re.I), 24, "电容"),
+    (re.compile(r"transconductance|\bg\s*fs\b", re.I), 25, "跨导"),
+    (re.compile(r"offset\s+voltage|\bv\s*oo|\bforward\s+voltage|\bv\s*sd\b", re.I), 26, "失调/正向压降"),
+    (re.compile(r"voltage\s+gain|\bgain\b|input\s+resistance|\br\s*in\b", re.I), 27, "增益/输入阻抗"),
+    (re.compile(r"delay\s+time|rise\s+time|fall\s+time|\bt\s*pd\b", re.I), 28, "开关时间"),
+]
+
+# 二轮命中时写进 notes 的前缀：明确这些行不是按白名单选的
+EXT_NOTE = "非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺"
+
+
+def core_rank_ext(r):
+    name = (r.get("parameter_name") or "") + " " + (r.get("symbol") or "")
+    pri = 99
+    for rx, p, _cn in CORE_ORDER_EXT:
+        if rx.search(name):
+            pri = p
+            break
+    try:
+        conf = float(r.get("confidence_score") or 0)
+    except ValueError:
+        conf = 0.0
+    return (pri, 0 if has_num(r) else 1, -conf)
+
+
+def pick_core_ext(rows, lo=3, hi=5):
+    """二轮兜底：白名单全落空时，按一等电气特性类别再选一次。"""
+    ranked = sorted(rows, key=core_rank_ext)
+    usable = [r for r in ranked if core_rank_ext(r)[0] < 99 and has_num(r)]
+    if not usable:
+        return [], ranked
+    keep = usable[:hi]
+    ids = {id(r) for r in keep}
+    return keep, [r for r in ranked if id(r) not in ids]
+
+
 # —— 表格定位三道闸门（V003 抓错页事故后加）——
 # 事故复盘：AM2431 共 282 页，第 6 章 Specifications（p101~p116）才有参数表，
 # 老 scan3 只扫前 40 页，真表整整被漏掉 60 多页；前 40 页里 p14 是
@@ -190,7 +240,11 @@ def pick_core(rows, lo=3, hi=5):
 NUMCOL_RX = re.compile(r"\b(MIN|TYP|MAX|NOM)\b", re.I)
 KIND_TITLE_RX = re.compile(
     r"(absolute\s+)?maximum\s+ratings|recommended\s+operating\s+conditions"
-    r"|(electrical|dc\s+electrical|static|dc)\s+(characteristics|specifications)",
+    r"|(electrical|dc\s+electrical|static|dc)\s+(characteristics|specifications)"
+    # 军标 SMD 写法：`TABLE I. Electrical performance characteristics.`
+    # （B4 V347）—— 老正则要求 characteristics 紧跟 electrical，中间插了
+    # performance 就命中不了，整页被当成非候选页，真表被静默漏掉。
+    r"|electrical\s+performance\s+characteristics",
     re.I)
 REF_RX = re.compile(
     r"\b(see|refer|refer\s+to|for\s+more\s+information|defined\s+in|"
@@ -239,11 +293,11 @@ TITLE_LINE_RX = re.compile(
 #   3. 整行长度 <= 120 字符，且后续仍必须由 has_table_header 验证
 #      「完整表头结构紧邻标题、中间不夹数据行」。
 DESC_TITLE_RX = re.compile(
-    r"^\s*(?:\d+(?:\.\d+)*\s+)?"
+    r"^\s*(?:\d+(?:\.\d+)*\s+)?(?:TABLE\s+[IVXLC]+\.?\s+)?"
     r"(?:(?:absolute\s+)?maximum\s+ratings"
     r"|recommended\s+operating\s+conditions"
     r"|(?:electrical|dc\s+electrical|static|dc)\s+"
-    r"(?:characteristics|specifications))\b.{0,100}$", re.I)
+    r"(?:performance\s+)?(?:characteristics|specifications))\b.{0,100}$", re.I)
 TITLE_MAX_GAP = 4
 DATA_ROW_RX = re.compile(r"[-+]?\d+\.\d+|[-+]\d+(?:\s|$)")
 BORDER_MARK_RX = re.compile(
@@ -955,6 +1009,43 @@ def build_js(rows, export_name):
             + I2.build_js(rows))
 
 
+# —— Reviewer 指定的逐件核查提示（B4）——
+# 这些不是自动判定，是人点选时**必须先回答的问题**，直接印在圈选台卡片上，
+# 避免「机器说 EXCLUDED 就照着标」或「机器出了草稿就默认对」。
+REVIEW_HINTS = {
+    "V077": "Reviewer 提示：请核实表格类型。该件 201 页、章节极多，"
+            "先确认裁到的是电气特性表，而不是时序/引脚/封装表。",
+    "V130": "Reviewer 提示：短文档不代表没有有效参数表。"
+            "p2 是标准 ELECTRICAL CHARACTERISTICS 表（PARAMETER / TEST CONDITIONS / "
+            "MIN / TYP / MAX / UNIT），参数名属 MOSFET 类，不在既有白名单里。",
+    "V347": "Reviewer 提示：核实是否为目标器件数据，而非引用资料。"
+            "本件是 DSCC 军标 SMD（84185），TABLE I 即该器件本身的电气性能表，"
+            "不是引用别处的资料；但只有 Min/Max 两列且带测试分组，行序需人工判读。",
+}
+
+
+# —— 逐件排除理由（人工核定，覆盖自动判定给的泛化措辞）——
+# 只在自动判定为 EXCLUDED 类时生效：把「为什么不能建 Gold」写成可复核的事实，
+# 而不是一句「无参数表」。每条都必须能对着 PDF 原文验证。
+EXCLUDED_REASON = {
+    "V347": (
+        "确为目标器件数据（DSCC 标准微电路图纸 84185，TABLE I 即该器件本身的"
+        "电气性能表，不是引用别处资料）；但该表同一符号按 Group A subgroup / "
+        "Device type 拆成 2~4 行（例：IIO 上限按 01,02 / 03 分别为 3、5、6、"
+        "20、30、40 μA），且 find_tables 在该页探不到边框表格（0 张）。"
+        "VLM 实测只能给出「每符号一行」的合并值，并固定取 01,02 那一行，"
+        "会掩盖器件类型差异 —— 属硬凑，故不进点选。"
+        "EXCLUDED: 表格版式不支持稳定还原行序，需 SMD 专用规则后再做"
+    ),
+    "V041": (
+        "电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 "
+        "PACKAGE OPTION ADDENDUM / PACKAGE MATERIALS / PACKAGE OUTLINE / "
+        "LAND PATTERN / STENCIL DESIGN / 免责声明，其中的 MIN/MAX 是机械尺寸公差，"
+        "不是电气参数。EXCLUDED: 电气特性页无文本层，无 OCR 能力，无法建立 Gold"
+    ),
+}
+
+
 def one_sample(meta, args):
     """处理一件：定位表格 → 裁剪 → VLM → 收敛 → 打分 → 留 3~5 行。"""
     sno = meta["sample_no"]
@@ -1028,6 +1119,15 @@ def one_sample(meta, args):
 
     # —— 只留核心 3~5 行 ——
     keep, drop, _ = pick_core(rows)
+    # 首轮一行都没留下、但确实抽到了行 → 走二轮「一等电气特性」兜底。
+    # 只在首轮为空时启用，已有草稿的样本行为完全不变。
+    ext_used = False
+    if not keep and rows:
+        keep_ext, drop_ext = pick_core_ext(rows)
+        if keep_ext:
+            keep, drop, ext_used = keep_ext, drop_ext, True
+            for r in keep:
+                r["notes"] = (r.get("notes", "") + "；" + EXT_NOTE).strip("；")
     # VLM 不抄 TEST CONDITIONS：按参数块内出现顺序从原图回填（Fail-Closed）
     apply_condition_backfill(keep, sno)
     mark_dups(keep)
@@ -1060,9 +1160,18 @@ def one_sample(meta, args):
             best = max(best, run)
         if best >= 3:
             quality = "无文本层"
-            note = ("全书 %d/%d 页无文本层，前 12 页有连续 %d 页空白；"
-                    "EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）"
-                    % (blank, npages, best))
+            if blank == npages:
+                note = ("全书 %d/%d 页无文本层，前 12 页有连续 %d 页空白；"
+                        "EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）"
+                        % (blank, npages, best))
+            else:
+                # 只部分页是扫描图（B4 V041 的情形）：不能说「整本无文本层」，
+                # 文本层页确实存在，只是它们不是电气特性页。
+                note = ("全书 %d/%d 页无文本层（前 12 页有连续 %d 页空白），"
+                        "其余 %d 页虽有文本层，但未定位到电气参数表；"
+                        "EXCLUDED: 电气特性页为扫描图，无 OCR 能力，"
+                        "无法建立 Gold（不进点选）"
+                        % (blank, npages, best, npages - blank))
         else:
             quality = "无电气参数表"
             note = ("全书有文本层，但未定位到带 MIN/TYP/MAX 列的参数表"
@@ -1075,17 +1184,27 @@ def one_sample(meta, args):
         # 术语解释页/线图/错表：全部行都不是「带数值的核心参数」，
         # 此时绝不能交草稿给人，直接给 EXCLUDED 建议。
         quality, note = ("无法定位参数表",
-                         "定位到 %d 页但没抽到任何带数值的核心参数行；"
-                         "建议整件标 EXCLUDED: 表格定位失败/无标准参数表"
-                         % len(panes))
+                         "定位到 %d 页，白名单与一等电气特性两轮都没抽到"
+                         "带数值的核心参数行；建议整件标 "
+                         "EXCLUDED: 表格定位失败/无标准参数表" % len(panes))
+    elif ext_used:
+        quality = "需重点核（二轮兜底）"
+        note = ("白名单核心参数 0 行，改按一等电气特性兜底选出 %d 行"
+                "（非白名单口径，须逐行对图核）" % len(keep))
     elif nlow:
         quality, note = "需重点看", "核心 %d 行中 %d 行 low_confidence，先核这些" % (len(keep), nlow)
     else:
         quality, note = "好", "核心 %d 行置信度均 ≥%.2f" % (len(keep), THRESH)
 
+    if sno in EXCLUDED_REASON and (not keep):
+        note = EXCLUDED_REASON[sno]
+        if quality == "好" or quality.startswith("需重点"):
+            quality = "无电气参数表"
+
     card = {"sno": sno, "fname": fname, "npages": npages, "pdf": pdf_url,
             "panes": panes, "rows": keep, "quality": quality, "note": note,
-            "dropped": len(drop), "nlow": nlow,
+            "dropped": len(drop), "nlow": nlow, "ext": ext_used,
+            "hint": REVIEW_HINTS.get(sno, ""),
             "stratum": meta.get("stratum_proposed", "")}
     doc.close()
     return keep, card
@@ -1099,6 +1218,8 @@ def main():
                     help="输出文件名前缀，默认 Batch3")
     ap.add_argument("--no-vlm", action="store_true",
                     help="不调视觉模型，只用文本表格解析（调试用）")
+    ap.add_argument("--label", default="Batch 3",
+                    help="圈选台标题里的批次名，如 B4 / SCAN")
     args = ap.parse_args()
     want = [s.strip() for s in args.samples.split(",") if s.strip()]
 
@@ -1135,9 +1256,13 @@ def main():
 
     p = []
     p.append('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">')
-    p.append("<title>Batch 3 圈选台（左图右文）</title>")
-    p.append("<style>%s%s</style></head><body>" % (B.CSS, I2.EXTRA_CSS))
-    p.append("<header><h1>Batch 3 圈选台 · %d 件 · 核心参数草稿</h1>" % len(cards))
+    p.append("<title>%s 圈选台（左图右文）</title>" % B.esc(args.label))
+    p.append("<style>%s%s%s</style></head><body>"
+             % (B.CSS, I2.EXTRA_CSS,
+                ".hint-review{background:#fff4ce;border-left:4px solid #d68b00;"
+                "padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}"))
+    p.append("<header><h1>%s 圈选台 · %d 件 · 核心参数草稿</h1>"
+             % (B.esc(args.label), len(cards)))
     p.append("<p>左边是原图，右边是同区域抓出的纯文本。"
              "页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；"
              "红底行是 <code>low_confidence</code>，请优先对图。</p></header>")
@@ -1168,6 +1293,9 @@ def main():
                            pn["kind"], "/".join(str(x) for x in pn["span"])))
         p.append('<div class="meta">共 %d 页 　%s</div>' % (c["npages"], "".join(tags)))
         p.append('<div class="meta">%s</div>' % B.esc(c["note"]))
+        if c.get("hint"):
+            p.append('<div class="hint hint-review"><b>核查提示</b>　%s</div>'
+                     % B.esc(c["hint"]))
         p.append('</div><div class="body">')
 
         if c["quality"] == "无文本层":

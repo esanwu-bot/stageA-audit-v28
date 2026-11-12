@@ -1,0 +1,4 @@
+﻿sample_no,file_name,sha256,page_count,size_bytes,blank_pages,text_layer_pages,verdict,reason,device_model,reviewer
+S01,CY74FCT162827CTPAC__CYPRS379-1.pdf,0e0ac847ab07cb9141a1c5ef79106a4895ffa6360932b258ea108fb4e5d6d07e,6,149887,6,0,EXCLUDED,EXCLUDED: 无 OCR 能力，无法建立 Gold,,
+S02,ATOPA4343NA_2K5__BURRS00055-1.pdf,055b0c8e47e82529c6579eb928962b9c0a3ae61de7e11c1c5a37c51d37eddc14,11,677523,11,0,EXCLUDED,EXCLUDED: 无 OCR 能力，无法建立 Gold,,
+S03,32P4752-CGT__SISYD006-4-73.pdf,6712c9281cfe063bf77280233022a46781428dc2c0fee20cba5b1cb12afbfe40,53,1502553,53,0,EXCLUDED,EXCLUDED: 无 OCR 能力，无法建立 Gold,,

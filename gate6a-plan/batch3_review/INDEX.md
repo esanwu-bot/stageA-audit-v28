@@ -970,3 +970,156 @@ TEST CONDITIONS。若不并入 `condition`，字典会静默覆盖重复键—�
 B4（5 件：V077 V130 V290 V347 V041）与 SCAN（3 件按 SOP 标 EXCLUDED）
 仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main
 （`a11131a`）更新并 push。两仓 main 本轮仍未动。
+
+## 18. 第十轮：B4 圈选台与 SCAN 登记表
+
+Reviewer 批准 B3 封卷后放行 B4 与 SCAN。本轮不做定稿、不签名，
+只交「可点选的圈选台 + 草稿」与「可复核的排除登记表」。
+
+### 18.1 本轮交付物
+
+| 文件 | 说明 | SHA-256（前 16） |
+| --- | --- | --- |
+| `Batch3_B4_Viewer.html` | B4 圈选台，5 件，左图右文，三条核查提示印在卡片上 | `141c45acd13cddaf` |
+| `Batch3_B4_DRAFT.csv` | B4 草稿，14 行 × 15 列 | `1ead41a5a3db0bfc` |
+| `Batch3_B4_generation.txt` | 生成器真实 stdout（逐件核心行/丢弃数/质量分层） | 见包内 |
+| `Batch3_SCAN_MANIFEST.csv` | SCAN 三件登记表，11 列含溯源 | `e83bab493a851f58` |
+| `Batch3_SCAN_Viewer.html` | SCAN 圈选台（仅登记，不进点选） | `186ef2220cf5a199` |
+| `Batch3_SCAN_manifest.txt` | SCAN 登记摘要 | 见包内 |
+
+B4 左图依赖 4 张裁图，已与 HTML 同包：`annotation_reports/V077/b3_ELC_p0040.png`、
+`V077/b3_ROC_p0038.png`、`V130/b3_ELC_p0002.png`、`V290/b3_ELC_p0003.png`。
+V347 / V041 被判排除，不出裁图。
+
+### 18.2 三条 Reviewer 提示已落到网页上
+
+提示写在每张卡片的黄色「核查提示」块里（`REVIEW_HINTS`），不是合集页脚：
+
+* **V077** —— 请核实表格类型。该件 201 页、章节极多，先确认裁到的是电气特性表，
+  而不是时序/引脚/封装表；
+* **V130** —— 短文档不代表没有有效参数表。p2 是标准 ELECTRICAL CHARACTERISTICS 表
+  （PARAMETER / TEST CONDITIONS / MIN / TYP / MAX / UNIT），参数名属 MOSFET 类；
+* **V347** —— 核实是否为目标器件数据，而非引用资料。本件是 DSCC 军标 SMD（84185），
+  TABLE I 即该器件本身的电气性能表，不是引用别处的资料。
+
+### 18.3 B4 生成结果：两件出草稿，两件逐件排除
+
+| 样本 | 核心行 | 丢弃 | 质量分层 | 处置 |
+| --- | --- | --- | --- | --- |
+| V077 | 5 | 11 | 好 | 进点选 |
+| V130 | 5 | 3 | 需重点核（二轮兜底） | 进点选，参数名非白名单口径 |
+| V290 | 4 | 4 | 好 | 进点选 |
+| V347 | 0 | 0 | 无电气参数表 | `EXCLUDED`：表格版式不支持稳定还原行序 |
+| V041 | 0 | 0 | 无文本层 | `EXCLUDED`：电气特性页为扫描图 |
+
+草稿共 14 行。V077 的 `CVDD` / `RVDD` 各有两组取值（疑不同温度等级），
+草稿里两条都留着并注明「请确认」——按 SOP 不替人挑，交 PM 判。
+
+### 18.4 V130：白名单盲区与「二轮兜底」
+
+首轮 `CORE_ORDER` 白名单只收供电/温度/电流/功耗/输入电压（当初为电源类器件所定），
+MOSFET 的 `BVDSS` / `RDS(on)` / `Ciss` 不在其中，导致 V130 一行都没留下、
+被误判成「无法定位电气参数表」。核实 p2 后确认该表有效，于是加二轮兜底：
+
+* `CORE_ORDER_EXT` 覆盖击穿/耐压、阈值、导通电阻、漏电流、电容、跨导、
+  失调/正向压降、增益/输入阻抗、开关时间九类一等电气特性；
+* **只在首轮一行都没留下时才跑**（`pick_core_ext`），已能出草稿的样本行为完全不变；
+* 命中的行在 `notes` 里写明「非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺」，
+  质量分层标「需重点核（二轮兜底）」，不冒充白名单口径。
+
+### 18.5 V347：逐闸门诊断与「属硬凑」的判定
+
+先修表题正则：军标写法是 `TABLE I. Electrical performance characteristics.`，
+老正则要求 `characteristics` 紧跟 `electrical`，中间插了 `performance` 就命中不了；
+已支持 `TABLE <罗马号>` 前缀与 `performance` 插入。
+
+修完仍是 0 行，逐闸门诊断结果：`NUMCOL=2`、`KIND_TITLE=True`、
+`title_anchor_lines=[22]`、`has_table_header=False`、`_page_table_signatures=0 张`。
+表头顺序是 `Test / Symbol / Conditions / Group A subgroups / Device type /
+Limits(Min,Max) / Unit`——`UNIT` 在 `MIN/MAX` 之前，而表头判定只向后看
+`HEADER_WINDOW=8`，取不到 `MARK_HEAD_WORDS`。
+
+更关键的是版式本身：同一符号按 Group A subgroup / Device type 拆成 2~4 行。
+例如 `IIO` 的上限按 `01,02 / 03 / …` 分别是 3、5、6、20、30、40 μA。
+手工裁图实测 VLM 只能给出「每符号一行」，并固定取 `01,02` 那一行，
+等于把器件类型差异抹平。**这是硬凑，不是提取**，因此按 SOP 直接排除，
+理由写进 `EXCLUDED_REASON`：确为目标器件数据，但版式不支持稳定还原行序，
+需 SMD 专用规则后再做。
+
+### 18.6 V041：部分页扫描 ≠ 整本无文本层
+
+实测 16 页里 6 页无文本层，有文本层的 10 页是 `PACKAGE OPTION ADDENDUM` /
+`PACKAGE MATERIALS` / `PACKAGE OUTLINE` / `LAND PATTERN` / `STENCIL DESIGN` /
+免责声明，其中的 MIN/MAX 是机械尺寸公差，不是电气参数；电气特性在 p2~p4 的扫描图里。
+
+原来的措辞统一写成「全书 N/N 页无文本层」，对 V041 不成立。现按两分支判定：
+`blank == npages` 才说全书无文本层；否则明说「电气特性页是扫描图，
+其余页虽有文本层但未定位到参数表」。判据不变——只要有任意一页有文字，
+就不能拿「无文本层」当排除理由。
+
+### 18.7 SCAN：把 EXCLUDED 从结论变成可复核证据
+
+`S01 / S02 / S03` 不跑 VLM，直接登记（`_make_scan_manifest.py`）：
+
+| 样本 | 文件 | 页数 | 字节 | 无文本层页 | 判定 |
+| --- | --- | --- | --- | --- | --- |
+| S01 | `CY74FCT162827CTPAC__CYPRS379-1.pdf` | 6 | 149,887 | 6 | `EXCLUDED` |
+| S02 | `ATOPA4343NA_2K5__BURRS00055-1.pdf` | 11 | 677,523 | 11 | `EXCLUDED` |
+| S03 | `32P4752-CGT__SISYD006-4-73.pdf` | 53 | 1,502,553 | 53 | `EXCLUDED` |
+
+理由统一为 `EXCLUDED: 无 OCR 能力，无法建立 Gold`。生成器带硬断言：
+若 `blank_pages != page_count` 直接 `SystemExit`，不允许拿「无 OCR」当万能理由。
+`sha256 / page_count / size_bytes / blank_pages` 全部从磁盘实算，可独立复核。
+
+### 18.8 措辞统一：十字段稳定 ID（含 condition）
+
+`Batch3_B3_APPROVAL_TARGETS.txt` 原来写「九字段稳定 ID 匹配」，与 17.2 的口径不一致。
+第 4 行已改为「十字段稳定 ID（九字段 + condition）匹配，不按行号」。
+该文件由 `_make_b3_final.py` 生成，重跑即产新措辞；落盘后与手工同步文本逐字节一致。
+
+### 18.9 封卷件字节零漂移：write_xlsx 加内容幂等
+
+重跑生成器时发现 `Batch3_B3_FINAL.xlsx` 的 SHA-256 会变。拆包比对：
+`xl/worksheets/sheet1.xml` 逐字节相同，只有 `docProps/core.xml` 的
+`dcterms:created/modified` 变了——openpyxl 每次 `save()` 都写当前时刻。
+数据一字未改，却让封卷件整包哈希漂移，这在审计上不可接受。
+
+处置分两步：
+
+1. 先把封卷字节复原为 `b437658dc8d2f8f39b4fdc44ea0b5fb233c1adf3dab72ec2df846c80f7f43035`
+   （与第九轮提交 `92f170c` 内的版本一致）；
+2. 给 `write_xlsx` 加内容签名（`_wb_signature`：表名/冻结/筛选/列宽 + 每格值与填充色、加粗）
+   比对——一致就丢弃临时文件、保留原字节，不一致才原子替换。
+
+此后三件套重跑结果：
+
+| 文件 | SHA-256 | 与封卷前 |
+| --- | --- | --- |
+| `Batch3_B3_FINAL.csv` | `b940e2e4802d505f69728cbf313f844392c073bd7e2b2c5a7a47d6e36e019b12` | 逐字节相同 |
+| `Batch3_B3_FINAL.xlsx` | `b437658dc8d2f8f39b4fdc44ea0b5fb233c1adf3dab72ec2df846c80f7f43035` | 逐字节相同 |
+| `Batch3_B3_FINAL_TO_SIGN.xlsx` | `306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7` | 逐字节相同 |
+| `Batch3_B3_FINAL_SIGNED.xlsx` | `306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7` | 逐字节相同 |
+
+生成器 stdout 对应行：`xlsx 写入：未改写（内容与磁盘一致，保留原字节）`。
+
+同一轮还发现 `page_text_batch3_b3.json` 也只差一个 `generated_at` 字段（正文逐样本
+完全一致，双模式机检输出逐字节相同）。同一处缺陷，同一套处置：若除 `generated_at`
+外内容一致，就保留原字节不重写。生成器 stdout 对应行：
+`sidecar：未改写（除 generated_at 外内容一致，保留原字节）`。
+
+### 18.10 本轮回归
+
+| 项目 | 结果 |
+| --- | --- |
+| v1.6 PDF 模式（`Batch3_B3_FINAL.csv`） | `OK=20`，无 ERROR；输出与第九轮逐字节相同 |
+| v1.6 离线模式 | `OK=20`，无 ERROR；输出与第九轮逐字节相同 |
+| 合成回归 | `PASS=43 FAIL=0 SKIP=0` |
+| 签名继承 | 5 处落在第 11–15 行，`signed_ids == entered_by` |
+| B4 网页自检 | 三条提示均在（`hint-review` × 3）、V347/V041 逐件理由已覆盖自动措辞、不再出现「全书 16/16 页无文本层」 |
+| 草稿行数 | 14 行（V077=5、V130=5、V290=4） |
+
+### 18.11 尚未做的事
+
+B4 的 14 行仍需 PM 逐格对左图核并签字；SCAN 三件只登记、不进点选。
+33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
+更新并 push。两仓 main 本轮仍未动。

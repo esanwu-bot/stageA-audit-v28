@@ -1,0 +1,1932 @@
+# Batch 3 第十轮：B4 圈选台与 SCAN 登记表（V347/V041 逐件排除）
+# 覆盖范围：92f170c..工作区
+# 排除：ZIP / SHA256SUMS / png / xlsx / *.diff 自身（避免自引用）
+
+## git status --short
+M  gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
+A  gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
+A  gate6a-plan/batch3_review/Batch3_B4_Viewer.html
+A  gate6a-plan/batch3_review/Batch3_B4_generation.txt
+A  gate6a-plan/batch3_review/Batch3_SCAN_DRAFT.csv
+A  gate6a-plan/batch3_review/Batch3_SCAN_MANIFEST.csv
+A  gate6a-plan/batch3_review/Batch3_SCAN_Viewer.html
+A  gate6a-plan/batch3_review/Batch3_SCAN_generation.txt
+A  gate6a-plan/batch3_review/Batch3_SCAN_manifest.txt
+M  gate6a-plan/batch3_review/Batch3_review.zip
+AM gate6a-plan/batch3_review/Batch3_round10.diff
+M  gate6a-plan/batch3_review/INDEX.md
+M  gate6a-plan/batch3_review/SHA256SUMS.txt
+M  gate6a-plan/batch3_review/_build_batch3_interactive.py
+M  gate6a-plan/batch3_review/_make_b3_final.py
+A  gate6a-plan/batch3_review/_make_scan_manifest.py
+A  gate6a-plan/batch3_review/_patch_idem.py
+M  gate6a-plan/batch3_review/_sync_batch3_review.py
+A  gate6a-plan/batch3_review/annotation_reports/V077/b3_ELC_p0040.png
+A  gate6a-plan/batch3_review/annotation_reports/V077/b3_ROC_p0038.png
+A  gate6a-plan/batch3_review/annotation_reports/V130/b3_ELC_p0002.png
+A  gate6a-plan/batch3_review/annotation_reports/V290/b3_ELC_p0003.png
+
+## git diff --cached 92f170c
+diff --git a/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt b/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
+index addfc9d..71021e9 100644
+--- a/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
++++ b/gate6a-plan/batch3_review/Batch3_B3_APPROVAL_TARGETS.txt
+@@ -1,7 +1,7 @@
+ B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）
+ ========================================================================
+ 唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）
+-继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。
++继承方式：十字段稳定 ID（九字段 + condition）匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。
+ ------------------------------------------------------------------------
+ 物理行11  V256|BQ79652PAPRQ1.pdf|13|V(MAIN-AUX)|Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;|-7.1||6.1|mV|2V<VCELL<4.5V; TA=25°C
+         condition = 2V<VCELL<4.5V; TA=25°C
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv b/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
+new file mode 100644
+index 0000000..74f8fb0
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_DRAFT.csv
+@@ -0,0 +1,15 @@
++﻿sample_no,file_name,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,confidence_score
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.14,1.2,1.32,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.25,1.3,1.35,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.14,1.2,1.32,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；RVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.25,1.3,1.35,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；RVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,DVDD,"Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)",1.71,1.8,1.89,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,BVDSS,Drain to Source Voltage,30,,,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,VGS(th),Gate to Source Threshold Voltage,1,1.3,1.8,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,RDS(on),Drain to Source On Resistance,,3.7,4.6,mΩ,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IDSS,Drain to Source Leakage Current,,,1,μA,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IGSS,Gate to Source Leakage Current,,,100,nA,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺,,0.95
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,II,Input Current at Maximum Input Voltage,,,50,μA,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIH,Input Voltage HIGH,2.0,,,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.8,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.5,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_Viewer.html b/gate6a-plan/batch3_review/Batch3_B4_Viewer.html
+new file mode 100644
+index 0000000..96221f1
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_Viewer.html
+@@ -0,0 +1,502 @@
++<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>B4 圈选台（左图右文）</title><style>
++*{box-sizing:border-box}
++body{margin:0;padding:0 0 60px;background:#f4f5f7;color:#1c1f23;
++ font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.65}
++header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #d8dbe0;padding:10px 22px}
++header h1{margin:0;font-size:16px}
++header p{margin:3px 0 0;font-size:12px;color:#666}
++.wrap{max-width:1100px;margin:0 auto;padding:20px 22px}
++.card{background:#fff;border:1px solid #dcdfe4;border-radius:6px;margin:0 0 22px;overflow:hidden}
++.head{padding:11px 16px;border-bottom:1px solid #e6e9ed;background:#fafbfc}
++.sn{font-weight:700;font-size:15px;color:#0b5cad;margin-right:10px}
++.fn{font-family:Consolas,monospace;font-size:12px;color:#444}
++.meta{margin-top:4px;font-size:12px;color:#555}
++.tag{display:inline-block;padding:1px 7px;margin-right:6px;border-radius:3px;
++ font-size:11px;font-weight:600;border:1px solid}
++.t-amr{background:#e8f0fb;color:#14509e;border-color:#c3d8f4}
++.t-elc{background:#e9f6ec;color:#1c6b33;border-color:#c3e3cc}
++.t-warn{background:#fdeceb;color:#a12a20;border-color:#f3c9c5}
++.t-ok{background:#eef7ee;color:#2c6b34;border-color:#c8e2c9}
++.body{padding:12px 16px 16px}
++figure{margin:0 0 18px}
++figure img{width:100%;height:auto;display:block;border:1px solid #cfd3d9}
++figcaption{font-size:12px;color:#555;padding:5px 2px 0}
++figcaption b{color:#1c1f23}
++table.rows{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
++table.rows th,table.rows td{border:1px solid #dcdfe4;padding:5px 7px;text-align:left}
++table.rows th{background:#f2f4f7;font-weight:600}
++table.rows td.num{font-family:Consolas,monospace;text-align:right}
++.note{background:#fffbe8;border:1px solid #efe0a8;border-radius:6px;padding:12px 16px;margin:0 0 22px;font-size:13px}
++.note h2{margin:0 0 8px;font-size:14px}
++.note ul{margin:6px 0 0;padding-left:20px}
++.hint{font-size:12px;color:#777;margin-top:6px}
++a{color:#0b5cad}
++
++.dh{font-size:12px;color:#444;margin:6px 0 6px}
++.pill{display:inline-block;padding:1px 7px;border-radius:3px;font-size:11px;
++ font-weight:600;margin-right:4px}
++.pill.ok{background:#e9f6ec;color:#1c6b33;border:1px solid #c3e3cc}
++.pill.low{background:#fdeceb;color:#a12a20;border:1px solid #f3c9c5}
++tr.conf-ok td{background:#f3faf4}
++tr.conf-low td{background:#fdf3f2}
++tr.empty-row td{background:#fff8e6;color:#8a6d3b}
++tr.empty-row input{background:#fffdf5}
++tr.clicked td.sn::after{content:" ·点";color:#0b5cad;font-size:10px}
++.warn{color:#a12a20;font-size:10.5px;font-weight:600}
++.filter{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
++ font-size:12.5px;background:#f4f6f9;border:1px solid #dfe3e8;
++ border-radius:4px;padding:8px 10px;margin-bottom:10px}
++.filter select{font-size:12.5px;padding:3px 6px;border:1px solid #cfd5dd;border-radius:3px}
++.filter label{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
++.stat{font-size:12px;color:#444;margin:6px 0 10px}
++.stat.bad{color:#a12a20;font-weight:600}
++.filter .imp{font-size:12px;color:#0b5cad;border:1px dashed #b9cde4;
++ border-radius:4px;padding:5px 9px;cursor:pointer}
++.filter .imp input{display:none}
++button.mini{background:#fff;border:1px solid #d8b4b0;color:#a12a20;
++ border-radius:3px;font-size:11px;padding:2px 7px;cursor:pointer}
++button.ghost{background:#fff;color:#44536a;border:1px solid #cfd5dd;border-radius:4px;
++ padding:7px 12px;font-size:12.5px;cursor:pointer;margin-left:6px}
++td.cf{font-size:11px;color:#666}
++.cols{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
++.cols .left{flex:0 0 56%;min-width:0}
++.cols .right{flex:1 1 auto;min-width:0}
++.cols img{width:100%;height:auto;border:1px solid #cfd3d9;display:block}
++.cap{font-size:12px;color:#666;padding-top:4px}
++.rh{font-size:12px;color:#444;background:#f4f6f9;border:1px solid #dfe3e8;
++ border-bottom:0;padding:5px 8px;border-radius:4px 4px 0 0}
++.cnt{float:right;color:#888}
++ol.lines{margin:0;padding:4px 0;list-style:none;border:1px solid #dfe3e8;
++ max-height:520px;overflow:auto;background:#fff;border-radius:0 0 4px 4px}
++ol.lines li{padding:3px 8px;font-size:12.5px;font-family:Consolas,monospace;
++ cursor:pointer;border-bottom:1px dotted #eef0f3;white-space:pre-wrap}
++ol.lines li:hover{background:#e8f0fb}
++ol.lines li.picked{background:#e6f4ea}
++.pane{margin:0 0 18px}
++.err{background:#fdeceb;border:1px solid #f3c9c5;color:#a12a20;
++ padding:10px 14px;border-radius:5px;font-size:13px;margin-bottom:12px}
++.work{background:#fff;border:1px solid #dcdfe4;border-radius:6px;padding:14px 16px;margin-top:8px}
++.work h2{margin:0 0 10px;font-size:15px}
++table.rows input{width:100%;border:1px solid #e2e5ea;padding:3px 5px;font-size:12px}
++table.rows select{width:100%;border:1px solid #e2e5ea;font-size:11.5px;padding:3px}
++table.rows td.num input{text-align:right;font-family:Consolas,monospace}
++.bar{margin:10px 0 6px}
++.bar button{background:#0b5cad;color:#fff;border:0;border-radius:4px;
++ padding:7px 16px;font-size:13px;cursor:pointer}
++.bar button.dl{background:#fff;color:#0b5cad;border:1px solid #b9cde4;margin-left:6px}
++.msg{margin-left:10px;font-size:12px;color:#2c6b34}
++#out{width:100%;height:110px;font-family:Consolas,monospace;font-size:11.5px;
++ border:1px solid #dfe3e8;border-radius:4px;padding:8px;background:#fbfcfd}
++.hint-review{background:#fff4ce;border-left:4px solid #d68b00;padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}</style></head><body><header><h1>B4 圈选台 · 5 件 · 核心参数草稿</h1><p>左边是原图，右边是同区域抓出的纯文本。页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；红底行是 <code>low_confidence</code>，请优先对图。</p></header><div class="wrap"><div class="note"><h2>怎么用</h2><ul><li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li><li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；不是参数（表头、注释）直接删。</li><li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、或模型自报很低。这些行最可能有错。</li><li>草稿没覆盖的核心参数，用「新增空行」自己补。</li><li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li></ul><div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、既无参数名又无符号的行。</div></div><div class="card"><div class="head"><span class="sn">V077</span><span class="fn">AM1707DZKB4.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/batch1000_v3/pdfs_flat/AM1707DZKB4.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 201 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ROC = p38/160</span><span class="tag t-elc">ELC = p40</span></div><div class="meta">核心 5 行置信度均 ≥0.85</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：请核实表格类型。该件 201 页、章节极多，先确认裁到的是电气特性表，而不是时序/引脚/封装表。</div></div><div class="body"><div class="pane" data-sno="V077" data-fn="AM1707DZKB4.pdf" data-page="38" data-title="Recommended Operating Conditions"><div class="cols"><div class="left"><a href="annotation_reports/V077/b3_ROC_p0038.png" target="_blank"><img src="annotation_reports/V077/b3_ROC_p0038.png" alt="V077 p38"></a><div class="cap">Recommended Operating Conditions · 第 38 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">85 行</span></div><ol class="lines"><li class="line" data-t="5.3">5.3</li><li class="line" data-t="Recommended Operating Conditions">Recommended Operating Conditions</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="NOM">NOM</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="375 MHz version">375 MHz version</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="Supply voltage, Core">Supply voltage, Core</li><li class="line" data-t="CVDD">CVDD</li><li class="line" data-t="(CVDD, RTC_CVDD, PLL0_VDDA)">(CVDD, RTC_CVDD, PLL0_VDDA)</li><li class="line" data-t="456 MHz version">456 MHz version</li><li class="line" data-t="1.25">1.25</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.35">1.35</li><li class="line" data-t="375 MHz version">375 MHz version</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="RVDD">RVDD</li><li class="line" data-t="Supply Voltage, Internal RAM">Supply Voltage, Internal RAM</li><li class="line" data-t="456 MHz version">456 MHz version</li><li class="line" data-t="1.25">1.25</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.35">1.35</li><li class="line" data-t="Supply voltage, I/O, 1.8V">Supply voltage, I/O, 1.8V</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="(USB0_VDDA18, USB1_VDDA18)">(USB0_VDDA18, USB1_VDDA18)</li><li class="line" data-t="DVDD">DVDD</li><li class="line" data-t="Supply voltage, I/O, 3.3V">Supply voltage, I/O, 3.3V</li><li class="line" data-t="3.0">3.0</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="(DVDD, USB0_VDDA33, USB1_VDDA33)">(DVDD, USB0_VDDA33, USB1_VDDA33)</li><li class="line" data-t="Supply ground">Supply ground</li><li class="line" data-t="VSS">VSS</li><li class="line" data-t="(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))">(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="High-level input voltage, I/O, 3.3V">High-level input voltage, I/O, 3.3V</li><li class="line" data-t="High-level input voltage, OSCIN">High-level input voltage, OSCIN</li><li class="line" data-t="0.7*CVDD">0.7*CVDD</li><li class="line" data-t="High-level input voltage, RTC_XI">High-level input voltage, RTC_XI</li><li class="line" data-t="0.7*RTC_CVDD">0.7*RTC_CVDD</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Low-level input voltage, I/O, 3.3V">Low-level input voltage, I/O, 3.3V</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Low-level input voltage, OSCIN">Low-level input voltage, OSCIN</li><li class="line" data-t="0.3*CVDD">0.3*CVDD</li><li class="line" data-t="Low-level input voltage, RTC_XI">Low-level input voltage, RTC_XI</li><li class="line" data-t="0.3*RTC_CVDD">0.3*RTC_CVDD</li><li class="line" data-t="VHYS">VHYS</li><li class="line" data-t="Input Hysteresis">Input Hysteresis</li><li class="line" data-t="160">160</li><li class="line" data-t="mV">mV</li><li class="line" data-t="USB">USB</li><li class="line" data-t="USB0_VBUS">USB0_VBUS</li><li class="line" data-t="4.75">4.75</li><li class="line" data-t="5.25">5.25</li><li class="line" data-t="Transition time, 10%-90%, All Inputs (unless otherwise specified in">Transition time, 10%-90%, All Inputs (unless otherwise specified in</li><li class="line" data-t="0.25P or 10 (3)">0.25P or 10 (3)</li><li class="line" data-t="ns">ns</li><li class="line" data-t="the electrical data sections)">the electrical data sections)</li><li class="line" data-t="375 (1.2V)">375 (1.2V)</li><li class="line" data-t="Commercial (default)">Commercial (default)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="456 (1.3V)">456 (1.3V)</li><li class="line" data-t="FSYSCLK6">FSYSCLK6</li><li class="line" data-t="ARM Operating Frequency (SYSCLK6)">ARM Operating Frequency (SYSCLK6)</li><li class="line" data-t="Industrial (D suffix)">Industrial (D suffix)</li><li class="line" data-t="456 (1.3V)">456 (1.3V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="Extended (A suffix)">Extended (A suffix)</li><li class="line" data-t="375(1.2V)">375(1.2V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="Automotive (T suffix)">Automotive (T suffix)</li><li class="line" data-t="375 (1.2V)">375 (1.2V)</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="When an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected">When an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected</li></ol></div></div></div><div class="pane" data-sno="V077" data-fn="AM1707DZKB4.pdf" data-page="40" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V077/b3_ELC_p0040.png" target="_blank"><img src="annotation_reports/V077/b3_ELC_p0040.png" alt="V077 p40"></a><div class="cap">Electrical Characteristics · 第 40 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">68 行</span></div><ol class="lines"><li class="line" data-t="5.5">5.5</li><li class="line" data-t="Electrical Characteristics Over Recommended Ranges of Supply Voltage and">Electrical Characteristics Over Recommended Ranges of Supply Voltage and</li><li class="line" data-t="Operating Junction Temperature (Unless Otherwise Noted)">Operating Junction Temperature (Unless Otherwise Noted)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="DVDD= 3.15V, IOH = -4 mA">DVDD= 3.15V, IOH = -4 mA</li><li class="line" data-t="2.4">2.4</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="High-level output voltage (3.3V I/O)">High-level output voltage (3.3V I/O)</li><li class="line" data-t="DVDD= 3.15V, IOH = 100 μA">DVDD= 3.15V, IOH = 100 μA</li><li class="line" data-t="2.95">2.95</li><li class="line" data-t="DVDD= 3.15V, IOL = 4mA">DVDD= 3.15V, IOL = 4mA</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage (3.3V I/O)">Low-level output voltage (3.3V I/O)</li><li class="line" data-t="DVDD= 3.15V, IOL = -100 μA">DVDD= 3.15V, IOL = -100 μA</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="VI = VSS to DVDD without opposing">VI = VSS to DVDD without opposing</li><li class="line" data-t="±35">±35</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal resistor">internal resistor</li><li class="line" data-t="(2) (1)">(2) (1)</li><li class="line" data-t="Input current">Input current</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="-30">-30</li><li class="line" data-t="-200">-200</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pullup resistor (3)">internal pullup resistor (3)</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="50">50</li><li class="line" data-t="300">300</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pulldown resistor (3)">internal pulldown resistor (3)</li><li class="line" data-t="VI = VSS to USB1_VDDA33 -">VI = VSS to USB1_VDDA33 -</li><li class="line" data-t="±40">±40</li><li class="line" data-t="μA">μA</li><li class="line" data-t="USB1_DM and USB1_DP">USB1_DM and USB1_DP</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="IOH">IOH</li><li class="line" data-t="High-level output current">High-level output current</li><li class="line" data-t="-4">-4</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="IOL">IOL</li><li class="line" data-t="Low-level output current">Low-level output current</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(4)">(4)</li><li class="line" data-t="IOZ">IOZ</li><li class="line" data-t="I/O Off-state output current">I/O Off-state output current</li><li class="line" data-t="VO = VDD or VSS; Internal pull disabled">VO = VDD or VSS; Internal pull disabled</li><li class="line" data-t="±35">±35</li><li class="line" data-t="μA">μA</li><li class="line" data-t="LVCMOS signals">LVCMOS signals</li><li class="line" data-t="pF">pF</li><li class="line" data-t="CI">CI</li><li class="line" data-t="Input capacitance">Input capacitance</li><li class="line" data-t="OSCIN and RTC_XI">OSCIN and RTC_XI</li><li class="line" data-t="pF">pF</li><li class="line" data-t="CO">CO</li><li class="line" data-t="Output capacitance">Output capacitance</li><li class="line" data-t="LVCMOS signals">LVCMOS signals</li><li class="line" data-t="pF">pF</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 11 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V130</span><span class="fn">CSD17505Q5A__csd17505q5a.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CSD17505Q5A__csd17505q5a.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 10 页 　<span class="tag t-warn">草稿：需重点核（二轮兜底）</span><span class="tag t-elc">ELC = p2</span></div><div class="meta">白名单核心参数 0 行，改按一等电气特性兜底选出 5 行（非白名单口径，须逐行对图核）</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：短文档不代表没有有效参数表。p2 是标准 ELECTRICAL CHARACTERISTICS 表（PARAMETER / TEST CONDITIONS / MIN / TYP / MAX / UNIT），参数名属 MOSFET 类，不在既有白名单里。</div></div><div class="body"><div class="pane" data-sno="V130" data-fn="CSD17505Q5A__csd17505q5a.pdf" data-page="2" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V130/b3_ELC_p0002.png" target="_blank"><img src="annotation_reports/V130/b3_ELC_p0002.png" alt="V130 p2"></a><div class="cap">Electrical Characteristics · 第 2 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">116 行</span></div><ol class="lines"><li class="line" data-t="ELECTRICAL CHARACTERISTICS">ELECTRICAL CHARACTERISTICS</li><li class="line" data-t="(TA = 25°C unless otherwise stated)">(TA = 25°C unless otherwise stated)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="Static Characteristics">Static Characteristics</li><li class="line" data-t="BVDSS">BVDSS</li><li class="line" data-t="Drain to Source Voltage">Drain to Source Voltage</li><li class="line" data-t="VGS = 0V, IDS = 250μA">VGS = 0V, IDS = 250μA</li><li class="line" data-t="30">30</li><li class="line" data-t="IDSS">IDSS</li><li class="line" data-t="Drain to Source Leakage Current">Drain to Source Leakage Current</li><li class="line" data-t="VGS = 0V, VDS = 24V">VGS = 0V, VDS = 24V</li><li class="line" data-t="μA">μA</li><li class="line" data-t="IGSS">IGSS</li><li class="line" data-t="Gate to Source Leakage Current">Gate to Source Leakage Current</li><li class="line" data-t="VDS = 0V, VGS = 20V">VDS = 0V, VGS = 20V</li><li class="line" data-t="100">100</li><li class="line" data-t="nA">nA</li><li class="line" data-t="VGS(th)">VGS(th)</li><li class="line" data-t="Gate to Source Threshold Voltage">Gate to Source Threshold Voltage</li><li class="line" data-t="VDS = VGS, IDS = 250μA">VDS = VGS, IDS = 250μA</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="VGS = 4.5V, IDS = 20A">VGS = 4.5V, IDS = 20A</li><li class="line" data-t="3.7">3.7</li><li class="line" data-t="4.6">4.6</li><li class="line" data-t="mΩ">mΩ</li><li class="line" data-t="RDS(on)">RDS(on)</li><li class="line" data-t="Drain to Source On Resistance">Drain to Source On Resistance</li><li class="line" data-t="VGS = 10V, IDS = 20A">VGS = 10V, IDS = 20A</li><li class="line" data-t="2.9">2.9</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="mΩ">mΩ</li><li class="line" data-t="gfs">gfs</li><li class="line" data-t="Transconductance">Transconductance</li><li class="line" data-t="VDS = 15V, IDS = 20A">VDS = 15V, IDS = 20A</li><li class="line" data-t="82">82</li><li class="line" data-t="Dynamic Characteristics">Dynamic Characteristics</li><li class="line" data-t="Ciss">Ciss</li><li class="line" data-t="Input Capacitance">Input Capacitance</li><li class="line" data-t="1560">1560</li><li class="line" data-t="1980">1980</li><li class="line" data-t="pF">pF</li><li class="line" data-t="VGS = 0V, VDS = 15V,">VGS = 0V, VDS = 15V,</li><li class="line" data-t="Coss">Coss</li><li class="line" data-t="Output Capacitance">Output Capacitance</li><li class="line" data-t="1030">1030</li><li class="line" data-t="1330">1330</li><li class="line" data-t="pF">pF</li><li class="line" data-t="f = 1MHz">f = 1MHz</li><li class="line" data-t="Crss">Crss</li><li class="line" data-t="Reverse Transfer Capacitance">Reverse Transfer Capacitance</li><li class="line" data-t="65">65</li><li class="line" data-t="85">85</li><li class="line" data-t="pF">pF</li><li class="line" data-t="RG">RG</li><li class="line" data-t="Series Gate Resistance">Series Gate Resistance</li><li class="line" data-t="Qg">Qg</li><li class="line" data-t="Gate Charge Total (4.5V)">Gate Charge Total (4.5V)</li><li class="line" data-t="10">10</li><li class="line" data-t="13">13</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qgd">Qgd</li><li class="line" data-t="Gate Charge Gate to Drain">Gate Charge Gate to Drain</li><li class="line" data-t="2.7">2.7</li><li class="line" data-t="nC">nC</li><li class="line" data-t="VDS = 15V, IDS = 20A">VDS = 15V, IDS = 20A</li><li class="line" data-t="Qgs">Qgs</li><li class="line" data-t="Gate Charge Gate to Source">Gate Charge Gate to Source</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qg(th)">Qg(th)</li><li class="line" data-t="Gate Charge at Vth">Gate Charge at Vth</li><li class="line" data-t="1.9">1.9</li><li class="line" data-t="nC">nC</li><li class="line" data-t="Qoss">Qoss</li><li class="line" data-t="Output Charge">Output Charge</li><li class="line" data-t="VDS = 13.7V, VGS = 0V">VDS = 13.7V, VGS = 0V</li><li class="line" data-t="26">26</li><li class="line" data-t="nC">nC</li><li class="line" data-t="td(on)">td(on)</li><li class="line" data-t="Turn On Delay Time">Turn On Delay Time</li><li class="line" data-t="8.3">8.3</li><li class="line" data-t="ns">ns</li><li class="line" data-t="tr">tr</li><li class="line" data-t="Rise Time">Rise Time</li><li class="line" data-t="11.5">11.5</li><li class="line" data-t="ns">ns</li><li class="line" data-t="VDS = 15V, VGS = 4.5V,">VDS = 15V, VGS = 4.5V,</li><li class="line" data-t="IDS = 20A,RG = 2Ω">IDS = 20A,RG = 2Ω</li><li class="line" data-t="td(off)">td(off)</li><li class="line" data-t="Turn Off Delay Time">Turn Off Delay Time</li><li class="line" data-t="15">15</li><li class="line" data-t="ns">ns</li><li class="line" data-t="tf">tf</li><li class="line" data-t="Fall Time">Fall Time</li><li class="line" data-t="6.1">6.1</li><li class="line" data-t="ns">ns</li><li class="line" data-t="Diode Characteristics">Diode Characteristics</li><li class="line" data-t="VSD">VSD</li><li class="line" data-t="Diode Forward Voltage">Diode Forward Voltage</li><li class="line" data-t="ISD = 20A, VGS = 0V">ISD = 20A, VGS = 0V</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Qrr">Qrr</li><li class="line" data-t="Reverse Recovery Charge">Reverse Recovery Charge</li><li class="line" data-t="30">30</li><li class="line" data-t="nC">nC</li><li class="line" data-t="VDD= 13.7V, IF = 20A, di/dt = 300A/μs">VDD= 13.7V, IF = 20A, di/dt = 300A/μs</li><li class="line" data-t="trr">trr</li><li class="line" data-t="Reverse Recovery Time">Reverse Recovery Time</li><li class="line" data-t="28">28</li><li class="line" data-t="ns">ns</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 3 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V290</span><span class="fn">DS9638CMX_NOPB__DS9638.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/DS9638CMX_NOPB__DS9638.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 10 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ELC = p3</span></div><div class="meta">核心 4 行置信度均 ≥0.85</div></div><div class="body"><div class="pane" data-sno="V290" data-fn="DS9638CMX_NOPB__DS9638.pdf" data-page="3" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V290/b3_ELC_p0003.png" target="_blank"><img src="annotation_reports/V290/b3_ELC_p0003.png" alt="V290 p3"></a><div class="cap">Electrical Characteristics · 第 3 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">88 行</span></div><ol class="lines"><li class="line" data-t="Electrical Characteristics(1)(2)">Electrical Characteristics(1)(2)</li><li class="line" data-t="Over recommended operating temperature and supply voltage ranges, unless otherwise specified">Over recommended operating temperature and supply voltage ranges, unless otherwise specified</li><li class="line" data-t="Symbol">Symbol</li><li class="line" data-t="Parameter">Parameter</li><li class="line" data-t="Conditions">Conditions</li><li class="line" data-t="Min">Min</li><li class="line" data-t="Typ">Typ</li><li class="line" data-t="Max">Max</li><li class="line" data-t="Units">Units</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="Input Voltage HIGH">Input Voltage HIGH</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Input Voltage LOW">Input Voltage LOW</li><li class="line" data-t="0°C to +70°C">0°C to +70°C</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="−55°C to +125°C">−55°C to +125°C</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="VIC">VIC</li><li class="line" data-t="Input Clamp Voltage">Input Clamp Voltage</li><li class="line" data-t="V CC = Min, II = −18 mA">V CC = Min, II = −18 mA</li><li class="line" data-t="−1.0">−1.0</li><li class="line" data-t="−1.2">−1.2</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="Output Voltage HIGH">Output Voltage HIGH</li><li class="line" data-t="VCC = Min,">VCC = Min,</li><li class="line" data-t="IOH = −10 mA">IOH = −10 mA</li><li class="line" data-t="2.5">2.5</li><li class="line" data-t="3.5">3.5</li><li class="line" data-t="VIH = VIH Min,">VIH = VIH Min,</li><li class="line" data-t="IOH = −40 mA">IOH = −40 mA</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VIL = VIL Max">VIL = VIL Max</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Output Voltage LOW">Output Voltage LOW</li><li class="line" data-t="V CC = Min, VIH = VIH Min,">V CC = Min, VIH = VIH Min,</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="V IL = VIL Max, IOL = 40 mA">V IL = VIL Max, IOL = 40 mA</li><li class="line" data-t="Input Current at Maximum Input">Input Current at Maximum Input</li><li class="line" data-t="V CC = Max, VI Max = 5.5V">V CC = Max, VI Max = 5.5V</li><li class="line" data-t="50">50</li><li class="line" data-t="μA">μA</li><li class="line" data-t="Voltage">Voltage</li><li class="line" data-t="IIH">IIH</li><li class="line" data-t="Input Current HIGH">Input Current HIGH</li><li class="line" data-t="V CC = Max, VIH = 2.7V">V CC = Max, VIH = 2.7V</li><li class="line" data-t="25">25</li><li class="line" data-t="μA">μA</li><li class="line" data-t="IIL">IIL</li><li class="line" data-t="Input Current LOW">Input Current LOW</li><li class="line" data-t="V CC = Max, VIL = 0.5V">V CC = Max, VIL = 0.5V</li><li class="line" data-t="−200">−200</li><li class="line" data-t="μA">μA</li><li class="line" data-t="V CC = Max, VO = 0V(2)">V CC = Max, VO = 0V(2)</li><li class="line" data-t="IOS">IOS</li><li class="line" data-t="Output Short Circuit Current">Output Short Circuit Current</li><li class="line" data-t="−50">−50</li><li class="line" data-t="−150">−150</li><li class="line" data-t="mA">mA</li><li class="line" data-t="VT, V T">VT, V T</li><li class="line" data-t="Terminated Output Voltage">Terminated Output Voltage</li><li class="line" data-t="See Figure 2">See Figure 2</li><li class="line" data-t="2.0">2.0</li><li class="line" data-t="VT–V T">VT–V T</li><li class="line" data-t="Output Balance">Output Balance</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="VOS, V OS">VOS, V OS</li><li class="line" data-t="Output Offset Voltage">Output Offset Voltage</li><li class="line" data-t="3.0">3.0</li><li class="line" data-t="VOS–V OS">VOS–V OS</li><li class="line" data-t="Output Offset Balance">Output Offset Balance</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="IX">IX</li><li class="line" data-t="Output Leakage Current">Output Leakage Current</li><li class="line" data-t="T A = 25°C">T A = 25°C</li><li class="line" data-t="100">100</li><li class="line" data-t="μA">μA</li><li class="line" data-t="−0.25V &lt; VX &lt; 5.5V">−0.25V &lt; VX &lt; 5.5V</li><li class="line" data-t="ICC">ICC</li><li class="line" data-t="Supply Current (Both Drivers)">Supply Current (Both Drivers)</li><li class="line" data-t="VCC = 5.5V,">VCC = 5.5V,</li><li class="line" data-t="45">45</li><li class="line" data-t="65">65</li><li class="line" data-t="mA">mA</li><li class="line" data-t="All input at 0V,">All input at 0V,</li><li class="line" data-t="No Load">No Load</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="Unless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to">Unless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to</li></ol></div></div></div><div class="dh">本件核心草稿 4 行（另有 4 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V347</span><span class="fn">8418501HA__84185D.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/8418501HA__84185D.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 9 页 　<span class="tag t-warn">草稿：无电气参数表</span></div><div class="meta">确为目标器件数据（DSCC 标准微电路图纸 84185，TABLE I 即该器件本身的电气性能表，不是引用别处资料）；但该表同一符号按 Group A subgroup / Device type 拆成 2~4 行（例：IIO 上限按 01,02 / 03 分别为 3、5、6、20、30、40 μA），且 find_tables 在该页探不到边框表格（0 张）。VLM 实测只能给出「每符号一行」的合并值，并固定取 01,02 那一行，会掩盖器件类型差异 —— 属硬凑，故不进点选。EXCLUDED: 表格版式不支持稳定还原行序，需 SMD 专用规则后再做</div><div class="hint hint-review"><b>核查提示</b>　Reviewer 提示：核实是否为目标器件数据，而非引用资料。本件是 DSCC 军标 SMD（84185），TABLE I 即该器件本身的电气性能表，不是引用别处的资料；但只有 Min/Max 两列且带测试分组，行序需人工判读。</div></div><div class="body"></div></div><div class="card"><div class="head"><span class="sn">V041</span><span class="fn">CD4015BEE4__cd4015b.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CD4015BEE4__cd4015b.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 16 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 PACKAGE OPTION ADDENDUM / PACKAGE MATERIALS / PACKAGE OUTLINE / LAND PATTERN / STENCIL DESIGN / 免责声明，其中的 MIN/MAX 是机械尺寸公差，不是电气参数。EXCLUDED: 电气特性页无文本层，无 OCR 能力，无法建立 Gold</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2><div class="filter"><label>样本 <select id="fsample"></select></label><label><input type="checkbox" id="fnum"> 只看有数值的行</label><label><input type="checkbox" id="ftodo"> 只看未确认的行</label><button class="ghost" onclick="addBlank()">新增空行</button><button class="ghost" onclick="dropNoName()">删掉无参数名的行</button><button class="ghost" onclick="resetDraft()">恢复机器草稿</button><label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label></div><div id="stat" class="stat"></div><table class="rows" id="tbl"><thead><tr><th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th><th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th><th></th></tr></thead><tbody id="tbody"></tbody></table><div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button><button onclick="copyOut()" class="dl">复制 CSV</button> <label style="font-size:12.5px;margin-left:8px"><input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label><span id="msg" class="msg"></span></div><textarea id="out" readonly></textarea></div></div><script>window.B3_EXPORT_NAME="Batch3_B4_ANNOTATED";
++/* Batch 2 圈选台前端。
++ *
++ * 设计要点（第二版）：
++ *   1) 编辑区**预载机器草稿**。第一版 `ROWS = []`，逼着人把整页文本重新点一遍，
++ *      结果 148 行里 59 行没数值也被签了 CONFIRMED —— 这是设计错误，已改。
++ *      现在人的动作是「删掉垃圾行 + 校对留下的 3~5 行」，而不是从零点选。
++ *   2) 点选文本行仍然保留，作为「草稿里漏了某个参数」时的补充手段，追加到末尾。
++ *   3) 导出前会拦：状态是 CONFIRMED 但 min/typ/max 全空的行不许悄悄混进去。
++ */
++const DRAFT = [{"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)", "min_value": "1.25", "typ_value": "1.3", "max_value": "1.35", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Supply Voltage, Internal RAM", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；RVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Supply Voltage, Internal RAM", "min_value": "1.25", "typ_value": "1.3", "max_value": "1.35", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；RVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V077", "file_name": "AM1707DZKB4.pdf", "evidence_page": "38", "table_title": "Recommended Operating Conditions", "symbol": "DVDD", "parameter_name": "Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)", "min_value": "1.71", "typ_value": "1.8", "max_value": "1.89", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "BVDSS", "parameter_name": "Drain to Source Voltage", "min_value": "30", "typ_value": "", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "VGS(th)", "parameter_name": "Gate to Source Threshold Voltage", "min_value": "1", "typ_value": "1.3", "max_value": "1.8", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "RDS(on)", "parameter_name": "Drain to Source On Resistance", "min_value": "", "typ_value": "3.7", "max_value": "4.6", "unit": "mΩ", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "IDSS", "parameter_name": "Drain to Source Leakage Current", "min_value": "", "typ_value": "", "max_value": "1", "unit": "μA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V130", "file_name": "CSD17505Q5A__csd17505q5a.pdf", "evidence_page": "2", "table_title": "Electrical Characteristics", "symbol": "IGSS", "parameter_name": "Gate to Source Leakage Current", "min_value": "", "typ_value": "", "max_value": "100", "unit": "nA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "II", "parameter_name": "Input Current at Maximum Input Voltage", "min_value": "", "typ_value": "", "max_value": "50", "unit": "μA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIH", "parameter_name": "Input Voltage HIGH", "min_value": "2.0", "typ_value": "", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIL", "parameter_name": "Input Voltage LOW", "min_value": "", "typ_value": "", "max_value": "0.8", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V290", "file_name": "DS9638CMX_NOPB__DS9638.pdf", "evidence_page": "3", "table_title": "Electrical Characteristics", "symbol": "VIL", "parameter_name": "Input Voltage LOW", "min_value": "", "typ_value": "", "max_value": "0.5", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；VIL 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}];
++const THRESH = 0.85;   // 由生成器注入，与 Python 侧的 THRESH 同源
++
++// 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
++// 这里退回原来的默认名，保证它的行为一字不变；Batch 3 生成器按 --out-prefix
++// 注入，例如 Batch3_B2_ANNOTATED.csv，避免六件草稿都顶着 Batch2 的名字。
++const EXPORT_NAME = window.B3_EXPORT_NAME || "Batch2_ANNOTATED";
++
++const FIELDS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
++  "parameter_name", "min_value", "typ_value", "max_value", "unit", "condition",
++  "row_status", "notes", "reviewer", "confidence_score"];
++
++const STATUS = [
++  "DRAFT_AWAITING_HUMAN_CONFIRM",
++  "CONFIRMED",
++  "UNRESOLVED: 表格排版混乱，无法定位列",
++  "EXCLUDED: 文档内无标准参数表",
++  "EXCLUDED: 无 OCR 能力，无法建立 Gold"
++];
++
++// 单个单位记号。复合单位（V/µs、dBFS/Hz）由下面拼接，别一个个枚举，
++// 漏掉一个就有整行单位空着（Slew rate 的 V/µs 就是这么丢的）。
++const U1 = "(?:mV|µV|μV|kV|V|mA|µA|μA|nA|pA|A|kΩ|MΩ|Ω|ohm|°C|MHz|kHz|GHz|Hz"
++         + "|ns|µs|μs|ms|ps|s|pF|nF|µF|μF|uF|mW|W|%|dBFS|dBFs|dB)";
++const UNIT_RE = new RegExp("^" + U1 + "(?:\\/" + U1 + ")?$");
++
++// U+2212（数学减号）以及各种破折号/全角连字符。PDF 里负号几乎都是 U+2212，
++// 不先归一，`−65` 会被当成非数字串，`V_S− to V_S+` 里的分隔符也认不出来。
++const MINUS_CHARS = /[\u2212\u2010\u2011\u2012\u2013\u2014\u2015\uFF0D]/g;
++// 只认"像符号"的东西：全大写（VID / GND / IO）或带一段下标（V_IH）。
++const SYM_RE = /^[A-Z\u0394][A-Z0-9]{0,11}$|^[A-Z\u0394][A-Z0-9]{0,3}_[A-Za-z0-9]{1,3}$/;
++
++let ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
++
++function hasNum(r) {
++  return ["min_value", "typ_value", "max_value"].some(k => (r[k] || "").trim() !== "");
++}
++
++function parseLine(raw) {
++  // 点线引导符（`Package . . . . . 69`）里每个点都是独立 token，`\.{3,}` 匹配不到，
++  // 必须按"两个以上带空白的点"整体吃掉，否则参数名会拖一串点。
++  let s = raw.replace(MINUS_CHARS, "-").replace(/(?:\s*\.){2,}\s*/g, " ");
++  s = s.replace(/\s+/g, " ").trim();
++  const toks = s.split(" ").filter(t => t && !/^to$/i.test(t));
++
++  // 负号可能与数字被空格拆开（`- 65`），先合并，否则 min 丢掉符号变成 65。
++  const merged = [];
++  for (let i = 0; i < toks.length; i++) {
++    const t = toks[i];
++    if (/^[-+±]$/.test(t) && i + 1 < toks.length && /^\d/.test(toks[i + 1])) {
++      merged.push(t + toks[i + 1]);
++      i++;
++      continue;
++    }
++    merged.push(t);
++  }
++
++  const nums = [], units = [], rest = [];
++  for (const tk of merged) {
++    if (tk === "-") continue;                 // 孤立的连字符只是分隔符
++    if (/^\([^()]*\)$/.test(tk)) continue;    // `(320)` `(mV_p-p)` 是备选值/备注
++    const m = tk.match(/^([±+\-]?\d+(?:\.\d+)?)([A-Za-zµμΩ°%\/]*)$/);
++    if (m) {
++      nums.push(m[1]);
++      if (m[2]) units.push(m[2]);
++      continue;
++    }
++    if (UNIT_RE.test(tk)) { units.push(tk); continue; }
++    rest.push(tk);
++  }
++
++  // 首词像符号才摘出来。整行只剩符号时要允许 rest.length==1，
++  // 否则 `VID ±2.5 V` 会把符号当成参数名；但整行没有数字时不动，那多半是标题行。
++  let symbol = "";
++  if (nums.length > 0 && rest.length >= 1 && rest[0].length <= 12 && SYM_RE.test(rest[0])) {
++    symbol = rest.shift();
++  }
++
++  // 一个数都没解析出来的行不是参数行（表头、注释），参数名留空，
++  // 原文进 notes，免得把 `. . . . .` 这类垃圾灌进参数名列。
++  const name = nums.length ? rest.join(" ").replace(/[,;:]+$/, "").trim() : "";
++  let unit = units.length ? units[units.length - 1] : "";
++  unit = unit.replace(/\s*\([^)]*\)$/, "");
++  let mn = "", typ = "", mx = "";
++  if (nums.length === 1) mx = nums[0];
++  else if (nums.length === 2) { mn = nums[0]; mx = nums[1]; }
++  else if (nums.length >= 3) { mn = nums[0]; typ = nums[1]; mx = nums[2]; }
++  return {symbol, name, min: mn, typ, max: mx, unit, nums: nums.length};
++}
++
++function msg(t) {
++  document.getElementById("msg").textContent = t;
++}
++
++function addFromLine(li) {
++  const box = li.closest(".pane");
++  const p = parseLine(li.dataset.t);
++  // 这些手册的表格里，数字和标签**不在同一条基线**（标签 y=382.7，数字 y=375.7），
++  // 所以右侧必然出现"只有数字"的碎片行。点它只会造出一行没名字的垃圾，
++  // 这种行进不了 Gold（无法判断它是什么参数），直接拦掉，提示去表里填。
++  if (!p.name && !p.symbol) {
++    msg("这行只有数字/单位，没有参数名 —— 请在下方对应行直接填数值，"
++        + "或用「新增空行」自己写参数名。不要点它建行。");
++    li.classList.add("dead");
++    return;
++  }
++  ROWS.push({
++    sample_no: box.dataset.sno,
++    file_name: box.dataset.fn,
++    evidence_page: box.dataset.page,
++    table_title: box.dataset.title,
++    symbol: p.symbol,
++    parameter_name: p.name,
++    min_value: p.min, typ_value: p.typ, max_value: p.max,
++    unit: p.unit,
++    condition: "",
++    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
++    notes: "点选文本行生成，需与左图核对；原文：" + li.dataset.t.slice(0, 80),
++    reviewer: "",
++    confidence_score: "",
++    _src: "click"
++  });
++  render();
++  li.classList.add("picked");
++}
++
++function addBlank() {
++  const s = document.getElementById("fsample").value;
++  const sample = (s !== "*") ? s : (DRAFT[0] ? DRAFT[0].sample_no : "");
++  const base = DRAFT.filter(r => r.sample_no === sample)[0] || {};
++  ROWS.push({
++    sample_no: sample,
++    file_name: base.file_name || "",
++    evidence_page: base.evidence_page || "",
++    table_title: base.table_title || "",
++    symbol: "", parameter_name: "",
++    min_value: "", typ_value: "", max_value: "", unit: "", condition: "",
++    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
++    notes: "人工新增",
++    reviewer: "", confidence_score: "", _src: "manual"
++  });
++  render();
++  msg("已在 " + sample + " 末尾新增一行，请填写参数名与数值");
++}
++
++function dropNoName() {
++  const before = ROWS.length;
++  ROWS = ROWS.filter(r => (r.parameter_name || "").trim() !== ""
++                       || (r.symbol || "").trim() !== "");
++  render();
++  msg("已删除 " + (before - ROWS.length) + " 行既没有参数名也没有符号的行");
++}
++
++function visible() {
++  const s = document.getElementById("fsample").value;
++  const onlyNum = document.getElementById("fnum").checked;
++  const onlyTodo = document.getElementById("ftodo").checked;
++  const out = [];
++  ROWS.forEach((r, i) => {
++    if (s !== "*" && r.sample_no !== s) return;
++    if (onlyNum && !hasNum(r)) return;
++    if (onlyTodo && r.row_status === "CONFIRMED") return;
++    out.push({r, i});
++  });
++  return out;
++}
++
++function cell(tr, opts) {
++  const td = document.createElement("td");
++  if (opts.text !== undefined) {
++    td.textContent = opts.text;
++    td.className = opts.cls || "";
++  } else {
++    const inp = document.createElement("input");
++    inp.value = opts.value || "";
++    inp.oninput = () => { opts.set(inp.value); refreshRowMeta(); };
++    td.appendChild(inp);
++    if (opts.num) td.className = "num";
++  }
++  tr.appendChild(td);
++  return td;
++}
++
++function render() {
++  const tb = document.getElementById("tbody");
++  tb.innerHTML = "";
++  const list = visible();
++  for (const {r, i} of list) {
++    const tr = document.createElement("tr");
++    const cf = parseFloat(r.confidence_score || "");
++    if (!isNaN(cf)) tr.className = cf >= THRESH ? "conf-ok" : "conf-low";
++    if (!hasNum(r)) tr.classList.add("empty-row");
++    if (r._src === "click") tr.classList.add("clicked");
++
++    cell(tr, {text: r.sample_no || "", cls: "sn"});
++    cell(tr, {text: r.evidence_page || "", cls: "num"});
++    cell(tr, {value: r.symbol, set: v => r.symbol = v});
++    cell(tr, {value: r.parameter_name, set: v => r.parameter_name = v});
++    cell(tr, {value: r.min_value, set: v => r.min_value = v, num: true});
++    cell(tr, {value: r.typ_value, set: v => r.typ_value = v, num: true});
++    cell(tr, {value: r.max_value, set: v => r.max_value = v, num: true});
++    cell(tr, {value: r.unit, set: v => r.unit = v});
++
++    const tdS = document.createElement("td");
++    const sel = document.createElement("select");
++    for (const v of STATUS) {
++      const o = document.createElement("option");
++      o.value = v; o.textContent = v;
++      if (v === r.row_status) o.selected = true;
++      sel.appendChild(o);
++    }
++    sel.onchange = () => { r.row_status = sel.value; refreshRowMeta(); };
++    tdS.appendChild(sel);
++    tr.appendChild(tdS);
++
++    cell(tr, {text: r.confidence_score || "-", cls: "num cf"});
++
++    const tdD = document.createElement("td");
++    const btn = document.createElement("button");
++    btn.textContent = "删";
++    btn.className = "mini";
++    btn.onclick = () => { ROWS.splice(i, 1); render(); };
++    tdD.appendChild(btn);
++    tr.appendChild(tdD);
++
++    tb.appendChild(tr);
++  }
++  document.getElementById("cnt").textContent =
++    list.length + " / " + ROWS.length;
++  refreshRowMeta();
++}
++
++function refreshRowMeta() {
++  const all = ROWS.length;
++  const num = ROWS.filter(hasNum).length;
++  const conf = ROWS.filter(r => r.row_status === "CONFIRMED").length;
++  const bad = ROWS.filter(r => r.row_status === "CONFIRMED" && !hasNum(r)).length;
++  const noName = ROWS.filter(r => !(r.parameter_name || "").trim()
++                                && !(r.symbol || "").trim()).length;
++  const bySample = {};
++  ROWS.forEach(r => {
++    bySample[r.sample_no] = bySample[r.sample_no] || {n: 0, k: 0};
++    bySample[r.sample_no].n++;
++    if (hasNum(r)) bySample[r.sample_no].k++;
++  });
++  const parts = Object.keys(bySample).sort().map(s =>
++    s + ":" + bySample[s].k + "/" + bySample[s].n);
++  let t = "共 " + all + " 行：" + num + " 行有数值，" + conf + " 行已确认";
++  if (bad) t += "，其中 " + bad + " 行确认了却没有数值（必须处理）";
++  if (noName) t += "；" + noName + " 行既无参数名也无符号（进不了 Gold，建议删）";
++  t += "　|　有数值/总数 " + parts.join("  ");
++  const el = document.getElementById("stat");
++  el.textContent = t;
++  el.className = (bad || noName) ? "stat bad" : "stat";
++}
++
++function q(v) {
++  v = (v === undefined || v === null) ? "" : String(v);
++  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
++}
++
++function csvText() {
++  const dropEmpty = document.getElementById("dropEmpty").checked;
++  // 既没参数名也没符号的行进不了 Gold（读表的人无法判断它是什么参数），
++  // 勾了"丢空行"就一起丢掉，别让它悄悄混进分母。
++  const rows = ROWS.filter(r => !dropEmpty || (hasNum(r)
++      && ((r.parameter_name || "").trim() || (r.symbol || "").trim())));
++  const head = FIELDS.join(",");
++  const lines = rows.map(r => FIELDS.map(f => q(r[f])).join(","));
++  return {text: [head].concat(lines).join("\n"), n: rows.length};
++}
++
++function downloadCSV() {
++  const {text, n} = csvText();
++  // 前面加 U+FEFF（BOM）：Excel 看到 BOM 才按 UTF-8 解码，
++  // 否则 ° µ − 会被当成无法映射的字符显示成 ?。
++  const blob = new Blob(["\ufeff" + text], {type: "text/csv;charset=utf-8"});
++  const a = document.createElement("a");
++  a.href = URL.createObjectURL(blob);
++  a.download = EXPORT_NAME + ".csv";
++  document.body.appendChild(a);
++  a.click();
++  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
++  document.getElementById("msg").textContent =
++    "已下载 " + EXPORT_NAME + ".csv（" + n + " 行，UTF-8 带 BOM，Excel 直接打开不乱码）";
++}
++
++function copyOut() {
++  const ta = document.getElementById("out");
++  ta.value = csvText().text;
++  ta.select();
++  let ok = false;
++  try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
++  document.getElementById("msg").textContent = ok
++    ? "已复制到剪贴板，粘到 Excel 即可"
++    : "复制失败：请手动 Ctrl+A 全选文本框再 Ctrl+C";
++}
++
++function cleanEmpty() {
++  const s = document.getElementById("fsample").value;
++  const before = ROWS.length;
++  ROWS = ROWS.filter(r => (s !== "*" && r.sample_no !== s) || hasNum(r));
++  render();
++  document.getElementById("msg").textContent =
++    "已删除 " + (before - ROWS.length) + " 行无 min/typ/max 的空行";
++}
++
++function resetDraft() {
++  if (!confirm("放弃所有改动，恢复到机器草稿？")) return;
++  ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
++  render();
++  msg("已恢复机器草稿");
++}
++
++/* ---- CSV 回导：换新版本页面时把上次的进度接回来，不用重做 ---- */
++function parseCSVText(text) {
++  text = text.replace(/^\ufeff/, "");
++  const rows = [];
++  let row = [], cur = "", inQ = false;
++  for (let i = 0; i < text.length; i++) {
++    const c = text[i];
++    if (inQ) {
++      if (c === '"') {
++        if (text[i + 1] === '"') { cur += '"'; i++; }
++        else inQ = false;
++      } else cur += c;
++    } else if (c === '"') inQ = true;
++    else if (c === ",") { row.push(cur); cur = ""; }
++    else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
++    else if (c === "\r") { /* 丢掉 */ }
++    else cur += c;
++  }
++  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
++  return rows;
++}
++
++function importCSV(input) {
++  const f = input.files && input.files[0];
++  if (!f) return;
++  const r = new FileReader();
++  r.onload = () => {
++    try {
++      const table = parseCSVText(String(r.result));
++      if (table.length < 2) throw new Error("文件里没有数据行");
++      const head = table.shift().map(s => s.trim());
++      if (head[0] !== "sample_no") {
++        throw new Error("表头第一列不是 sample_no，可能不是这个页面导出的文件");
++      }
++      const objs = [];
++      for (const a of table) {
++        if (!a.length || !(a[0] || "").trim()) continue;
++        const o = {};
++        FIELDS.forEach(k => o[k] = "");
++        head.forEach((h, i) => {
++          if (FIELDS.indexOf(h) >= 0) o[h] = (a[i] || "").trim();
++        });
++        o._src = "import";
++        objs.push(o);
++      }
++      if (!objs.length) throw new Error("解析出 0 行");
++      ROWS = objs;
++      fillSamples();
++      document.getElementById("fsample").value = "*";
++      render();
++      msg("已导入 " + objs.length + " 行，可以接着改");
++    } catch (e) {
++      msg("导入失败：" + e.message);
++    } finally {
++      input.value = "";
++    }
++  };
++  r.readAsText(f, "utf-8");
++}
++
++function fillSamples() {
++  const sel = document.getElementById("fsample");
++  const keep = sel.value;
++  sel.innerHTML = "";
++  const seen = [];
++  ROWS.forEach(r => { if (seen.indexOf(r.sample_no) < 0) seen.push(r.sample_no); });
++  ["*"].concat(seen.sort()).forEach(s => {
++    const o = document.createElement("option");
++    o.value = s;
++    o.textContent = s === "*" ? "全部样本" : s;
++    sel.appendChild(o);
++  });
++  if (seen.indexOf(keep) >= 0 || keep === "*") sel.value = keep;
++}
++
++document.addEventListener("click", (e) => {
++  const li = e.target.closest("li.line");
++  if (li && !li.classList.contains("dead")) addFromLine(li);
++});
++
++document.addEventListener("DOMContentLoaded", () => {
++  fillSamples();
++  document.getElementById("fsample").value = "*";
++  ["fsample", "fnum", "ftodo"].forEach(id =>
++    document.getElementById(id).addEventListener("change", render));
++  document.getElementById("fimp").addEventListener("change", (e) => importCSV(e.target));
++  render();
++});
++</script></body></html>
+\ No newline at end of file
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_generation.txt b/gate6a-plan/batch3_review/Batch3_B4_generation.txt
+new file mode 100644
+index 0000000..2c05079
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_generation.txt
+@@ -0,0 +1,13 @@
++  ... V077 → 核心 5 行（low=0，丢弃 11）
++  ... V130 → 核心 5 行（low=0，丢弃 3）
++  ... V290 → 核心 4 行（low=0，丢弃 4）
++  ... V347 → 核心 0 行（low=0，丢弃 0）
++  ... V041 → 核心 0 行（low=0，丢弃 0）
++
++圈选台: Batch3_B4_Viewer.html (56.4 KB, 5 件)
++草稿  : Batch3_B4_DRAFT.csv (14 行)
++  V077  好      核心=5 low=0 丢弃=11  核心 5 行置信度均 ≥0.85
++  V130  需重点核（二轮兜底） 核心=5 low=0 丢弃=3  白名单核心参数 0 行，改按一等电气特性兜底选出 5 行（非白名单口径，
++  V290  好      核心=4 low=0 丢弃=4  核心 4 行置信度均 ≥0.85
++  V347  无电气参数表 核心=0 low=0 丢弃=0  确为目标器件数据（DSCC 标准微电路图纸 84185，TABLE I 
++  V041  无文本层   核心=0 low=0 丢弃=0  电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 
+diff --git a/gate6a-plan/batch3_review/Batch3_SCAN_DRAFT.csv b/gate6a-plan/batch3_review/Batch3_SCAN_DRAFT.csv
+new file mode 100644
+index 0000000..a3331f1
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_SCAN_DRAFT.csv
+@@ -0,0 +1 @@
++﻿sample_no,file_name,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,confidence_score
+diff --git a/gate6a-plan/batch3_review/Batch3_SCAN_MANIFEST.csv b/gate6a-plan/batch3_review/Batch3_SCAN_MANIFEST.csv
+new file mode 100644
+index 0000000..46139e2
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_SCAN_MANIFEST.csv
+@@ -0,0 +1,4 @@
++﻿sample_no,file_name,sha256,page_count,size_bytes,blank_pages,text_layer_pages,verdict,reason,device_model,reviewer
++S01,CY74FCT162827CTPAC__CYPRS379-1.pdf,0e0ac847ab07cb9141a1c5ef79106a4895ffa6360932b258ea108fb4e5d6d07e,6,149887,6,0,EXCLUDED,EXCLUDED: 无 OCR 能力，无法建立 Gold,,
++S02,ATOPA4343NA_2K5__BURRS00055-1.pdf,055b0c8e47e82529c6579eb928962b9c0a3ae61de7e11c1c5a37c51d37eddc14,11,677523,11,0,EXCLUDED,EXCLUDED: 无 OCR 能力，无法建立 Gold,,
++S03,32P4752-CGT__SISYD006-4-73.pdf,6712c9281cfe063bf77280233022a46781428dc2c0fee20cba5b1cb12afbfe40,53,1502553,53,0,EXCLUDED,EXCLUDED: 无 OCR 能力，无法建立 Gold,,
+diff --git a/gate6a-plan/batch3_review/Batch3_SCAN_Viewer.html b/gate6a-plan/batch3_review/Batch3_SCAN_Viewer.html
+new file mode 100644
+index 0000000..ca6f088
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_SCAN_Viewer.html
+@@ -0,0 +1,502 @@
++<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>SCAN 圈选台（左图右文）</title><style>
++*{box-sizing:border-box}
++body{margin:0;padding:0 0 60px;background:#f4f5f7;color:#1c1f23;
++ font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.65}
++header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #d8dbe0;padding:10px 22px}
++header h1{margin:0;font-size:16px}
++header p{margin:3px 0 0;font-size:12px;color:#666}
++.wrap{max-width:1100px;margin:0 auto;padding:20px 22px}
++.card{background:#fff;border:1px solid #dcdfe4;border-radius:6px;margin:0 0 22px;overflow:hidden}
++.head{padding:11px 16px;border-bottom:1px solid #e6e9ed;background:#fafbfc}
++.sn{font-weight:700;font-size:15px;color:#0b5cad;margin-right:10px}
++.fn{font-family:Consolas,monospace;font-size:12px;color:#444}
++.meta{margin-top:4px;font-size:12px;color:#555}
++.tag{display:inline-block;padding:1px 7px;margin-right:6px;border-radius:3px;
++ font-size:11px;font-weight:600;border:1px solid}
++.t-amr{background:#e8f0fb;color:#14509e;border-color:#c3d8f4}
++.t-elc{background:#e9f6ec;color:#1c6b33;border-color:#c3e3cc}
++.t-warn{background:#fdeceb;color:#a12a20;border-color:#f3c9c5}
++.t-ok{background:#eef7ee;color:#2c6b34;border-color:#c8e2c9}
++.body{padding:12px 16px 16px}
++figure{margin:0 0 18px}
++figure img{width:100%;height:auto;display:block;border:1px solid #cfd3d9}
++figcaption{font-size:12px;color:#555;padding:5px 2px 0}
++figcaption b{color:#1c1f23}
++table.rows{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
++table.rows th,table.rows td{border:1px solid #dcdfe4;padding:5px 7px;text-align:left}
++table.rows th{background:#f2f4f7;font-weight:600}
++table.rows td.num{font-family:Consolas,monospace;text-align:right}
++.note{background:#fffbe8;border:1px solid #efe0a8;border-radius:6px;padding:12px 16px;margin:0 0 22px;font-size:13px}
++.note h2{margin:0 0 8px;font-size:14px}
++.note ul{margin:6px 0 0;padding-left:20px}
++.hint{font-size:12px;color:#777;margin-top:6px}
++a{color:#0b5cad}
++
++.dh{font-size:12px;color:#444;margin:6px 0 6px}
++.pill{display:inline-block;padding:1px 7px;border-radius:3px;font-size:11px;
++ font-weight:600;margin-right:4px}
++.pill.ok{background:#e9f6ec;color:#1c6b33;border:1px solid #c3e3cc}
++.pill.low{background:#fdeceb;color:#a12a20;border:1px solid #f3c9c5}
++tr.conf-ok td{background:#f3faf4}
++tr.conf-low td{background:#fdf3f2}
++tr.empty-row td{background:#fff8e6;color:#8a6d3b}
++tr.empty-row input{background:#fffdf5}
++tr.clicked td.sn::after{content:" ·点";color:#0b5cad;font-size:10px}
++.warn{color:#a12a20;font-size:10.5px;font-weight:600}
++.filter{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
++ font-size:12.5px;background:#f4f6f9;border:1px solid #dfe3e8;
++ border-radius:4px;padding:8px 10px;margin-bottom:10px}
++.filter select{font-size:12.5px;padding:3px 6px;border:1px solid #cfd5dd;border-radius:3px}
++.filter label{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
++.stat{font-size:12px;color:#444;margin:6px 0 10px}
++.stat.bad{color:#a12a20;font-weight:600}
++.filter .imp{font-size:12px;color:#0b5cad;border:1px dashed #b9cde4;
++ border-radius:4px;padding:5px 9px;cursor:pointer}
++.filter .imp input{display:none}
++button.mini{background:#fff;border:1px solid #d8b4b0;color:#a12a20;
++ border-radius:3px;font-size:11px;padding:2px 7px;cursor:pointer}
++button.ghost{background:#fff;color:#44536a;border:1px solid #cfd5dd;border-radius:4px;
++ padding:7px 12px;font-size:12.5px;cursor:pointer;margin-left:6px}
++td.cf{font-size:11px;color:#666}
++.cols{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
++.cols .left{flex:0 0 56%;min-width:0}
++.cols .right{flex:1 1 auto;min-width:0}
++.cols img{width:100%;height:auto;border:1px solid #cfd3d9;display:block}
++.cap{font-size:12px;color:#666;padding-top:4px}
++.rh{font-size:12px;color:#444;background:#f4f6f9;border:1px solid #dfe3e8;
++ border-bottom:0;padding:5px 8px;border-radius:4px 4px 0 0}
++.cnt{float:right;color:#888}
++ol.lines{margin:0;padding:4px 0;list-style:none;border:1px solid #dfe3e8;
++ max-height:520px;overflow:auto;background:#fff;border-radius:0 0 4px 4px}
++ol.lines li{padding:3px 8px;font-size:12.5px;font-family:Consolas,monospace;
++ cursor:pointer;border-bottom:1px dotted #eef0f3;white-space:pre-wrap}
++ol.lines li:hover{background:#e8f0fb}
++ol.lines li.picked{background:#e6f4ea}
++.pane{margin:0 0 18px}
++.err{background:#fdeceb;border:1px solid #f3c9c5;color:#a12a20;
++ padding:10px 14px;border-radius:5px;font-size:13px;margin-bottom:12px}
++.work{background:#fff;border:1px solid #dcdfe4;border-radius:6px;padding:14px 16px;margin-top:8px}
++.work h2{margin:0 0 10px;font-size:15px}
++table.rows input{width:100%;border:1px solid #e2e5ea;padding:3px 5px;font-size:12px}
++table.rows select{width:100%;border:1px solid #e2e5ea;font-size:11.5px;padding:3px}
++table.rows td.num input{text-align:right;font-family:Consolas,monospace}
++.bar{margin:10px 0 6px}
++.bar button{background:#0b5cad;color:#fff;border:0;border-radius:4px;
++ padding:7px 16px;font-size:13px;cursor:pointer}
++.bar button.dl{background:#fff;color:#0b5cad;border:1px solid #b9cde4;margin-left:6px}
++.msg{margin-left:10px;font-size:12px;color:#2c6b34}
++#out{width:100%;height:110px;font-family:Consolas,monospace;font-size:11.5px;
++ border:1px solid #dfe3e8;border-radius:4px;padding:8px;background:#fbfcfd}
++.hint-review{background:#fff4ce;border-left:4px solid #d68b00;padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}</style></head><body><header><h1>SCAN 圈选台 · 3 件 · 核心参数草稿</h1><p>左边是原图，右边是同区域抓出的纯文本。页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；红底行是 <code>low_confidence</code>，请优先对图。</p></header><div class="wrap"><div class="note"><h2>怎么用</h2><ul><li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li><li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；不是参数（表头、注释）直接删。</li><li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、或模型自报很低。这些行最可能有错。</li><li>草稿没覆盖的核心参数，用「新增空行」自己补。</li><li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li></ul><div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、既无参数名又无符号的行。</div></div><div class="card"><div class="head"><span class="sn">S01</span><span class="fn">CY74FCT162827CTPAC__CYPRS379-1.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CY74FCT162827CTPAC__CYPRS379-1.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 6 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 6/6 页无文本层，前 12 页有连续 6 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="card"><div class="head"><span class="sn">S02</span><span class="fn">ATOPA4343NA_2K5__BURRS00055-1.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/ATOPA4343NA_2K5__BURRS00055-1.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 11 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 11/11 页无文本层，前 12 页有连续 11 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="card"><div class="head"><span class="sn">S03</span><span class="fn">32P4752-CGT__SISYD006-4-73.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/32P4752-CGT__SISYD006-4-73.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 53 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 53/53 页无文本层，前 12 页有连续 12 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2><div class="filter"><label>样本 <select id="fsample"></select></label><label><input type="checkbox" id="fnum"> 只看有数值的行</label><label><input type="checkbox" id="ftodo"> 只看未确认的行</label><button class="ghost" onclick="addBlank()">新增空行</button><button class="ghost" onclick="dropNoName()">删掉无参数名的行</button><button class="ghost" onclick="resetDraft()">恢复机器草稿</button><label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label></div><div id="stat" class="stat"></div><table class="rows" id="tbl"><thead><tr><th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th><th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th><th></th></tr></thead><tbody id="tbody"></tbody></table><div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button><button onclick="copyOut()" class="dl">复制 CSV</button> <label style="font-size:12.5px;margin-left:8px"><input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label><span id="msg" class="msg"></span></div><textarea id="out" readonly></textarea></div></div><script>window.B3_EXPORT_NAME="Batch3_SCAN_ANNOTATED";
++/* Batch 2 圈选台前端。
++ *
++ * 设计要点（第二版）：
++ *   1) 编辑区**预载机器草稿**。第一版 `ROWS = []`，逼着人把整页文本重新点一遍，
++ *      结果 148 行里 59 行没数值也被签了 CONFIRMED —— 这是设计错误，已改。
++ *      现在人的动作是「删掉垃圾行 + 校对留下的 3~5 行」，而不是从零点选。
++ *   2) 点选文本行仍然保留，作为「草稿里漏了某个参数」时的补充手段，追加到末尾。
++ *   3) 导出前会拦：状态是 CONFIRMED 但 min/typ/max 全空的行不许悄悄混进去。
++ */
++const DRAFT = [];
++const THRESH = 0.85;   // 由生成器注入，与 Python 侧的 THRESH 同源
++
++// 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
++// 这里退回原来的默认名，保证它的行为一字不变；Batch 3 生成器按 --out-prefix
++// 注入，例如 Batch3_B2_ANNOTATED.csv，避免六件草稿都顶着 Batch2 的名字。
++const EXPORT_NAME = window.B3_EXPORT_NAME || "Batch2_ANNOTATED";
++
++const FIELDS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
++  "parameter_name", "min_value", "typ_value", "max_value", "unit", "condition",
++  "row_status", "notes", "reviewer", "confidence_score"];
++
++const STATUS = [
++  "DRAFT_AWAITING_HUMAN_CONFIRM",
++  "CONFIRMED",
++  "UNRESOLVED: 表格排版混乱，无法定位列",
++  "EXCLUDED: 文档内无标准参数表",
++  "EXCLUDED: 无 OCR 能力，无法建立 Gold"
++];
++
++// 单个单位记号。复合单位（V/µs、dBFS/Hz）由下面拼接，别一个个枚举，
++// 漏掉一个就有整行单位空着（Slew rate 的 V/µs 就是这么丢的）。
++const U1 = "(?:mV|µV|μV|kV|V|mA|µA|μA|nA|pA|A|kΩ|MΩ|Ω|ohm|°C|MHz|kHz|GHz|Hz"
++         + "|ns|µs|μs|ms|ps|s|pF|nF|µF|μF|uF|mW|W|%|dBFS|dBFs|dB)";
++const UNIT_RE = new RegExp("^" + U1 + "(?:\\/" + U1 + ")?$");
++
++// U+2212（数学减号）以及各种破折号/全角连字符。PDF 里负号几乎都是 U+2212，
++// 不先归一，`−65` 会被当成非数字串，`V_S− to V_S+` 里的分隔符也认不出来。
++const MINUS_CHARS = /[\u2212\u2010\u2011\u2012\u2013\u2014\u2015\uFF0D]/g;
++// 只认"像符号"的东西：全大写（VID / GND / IO）或带一段下标（V_IH）。
++const SYM_RE = /^[A-Z\u0394][A-Z0-9]{0,11}$|^[A-Z\u0394][A-Z0-9]{0,3}_[A-Za-z0-9]{1,3}$/;
++
++let ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
++
++function hasNum(r) {
++  return ["min_value", "typ_value", "max_value"].some(k => (r[k] || "").trim() !== "");
++}
++
++function parseLine(raw) {
++  // 点线引导符（`Package . . . . . 69`）里每个点都是独立 token，`\.{3,}` 匹配不到，
++  // 必须按"两个以上带空白的点"整体吃掉，否则参数名会拖一串点。
++  let s = raw.replace(MINUS_CHARS, "-").replace(/(?:\s*\.){2,}\s*/g, " ");
++  s = s.replace(/\s+/g, " ").trim();
++  const toks = s.split(" ").filter(t => t && !/^to$/i.test(t));
++
++  // 负号可能与数字被空格拆开（`- 65`），先合并，否则 min 丢掉符号变成 65。
++  const merged = [];
++  for (let i = 0; i < toks.length; i++) {
++    const t = toks[i];
++    if (/^[-+±]$/.test(t) && i + 1 < toks.length && /^\d/.test(toks[i + 1])) {
++      merged.push(t + toks[i + 1]);
++      i++;
++      continue;
++    }
++    merged.push(t);
++  }
++
++  const nums = [], units = [], rest = [];
++  for (const tk of merged) {
++    if (tk === "-") continue;                 // 孤立的连字符只是分隔符
++    if (/^\([^()]*\)$/.test(tk)) continue;    // `(320)` `(mV_p-p)` 是备选值/备注
++    const m = tk.match(/^([±+\-]?\d+(?:\.\d+)?)([A-Za-zµμΩ°%\/]*)$/);
++    if (m) {
++      nums.push(m[1]);
++      if (m[2]) units.push(m[2]);
++      continue;
++    }
++    if (UNIT_RE.test(tk)) { units.push(tk); continue; }
++    rest.push(tk);
++  }
++
++  // 首词像符号才摘出来。整行只剩符号时要允许 rest.length==1，
++  // 否则 `VID ±2.5 V` 会把符号当成参数名；但整行没有数字时不动，那多半是标题行。
++  let symbol = "";
++  if (nums.length > 0 && rest.length >= 1 && rest[0].length <= 12 && SYM_RE.test(rest[0])) {
++    symbol = rest.shift();
++  }
++
++  // 一个数都没解析出来的行不是参数行（表头、注释），参数名留空，
++  // 原文进 notes，免得把 `. . . . .` 这类垃圾灌进参数名列。
++  const name = nums.length ? rest.join(" ").replace(/[,;:]+$/, "").trim() : "";
++  let unit = units.length ? units[units.length - 1] : "";
++  unit = unit.replace(/\s*\([^)]*\)$/, "");
++  let mn = "", typ = "", mx = "";
++  if (nums.length === 1) mx = nums[0];
++  else if (nums.length === 2) { mn = nums[0]; mx = nums[1]; }
++  else if (nums.length >= 3) { mn = nums[0]; typ = nums[1]; mx = nums[2]; }
++  return {symbol, name, min: mn, typ, max: mx, unit, nums: nums.length};
++}
++
++function msg(t) {
++  document.getElementById("msg").textContent = t;
++}
++
++function addFromLine(li) {
++  const box = li.closest(".pane");
++  const p = parseLine(li.dataset.t);
++  // 这些手册的表格里，数字和标签**不在同一条基线**（标签 y=382.7，数字 y=375.7），
++  // 所以右侧必然出现"只有数字"的碎片行。点它只会造出一行没名字的垃圾，
++  // 这种行进不了 Gold（无法判断它是什么参数），直接拦掉，提示去表里填。
++  if (!p.name && !p.symbol) {
++    msg("这行只有数字/单位，没有参数名 —— 请在下方对应行直接填数值，"
++        + "或用「新增空行」自己写参数名。不要点它建行。");
++    li.classList.add("dead");
++    return;
++  }
++  ROWS.push({
++    sample_no: box.dataset.sno,
++    file_name: box.dataset.fn,
++    evidence_page: box.dataset.page,
++    table_title: box.dataset.title,
++    symbol: p.symbol,
++    parameter_name: p.name,
++    min_value: p.min, typ_value: p.typ, max_value: p.max,
++    unit: p.unit,
++    condition: "",
++    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
++    notes: "点选文本行生成，需与左图核对；原文：" + li.dataset.t.slice(0, 80),
++    reviewer: "",
++    confidence_score: "",
++    _src: "click"
++  });
++  render();
++  li.classList.add("picked");
++}
++
++function addBlank() {
++  const s = document.getElementById("fsample").value;
++  const sample = (s !== "*") ? s : (DRAFT[0] ? DRAFT[0].sample_no : "");
++  const base = DRAFT.filter(r => r.sample_no === sample)[0] || {};
++  ROWS.push({
++    sample_no: sample,
++    file_name: base.file_name || "",
++    evidence_page: base.evidence_page || "",
++    table_title: base.table_title || "",
++    symbol: "", parameter_name: "",
++    min_value: "", typ_value: "", max_value: "", unit: "", condition: "",
++    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
++    notes: "人工新增",
++    reviewer: "", confidence_score: "", _src: "manual"
++  });
++  render();
++  msg("已在 " + sample + " 末尾新增一行，请填写参数名与数值");
++}
++
++function dropNoName() {
++  const before = ROWS.length;
++  ROWS = ROWS.filter(r => (r.parameter_name || "").trim() !== ""
++                       || (r.symbol || "").trim() !== "");
++  render();
++  msg("已删除 " + (before - ROWS.length) + " 行既没有参数名也没有符号的行");
++}
++
++function visible() {
++  const s = document.getElementById("fsample").value;
++  const onlyNum = document.getElementById("fnum").checked;
++  const onlyTodo = document.getElementById("ftodo").checked;
++  const out = [];
++  ROWS.forEach((r, i) => {
++    if (s !== "*" && r.sample_no !== s) return;
++    if (onlyNum && !hasNum(r)) return;
++    if (onlyTodo && r.row_status === "CONFIRMED") return;
++    out.push({r, i});
++  });
++  return out;
++}
++
++function cell(tr, opts) {
++  const td = document.createElement("td");
++  if (opts.text !== undefined) {
++    td.textContent = opts.text;
++    td.className = opts.cls || "";
++  } else {
++    const inp = document.createElement("input");
++    inp.value = opts.value || "";
++    inp.oninput = () => { opts.set(inp.value); refreshRowMeta(); };
++    td.appendChild(inp);
++    if (opts.num) td.className = "num";
++  }
++  tr.appendChild(td);
++  return td;
++}
++
++function render() {
++  const tb = document.getElementById("tbody");
++  tb.innerHTML = "";
++  const list = visible();
++  for (const {r, i} of list) {
++    const tr = document.createElement("tr");
++    const cf = parseFloat(r.confidence_score || "");
++    if (!isNaN(cf)) tr.className = cf >= THRESH ? "conf-ok" : "conf-low";
++    if (!hasNum(r)) tr.classList.add("empty-row");
++    if (r._src === "click") tr.classList.add("clicked");
++
++    cell(tr, {text: r.sample_no || "", cls: "sn"});
++    cell(tr, {text: r.evidence_page || "", cls: "num"});
++    cell(tr, {value: r.symbol, set: v => r.symbol = v});
++    cell(tr, {value: r.parameter_name, set: v => r.parameter_name = v});
++    cell(tr, {value: r.min_value, set: v => r.min_value = v, num: true});
++    cell(tr, {value: r.typ_value, set: v => r.typ_value = v, num: true});
++    cell(tr, {value: r.max_value, set: v => r.max_value = v, num: true});
++    cell(tr, {value: r.unit, set: v => r.unit = v});
++
++    const tdS = document.createElement("td");
++    const sel = document.createElement("select");
++    for (const v of STATUS) {
++      const o = document.createElement("option");
++      o.value = v; o.textContent = v;
++      if (v === r.row_status) o.selected = true;
++      sel.appendChild(o);
++    }
++    sel.onchange = () => { r.row_status = sel.value; refreshRowMeta(); };
++    tdS.appendChild(sel);
++    tr.appendChild(tdS);
++
++    cell(tr, {text: r.confidence_score || "-", cls: "num cf"});
++
++    const tdD = document.createElement("td");
++    const btn = document.createElement("button");
++    btn.textContent = "删";
++    btn.className = "mini";
++    btn.onclick = () => { ROWS.splice(i, 1); render(); };
++    tdD.appendChild(btn);
++    tr.appendChild(tdD);
++
++    tb.appendChild(tr);
++  }
++  document.getElementById("cnt").textContent =
++    list.length + " / " + ROWS.length;
++  refreshRowMeta();
++}
++
++function refreshRowMeta() {
++  const all = ROWS.length;
++  const num = ROWS.filter(hasNum).length;
++  const conf = ROWS.filter(r => r.row_status === "CONFIRMED").length;
++  const bad = ROWS.filter(r => r.row_status === "CONFIRMED" && !hasNum(r)).length;
++  const noName = ROWS.filter(r => !(r.parameter_name || "").trim()
++                                && !(r.symbol || "").trim()).length;
++  const bySample = {};
++  ROWS.forEach(r => {
++    bySample[r.sample_no] = bySample[r.sample_no] || {n: 0, k: 0};
++    bySample[r.sample_no].n++;
++    if (hasNum(r)) bySample[r.sample_no].k++;
++  });
++  const parts = Object.keys(bySample).sort().map(s =>
++    s + ":" + bySample[s].k + "/" + bySample[s].n);
++  let t = "共 " + all + " 行：" + num + " 行有数值，" + conf + " 行已确认";
++  if (bad) t += "，其中 " + bad + " 行确认了却没有数值（必须处理）";
++  if (noName) t += "；" + noName + " 行既无参数名也无符号（进不了 Gold，建议删）";
++  t += "　|　有数值/总数 " + parts.join("  ");
++  const el = document.getElementById("stat");
++  el.textContent = t;
++  el.className = (bad || noName) ? "stat bad" : "stat";
++}
++
++function q(v) {
++  v = (v === undefined || v === null) ? "" : String(v);
++  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
++}
++
++function csvText() {
++  const dropEmpty = document.getElementById("dropEmpty").checked;
++  // 既没参数名也没符号的行进不了 Gold（读表的人无法判断它是什么参数），
++  // 勾了"丢空行"就一起丢掉，别让它悄悄混进分母。
++  const rows = ROWS.filter(r => !dropEmpty || (hasNum(r)
++      && ((r.parameter_name || "").trim() || (r.symbol || "").trim())));
++  const head = FIELDS.join(",");
++  const lines = rows.map(r => FIELDS.map(f => q(r[f])).join(","));
++  return {text: [head].concat(lines).join("\n"), n: rows.length};
++}
++
++function downloadCSV() {
++  const {text, n} = csvText();
++  // 前面加 U+FEFF（BOM）：Excel 看到 BOM 才按 UTF-8 解码，
++  // 否则 ° µ − 会被当成无法映射的字符显示成 ?。
++  const blob = new Blob(["\ufeff" + text], {type: "text/csv;charset=utf-8"});
++  const a = document.createElement("a");
++  a.href = URL.createObjectURL(blob);
++  a.download = EXPORT_NAME + ".csv";
++  document.body.appendChild(a);
++  a.click();
++  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
++  document.getElementById("msg").textContent =
++    "已下载 " + EXPORT_NAME + ".csv（" + n + " 行，UTF-8 带 BOM，Excel 直接打开不乱码）";
++}
++
++function copyOut() {
++  const ta = document.getElementById("out");
++  ta.value = csvText().text;
++  ta.select();
++  let ok = false;
++  try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
++  document.getElementById("msg").textContent = ok
++    ? "已复制到剪贴板，粘到 Excel 即可"
++    : "复制失败：请手动 Ctrl+A 全选文本框再 Ctrl+C";
++}
++
++function cleanEmpty() {
++  const s = document.getElementById("fsample").value;
++  const before = ROWS.length;
++  ROWS = ROWS.filter(r => (s !== "*" && r.sample_no !== s) || hasNum(r));
++  render();
++  document.getElementById("msg").textContent =
++    "已删除 " + (before - ROWS.length) + " 行无 min/typ/max 的空行";
++}
++
++function resetDraft() {
++  if (!confirm("放弃所有改动，恢复到机器草稿？")) return;
++  ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
++  render();
++  msg("已恢复机器草稿");
++}
++
++/* ---- CSV 回导：换新版本页面时把上次的进度接回来，不用重做 ---- */
++function parseCSVText(text) {
++  text = text.replace(/^\ufeff/, "");
++  const rows = [];
++  let row = [], cur = "", inQ = false;
++  for (let i = 0; i < text.length; i++) {
++    const c = text[i];
++    if (inQ) {
++      if (c === '"') {
++        if (text[i + 1] === '"') { cur += '"'; i++; }
++        else inQ = false;
++      } else cur += c;
++    } else if (c === '"') inQ = true;
++    else if (c === ",") { row.push(cur); cur = ""; }
++    else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
++    else if (c === "\r") { /* 丢掉 */ }
++    else cur += c;
++  }
++  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
++  return rows;
++}
++
++function importCSV(input) {
++  const f = input.files && input.files[0];
++  if (!f) return;
++  const r = new FileReader();
++  r.onload = () => {
++    try {
++      const table = parseCSVText(String(r.result));
++      if (table.length < 2) throw new Error("文件里没有数据行");
++      const head = table.shift().map(s => s.trim());
++      if (head[0] !== "sample_no") {
++        throw new Error("表头第一列不是 sample_no，可能不是这个页面导出的文件");
++      }
++      const objs = [];
++      for (const a of table) {
++        if (!a.length || !(a[0] || "").trim()) continue;
++        const o = {};
++        FIELDS.forEach(k => o[k] = "");
++        head.forEach((h, i) => {
++          if (FIELDS.indexOf(h) >= 0) o[h] = (a[i] || "").trim();
++        });
++        o._src = "import";
++        objs.push(o);
++      }
++      if (!objs.length) throw new Error("解析出 0 行");
++      ROWS = objs;
++      fillSamples();
++      document.getElementById("fsample").value = "*";
++      render();
++      msg("已导入 " + objs.length + " 行，可以接着改");
++    } catch (e) {
++      msg("导入失败：" + e.message);
++    } finally {
++      input.value = "";
++    }
++  };
++  r.readAsText(f, "utf-8");
++}
++
++function fillSamples() {
++  const sel = document.getElementById("fsample");
++  const keep = sel.value;
++  sel.innerHTML = "";
++  const seen = [];
++  ROWS.forEach(r => { if (seen.indexOf(r.sample_no) < 0) seen.push(r.sample_no); });
++  ["*"].concat(seen.sort()).forEach(s => {
++    const o = document.createElement("option");
++    o.value = s;
++    o.textContent = s === "*" ? "全部样本" : s;
++    sel.appendChild(o);
++  });
++  if (seen.indexOf(keep) >= 0 || keep === "*") sel.value = keep;
++}
++
++document.addEventListener("click", (e) => {
++  const li = e.target.closest("li.line");
++  if (li && !li.classList.contains("dead")) addFromLine(li);
++});
++
++document.addEventListener("DOMContentLoaded", () => {
++  fillSamples();
++  document.getElementById("fsample").value = "*";
++  ["fsample", "fnum", "ftodo"].forEach(id =>
++    document.getElementById(id).addEventListener("change", render));
++  document.getElementById("fimp").addEventListener("change", (e) => importCSV(e.target));
++  render();
++});
++</script></body></html>
+\ No newline at end of file
+diff --git a/gate6a-plan/batch3_review/Batch3_SCAN_generation.txt b/gate6a-plan/batch3_review/Batch3_SCAN_generation.txt
+new file mode 100644
+index 0000000..15a953f
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_SCAN_generation.txt
+@@ -0,0 +1,9 @@
++  ... S01 → 核心 0 行（low=0，丢弃 0）
++  ... S02 → 核心 0 行（low=0，丢弃 0）
++  ... S03 → 核心 0 行（low=0，丢弃 0）
++
++圈选台: Batch3_SCAN_Viewer.html (25.3 KB, 3 件)
++草稿  : Batch3_SCAN_DRAFT.csv (0 行)
++  S01   无文本层   核心=0 low=0 丢弃=0  全书 6/6 页无文本层，前 12 页有连续 6 页空白；EXCLUDE
++  S02   无文本层   核心=0 low=0 丢弃=0  全书 11/11 页无文本层，前 12 页有连续 11 页空白；EXCL
++  S03   无文本层   核心=0 low=0 丢弃=0  全书 53/53 页无文本层，前 12 页有连续 12 页空白；EXCL
+diff --git a/gate6a-plan/batch3_review/Batch3_SCAN_manifest.txt b/gate6a-plan/batch3_review/Batch3_SCAN_manifest.txt
+new file mode 100644
+index 0000000..1658cae
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_SCAN_manifest.txt
+@@ -0,0 +1,7 @@
++  S01  CY74FCT162827CTPAC__CYPRS379-1.pdf           6 页  全 6 页无文本层  sha256=0e0ac847ab07cb91…
++  S02  ATOPA4343NA_2K5__BURRS00055-1.pdf           11 页  全 11 页无文本层  sha256=055b0c8e47e82529…
++  S03  32P4752-CGT__SISYD006-4-73.pdf              53 页  全 53 页无文本层  sha256=6712c9281cfe063b…
++
++SCAN 登记表：3 件，全部 EXCLUDED，理由「EXCLUDED: 无 OCR 能力，无法建立 Gold」
++  溯源列：sha256 / page_count / size_bytes / blank_pages 均从磁盘实算
++  产物：Batch3_SCAN_MANIFEST.csv（641 字节）
+diff --git a/gate6a-plan/batch3_review/INDEX.md b/gate6a-plan/batch3_review/INDEX.md
+index 1dc33ef..87db67b 100644
+--- a/gate6a-plan/batch3_review/INDEX.md
++++ b/gate6a-plan/batch3_review/INDEX.md
+@@ -970,3 +970,156 @@ TEST CONDITIONS。若不并入 `condition`，字典会静默覆盖重复键—
+ B4（5 件：V077 V130 V290 V347 V041）与 SCAN（3 件按 SOP 标 EXCLUDED）
+ 仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main
+ （`a11131a`）更新并 push。两仓 main 本轮仍未动。
++
++## 18. 第十轮：B4 圈选台与 SCAN 登记表
++
++Reviewer 批准 B3 封卷后放行 B4 与 SCAN。本轮不做定稿、不签名，
++只交「可点选的圈选台 + 草稿」与「可复核的排除登记表」。
++
++### 18.1 本轮交付物
++
++| 文件 | 说明 | SHA-256（前 16） |
++| --- | --- | --- |
++| `Batch3_B4_Viewer.html` | B4 圈选台，5 件，左图右文，三条核查提示印在卡片上 | `141c45acd13cddaf` |
++| `Batch3_B4_DRAFT.csv` | B4 草稿，14 行 × 15 列 | `1ead41a5a3db0bfc` |
++| `Batch3_B4_generation.txt` | 生成器真实 stdout（逐件核心行/丢弃数/质量分层） | 见包内 |
++| `Batch3_SCAN_MANIFEST.csv` | SCAN 三件登记表，11 列含溯源 | `e83bab493a851f58` |
++| `Batch3_SCAN_Viewer.html` | SCAN 圈选台（仅登记，不进点选） | `186ef2220cf5a199` |
++| `Batch3_SCAN_manifest.txt` | SCAN 登记摘要 | 见包内 |
++
++B4 左图依赖 4 张裁图，已与 HTML 同包：`annotation_reports/V077/b3_ELC_p0040.png`、
++`V077/b3_ROC_p0038.png`、`V130/b3_ELC_p0002.png`、`V290/b3_ELC_p0003.png`。
++V347 / V041 被判排除，不出裁图。
++
++### 18.2 三条 Reviewer 提示已落到网页上
++
++提示写在每张卡片的黄色「核查提示」块里（`REVIEW_HINTS`），不是合集页脚：
++
++* **V077** —— 请核实表格类型。该件 201 页、章节极多，先确认裁到的是电气特性表，
++  而不是时序/引脚/封装表；
++* **V130** —— 短文档不代表没有有效参数表。p2 是标准 ELECTRICAL CHARACTERISTICS 表
++  （PARAMETER / TEST CONDITIONS / MIN / TYP / MAX / UNIT），参数名属 MOSFET 类；
++* **V347** —— 核实是否为目标器件数据，而非引用资料。本件是 DSCC 军标 SMD（84185），
++  TABLE I 即该器件本身的电气性能表，不是引用别处的资料。
++
++### 18.3 B4 生成结果：两件出草稿，两件逐件排除
++
++| 样本 | 核心行 | 丢弃 | 质量分层 | 处置 |
++| --- | --- | --- | --- | --- |
++| V077 | 5 | 11 | 好 | 进点选 |
++| V130 | 5 | 3 | 需重点核（二轮兜底） | 进点选，参数名非白名单口径 |
++| V290 | 4 | 4 | 好 | 进点选 |
++| V347 | 0 | 0 | 无电气参数表 | `EXCLUDED`：表格版式不支持稳定还原行序 |
++| V041 | 0 | 0 | 无文本层 | `EXCLUDED`：电气特性页为扫描图 |
++
++草稿共 14 行。V077 的 `CVDD` / `RVDD` 各有两组取值（疑不同温度等级），
++草稿里两条都留着并注明「请确认」——按 SOP 不替人挑，交 PM 判。
++
++### 18.4 V130：白名单盲区与「二轮兜底」
++
++首轮 `CORE_ORDER` 白名单只收供电/温度/电流/功耗/输入电压（当初为电源类器件所定），
++MOSFET 的 `BVDSS` / `RDS(on)` / `Ciss` 不在其中，导致 V130 一行都没留下、
++被误判成「无法定位电气参数表」。核实 p2 后确认该表有效，于是加二轮兜底：
++
++* `CORE_ORDER_EXT` 覆盖击穿/耐压、阈值、导通电阻、漏电流、电容、跨导、
++  失调/正向压降、增益/输入阻抗、开关时间九类一等电气特性；
++* **只在首轮一行都没留下时才跑**（`pick_core_ext`），已能出草稿的样本行为完全不变；
++* 命中的行在 `notes` 里写明「非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺」，
++  质量分层标「需重点核（二轮兜底）」，不冒充白名单口径。
++
++### 18.5 V347：逐闸门诊断与「属硬凑」的判定
++
++先修表题正则：军标写法是 `TABLE I. Electrical performance characteristics.`，
++老正则要求 `characteristics` 紧跟 `electrical`，中间插了 `performance` 就命中不了；
++已支持 `TABLE <罗马号>` 前缀与 `performance` 插入。
++
++修完仍是 0 行，逐闸门诊断结果：`NUMCOL=2`、`KIND_TITLE=True`、
++`title_anchor_lines=[22]`、`has_table_header=False`、`_page_table_signatures=0 张`。
++表头顺序是 `Test / Symbol / Conditions / Group A subgroups / Device type /
++Limits(Min,Max) / Unit`——`UNIT` 在 `MIN/MAX` 之前，而表头判定只向后看
++`HEADER_WINDOW=8`，取不到 `MARK_HEAD_WORDS`。
++
++更关键的是版式本身：同一符号按 Group A subgroup / Device type 拆成 2~4 行。
++例如 `IIO` 的上限按 `01,02 / 03 / …` 分别是 3、5、6、20、30、40 μA。
++手工裁图实测 VLM 只能给出「每符号一行」，并固定取 `01,02` 那一行，
++等于把器件类型差异抹平。**这是硬凑，不是提取**，因此按 SOP 直接排除，
++理由写进 `EXCLUDED_REASON`：确为目标器件数据，但版式不支持稳定还原行序，
++需 SMD 专用规则后再做。
++
++### 18.6 V041：部分页扫描 ≠ 整本无文本层
++
++实测 16 页里 6 页无文本层，有文本层的 10 页是 `PACKAGE OPTION ADDENDUM` /
++`PACKAGE MATERIALS` / `PACKAGE OUTLINE` / `LAND PATTERN` / `STENCIL DESIGN` /
++免责声明，其中的 MIN/MAX 是机械尺寸公差，不是电气参数；电气特性在 p2~p4 的扫描图里。
++
++原来的措辞统一写成「全书 N/N 页无文本层」，对 V041 不成立。现按两分支判定：
++`blank == npages` 才说全书无文本层；否则明说「电气特性页是扫描图，
++其余页虽有文本层但未定位到参数表」。判据不变——只要有任意一页有文字，
++就不能拿「无文本层」当排除理由。
++
++### 18.7 SCAN：把 EXCLUDED 从结论变成可复核证据
++
++`S01 / S02 / S03` 不跑 VLM，直接登记（`_make_scan_manifest.py`）：
++
++| 样本 | 文件 | 页数 | 字节 | 无文本层页 | 判定 |
++| --- | --- | --- | --- | --- | --- |
++| S01 | `CY74FCT162827CTPAC__CYPRS379-1.pdf` | 6 | 149,887 | 6 | `EXCLUDED` |
++| S02 | `ATOPA4343NA_2K5__BURRS00055-1.pdf` | 11 | 677,523 | 11 | `EXCLUDED` |
++| S03 | `32P4752-CGT__SISYD006-4-73.pdf` | 53 | 1,502,553 | 53 | `EXCLUDED` |
++
++理由统一为 `EXCLUDED: 无 OCR 能力，无法建立 Gold`。生成器带硬断言：
++若 `blank_pages != page_count` 直接 `SystemExit`，不允许拿「无 OCR」当万能理由。
++`sha256 / page_count / size_bytes / blank_pages` 全部从磁盘实算，可独立复核。
++
++### 18.8 措辞统一：十字段稳定 ID（含 condition）
++
++`Batch3_B3_APPROVAL_TARGETS.txt` 原来写「九字段稳定 ID 匹配」，与 17.2 的口径不一致。
++第 4 行已改为「十字段稳定 ID（九字段 + condition）匹配，不按行号」。
++该文件由 `_make_b3_final.py` 生成，重跑即产新措辞；落盘后与手工同步文本逐字节一致。
++
++### 18.9 封卷件字节零漂移：write_xlsx 加内容幂等
++
++重跑生成器时发现 `Batch3_B3_FINAL.xlsx` 的 SHA-256 会变。拆包比对：
++`xl/worksheets/sheet1.xml` 逐字节相同，只有 `docProps/core.xml` 的
++`dcterms:created/modified` 变了——openpyxl 每次 `save()` 都写当前时刻。
++数据一字未改，却让封卷件整包哈希漂移，这在审计上不可接受。
++
++处置分两步：
++
++1. 先把封卷字节复原为 `b437658dc8d2f8f39b4fdc44ea0b5fb233c1adf3dab72ec2df846c80f7f43035`
++   （与第九轮提交 `92f170c` 内的版本一致）；
++2. 给 `write_xlsx` 加内容签名（`_wb_signature`：表名/冻结/筛选/列宽 + 每格值与填充色、加粗）
++   比对——一致就丢弃临时文件、保留原字节，不一致才原子替换。
++
++此后三件套重跑结果：
++
++| 文件 | SHA-256 | 与封卷前 |
++| --- | --- | --- |
++| `Batch3_B3_FINAL.csv` | `b940e2e4802d505f69728cbf313f844392c073bd7e2b2c5a7a47d6e36e019b12` | 逐字节相同 |
++| `Batch3_B3_FINAL.xlsx` | `b437658dc8d2f8f39b4fdc44ea0b5fb233c1adf3dab72ec2df846c80f7f43035` | 逐字节相同 |
++| `Batch3_B3_FINAL_TO_SIGN.xlsx` | `306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7` | 逐字节相同 |
++| `Batch3_B3_FINAL_SIGNED.xlsx` | `306266374fa4535e20a650d458802d73af614d17663250798a40e6c11a1dc3c7` | 逐字节相同 |
++
++生成器 stdout 对应行：`xlsx 写入：未改写（内容与磁盘一致，保留原字节）`。
++
++同一轮还发现 `page_text_batch3_b3.json` 也只差一个 `generated_at` 字段（正文逐样本
++完全一致，双模式机检输出逐字节相同）。同一处缺陷，同一套处置：若除 `generated_at`
++外内容一致，就保留原字节不重写。生成器 stdout 对应行：
++`sidecar：未改写（除 generated_at 外内容一致，保留原字节）`。
++
++### 18.10 本轮回归
++
++| 项目 | 结果 |
++| --- | --- |
++| v1.6 PDF 模式（`Batch3_B3_FINAL.csv`） | `OK=20`，无 ERROR；输出与第九轮逐字节相同 |
++| v1.6 离线模式 | `OK=20`，无 ERROR；输出与第九轮逐字节相同 |
++| 合成回归 | `PASS=43 FAIL=0 SKIP=0` |
++| 签名继承 | 5 处落在第 11–15 行，`signed_ids == entered_by` |
++| B4 网页自检 | 三条提示均在（`hint-review` × 3）、V347/V041 逐件理由已覆盖自动措辞、不再出现「全书 16/16 页无文本层」 |
++| 草稿行数 | 14 行（V077=5、V130=5、V290=4） |
++
++### 18.11 尚未做的事
++
++B4 的 14 行仍需 PM 逐格对左图核并签字；SCAN 三件只登记、不进点选。
++33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
++更新并 push。两仓 main 本轮仍未动。
+diff --git a/gate6a-plan/batch3_review/_build_batch3_interactive.py b/gate6a-plan/batch3_review/_build_batch3_interactive.py
+index a5c15cc..ca22eed 100644
+--- a/gate6a-plan/batch3_review/_build_batch3_interactive.py
++++ b/gate6a-plan/batch3_review/_build_batch3_interactive.py
+@@ -180,6 +180,56 @@ def pick_core(rows, lo=3, hi=5):
+     return keep, drop, [c for _, _, c in CORE_ORDER]
+ 
+ 
++# —— 二轮兜底：一等电气特性（B4 的 V130 / V347 暴露的盲区）——
++# CORE_ORDER 只收供电 / 温度 / 电流 / 功耗 / 输入电压，是给"电源类"器件定的。
++# MOSFET 数据手册（V130 的 BVDSS / VGS(th) / RDS(on) / Ciss）与军标运放
++# （V347 的 VIN / IIO / AV / tPD）同样有合规参数表，但一个符号都不在白名单里，
++# 于是首轮 usable 为空，整件被误判成"没有参数表"。
++#
++# 纪律：这一轮**只在首轮一行都没留下时**才跑，命中即标注「非白名单核心参数」，
++# 让人知道这几行不是按既定白名单选的、要重点核。已能出草稿的样本行为完全不变，
++# B1/B2/B3 的封卷结果不受影响。
++CORE_ORDER_EXT = [
++    (re.compile(r"breakdown|drain[- ]to[- ]source\s+voltage|\bbv\s*dss\b", re.I), 20, "击穿/耐压"),
++    (re.compile(r"threshold\s+voltage|\bv\s*gs\s*\(?\s*th", re.I), 21, "阈值电压"),
++    (re.compile(r"on[- ]resistance|\br\s*ds\s*\(?\s*on", re.I), 22, "导通电阻"),
++    (re.compile(r"leakage\s+current|\bi\s*dss\b|\bi\s*gss\b|\bi\s*io\b|\bi\s*ib\b", re.I), 23, "漏电流"),
++    (re.compile(r"capacitance|\bc\s*(?:iss|oss|rss)\b", re.I), 24, "电容"),
++    (re.compile(r"transconductance|\bg\s*fs\b", re.I), 25, "跨导"),
++    (re.compile(r"offset\s+voltage|\bv\s*oo|\bforward\s+voltage|\bv\s*sd\b", re.I), 26, "失调/正向压降"),
++    (re.compile(r"voltage\s+gain|\bgain\b|input\s+resistance|\br\s*in\b", re.I), 27, "增益/输入阻抗"),
++    (re.compile(r"delay\s+time|rise\s+time|fall\s+time|\bt\s*pd\b", re.I), 28, "开关时间"),
++]
++
++# 二轮命中时写进 notes 的前缀：明确这些行不是按白名单选的
++EXT_NOTE = "非白名单核心参数（一等电气特性），WB 建议，请 PM 定夺"
++
++
++def core_rank_ext(r):
++    name = (r.get("parameter_name") or "") + " " + (r.get("symbol") or "")
++    pri = 99
++    for rx, p, _cn in CORE_ORDER_EXT:
++        if rx.search(name):
++            pri = p
++            break
++    try:
++        conf = float(r.get("confidence_score") or 0)
++    except ValueError:
++        conf = 0.0
++    return (pri, 0 if has_num(r) else 1, -conf)
++
++
++def pick_core_ext(rows, lo=3, hi=5):
++    """二轮兜底：白名单全落空时，按一等电气特性类别再选一次。"""
++    ranked = sorted(rows, key=core_rank_ext)
++    usable = [r for r in ranked if core_rank_ext(r)[0] < 99 and has_num(r)]
++    if not usable:
++        return [], ranked
++    keep = usable[:hi]
++    ids = {id(r) for r in keep}
++    return keep, [r for r in ranked if id(r) not in ids]
++
++
+ # —— 表格定位三道闸门（V003 抓错页事故后加）——
+ # 事故复盘：AM2431 共 282 页，第 6 章 Specifications（p101~p116）才有参数表，
+ # 老 scan3 只扫前 40 页，真表整整被漏掉 60 多页；前 40 页里 p14 是
+@@ -190,7 +240,11 @@ def pick_core(rows, lo=3, hi=5):
+ NUMCOL_RX = re.compile(r"\b(MIN|TYP|MAX|NOM)\b", re.I)
+ KIND_TITLE_RX = re.compile(
+     r"(absolute\s+)?maximum\s+ratings|recommended\s+operating\s+conditions"
+-    r"|(electrical|dc\s+electrical|static|dc)\s+(characteristics|specifications)",
++    r"|(electrical|dc\s+electrical|static|dc)\s+(characteristics|specifications)"
++    # 军标 SMD 写法：`TABLE I. Electrical performance characteristics.`
++    # （B4 V347）—— 老正则要求 characteristics 紧跟 electrical，中间插了
++    # performance 就命中不了，整页被当成非候选页，真表被静默漏掉。
++    r"|electrical\s+performance\s+characteristics",
+     re.I)
+ REF_RX = re.compile(
+     r"\b(see|refer|refer\s+to|for\s+more\s+information|defined\s+in|"
+@@ -239,11 +293,11 @@ TITLE_LINE_RX = re.compile(
+ #   3. 整行长度 <= 120 字符，且后续仍必须由 has_table_header 验证
+ #      「完整表头结构紧邻标题、中间不夹数据行」。
+ DESC_TITLE_RX = re.compile(
+-    r"^\s*(?:\d+(?:\.\d+)*\s+)?"
++    r"^\s*(?:\d+(?:\.\d+)*\s+)?(?:TABLE\s+[IVXLC]+\.?\s+)?"
+     r"(?:(?:absolute\s+)?maximum\s+ratings"
+     r"|recommended\s+operating\s+conditions"
+     r"|(?:electrical|dc\s+electrical|static|dc)\s+"
+-    r"(?:characteristics|specifications))\b.{0,100}$", re.I)
++    r"(?:performance\s+)?(?:characteristics|specifications))\b.{0,100}$", re.I)
+ TITLE_MAX_GAP = 4
+ DATA_ROW_RX = re.compile(r"[-+]?\d+\.\d+|[-+]\d+(?:\s|$)")
+ BORDER_MARK_RX = re.compile(
+@@ -955,6 +1009,43 @@ def build_js(rows, export_name):
+             + I2.build_js(rows))
+ 
+ 
++# —— Reviewer 指定的逐件核查提示（B4）——
++# 这些不是自动判定，是人点选时**必须先回答的问题**，直接印在圈选台卡片上，
++# 避免「机器说 EXCLUDED 就照着标」或「机器出了草稿就默认对」。
++REVIEW_HINTS = {
++    "V077": "Reviewer 提示：请核实表格类型。该件 201 页、章节极多，"
++            "先确认裁到的是电气特性表，而不是时序/引脚/封装表。",
++    "V130": "Reviewer 提示：短文档不代表没有有效参数表。"
++            "p2 是标准 ELECTRICAL CHARACTERISTICS 表（PARAMETER / TEST CONDITIONS / "
++            "MIN / TYP / MAX / UNIT），参数名属 MOSFET 类，不在既有白名单里。",
++    "V347": "Reviewer 提示：核实是否为目标器件数据，而非引用资料。"
++            "本件是 DSCC 军标 SMD（84185），TABLE I 即该器件本身的电气性能表，"
++            "不是引用别处的资料；但只有 Min/Max 两列且带测试分组，行序需人工判读。",
++}
++
++
++# —— 逐件排除理由（人工核定，覆盖自动判定给的泛化措辞）——
++# 只在自动判定为 EXCLUDED 类时生效：把「为什么不能建 Gold」写成可复核的事实，
++# 而不是一句「无参数表」。每条都必须能对着 PDF 原文验证。
++EXCLUDED_REASON = {
++    "V347": (
++        "确为目标器件数据（DSCC 标准微电路图纸 84185，TABLE I 即该器件本身的"
++        "电气性能表，不是引用别处资料）；但该表同一符号按 Group A subgroup / "
++        "Device type 拆成 2~4 行（例：IIO 上限按 01,02 / 03 分别为 3、5、6、"
++        "20、30、40 μA），且 find_tables 在该页探不到边框表格（0 张）。"
++        "VLM 实测只能给出「每符号一行」的合并值，并固定取 01,02 那一行，"
++        "会掩盖器件类型差异 —— 属硬凑，故不进点选。"
++        "EXCLUDED: 表格版式不支持稳定还原行序，需 SMD 专用规则后再做"
++    ),
++    "V041": (
++        "电气特性页是 p2~p4 的扫描图（无文本层）；有文本层的 10 页为 "
++        "PACKAGE OPTION ADDENDUM / PACKAGE MATERIALS / PACKAGE OUTLINE / "
++        "LAND PATTERN / STENCIL DESIGN / 免责声明，其中的 MIN/MAX 是机械尺寸公差，"
++        "不是电气参数。EXCLUDED: 电气特性页无文本层，无 OCR 能力，无法建立 Gold"
++    ),
++}
++
++
+ def one_sample(meta, args):
+     """处理一件：定位表格 → 裁剪 → VLM → 收敛 → 打分 → 留 3~5 行。"""
+     sno = meta["sample_no"]
+@@ -1028,6 +1119,15 @@ def one_sample(meta, args):
+ 
+     # —— 只留核心 3~5 行 ——
+     keep, drop, _ = pick_core(rows)
++    # 首轮一行都没留下、但确实抽到了行 → 走二轮「一等电气特性」兜底。
++    # 只在首轮为空时启用，已有草稿的样本行为完全不变。
++    ext_used = False
++    if not keep and rows:
++        keep_ext, drop_ext = pick_core_ext(rows)
++        if keep_ext:
++            keep, drop, ext_used = keep_ext, drop_ext, True
++            for r in keep:
++                r["notes"] = (r.get("notes", "") + "；" + EXT_NOTE).strip("；")
+     # VLM 不抄 TEST CONDITIONS：按参数块内出现顺序从原图回填（Fail-Closed）
+     apply_condition_backfill(keep, sno)
+     mark_dups(keep)
+@@ -1060,9 +1160,18 @@ def one_sample(meta, args):
+             best = max(best, run)
+         if best >= 3:
+             quality = "无文本层"
+-            note = ("全书 %d/%d 页无文本层，前 12 页有连续 %d 页空白；"
+-                    "EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）"
+-                    % (blank, npages, best))
++            if blank == npages:
++                note = ("全书 %d/%d 页无文本层，前 12 页有连续 %d 页空白；"
++                        "EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）"
++                        % (blank, npages, best))
++            else:
++                # 只部分页是扫描图（B4 V041 的情形）：不能说「整本无文本层」，
++                # 文本层页确实存在，只是它们不是电气特性页。
++                note = ("全书 %d/%d 页无文本层（前 12 页有连续 %d 页空白），"
++                        "其余 %d 页虽有文本层，但未定位到电气参数表；"
++                        "EXCLUDED: 电气特性页为扫描图，无 OCR 能力，"
++                        "无法建立 Gold（不进点选）"
++                        % (blank, npages, best, npages - blank))
+         else:
+             quality = "无电气参数表"
+             note = ("全书有文本层，但未定位到带 MIN/TYP/MAX 列的参数表"
+@@ -1075,17 +1184,27 @@ def one_sample(meta, args):
+         # 术语解释页/线图/错表：全部行都不是「带数值的核心参数」，
+         # 此时绝不能交草稿给人，直接给 EXCLUDED 建议。
+         quality, note = ("无法定位参数表",
+-                         "定位到 %d 页但没抽到任何带数值的核心参数行；"
+-                         "建议整件标 EXCLUDED: 表格定位失败/无标准参数表"
+-                         % len(panes))
++                         "定位到 %d 页，白名单与一等电气特性两轮都没抽到"
++                         "带数值的核心参数行；建议整件标 "
++                         "EXCLUDED: 表格定位失败/无标准参数表" % len(panes))
++    elif ext_used:
++        quality = "需重点核（二轮兜底）"
++        note = ("白名单核心参数 0 行，改按一等电气特性兜底选出 %d 行"
++                "（非白名单口径，须逐行对图核）" % len(keep))
+     elif nlow:
+         quality, note = "需重点看", "核心 %d 行中 %d 行 low_confidence，先核这些" % (len(keep), nlow)
+     else:
+         quality, note = "好", "核心 %d 行置信度均 ≥%.2f" % (len(keep), THRESH)
+ 
++    if sno in EXCLUDED_REASON and (not keep):
++        note = EXCLUDED_REASON[sno]
++        if quality == "好" or quality.startswith("需重点"):
++            quality = "无电气参数表"
++
+     card = {"sno": sno, "fname": fname, "npages": npages, "pdf": pdf_url,
+             "panes": panes, "rows": keep, "quality": quality, "note": note,
+-            "dropped": len(drop), "nlow": nlow,
++            "dropped": len(drop), "nlow": nlow, "ext": ext_used,
++            "hint": REVIEW_HINTS.get(sno, ""),
+             "stratum": meta.get("stratum_proposed", "")}
+     doc.close()
+     return keep, card
+@@ -1099,6 +1218,8 @@ def main():
+                     help="输出文件名前缀，默认 Batch3")
+     ap.add_argument("--no-vlm", action="store_true",
+                     help="不调视觉模型，只用文本表格解析（调试用）")
++    ap.add_argument("--label", default="Batch 3",
++                    help="圈选台标题里的批次名，如 B4 / SCAN")
+     args = ap.parse_args()
+     want = [s.strip() for s in args.samples.split(",") if s.strip()]
+ 
+@@ -1135,9 +1256,13 @@ def main():
+ 
+     p = []
+     p.append('<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">')
+-    p.append("<title>Batch 3 圈选台（左图右文）</title>")
+-    p.append("<style>%s%s</style></head><body>" % (B.CSS, I2.EXTRA_CSS))
+-    p.append("<header><h1>Batch 3 圈选台 · %d 件 · 核心参数草稿</h1>" % len(cards))
++    p.append("<title>%s 圈选台（左图右文）</title>" % B.esc(args.label))
++    p.append("<style>%s%s%s</style></head><body>"
++             % (B.CSS, I2.EXTRA_CSS,
++                ".hint-review{background:#fff4ce;border-left:4px solid #d68b00;"
++                "padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}"))
++    p.append("<header><h1>%s 圈选台 · %d 件 · 核心参数草稿</h1>"
++             % (B.esc(args.label), len(cards)))
+     p.append("<p>左边是原图，右边是同区域抓出的纯文本。"
+              "页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；"
+              "红底行是 <code>low_confidence</code>，请优先对图。</p></header>")
+@@ -1168,6 +1293,9 @@ def main():
+                            pn["kind"], "/".join(str(x) for x in pn["span"])))
+         p.append('<div class="meta">共 %d 页 　%s</div>' % (c["npages"], "".join(tags)))
+         p.append('<div class="meta">%s</div>' % B.esc(c["note"]))
++        if c.get("hint"):
++            p.append('<div class="hint hint-review"><b>核查提示</b>　%s</div>'
++                     % B.esc(c["hint"]))
+         p.append('</div><div class="body">')
+ 
+         if c["quality"] == "无文本层":
+diff --git a/gate6a-plan/batch3_review/_make_b3_final.py b/gate6a-plan/batch3_review/_make_b3_final.py
+index 44fa206..edea840 100644
+--- a/gate6a-plan/batch3_review/_make_b3_final.py
++++ b/gate6a-plan/batch3_review/_make_b3_final.py
+@@ -31,7 +31,7 @@
+       * 5 行 condition 由 WB 按原图代录入，entered_by=WB_Agent；
+       * `Batch3_B3_FINAL_TO_SIGN.xlsx` 的 5 个 condition 格与对应
+         approved_by 格标红交给 PM，PM 补签后该文件即**唯一签名源**；
+-      * 本脚本按九字段稳定 ID 从签名源继承 approved_by，绝不按行号、
++      * 本脚本按十字段稳定 ID（九字段 + condition）从签名源继承 approved_by，绝不按行号、
+         绝不代填、绝不自动补齐：源缺失 / 表头不符 / 行数不是 20 /
+         ID 重复 / 非 PM 签名 / 落点与 entered_by=WB_Agent 行不一致，
+         一律 Fail-Closed 退出。
+@@ -231,6 +231,35 @@ def atomic_replace(tmp, dst):
+                 pass
+ 
+ 
++def _wb_signature(path):
++    """工作簿内容签名：表名/冻结/筛选/列宽 + 每格的值与填充色、加粗。
++
++    只比对「内容」，不含 docProps 时间戳，用于判断是否需要真的重写。
++    """
++    wb = openpyxl.load_workbook(str(path), data_only=False)
++    ws = wb.active
++    sig = [ws.title, ws.freeze_panes or "", ws.auto_filter.ref or ""]
++    sig.append(tuple(sorted((k, round(float(v.width or 0), 4))
++                            for k, v in ws.column_dimensions.items())))
++    for row in ws.iter_rows():
++        for c in row:
++            fill = c.fill
++            fg = ""
++            if fill is not None and fill.fill_type == "solid":
++                rgb = getattr(fill.fgColor, "rgb", None)
++                fg = rgb if isinstance(rgb, str) else str(fill.fgColor.index or "")
++            font = c.font
++            frgb = ""
++            try:
++                frgb = font.color.rgb if font and font.color else ""
++            except (TypeError, AttributeError):
++                frgb = ""
++            sig.append((c.coordinate, c.value,
++                        bool(font.b) if font else False,
++                        frgb if isinstance(frgb, str) else ""))
++    return tuple(sig)
++
++
+ def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
+     """写 19 列定稿表；highlights={(行号, 列名): 颜色}，行号从 1 起（数据行）。"""
+     wb = openpyxl.Workbook()
+@@ -254,9 +283,21 @@ def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
+             PatternFill("solid", fgColor=color)
+     ws.freeze_panes = "A2"
+     ws.auto_filter.ref = ws.dimensions
+-    tmp = path.with_name(path.name + ".wb_tmp")
++    # 临时文件必须带 .xlsx 后缀：openpyxl 读取时会校验扩展名
++    tmp = path.with_name(path.name + ".wb_tmp.xlsx")
+     wb.save(str(tmp))
++    # 幂等保护：要写的内容与磁盘现件逐格一致时，保留原字节、不重写。
++    # openpyxl 每次 save 都会刷新 docProps/core.xml 的 dcterms:modified，
++    # 会让封卷件的整包 SHA-256 无意义漂移（数据其实一字未改）。
++    if path.exists():
++        try:
++            if _wb_signature(tmp) == _wb_signature(path):
++                tmp.unlink()
++                return "未改写（内容与磁盘一致，保留原字节）"
++        except (OSError, ValueError, KeyError):
++            pass
+     atomic_replace(tmp, path)
++    return "已改写"
+ 
+ 
+ def load_approval_map(path=None):
+@@ -519,14 +560,30 @@ def main():
+                  "验证器 PDF 模式会再复算一次哈希。"),
+         ("samples", side),
+     ])
+-    tmp_side = OUT_SIDE.with_name(OUT_SIDE.name + ".wb_tmp")
+-    tmp_side.write_text(json.dumps(obj, ensure_ascii=False, indent=2),
+-                        encoding="utf-8", newline="\n")
+-    atomic_replace(tmp_side, OUT_SIDE)
+-
+-    write_xlsx(OUT_XLSX, rows, "B3_FINAL",
+-               highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
+-               | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})
++    side_text = json.dumps(obj, ensure_ascii=False, indent=2)
++    # 幂等保护：例外字段只有 generated_at。除它以外全部一致时保留原字节，
++    # 免得封卷件旁挂的 sidecar 仅因重跑时刻不同就改字节。
++    side_same = False
++    if OUT_SIDE.exists():
++        try:
++            cur = json.loads(OUT_SIDE.read_text(encoding="utf-8"))
++            new = json.loads(side_text)
++            cur.pop("generated_at", None)
++            new.pop("generated_at", None)
++            side_same = (cur == new)
++        except (OSError, ValueError, KeyError):
++            side_same = False
++    if side_same:
++        print("  sidecar：未改写（除 generated_at 外内容一致，保留原字节）")
++    else:
++        tmp_side = OUT_SIDE.with_name(OUT_SIDE.name + ".wb_tmp")
++        tmp_side.write_text(side_text, encoding="utf-8", newline="\n")
++        atomic_replace(tmp_side, OUT_SIDE)
++
++    xlsx_state = write_xlsx(
++        OUT_XLSX, rows, "B3_FINAL",
++        highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
++        | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})
+ 
+     # 注意：这里刻意不再重写 TO_SIGN。
+     # 该文件补签后就是唯一签名源（APPROVAL_SRC），重跑会覆盖掉 PM 的签名。
+@@ -537,7 +594,8 @@ def main():
+         "B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）",
+         "=" * 72,
+         "唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）",
+-        "继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。",
++        "继承方式：十字段稳定 ID（九字段 + condition）匹配，不按行号；"
++        "落点与 entered_by=WB_Agent 行必须一致。",
+         "-" * 72,
+     ]
+     for i, c in cond_lines:
+@@ -577,6 +635,7 @@ def main():
+              sum(1 for r in rows if r["approved_by"])))
+     print("  签名源：%s" % Path(args.approval).name)
+     print("  补签落点清单：%s" % TARGETS.name)
++    print("  xlsx 写入：%s" % xlsx_state)
+     return 0
+ 
+ 
+diff --git a/gate6a-plan/batch3_review/_make_scan_manifest.py b/gate6a-plan/batch3_review/_make_scan_manifest.py
+new file mode 100644
+index 0000000..be09928
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_make_scan_manifest.py
+@@ -0,0 +1,102 @@
++# -*- coding: utf-8 -*-
++"""SCAN 批登记表：纯扫描件（无文本层）逐件留痕，标 EXCLUDED 并附溯源。
++
++为什么要单独一张表：SCAN 三件不跑 VLM、不进 Gold，但"为什么不进"必须可复核。
++只写一句 EXCLUDED 是结论，不是证据；这张表把 sha256 / 页数 / 无文本层页数
++都从磁盘实算出来，Reviewer 拿同一份 PDF 就能复现。
++
++判据（与 _build_batch3_interactive.py 的 `if not panes` 分支一致）：
++  * 全书每一页 get_text("text").strip() 都为空 → 无文本层，无法建 Gold；
++  * 只要有任意一页有文字，就不该用这套理由排除（说明另有问题，须人工看）。
++
++产物：Batch3_SCAN_MANIFEST.csv（utf-8-sig，Excel 直开）
++"""
++from __future__ import print_function
++
++import csv
++import hashlib
++import sys
++from pathlib import Path
++
++import fitz
++
++PREP = Path(__file__).resolve().parent
++WORKING = PREP / "Gold_Set_v1.1_WORKING.csv"
++OUT = PREP / "Batch3_SCAN_MANIFEST.csv"
++
++SCAN_SAMPLES = ["S01", "S02", "S03"]
++REASON = "EXCLUDED: 无 OCR 能力，无法建立 Gold"
++COLS = [
++    "sample_no", "file_name", "sha256", "page_count", "size_bytes",
++    "blank_pages", "text_layer_pages", "verdict", "reason", "device_model",
++    "reviewer",
++]
++
++
++def sha(path):
++    h = hashlib.sha256()
++    with open(path, "rb") as fh:
++        for chunk in iter(lambda: fh.read(1 << 20), b""):
++            h.update(chunk)
++    return h.hexdigest()
++
++
++def main():
++    reg = {r["sample_no"]: r for r in
++           csv.DictReader(open(WORKING, encoding="utf-8-sig"))}
++    rows = []
++    for sno in SCAN_SAMPLES:
++        if sno not in reg:
++            raise SystemExit("样本不在册：%s" % sno)
++        p = Path(reg[sno]["file_path"])
++        if not p.is_file():
++            raise SystemExit("找不到 PDF：%s" % p)
++        raw = p.read_bytes()
++        digest = hashlib.sha256(raw).hexdigest()
++        doc = fitz.open(str(p))
++        n = doc.page_count
++        blank = sum(1 for i in range(n)
++                    if not doc.load_page(i).get_text("text").strip())
++        doc.close()
++        if blank != n:
++            # 有文本层就不能用「无 OCR」这套理由排除，宁可报错让人看
++            raise SystemExit(
++                "FAIL %s 有 %d/%d 页存在文本层，不能按「无 OCR 能力」排除"
++                % (sno, n - blank, n))
++        rows.append({
++            "sample_no": sno,
++            "file_name": p.name,
++            "sha256": digest,
++            "page_count": n,
++            "size_bytes": len(raw),
++            "blank_pages": blank,
++            "text_layer_pages": 0,
++            "verdict": "EXCLUDED",
++            "reason": REASON,
++            "device_model": "",      # 无文本层，型号需人工从图面确认
++            "reviewer": "",
++        })
++        print("  %-4s %-42s %3d 页  全 %d 页无文本层  sha256=%s…"
++              % (sno, p.name[:42], n, blank, digest[:16]))
++
++    tmp = OUT.with_name(OUT.name + ".tmp")
++    with open(tmp, "w", encoding="utf-8-sig", newline="") as fh:
++        w = csv.DictWriter(fh, fieldnames=COLS)
++        w.writeheader()
++        w.writerows(rows)
++    tmp.replace(OUT)
++
++    # 落盘后回读断言：行数、被判 EXCLUDED 的件数、理由原文
++    back = list(csv.DictReader(open(OUT, encoding="utf-8-sig")))
++    assert len(back) == len(SCAN_SAMPLES), "行数不符：%d" % len(back)
++    assert all(r["verdict"] == "EXCLUDED" for r in back)
++    assert all(r["reason"] == REASON for r in back)
++    assert all(r["text_layer_pages"] == "0" for r in back)
++    print("\nSCAN 登记表：%d 件，全部 EXCLUDED，理由「%s」" % (len(back), REASON))
++    print("  溯源列：sha256 / page_count / size_bytes / blank_pages 均从磁盘实算")
++    print("  产物：%s（%d 字节）" % (OUT.name, OUT.stat().st_size))
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/gate6a-plan/batch3_review/_patch_idem.py b/gate6a-plan/batch3_review/_patch_idem.py
+new file mode 100644
+index 0000000..dd418e0
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_patch_idem.py
+@@ -0,0 +1,97 @@
++# -*- coding: utf-8 -*-
++"""一次性补丁：给 _make_b3_final.write_xlsx 加内容幂等保护。
++
++背景：openpyxl 每次 save 都会刷新 docProps/core.xml 的 dcterms:modified，
++导致封卷件 Batch3_B3_FINAL.xlsx 仅因写入时刻不同就整包 SHA-256 漂移
++（xl/worksheets/sheet1.xml 其实逐字节一致）。封卷件不应有此现象。
++
++做法：先写临时文件，再用工作簿内容签名与磁盘现件比对；一致则丢弃临时文件、
++保留原字节；不一致才原子替换。
++"""
++import pathlib
++import sys
++
++P = pathlib.Path(__file__).with_name("_make_b3_final.py")
++src = P.read_text(encoding="utf-8")
++orig = src
++
++HELPER = '''def _wb_signature(path):
++    """工作簿内容签名：表名/冻结/筛选/列宽 + 每格的值与填充色、加粗。
++
++    只比对「内容」，不含 docProps 时间戳，用于判断是否需要真的重写。
++    """
++    wb = openpyxl.load_workbook(str(path), data_only=False)
++    ws = wb.active
++    sig = [ws.title, ws.freeze_panes or "", ws.auto_filter.ref or ""]
++    sig.append(tuple(sorted((k, round(float(v.width or 0), 4))
++                            for k, v in ws.column_dimensions.items())))
++    for row in ws.iter_rows():
++        for c in row:
++            fill = c.fill
++            fg = ""
++            if fill is not None and fill.fill_type == "solid":
++                rgb = getattr(fill.fgColor, "rgb", None)
++                fg = rgb if isinstance(rgb, str) else str(fill.fgColor.index or "")
++            font = c.font
++            frgb = ""
++            try:
++                frgb = font.color.rgb if font and font.color else ""
++            except (TypeError, AttributeError):
++                frgb = ""
++            sig.append((c.coordinate, c.value,
++                        bool(font.b) if font else False,
++                        frgb if isinstance(frgb, str) else ""))
++    return tuple(sig)
++
++
++def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):'''
++
++OLD_HEAD = 'def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):'
++
++OLD_TAIL = '''    tmp = path.with_name(path.name + ".wb_tmp")
++    wb.save(str(tmp))
++    atomic_replace(tmp, path)'''
++
++NEW_TAIL = '''    tmp = path.with_name(path.name + ".wb_tmp")
++    wb.save(str(tmp))
++    # 幂等保护：要写的内容与磁盘现件逐格一致时，保留原字节、不重写。
++    # openpyxl 每次 save 都会刷新 docProps/core.xml 的 dcterms:modified，
++    # 会让封卷件的整包 SHA-256 无意义漂移（数据其实一字未改）。
++    if path.exists():
++        try:
++            if _wb_signature(tmp) == _wb_signature(path):
++                tmp.unlink()
++                return "未改写（内容与磁盘一致，保留原字节）"
++        except (OSError, ValueError, KeyError):
++            pass
++    atomic_replace(tmp, path)
++    return "已改写"'''
++
++OLD_CALL = '''    write_xlsx(OUT_XLSX, rows, "B3_FINAL",
++               highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
++               | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})'''
++
++NEW_CALL = '''    xlsx_state = write_xlsx(
++        OUT_XLSX, rows, "B3_FINAL",
++        highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
++        | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})'''
++
++OLD_PRINT = '''    print("  补签落点清单：%s" % TARGETS.name)'''
++
++NEW_PRINT = '''    print("  补签落点清单：%s" % TARGETS.name)
++    print("  xlsx 写入：%s" % xlsx_state)'''
++
++for old, new, tag in [(OLD_HEAD, HELPER, "helper"),
++                      (OLD_TAIL, NEW_TAIL, "tail"),
++                      (OLD_CALL, NEW_CALL, "call"),
++                      (OLD_PRINT, NEW_PRINT, "print")]:
++    n = src.count(old)
++    if n != 1:
++        raise SystemExit("FAIL 锚点 %s 命中 %d 次（应为 1）" % (tag, n))
++    src = src.replace(old, new, 1)
++
++assert src != orig
++P.write_bytes(src.encode("utf-8"))
++print("patched:", P)
++print("lines:", src.count("\n"))
++print("CRLF:", src.encode("utf-8").count(b"\r\n"))
+diff --git a/gate6a-plan/batch3_review/_sync_batch3_review.py b/gate6a-plan/batch3_review/_sync_batch3_review.py
+index 7f60f77..bc986f8 100644
+--- a/gate6a-plan/batch3_review/_sync_batch3_review.py
++++ b/gate6a-plan/batch3_review/_sync_batch3_review.py
+@@ -120,6 +120,24 @@ SYNC = [
+     "annotation_reports/V271/b3_AMR_p0117.png",
+     "annotation_reports/V271/b3_ELC_p0123.png",
+     "annotation_reports/V271/b3_ROC_p0150.png",
++    # 第十轮：B4 圈选台（V077/V130/V290 出草稿；V347/V041 逐件 EXCLUDED 理由）
++    "Batch3_B4_Viewer.html",
++    "Batch3_B4_DRAFT.csv",
++    "Batch3_B4_generation.txt",
++    # B4 圈选台左图依赖：4 张裁图必须与 HTML 同包
++    "annotation_reports/V077/b3_ELC_p0040.png",
++    "annotation_reports/V077/b3_ROC_p0038.png",
++    "annotation_reports/V130/b3_ELC_p0002.png",
++    "annotation_reports/V290/b3_ELC_p0003.png",
++    # 第十轮：SCAN 三件登记表（无文本层，EXCLUDED，附 hash/页数溯源）
++    "_make_scan_manifest.py",
++    "Batch3_SCAN_MANIFEST.csv",
++    "Batch3_SCAN_manifest.txt",
++    "Batch3_SCAN_Viewer.html",
++    "Batch3_SCAN_DRAFT.csv",
++    "Batch3_SCAN_generation.txt",
++    # 第十轮：write_xlsx 内容幂等（封卷件不因 openpyxl 时间戳漂移而改字节）
++    "_patch_idem.py",
+ ]
+ DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
+ B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
+@@ -188,14 +206,14 @@ def main():
+             p.unlink()
+             print("  删除 %-58s （旧错页图）" % rel)
+ 
+-    # 裁图数量回归：B1 15 + B2 16 = 31 张，本轮新增 B3 9 张 = 40 张
++    # 裁图数量回归：B1 15 + B2 16 = 31 张，B3 9 张，第十轮新增 B4 4 张 = 44 张
+     pngs = sorted(p for p in DST.rglob("b3_*.png") if p.is_file())
+     old = [p for p in pngs if p.parent.name not in B3_SNOS]
+     new = [p for p in pngs if p.parent.name in B3_SNOS]
+-    print("  裁图总数: %d（B1/B2 %d 张 + B3 %d 张）"
++    print("  裁图总数: %d（B1/B2/B4 %d 张 + B3 %d 张）"
+           % (len(pngs), len(old), len(new)))
+-    assert len(old) == 31 and len(new) == 9, \
+-        "裁图数量不对：历史 %d / B3 %d" % (len(old), len(new))
++    assert len(old) == 35 and len(new) == 9, \
++        "裁图数量不对：非 B3 %d（应 35）/ B3 %d（应 9）" % (len(old), len(new))
+     assert not any("p0014.png" in p.name and "V003" in str(p) for p in pngs), \
+         "V003 旧错页图还在审计包里"
+ 

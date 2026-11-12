@@ -120,6 +120,24 @@ SYNC = [
     "annotation_reports/V271/b3_AMR_p0117.png",
     "annotation_reports/V271/b3_ELC_p0123.png",
     "annotation_reports/V271/b3_ROC_p0150.png",
+    # 第十轮：B4 圈选台（V077/V130/V290 出草稿；V347/V041 逐件 EXCLUDED 理由）
+    "Batch3_B4_Viewer.html",
+    "Batch3_B4_DRAFT.csv",
+    "Batch3_B4_generation.txt",
+    # B4 圈选台左图依赖：4 张裁图必须与 HTML 同包
+    "annotation_reports/V077/b3_ELC_p0040.png",
+    "annotation_reports/V077/b3_ROC_p0038.png",
+    "annotation_reports/V130/b3_ELC_p0002.png",
+    "annotation_reports/V290/b3_ELC_p0003.png",
+    # 第十轮：SCAN 三件登记表（无文本层，EXCLUDED，附 hash/页数溯源）
+    "_make_scan_manifest.py",
+    "Batch3_SCAN_MANIFEST.csv",
+    "Batch3_SCAN_manifest.txt",
+    "Batch3_SCAN_Viewer.html",
+    "Batch3_SCAN_DRAFT.csv",
+    "Batch3_SCAN_generation.txt",
+    # 第十轮：write_xlsx 内容幂等（封卷件不因 openpyxl 时间戳漂移而改字节）
+    "_patch_idem.py",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
 B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
@@ -188,14 +206,14 @@ def main():
             p.unlink()
             print("  删除 %-58s （旧错页图）" % rel)
 
-    # 裁图数量回归：B1 15 + B2 16 = 31 张，本轮新增 B3 9 张 = 40 张
+    # 裁图数量回归：B1 15 + B2 16 = 31 张，B3 9 张，第十轮新增 B4 4 张 = 44 张
     pngs = sorted(p for p in DST.rglob("b3_*.png") if p.is_file())
     old = [p for p in pngs if p.parent.name not in B3_SNOS]
     new = [p for p in pngs if p.parent.name in B3_SNOS]
-    print("  裁图总数: %d（B1/B2 %d 张 + B3 %d 张）"
+    print("  裁图总数: %d（B1/B2/B4 %d 张 + B3 %d 张）"
           % (len(pngs), len(old), len(new)))
-    assert len(old) == 31 and len(new) == 9, \
-        "裁图数量不对：历史 %d / B3 %d" % (len(old), len(new))
+    assert len(old) == 35 and len(new) == 9, \
+        "裁图数量不对：非 B3 %d（应 35）/ B3 %d（应 9）" % (len(old), len(new))
     assert not any("p0014.png" in p.name and "V003" in str(p) for p in pngs), \
         "V003 旧错页图还在审计包里"
 

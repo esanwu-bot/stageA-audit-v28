@@ -1,0 +1,502 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>SCAN 圈选台（左图右文）</title><style>
+*{box-sizing:border-box}
+body{margin:0;padding:0 0 60px;background:#f4f5f7;color:#1c1f23;
+ font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.65}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #d8dbe0;padding:10px 22px}
+header h1{margin:0;font-size:16px}
+header p{margin:3px 0 0;font-size:12px;color:#666}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 22px}
+.card{background:#fff;border:1px solid #dcdfe4;border-radius:6px;margin:0 0 22px;overflow:hidden}
+.head{padding:11px 16px;border-bottom:1px solid #e6e9ed;background:#fafbfc}
+.sn{font-weight:700;font-size:15px;color:#0b5cad;margin-right:10px}
+.fn{font-family:Consolas,monospace;font-size:12px;color:#444}
+.meta{margin-top:4px;font-size:12px;color:#555}
+.tag{display:inline-block;padding:1px 7px;margin-right:6px;border-radius:3px;
+ font-size:11px;font-weight:600;border:1px solid}
+.t-amr{background:#e8f0fb;color:#14509e;border-color:#c3d8f4}
+.t-elc{background:#e9f6ec;color:#1c6b33;border-color:#c3e3cc}
+.t-warn{background:#fdeceb;color:#a12a20;border-color:#f3c9c5}
+.t-ok{background:#eef7ee;color:#2c6b34;border-color:#c8e2c9}
+.body{padding:12px 16px 16px}
+figure{margin:0 0 18px}
+figure img{width:100%;height:auto;display:block;border:1px solid #cfd3d9}
+figcaption{font-size:12px;color:#555;padding:5px 2px 0}
+figcaption b{color:#1c1f23}
+table.rows{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
+table.rows th,table.rows td{border:1px solid #dcdfe4;padding:5px 7px;text-align:left}
+table.rows th{background:#f2f4f7;font-weight:600}
+table.rows td.num{font-family:Consolas,monospace;text-align:right}
+.note{background:#fffbe8;border:1px solid #efe0a8;border-radius:6px;padding:12px 16px;margin:0 0 22px;font-size:13px}
+.note h2{margin:0 0 8px;font-size:14px}
+.note ul{margin:6px 0 0;padding-left:20px}
+.hint{font-size:12px;color:#777;margin-top:6px}
+a{color:#0b5cad}
+
+.dh{font-size:12px;color:#444;margin:6px 0 6px}
+.pill{display:inline-block;padding:1px 7px;border-radius:3px;font-size:11px;
+ font-weight:600;margin-right:4px}
+.pill.ok{background:#e9f6ec;color:#1c6b33;border:1px solid #c3e3cc}
+.pill.low{background:#fdeceb;color:#a12a20;border:1px solid #f3c9c5}
+tr.conf-ok td{background:#f3faf4}
+tr.conf-low td{background:#fdf3f2}
+tr.empty-row td{background:#fff8e6;color:#8a6d3b}
+tr.empty-row input{background:#fffdf5}
+tr.clicked td.sn::after{content:" ·点";color:#0b5cad;font-size:10px}
+.warn{color:#a12a20;font-size:10.5px;font-weight:600}
+.filter{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+ font-size:12.5px;background:#f4f6f9;border:1px solid #dfe3e8;
+ border-radius:4px;padding:8px 10px;margin-bottom:10px}
+.filter select{font-size:12.5px;padding:3px 6px;border:1px solid #cfd5dd;border-radius:3px}
+.filter label{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
+.stat{font-size:12px;color:#444;margin:6px 0 10px}
+.stat.bad{color:#a12a20;font-weight:600}
+.filter .imp{font-size:12px;color:#0b5cad;border:1px dashed #b9cde4;
+ border-radius:4px;padding:5px 9px;cursor:pointer}
+.filter .imp input{display:none}
+button.mini{background:#fff;border:1px solid #d8b4b0;color:#a12a20;
+ border-radius:3px;font-size:11px;padding:2px 7px;cursor:pointer}
+button.ghost{background:#fff;color:#44536a;border:1px solid #cfd5dd;border-radius:4px;
+ padding:7px 12px;font-size:12.5px;cursor:pointer;margin-left:6px}
+td.cf{font-size:11px;color:#666}
+.cols{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
+.cols .left{flex:0 0 56%;min-width:0}
+.cols .right{flex:1 1 auto;min-width:0}
+.cols img{width:100%;height:auto;border:1px solid #cfd3d9;display:block}
+.cap{font-size:12px;color:#666;padding-top:4px}
+.rh{font-size:12px;color:#444;background:#f4f6f9;border:1px solid #dfe3e8;
+ border-bottom:0;padding:5px 8px;border-radius:4px 4px 0 0}
+.cnt{float:right;color:#888}
+ol.lines{margin:0;padding:4px 0;list-style:none;border:1px solid #dfe3e8;
+ max-height:520px;overflow:auto;background:#fff;border-radius:0 0 4px 4px}
+ol.lines li{padding:3px 8px;font-size:12.5px;font-family:Consolas,monospace;
+ cursor:pointer;border-bottom:1px dotted #eef0f3;white-space:pre-wrap}
+ol.lines li:hover{background:#e8f0fb}
+ol.lines li.picked{background:#e6f4ea}
+.pane{margin:0 0 18px}
+.err{background:#fdeceb;border:1px solid #f3c9c5;color:#a12a20;
+ padding:10px 14px;border-radius:5px;font-size:13px;margin-bottom:12px}
+.work{background:#fff;border:1px solid #dcdfe4;border-radius:6px;padding:14px 16px;margin-top:8px}
+.work h2{margin:0 0 10px;font-size:15px}
+table.rows input{width:100%;border:1px solid #e2e5ea;padding:3px 5px;font-size:12px}
+table.rows select{width:100%;border:1px solid #e2e5ea;font-size:11.5px;padding:3px}
+table.rows td.num input{text-align:right;font-family:Consolas,monospace}
+.bar{margin:10px 0 6px}
+.bar button{background:#0b5cad;color:#fff;border:0;border-radius:4px;
+ padding:7px 16px;font-size:13px;cursor:pointer}
+.bar button.dl{background:#fff;color:#0b5cad;border:1px solid #b9cde4;margin-left:6px}
+.msg{margin-left:10px;font-size:12px;color:#2c6b34}
+#out{width:100%;height:110px;font-family:Consolas,monospace;font-size:11.5px;
+ border:1px solid #dfe3e8;border-radius:4px;padding:8px;background:#fbfcfd}
+.hint-review{background:#fff4ce;border-left:4px solid #d68b00;padding:8px 10px;margin:8px 0;border-radius:4px;font-size:13px}</style></head><body><header><h1>SCAN 圈选台 · 3 件 · 核心参数草稿</h1><p>左边是原图，右边是同区域抓出的纯文本。页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；红底行是 <code>low_confidence</code>，请优先对图。</p></header><div class="wrap"><div class="note"><h2>怎么用</h2><ul><li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li><li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；不是参数（表头、注释）直接删。</li><li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、或模型自报很低。这些行最可能有错。</li><li>草稿没覆盖的核心参数，用「新增空行」自己补。</li><li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li></ul><div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、既无参数名又无符号的行。</div></div><div class="card"><div class="head"><span class="sn">S01</span><span class="fn">CY74FCT162827CTPAC__CYPRS379-1.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CY74FCT162827CTPAC__CYPRS379-1.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 6 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 6/6 页无文本层，前 12 页有连续 6 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="card"><div class="head"><span class="sn">S02</span><span class="fn">ATOPA4343NA_2K5__BURRS00055-1.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/ATOPA4343NA_2K5__BURRS00055-1.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 11 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 11/11 页无文本层，前 12 页有连续 11 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="card"><div class="head"><span class="sn">S03</span><span class="fn">32P4752-CGT__SISYD006-4-73.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/32P4752-CGT__SISYD006-4-73.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 53 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 53/53 页无文本层，前 12 页有连续 12 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2><div class="filter"><label>样本 <select id="fsample"></select></label><label><input type="checkbox" id="fnum"> 只看有数值的行</label><label><input type="checkbox" id="ftodo"> 只看未确认的行</label><button class="ghost" onclick="addBlank()">新增空行</button><button class="ghost" onclick="dropNoName()">删掉无参数名的行</button><button class="ghost" onclick="resetDraft()">恢复机器草稿</button><label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label></div><div id="stat" class="stat"></div><table class="rows" id="tbl"><thead><tr><th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th><th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th><th></th></tr></thead><tbody id="tbody"></tbody></table><div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button><button onclick="copyOut()" class="dl">复制 CSV</button> <label style="font-size:12.5px;margin-left:8px"><input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label><span id="msg" class="msg"></span></div><textarea id="out" readonly></textarea></div></div><script>window.B3_EXPORT_NAME="Batch3_SCAN_ANNOTATED";
+/* Batch 2 圈选台前端。
+ *
+ * 设计要点（第二版）：
+ *   1) 编辑区**预载机器草稿**。第一版 `ROWS = []`，逼着人把整页文本重新点一遍，
+ *      结果 148 行里 59 行没数值也被签了 CONFIRMED —— 这是设计错误，已改。
+ *      现在人的动作是「删掉垃圾行 + 校对留下的 3~5 行」，而不是从零点选。
+ *   2) 点选文本行仍然保留，作为「草稿里漏了某个参数」时的补充手段，追加到末尾。
+ *   3) 导出前会拦：状态是 CONFIRMED 但 min/typ/max 全空的行不许悄悄混进去。
+ */
+const DRAFT = [];
+const THRESH = 0.85;   // 由生成器注入，与 Python 侧的 THRESH 同源
+
+// 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
+// 这里退回原来的默认名，保证它的行为一字不变；Batch 3 生成器按 --out-prefix
+// 注入，例如 Batch3_B2_ANNOTATED.csv，避免六件草稿都顶着 Batch2 的名字。
+const EXPORT_NAME = window.B3_EXPORT_NAME || "Batch2_ANNOTATED";
+
+const FIELDS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
+  "parameter_name", "min_value", "typ_value", "max_value", "unit", "condition",
+  "row_status", "notes", "reviewer", "confidence_score"];
+
+const STATUS = [
+  "DRAFT_AWAITING_HUMAN_CONFIRM",
+  "CONFIRMED",
+  "UNRESOLVED: 表格排版混乱，无法定位列",
+  "EXCLUDED: 文档内无标准参数表",
+  "EXCLUDED: 无 OCR 能力，无法建立 Gold"
+];
+
+// 单个单位记号。复合单位（V/µs、dBFS/Hz）由下面拼接，别一个个枚举，
+// 漏掉一个就有整行单位空着（Slew rate 的 V/µs 就是这么丢的）。
+const U1 = "(?:mV|µV|μV|kV|V|mA|µA|μA|nA|pA|A|kΩ|MΩ|Ω|ohm|°C|MHz|kHz|GHz|Hz"
+         + "|ns|µs|μs|ms|ps|s|pF|nF|µF|μF|uF|mW|W|%|dBFS|dBFs|dB)";
+const UNIT_RE = new RegExp("^" + U1 + "(?:\\/" + U1 + ")?$");
+
+// U+2212（数学减号）以及各种破折号/全角连字符。PDF 里负号几乎都是 U+2212，
+// 不先归一，`−65` 会被当成非数字串，`V_S− to V_S+` 里的分隔符也认不出来。
+const MINUS_CHARS = /[\u2212\u2010\u2011\u2012\u2013\u2014\u2015\uFF0D]/g;
+// 只认"像符号"的东西：全大写（VID / GND / IO）或带一段下标（V_IH）。
+const SYM_RE = /^[A-Z\u0394][A-Z0-9]{0,11}$|^[A-Z\u0394][A-Z0-9]{0,3}_[A-Za-z0-9]{1,3}$/;
+
+let ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
+
+function hasNum(r) {
+  return ["min_value", "typ_value", "max_value"].some(k => (r[k] || "").trim() !== "");
+}
+
+function parseLine(raw) {
+  // 点线引导符（`Package . . . . . 69`）里每个点都是独立 token，`\.{3,}` 匹配不到，
+  // 必须按"两个以上带空白的点"整体吃掉，否则参数名会拖一串点。
+  let s = raw.replace(MINUS_CHARS, "-").replace(/(?:\s*\.){2,}\s*/g, " ");
+  s = s.replace(/\s+/g, " ").trim();
+  const toks = s.split(" ").filter(t => t && !/^to$/i.test(t));
+
+  // 负号可能与数字被空格拆开（`- 65`），先合并，否则 min 丢掉符号变成 65。
+  const merged = [];
+  for (let i = 0; i < toks.length; i++) {
+    const t = toks[i];
+    if (/^[-+±]$/.test(t) && i + 1 < toks.length && /^\d/.test(toks[i + 1])) {
+      merged.push(t + toks[i + 1]);
+      i++;
+      continue;
+    }
+    merged.push(t);
+  }
+
+  const nums = [], units = [], rest = [];
+  for (const tk of merged) {
+    if (tk === "-") continue;                 // 孤立的连字符只是分隔符
+    if (/^\([^()]*\)$/.test(tk)) continue;    // `(320)` `(mV_p-p)` 是备选值/备注
+    const m = tk.match(/^([±+\-]?\d+(?:\.\d+)?)([A-Za-zµμΩ°%\/]*)$/);
+    if (m) {
+      nums.push(m[1]);
+      if (m[2]) units.push(m[2]);
+      continue;
+    }
+    if (UNIT_RE.test(tk)) { units.push(tk); continue; }
+    rest.push(tk);
+  }
+
+  // 首词像符号才摘出来。整行只剩符号时要允许 rest.length==1，
+  // 否则 `VID ±2.5 V` 会把符号当成参数名；但整行没有数字时不动，那多半是标题行。
+  let symbol = "";
+  if (nums.length > 0 && rest.length >= 1 && rest[0].length <= 12 && SYM_RE.test(rest[0])) {
+    symbol = rest.shift();
+  }
+
+  // 一个数都没解析出来的行不是参数行（表头、注释），参数名留空，
+  // 原文进 notes，免得把 `. . . . .` 这类垃圾灌进参数名列。
+  const name = nums.length ? rest.join(" ").replace(/[,;:]+$/, "").trim() : "";
+  let unit = units.length ? units[units.length - 1] : "";
+  unit = unit.replace(/\s*\([^)]*\)$/, "");
+  let mn = "", typ = "", mx = "";
+  if (nums.length === 1) mx = nums[0];
+  else if (nums.length === 2) { mn = nums[0]; mx = nums[1]; }
+  else if (nums.length >= 3) { mn = nums[0]; typ = nums[1]; mx = nums[2]; }
+  return {symbol, name, min: mn, typ, max: mx, unit, nums: nums.length};
+}
+
+function msg(t) {
+  document.getElementById("msg").textContent = t;
+}
+
+function addFromLine(li) {
+  const box = li.closest(".pane");
+  const p = parseLine(li.dataset.t);
+  // 这些手册的表格里，数字和标签**不在同一条基线**（标签 y=382.7，数字 y=375.7），
+  // 所以右侧必然出现"只有数字"的碎片行。点它只会造出一行没名字的垃圾，
+  // 这种行进不了 Gold（无法判断它是什么参数），直接拦掉，提示去表里填。
+  if (!p.name && !p.symbol) {
+    msg("这行只有数字/单位，没有参数名 —— 请在下方对应行直接填数值，"
+        + "或用「新增空行」自己写参数名。不要点它建行。");
+    li.classList.add("dead");
+    return;
+  }
+  ROWS.push({
+    sample_no: box.dataset.sno,
+    file_name: box.dataset.fn,
+    evidence_page: box.dataset.page,
+    table_title: box.dataset.title,
+    symbol: p.symbol,
+    parameter_name: p.name,
+    min_value: p.min, typ_value: p.typ, max_value: p.max,
+    unit: p.unit,
+    condition: "",
+    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
+    notes: "点选文本行生成，需与左图核对；原文：" + li.dataset.t.slice(0, 80),
+    reviewer: "",
+    confidence_score: "",
+    _src: "click"
+  });
+  render();
+  li.classList.add("picked");
+}
+
+function addBlank() {
+  const s = document.getElementById("fsample").value;
+  const sample = (s !== "*") ? s : (DRAFT[0] ? DRAFT[0].sample_no : "");
+  const base = DRAFT.filter(r => r.sample_no === sample)[0] || {};
+  ROWS.push({
+    sample_no: sample,
+    file_name: base.file_name || "",
+    evidence_page: base.evidence_page || "",
+    table_title: base.table_title || "",
+    symbol: "", parameter_name: "",
+    min_value: "", typ_value: "", max_value: "", unit: "", condition: "",
+    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
+    notes: "人工新增",
+    reviewer: "", confidence_score: "", _src: "manual"
+  });
+  render();
+  msg("已在 " + sample + " 末尾新增一行，请填写参数名与数值");
+}
+
+function dropNoName() {
+  const before = ROWS.length;
+  ROWS = ROWS.filter(r => (r.parameter_name || "").trim() !== ""
+                       || (r.symbol || "").trim() !== "");
+  render();
+  msg("已删除 " + (before - ROWS.length) + " 行既没有参数名也没有符号的行");
+}
+
+function visible() {
+  const s = document.getElementById("fsample").value;
+  const onlyNum = document.getElementById("fnum").checked;
+  const onlyTodo = document.getElementById("ftodo").checked;
+  const out = [];
+  ROWS.forEach((r, i) => {
+    if (s !== "*" && r.sample_no !== s) return;
+    if (onlyNum && !hasNum(r)) return;
+    if (onlyTodo && r.row_status === "CONFIRMED") return;
+    out.push({r, i});
+  });
+  return out;
+}
+
+function cell(tr, opts) {
+  const td = document.createElement("td");
+  if (opts.text !== undefined) {
+    td.textContent = opts.text;
+    td.className = opts.cls || "";
+  } else {
+    const inp = document.createElement("input");
+    inp.value = opts.value || "";
+    inp.oninput = () => { opts.set(inp.value); refreshRowMeta(); };
+    td.appendChild(inp);
+    if (opts.num) td.className = "num";
+  }
+  tr.appendChild(td);
+  return td;
+}
+
+function render() {
+  const tb = document.getElementById("tbody");
+  tb.innerHTML = "";
+  const list = visible();
+  for (const {r, i} of list) {
+    const tr = document.createElement("tr");
+    const cf = parseFloat(r.confidence_score || "");
+    if (!isNaN(cf)) tr.className = cf >= THRESH ? "conf-ok" : "conf-low";
+    if (!hasNum(r)) tr.classList.add("empty-row");
+    if (r._src === "click") tr.classList.add("clicked");
+
+    cell(tr, {text: r.sample_no || "", cls: "sn"});
+    cell(tr, {text: r.evidence_page || "", cls: "num"});
+    cell(tr, {value: r.symbol, set: v => r.symbol = v});
+    cell(tr, {value: r.parameter_name, set: v => r.parameter_name = v});
+    cell(tr, {value: r.min_value, set: v => r.min_value = v, num: true});
+    cell(tr, {value: r.typ_value, set: v => r.typ_value = v, num: true});
+    cell(tr, {value: r.max_value, set: v => r.max_value = v, num: true});
+    cell(tr, {value: r.unit, set: v => r.unit = v});
+
+    const tdS = document.createElement("td");
+    const sel = document.createElement("select");
+    for (const v of STATUS) {
+      const o = document.createElement("option");
+      o.value = v; o.textContent = v;
+      if (v === r.row_status) o.selected = true;
+      sel.appendChild(o);
+    }
+    sel.onchange = () => { r.row_status = sel.value; refreshRowMeta(); };
+    tdS.appendChild(sel);
+    tr.appendChild(tdS);
+
+    cell(tr, {text: r.confidence_score || "-", cls: "num cf"});
+
+    const tdD = document.createElement("td");
+    const btn = document.createElement("button");
+    btn.textContent = "删";
+    btn.className = "mini";
+    btn.onclick = () => { ROWS.splice(i, 1); render(); };
+    tdD.appendChild(btn);
+    tr.appendChild(tdD);
+
+    tb.appendChild(tr);
+  }
+  document.getElementById("cnt").textContent =
+    list.length + " / " + ROWS.length;
+  refreshRowMeta();
+}
+
+function refreshRowMeta() {
+  const all = ROWS.length;
+  const num = ROWS.filter(hasNum).length;
+  const conf = ROWS.filter(r => r.row_status === "CONFIRMED").length;
+  const bad = ROWS.filter(r => r.row_status === "CONFIRMED" && !hasNum(r)).length;
+  const noName = ROWS.filter(r => !(r.parameter_name || "").trim()
+                                && !(r.symbol || "").trim()).length;
+  const bySample = {};
+  ROWS.forEach(r => {
+    bySample[r.sample_no] = bySample[r.sample_no] || {n: 0, k: 0};
+    bySample[r.sample_no].n++;
+    if (hasNum(r)) bySample[r.sample_no].k++;
+  });
+  const parts = Object.keys(bySample).sort().map(s =>
+    s + ":" + bySample[s].k + "/" + bySample[s].n);
+  let t = "共 " + all + " 行：" + num + " 行有数值，" + conf + " 行已确认";
+  if (bad) t += "，其中 " + bad + " 行确认了却没有数值（必须处理）";
+  if (noName) t += "；" + noName + " 行既无参数名也无符号（进不了 Gold，建议删）";
+  t += "　|　有数值/总数 " + parts.join("  ");
+  const el = document.getElementById("stat");
+  el.textContent = t;
+  el.className = (bad || noName) ? "stat bad" : "stat";
+}
+
+function q(v) {
+  v = (v === undefined || v === null) ? "" : String(v);
+  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+}
+
+function csvText() {
+  const dropEmpty = document.getElementById("dropEmpty").checked;
+  // 既没参数名也没符号的行进不了 Gold（读表的人无法判断它是什么参数），
+  // 勾了"丢空行"就一起丢掉，别让它悄悄混进分母。
+  const rows = ROWS.filter(r => !dropEmpty || (hasNum(r)
+      && ((r.parameter_name || "").trim() || (r.symbol || "").trim())));
+  const head = FIELDS.join(",");
+  const lines = rows.map(r => FIELDS.map(f => q(r[f])).join(","));
+  return {text: [head].concat(lines).join("\n"), n: rows.length};
+}
+
+function downloadCSV() {
+  const {text, n} = csvText();
+  // 前面加 U+FEFF（BOM）：Excel 看到 BOM 才按 UTF-8 解码，
+  // 否则 ° µ − 会被当成无法映射的字符显示成 ?。
+  const blob = new Blob(["\ufeff" + text], {type: "text/csv;charset=utf-8"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = EXPORT_NAME + ".csv";
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  document.getElementById("msg").textContent =
+    "已下载 " + EXPORT_NAME + ".csv（" + n + " 行，UTF-8 带 BOM，Excel 直接打开不乱码）";
+}
+
+function copyOut() {
+  const ta = document.getElementById("out");
+  ta.value = csvText().text;
+  ta.select();
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+  document.getElementById("msg").textContent = ok
+    ? "已复制到剪贴板，粘到 Excel 即可"
+    : "复制失败：请手动 Ctrl+A 全选文本框再 Ctrl+C";
+}
+
+function cleanEmpty() {
+  const s = document.getElementById("fsample").value;
+  const before = ROWS.length;
+  ROWS = ROWS.filter(r => (s !== "*" && r.sample_no !== s) || hasNum(r));
+  render();
+  document.getElementById("msg").textContent =
+    "已删除 " + (before - ROWS.length) + " 行无 min/typ/max 的空行";
+}
+
+function resetDraft() {
+  if (!confirm("放弃所有改动，恢复到机器草稿？")) return;
+  ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
+  render();
+  msg("已恢复机器草稿");
+}
+
+/* ---- CSV 回导：换新版本页面时把上次的进度接回来，不用重做 ---- */
+function parseCSVText(text) {
+  text = text.replace(/^\ufeff/, "");
+  const rows = [];
+  let row = [], cur = "", inQ = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQ) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { cur += '"'; i++; }
+        else inQ = false;
+      } else cur += c;
+    } else if (c === '"') inQ = true;
+    else if (c === ",") { row.push(cur); cur = ""; }
+    else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
+    else if (c === "\r") { /* 丢掉 */ }
+    else cur += c;
+  }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+  return rows;
+}
+
+function importCSV(input) {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try {
+      const table = parseCSVText(String(r.result));
+      if (table.length < 2) throw new Error("文件里没有数据行");
+      const head = table.shift().map(s => s.trim());
+      if (head[0] !== "sample_no") {
+        throw new Error("表头第一列不是 sample_no，可能不是这个页面导出的文件");
+      }
+      const objs = [];
+      for (const a of table) {
+        if (!a.length || !(a[0] || "").trim()) continue;
+        const o = {};
+        FIELDS.forEach(k => o[k] = "");
+        head.forEach((h, i) => {
+          if (FIELDS.indexOf(h) >= 0) o[h] = (a[i] || "").trim();
+        });
+        o._src = "import";
+        objs.push(o);
+      }
+      if (!objs.length) throw new Error("解析出 0 行");
+      ROWS = objs;
+      fillSamples();
+      document.getElementById("fsample").value = "*";
+      render();
+      msg("已导入 " + objs.length + " 行，可以接着改");
+    } catch (e) {
+      msg("导入失败：" + e.message);
+    } finally {
+      input.value = "";
+    }
+  };
+  r.readAsText(f, "utf-8");
+}
+
+function fillSamples() {
+  const sel = document.getElementById("fsample");
+  const keep = sel.value;
+  sel.innerHTML = "";
+  const seen = [];
+  ROWS.forEach(r => { if (seen.indexOf(r.sample_no) < 0) seen.push(r.sample_no); });
+  ["*"].concat(seen.sort()).forEach(s => {
+    const o = document.createElement("option");
+    o.value = s;
+    o.textContent = s === "*" ? "全部样本" : s;
+    sel.appendChild(o);
+  });
+  if (seen.indexOf(keep) >= 0 || keep === "*") sel.value = keep;
+}
+
+document.addEventListener("click", (e) => {
+  const li = e.target.closest("li.line");
+  if (li && !li.classList.contains("dead")) addFromLine(li);
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  fillSamples();
+  document.getElementById("fsample").value = "*";
+  ["fsample", "fnum", "ftodo"].forEach(id =>
+    document.getElementById(id).addEventListener("change", render));
+  document.getElementById("fimp").addEventListener("change", (e) => importCSV(e.target));
+  render();
+});
+</script></body></html>

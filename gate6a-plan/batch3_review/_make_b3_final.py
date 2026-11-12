@@ -31,7 +31,7 @@
       * 5 行 condition 由 WB 按原图代录入，entered_by=WB_Agent；
       * `Batch3_B3_FINAL_TO_SIGN.xlsx` 的 5 个 condition 格与对应
         approved_by 格标红交给 PM，PM 补签后该文件即**唯一签名源**；
-      * 本脚本按九字段稳定 ID 从签名源继承 approved_by，绝不按行号、
+      * 本脚本按十字段稳定 ID（九字段 + condition）从签名源继承 approved_by，绝不按行号、
         绝不代填、绝不自动补齐：源缺失 / 表头不符 / 行数不是 20 /
         ID 重复 / 非 PM 签名 / 落点与 entered_by=WB_Agent 行不一致，
         一律 Fail-Closed 退出。
@@ -231,6 +231,35 @@ def atomic_replace(tmp, dst):
                 pass
 
 
+def _wb_signature(path):
+    """工作簿内容签名：表名/冻结/筛选/列宽 + 每格的值与填充色、加粗。
+
+    只比对「内容」，不含 docProps 时间戳，用于判断是否需要真的重写。
+    """
+    wb = openpyxl.load_workbook(str(path), data_only=False)
+    ws = wb.active
+    sig = [ws.title, ws.freeze_panes or "", ws.auto_filter.ref or ""]
+    sig.append(tuple(sorted((k, round(float(v.width or 0), 4))
+                            for k, v in ws.column_dimensions.items())))
+    for row in ws.iter_rows():
+        for c in row:
+            fill = c.fill
+            fg = ""
+            if fill is not None and fill.fill_type == "solid":
+                rgb = getattr(fill.fgColor, "rgb", None)
+                fg = rgb if isinstance(rgb, str) else str(fill.fgColor.index or "")
+            font = c.font
+            frgb = ""
+            try:
+                frgb = font.color.rgb if font and font.color else ""
+            except (TypeError, AttributeError):
+                frgb = ""
+            sig.append((c.coordinate, c.value,
+                        bool(font.b) if font else False,
+                        frgb if isinstance(frgb, str) else ""))
+    return tuple(sig)
+
+
 def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
     """写 19 列定稿表；highlights={(行号, 列名): 颜色}，行号从 1 起（数据行）。"""
     wb = openpyxl.Workbook()
@@ -254,9 +283,21 @@ def write_xlsx(path, rows, sheet, highlights=None, head_color="2F5597"):
             PatternFill("solid", fgColor=color)
     ws.freeze_panes = "A2"
     ws.auto_filter.ref = ws.dimensions
-    tmp = path.with_name(path.name + ".wb_tmp")
+    # 临时文件必须带 .xlsx 后缀：openpyxl 读取时会校验扩展名
+    tmp = path.with_name(path.name + ".wb_tmp.xlsx")
     wb.save(str(tmp))
+    # 幂等保护：要写的内容与磁盘现件逐格一致时，保留原字节、不重写。
+    # openpyxl 每次 save 都会刷新 docProps/core.xml 的 dcterms:modified，
+    # 会让封卷件的整包 SHA-256 无意义漂移（数据其实一字未改）。
+    if path.exists():
+        try:
+            if _wb_signature(tmp) == _wb_signature(path):
+                tmp.unlink()
+                return "未改写（内容与磁盘一致，保留原字节）"
+        except (OSError, ValueError, KeyError):
+            pass
     atomic_replace(tmp, path)
+    return "已改写"
 
 
 def load_approval_map(path=None):
@@ -519,14 +560,30 @@ def main():
                  "验证器 PDF 模式会再复算一次哈希。"),
         ("samples", side),
     ])
-    tmp_side = OUT_SIDE.with_name(OUT_SIDE.name + ".wb_tmp")
-    tmp_side.write_text(json.dumps(obj, ensure_ascii=False, indent=2),
-                        encoding="utf-8", newline="\n")
-    atomic_replace(tmp_side, OUT_SIDE)
+    side_text = json.dumps(obj, ensure_ascii=False, indent=2)
+    # 幂等保护：例外字段只有 generated_at。除它以外全部一致时保留原字节，
+    # 免得封卷件旁挂的 sidecar 仅因重跑时刻不同就改字节。
+    side_same = False
+    if OUT_SIDE.exists():
+        try:
+            cur = json.loads(OUT_SIDE.read_text(encoding="utf-8"))
+            new = json.loads(side_text)
+            cur.pop("generated_at", None)
+            new.pop("generated_at", None)
+            side_same = (cur == new)
+        except (OSError, ValueError, KeyError):
+            side_same = False
+    if side_same:
+        print("  sidecar：未改写（除 generated_at 外内容一致，保留原字节）")
+    else:
+        tmp_side = OUT_SIDE.with_name(OUT_SIDE.name + ".wb_tmp")
+        tmp_side.write_text(side_text, encoding="utf-8", newline="\n")
+        atomic_replace(tmp_side, OUT_SIDE)
 
-    write_xlsx(OUT_XLSX, rows, "B3_FINAL",
-               highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
-               | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})
+    xlsx_state = write_xlsx(
+        OUT_XLSX, rows, "B3_FINAL",
+        highlights={(i, "condition"): "E2EFDA" for i in cond_row_ids}
+        | {(i, "entered_by"): "E2EFDA" for i in cond_row_ids})
 
     # 注意：这里刻意不再重写 TO_SIGN。
     # 该文件补签后就是唯一签名源（APPROVAL_SRC），重跑会覆盖掉 PM 的签名。
@@ -537,7 +594,8 @@ def main():
         "B3 补签落点清单（V256 五行 condition 由 WB 按原图代录入，PM 已补签）",
         "=" * 72,
         "唯一签名源：Batch3_B3_FINAL_TO_SIGN.xlsx（PM 2026-11-12 12:14 保存）",
-        "继承方式：九字段稳定 ID 匹配，不按行号；落点与 entered_by=WB_Agent 行必须一致。",
+        "继承方式：十字段稳定 ID（九字段 + condition）匹配，不按行号；"
+        "落点与 entered_by=WB_Agent 行必须一致。",
         "-" * 72,
     ]
     for i, c in cond_lines:
@@ -577,6 +635,7 @@ def main():
              sum(1 for r in rows if r["approved_by"])))
     print("  签名源：%s" % Path(args.approval).name)
     print("  补签落点清单：%s" % TARGETS.name)
+    print("  xlsx 写入：%s" % xlsx_state)
     return 0
 
 
