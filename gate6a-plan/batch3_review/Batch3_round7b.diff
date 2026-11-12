@@ -1,25 +1,14 @@
 # Batch 3 第七轮补齐（Reviewer 两条硬伤：clip Fail-Closed / V256 condition）
-# 生成时间基线：HEAD=f9a52f833083884411fa69d774c3d6cc2afa7abd
+# 覆盖范围：f9a52f8..工作区（本轮全部改动）
+# 排除：ZIP / SHA256SUMS / png / xlsx / *.diff 自身（避免自引用）
 
 ## git status --short
- M gate6a-plan/batch3_review/Batch3_B3_DRAFT.csv
- M gate6a-plan/batch3_review/Batch3_B3_Viewer.html
- M gate6a-plan/batch3_review/Batch3_B3_generation.txt
- M gate6a-plan/batch3_review/Batch3_CORE_ORDER_regression.txt
- M gate6a-plan/batch3_review/Batch3_DRAFT.csv
- M gate6a-plan/batch3_review/Batch3_Viewer.html
- M gate6a-plan/batch3_review/Batch3_review.zip
- M gate6a-plan/batch3_review/INDEX.md
- M gate6a-plan/batch3_review/SHA256SUMS.txt
- M gate6a-plan/batch3_review/_build_batch3_interactive.py
- M gate6a-plan/batch3_review/_sync_batch3_review.py
- M gate6a-plan/batch3_review/_test_core_order_and_header.py
-?? gate6a-plan/batch3_review/Batch3_DRAFT_before_condition_backfill.csv
-?? gate6a-plan/batch3_review/Batch3_V003_regression.txt
-?? gate6a-plan/batch3_review/Batch3_Viewer_before_condition_backfill.html
-?? gate6a-plan/batch3_review/Batch3_round7b.diff
+M  gate6a-plan/batch3_review/Batch3_review.zip
+MM gate6a-plan/batch3_review/Batch3_round7b.diff
+M  gate6a-plan/batch3_review/SHA256SUMS.txt
+M  gate6a-plan/batch3_review/_sync_batch3_review.py
 
-## git diff HEAD（排除 ZIP / SHA256SUMS / png / xlsx 二进制）
+## git diff f9a52f8
 diff --git a/gate6a-plan/batch3_review/Batch3_B3_DRAFT.csv b/gate6a-plan/batch3_review/Batch3_B3_DRAFT.csv
 index 121dcee..29b7876 100644
 --- a/gate6a-plan/batch3_review/Batch3_B3_DRAFT.csv
@@ -109,6 +98,82 @@ index 121dcee..29b7876 100644
  V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.14,1.2,1.32,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
  V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.05,1.1,1.16,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
  V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),0.95,1.0,1.05,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
+diff --git a/gate6a-plan/batch3_review/Batch3_DRAFT_before_condition_backfill.csv b/gate6a-plan/batch3_review/Batch3_DRAFT_before_condition_backfill.csv
+new file mode 100644
+index 0000000..121dcee
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_DRAFT_before_condition_backfill.csv
+@@ -0,0 +1,21 @@
++﻿sample_no,file_name,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,confidence_score
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VIK,"VCC = 4.75, IIN = -18 mA",,-0.7,-1.2,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence,,0.80
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VOH,"VCC = 4.75, IOH = -32 mA",2,,,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence,,0.80
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VOH,"VCC = 4.75, IOH = -15 mA",2.4,3.3,,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence,,0.80
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,VOL,"VCC = 4.75, IOL = 64 mA",,0.3,0.55,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence,,0.80
++V146,CY74FCT399ATSOCT__cy74fct399t.pdf,4,Electrical Characteristics,II,"VCC = 5.25 V, VIN = VCC",,,5,μA,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence,,0.80
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdd_mpu_iva,Supply voltage range for MPU / IVA domain,-0.5,,1.5,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdd_core,Supply voltage range for core domain,-0.5,,1.5,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdds_sram,Supply voltage for SRAM LDOs,-0.5,,2.1,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdda_dac,Supply voltage for video buffers and DAC,-0.5,,2.1,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V271,DM3725CBC100__dm3725.pdf,117,Absolute Maximum Ratings,vdds,Supply voltage for 1.8-V I/O macros,-0.5,,2.1,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.1,,6.1,mV,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.90
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.90
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.6,mV,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.90
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.8,,6.7,mV,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.90
++V256,BQ79652PAPRQ1.pdf,13,Electrical Characteristics,V(MAIN-AUX),Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;,-7.9,,6.9,mV,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.90
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.14,1.2,1.32,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),1.05,1.1,1.16,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,CVDD,Core Logic Supply Voltage (variable),0.95,1.0,1.05,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认,,0.95
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,RVDD,Internal RAM Supply Voltage,1.14,1.2,1.32,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
++V244,AM1802BZWTD3__am1802.pdf,44,Recommended Operating Conditions,RTC_CVDD,RTC Core Logic Supply Voltage,0.9,1.2,1.32,V,,DRAFT_AWAITING_HUMAN_CONFIRM,VLM 草稿，须对左图核；vlm自报=1.00,,0.95
+diff --git a/gate6a-plan/batch3_review/Batch3_V003_regression.txt b/gate6a-plan/batch3_review/Batch3_V003_regression.txt
+new file mode 100644
+index 0000000..1812dd4
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_V003_regression.txt
+@@ -0,0 +1,43 @@
++V003 真实 PDF 回归：AM2431BSDFHIALXR__am2431.pdf
++页数：282
++加固后候选页：[101, 102, 105, 106, 108, 109, 110, 111, 112, 113, 115, 117, 119]（13 页）
++PASS p101（第 6 章真表）保留
++PASS p102（第 6 章真表）保留
++PASS p105（第 6 章真表）保留
++PASS p106（第 6 章真表）保留
++PASS p108（第 6 章真表）保留
++PASS p109（第 6 章真表）保留
++PASS p110（第 6 章真表）保留
++PASS p111（第 6 章真表）保留
++PASS p112（第 6 章真表）保留
++PASS p113（第 6 章真表）保留
++PASS p115（第 6 章真表）保留
++PASS p117（第 6 章真表）保留
++PASS p119（第 6 章真表）保留
++PASS p14（术语解释页）排除
++PASS 候选页集合与 13 页真表清单一致，无多余页
++
++==========================================================================================================================
++13 页真实表的上下文链路证据（页级分类 → 表头指纹 → 上下文关联）
++==========================================================================================================================
++pno    本页类别     本页 Page_Title                                上一页类别/标题                              指纹sim  放行链路
++--------------------------------------------------------------------------------------------------------------------------
++p101   STRONG   6.1 Absolute Maximum Ratings                 NONE / (无)                               --  LOCAL_TITLE
++p102   NONE     (无)                                          STRONG / 6.1 Absolute Maximum          1.00  INHERITED_TITLE_FINGERPRINT
++p105   STRONG   6.4 Recommended Operating Conditions         NONE / (无)                               --  LOCAL_TITLE
++p106   NONE     (无)                                          STRONG / 6.4 Recommended Opera         1.00  INHERITED_TITLE_FINGERPRINT
++p108   STRONG   6.7 Electrical Characteristics               NONE / (无)                               --  LOCAL_TITLE
++p109   STRONG   6.7.2 Fail-Safe Reset (FS RESET) Electrica   STRONG / 6.7 Electrical Charac           --  LOCAL_TITLE,LOCAL_TITLE
++p110   STRONG   6.7.4 eMMCPHY Electrical Characteristics     STRONG / 6.7.2 Fail-Safe Reset           --  LOCAL_TITLE
++p111   STRONG   6.7.5 SDIO Electrical Characteristics        STRONG / 6.7.4 eMMCPHY Electri           --  LOCAL_TITLE
++p112   STRONG   6.7.6 LVCMOS Electrical Characteristics      STRONG / 6.7.5 SDIO Electrical           --  LOCAL_TITLE
++p113   STRONG   6.7.7 ADC12B Electrical Characteristics (A   STRONG / 6.7.6 LVCMOS Electric           --  LOCAL_TITLE
++p115   STRONG   6.7.8 ADC10B Electrical Characteristics (A   NONE / (无)                               --  LOCAL_TITLE
++p117   STRONG   6.8 VPP Specifications for One-Time Progra   STRONG / 6.7.9 USB2PHY Electri           --  LOCAL_TITLE
++p119   STRONG   Table 6-3. VTM Die Temperature Sensor Char   STRONG / Table 6-2. Thermal Re           --  LOCAL_TITLE
++--------------------------------------------------------------------------------------------------------------------------
++PASS 恰好 2 页走指纹继承：[102, 106]（PM 指定 p102 / p106）
++PASS 11 页有本页独立标题，走 LOCAL_TITLE 正常提取：[101, 105, 108, 109, 110, 111, 112, 113, 115, 117, 119]
++PASS 13 页共 14 张表签名 bbox 全在本页 clip 内（隔离 2 / Y 轴越界）
++PASS 13 页表头词均在本页文本核到（隔离 3 / 跨页正文串入）
++结论：全部通过
 diff --git a/gate6a-plan/batch3_review/Batch3_Viewer.html b/gate6a-plan/batch3_review/Batch3_Viewer.html
 index 6a5e623..f0349cd 100644
 --- a/gate6a-plan/batch3_review/Batch3_Viewer.html
@@ -122,6 +187,515 @@ index 6a5e623..f0349cd 100644
  const THRESH = 0.85;   // 由生成器注入，与 Python 侧的 THRESH 同源
  
  // 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
+diff --git a/gate6a-plan/batch3_review/Batch3_Viewer_before_condition_backfill.html b/gate6a-plan/batch3_review/Batch3_Viewer_before_condition_backfill.html
+new file mode 100644
+index 0000000..6a5e623
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_Viewer_before_condition_backfill.html
+@@ -0,0 +1,502 @@
++<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>Batch 3 圈选台（左图右文）</title><style>
++*{box-sizing:border-box}
++body{margin:0;padding:0 0 60px;background:#f4f5f7;color:#1c1f23;
++ font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;font-size:14px;line-height:1.65}
++header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid #d8dbe0;padding:10px 22px}
++header h1{margin:0;font-size:16px}
++header p{margin:3px 0 0;font-size:12px;color:#666}
++.wrap{max-width:1100px;margin:0 auto;padding:20px 22px}
++.card{background:#fff;border:1px solid #dcdfe4;border-radius:6px;margin:0 0 22px;overflow:hidden}
++.head{padding:11px 16px;border-bottom:1px solid #e6e9ed;background:#fafbfc}
++.sn{font-weight:700;font-size:15px;color:#0b5cad;margin-right:10px}
++.fn{font-family:Consolas,monospace;font-size:12px;color:#444}
++.meta{margin-top:4px;font-size:12px;color:#555}
++.tag{display:inline-block;padding:1px 7px;margin-right:6px;border-radius:3px;
++ font-size:11px;font-weight:600;border:1px solid}
++.t-amr{background:#e8f0fb;color:#14509e;border-color:#c3d8f4}
++.t-elc{background:#e9f6ec;color:#1c6b33;border-color:#c3e3cc}
++.t-warn{background:#fdeceb;color:#a12a20;border-color:#f3c9c5}
++.t-ok{background:#eef7ee;color:#2c6b34;border-color:#c8e2c9}
++.body{padding:12px 16px 16px}
++figure{margin:0 0 18px}
++figure img{width:100%;height:auto;display:block;border:1px solid #cfd3d9}
++figcaption{font-size:12px;color:#555;padding:5px 2px 0}
++figcaption b{color:#1c1f23}
++table.rows{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:8px}
++table.rows th,table.rows td{border:1px solid #dcdfe4;padding:5px 7px;text-align:left}
++table.rows th{background:#f2f4f7;font-weight:600}
++table.rows td.num{font-family:Consolas,monospace;text-align:right}
++.note{background:#fffbe8;border:1px solid #efe0a8;border-radius:6px;padding:12px 16px;margin:0 0 22px;font-size:13px}
++.note h2{margin:0 0 8px;font-size:14px}
++.note ul{margin:6px 0 0;padding-left:20px}
++.hint{font-size:12px;color:#777;margin-top:6px}
++a{color:#0b5cad}
++
++.dh{font-size:12px;color:#444;margin:6px 0 6px}
++.pill{display:inline-block;padding:1px 7px;border-radius:3px;font-size:11px;
++ font-weight:600;margin-right:4px}
++.pill.ok{background:#e9f6ec;color:#1c6b33;border:1px solid #c3e3cc}
++.pill.low{background:#fdeceb;color:#a12a20;border:1px solid #f3c9c5}
++tr.conf-ok td{background:#f3faf4}
++tr.conf-low td{background:#fdf3f2}
++tr.empty-row td{background:#fff8e6;color:#8a6d3b}
++tr.empty-row input{background:#fffdf5}
++tr.clicked td.sn::after{content:" ·点";color:#0b5cad;font-size:10px}
++.warn{color:#a12a20;font-size:10.5px;font-weight:600}
++.filter{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
++ font-size:12.5px;background:#f4f6f9;border:1px solid #dfe3e8;
++ border-radius:4px;padding:8px 10px;margin-bottom:10px}
++.filter select{font-size:12.5px;padding:3px 6px;border:1px solid #cfd5dd;border-radius:3px}
++.filter label{display:inline-flex;align-items:center;gap:4px;cursor:pointer}
++.stat{font-size:12px;color:#444;margin:6px 0 10px}
++.stat.bad{color:#a12a20;font-weight:600}
++.filter .imp{font-size:12px;color:#0b5cad;border:1px dashed #b9cde4;
++ border-radius:4px;padding:5px 9px;cursor:pointer}
++.filter .imp input{display:none}
++button.mini{background:#fff;border:1px solid #d8b4b0;color:#a12a20;
++ border-radius:3px;font-size:11px;padding:2px 7px;cursor:pointer}
++button.ghost{background:#fff;color:#44536a;border:1px solid #cfd5dd;border-radius:4px;
++ padding:7px 12px;font-size:12.5px;cursor:pointer;margin-left:6px}
++td.cf{font-size:11px;color:#666}
++.cols{display:flex;gap:14px;align-items:flex-start;margin-bottom:14px}
++.cols .left{flex:0 0 56%;min-width:0}
++.cols .right{flex:1 1 auto;min-width:0}
++.cols img{width:100%;height:auto;border:1px solid #cfd3d9;display:block}
++.cap{font-size:12px;color:#666;padding-top:4px}
++.rh{font-size:12px;color:#444;background:#f4f6f9;border:1px solid #dfe3e8;
++ border-bottom:0;padding:5px 8px;border-radius:4px 4px 0 0}
++.cnt{float:right;color:#888}
++ol.lines{margin:0;padding:4px 0;list-style:none;border:1px solid #dfe3e8;
++ max-height:520px;overflow:auto;background:#fff;border-radius:0 0 4px 4px}
++ol.lines li{padding:3px 8px;font-size:12.5px;font-family:Consolas,monospace;
++ cursor:pointer;border-bottom:1px dotted #eef0f3;white-space:pre-wrap}
++ol.lines li:hover{background:#e8f0fb}
++ol.lines li.picked{background:#e6f4ea}
++.pane{margin:0 0 18px}
++.err{background:#fdeceb;border:1px solid #f3c9c5;color:#a12a20;
++ padding:10px 14px;border-radius:5px;font-size:13px;margin-bottom:12px}
++.work{background:#fff;border:1px solid #dcdfe4;border-radius:6px;padding:14px 16px;margin-top:8px}
++.work h2{margin:0 0 10px;font-size:15px}
++table.rows input{width:100%;border:1px solid #e2e5ea;padding:3px 5px;font-size:12px}
++table.rows select{width:100%;border:1px solid #e2e5ea;font-size:11.5px;padding:3px}
++table.rows td.num input{text-align:right;font-family:Consolas,monospace}
++.bar{margin:10px 0 6px}
++.bar button{background:#0b5cad;color:#fff;border:0;border-radius:4px;
++ padding:7px 16px;font-size:13px;cursor:pointer}
++.bar button.dl{background:#fff;color:#0b5cad;border:1px solid #b9cde4;margin-left:6px}
++.msg{margin-left:10px;font-size:12px;color:#2c6b34}
++#out{width:100%;height:110px;font-family:Consolas,monospace;font-size:11.5px;
++ border:1px solid #dfe3e8;border-radius:4px;padding:8px;background:#fbfcfd}
++</style></head><body><header><h1>Batch 3 圈选台 · 6 件 · 核心参数草稿</h1><p>左边是原图，右边是同区域抓出的纯文本。页面下方已载入 <b>VLM 草稿</b>，每件只留最核心的 3~5 行；红底行是 <code>low_confidence</code>，请优先对图。</p></header><div class="wrap"><div class="note"><h2>怎么用</h2><ul><li>草稿<b>不是 Gold</b>。每一行都要对着左图核一遍再改状态。</li><li>核过的行改 <code>CONFIRMED</code>；说不清的改 <code>UNRESOLVED</code>；不是参数（表头、注释）直接删。</li><li><b>红底 = low_confidence</b>：数值在页面文本里没对上、或单位对不上、或模型自报很低。这些行最可能有错。</li><li>草稿没覆盖的核心参数，用「新增空行」自己补。</li><li>最后按「下载 CSV」。<b>不要用 Excel 另存</b>，会把编码变成 GBK。</li></ul><div class="hint">导出时会拦：状态 CONFIRMED 却没有数值的行、既无参数名又无符号的行。</div></div><div class="card"><div class="head"><span class="sn">V328</span><span class="fn">CD4014BE__cd4014b.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CD4014BE__cd4014b.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 29 页 　<span class="tag t-warn">草稿：无文本层</span></div><div class="meta">全书 12/29 页无文本层，前 12 页有连续 4 页空白；EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）</div></div><div class="body"><div class="err">本页抓不到任何文字（纯图形/扫描件）。请整件标 <code>EXCLUDED: 无 OCR 能力，无法建立 Gold</code>。</div></div></div><div class="card"><div class="head"><span class="sn">V146</span><span class="fn">CY74FCT399ATSOCT__cy74fct399t.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/CY74FCT399ATSOCT__cy74fct399t.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 16 页 　<span class="tag t-warn">草稿：需重点看</span><span class="tag t-elc">ELC = p4</span></div><div class="meta">核心 5 行中 5 行 low_confidence，先核这些</div></div><div class="body"><div class="pane" data-sno="V146" data-fn="CY74FCT399ATSOCT__cy74fct399t.pdf" data-page="4" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V146/b3_ELC_p0004.png" target="_blank"><img src="annotation_reports/V146/b3_ELC_p0004.png" alt="V146 p4"></a><div class="cap">Electrical Characteristics · 第 4 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">106 行</span></div><ol class="lines"><li class="line" data-t="electrical characteristics over recommended operating free-air temperature range (unless">electrical characteristics over recommended operating free-air temperature range (unless</li><li class="line" data-t="otherwise noted)">otherwise noted)</li><li class="line" data-t="TYP†">TYP†</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="VIK">VIK</li><li class="line" data-t="VCC = 4.75,">VCC = 4.75,</li><li class="line" data-t="IIN = –18 mA">IIN = –18 mA</li><li class="line" data-t="–0.7">–0.7</li><li class="line" data-t="–1.2">–1.2</li><li class="line" data-t="IOH = –32 mA">IOH = –32 mA</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="VCC = 4 75">VCC = 4 75</li><li class="line" data-t="VCC = 4.75">VCC = 4.75</li><li class="line" data-t="IOH = –15 mA">IOH = –15 mA</li><li class="line" data-t="2.4">2.4</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="VCC = 4.75,">VCC = 4.75,</li><li class="line" data-t="IOL = 64 mA">IOL = 64 mA</li><li class="line" data-t="0.3">0.3</li><li class="line" data-t="0.55">0.55</li><li class="line" data-t="VH">VH</li><li class="line" data-t="All inputs">All inputs</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="II">II</li><li class="line" data-t="VCC = 5.25 V,">VCC = 5.25 V,</li><li class="line" data-t="VIN = VCC">VIN = VCC</li><li class="line" data-t="µA">µA</li><li class="line" data-t="IIH">IIH</li><li class="line" data-t="VCC = 5.25 V,">VCC = 5.25 V,</li><li class="line" data-t="VIN = 2.7 V">VIN = 2.7 V</li><li class="line" data-t="±1">±1</li><li class="line" data-t="µA">µA</li><li class="line" data-t="IIL">IIL</li><li class="line" data-t="VCC = 5.25 V,">VCC = 5.25 V,</li><li class="line" data-t="VIN = 0.5 V">VIN = 0.5 V</li><li class="line" data-t="±1">±1</li><li class="line" data-t="µA">µA</li><li class="line" data-t="IOS‡">IOS‡</li><li class="line" data-t="VCC = 5.25 V,">VCC = 5.25 V,</li><li class="line" data-t="VOUT = 0 V">VOUT = 0 V</li><li class="line" data-t="–60">–60</li><li class="line" data-t="–120">–120</li><li class="line" data-t="–225">–225</li><li class="line" data-t="mA">mA</li><li class="line" data-t="Ioff">Ioff</li><li class="line" data-t="VCC = 0 V,">VCC = 0 V,</li><li class="line" data-t="VOUT = 4.5 V">VOUT = 4.5 V</li><li class="line" data-t="±1">±1</li><li class="line" data-t="µA">µA</li><li class="line" data-t="ICC">ICC</li><li class="line" data-t="VCC = 5.25 V,">VCC = 5.25 V,</li><li class="line" data-t="VIN ≤ 0.2 V,">VIN ≤ 0.2 V,</li><li class="line" data-t="VIN ≥VCC – 0.2 V">VIN ≥VCC – 0.2 V</li><li class="line" data-t="0.1">0.1</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="mA">mA</li><li class="line" data-t="VCC = 5.25 V, VIN = 3.4 V§, f1 = 0, Outputs open">VCC = 5.25 V, VIN = 3.4 V§, f1 = 0, Outputs open</li><li class="line" data-t="∆ICC">∆ICC</li><li class="line" data-t="0.5">0.5</li><li class="line" data-t="mA">mA</li><li class="line" data-t="VCC = 5.25 V, One input switching at 50% duty cycle, Outputs open,">VCC = 5.25 V, One input switching at 50% duty cycle, Outputs open,</li><li class="line" data-t="mA/">mA/</li><li class="line" data-t="ICCD¶">ICCD¶</li><li class="line" data-t="0.06">0.06</li><li class="line" data-t="0.12">0.12</li><li class="line" data-t="VIN ≤0.2 V or VIN ≥VCC – 0.2 V">VIN ≤0.2 V or VIN ≥VCC – 0.2 V</li><li class="line" data-t="MHz">MHz</li><li class="line" data-t="VIN ≤0.2 V or">VIN ≤0.2 V or</li><li class="line" data-t="One input switching">One input switching</li><li class="line" data-t="0.7">0.7</li><li class="line" data-t="1.4">1.4</li><li class="line" data-t="VIN ≥VCC – 0.2 V">VIN ≥VCC – 0.2 V</li><li class="line" data-t="at f1 = 5 MHz">at f1 = 5 MHz</li><li class="line" data-t="VCC = 5 25 V">VCC = 5 25 V</li><li class="line" data-t="VCC = 5.25 V,">VCC = 5.25 V,</li><li class="line" data-t="at 50% duty cycle">at 50% duty cycle</li><li class="line" data-t="VIN = 3.4 V or GND">VIN = 3.4 V or GND</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="3.4">3.4</li><li class="line" data-t="f0 = 10 MHz,">f0 = 10 MHz,</li><li class="line" data-t="IC#">IC#</li><li class="line" data-t="mA">mA</li><li class="line" data-t="Outputs open,">Outputs open,</li><li class="line" data-t="VIN ≤0.2 V or">VIN ≤0.2 V or</li><li class="line" data-t="Four inputs switching">Four inputs switching</li><li class="line" data-t="3.2||">3.2||</li><li class="line" data-t="1.6">1.6</li><li class="line" data-t="S = Steady state">S = Steady state</li><li class="line" data-t="VIN ≥VCC – 0.2 V">VIN ≥VCC – 0.2 V</li><li class="line" data-t="at f1 = 5 MHz">at f1 = 5 MHz</li><li class="line" data-t="at 50% duty cycle">at 50% duty cycle</li><li class="line" data-t="8.2||">8.2||</li><li class="line" data-t="VIN = 3.4 V or GND">VIN = 3.4 V or GND</li><li class="line" data-t="2.9">2.9</li><li class="line" data-t="Ci">Ci</li><li class="line" data-t="10">10</li><li class="line" data-t="pF">pF</li><li class="line" data-t="Co">Co</li><li class="line" data-t="12">12</li><li class="line" data-t="pF">pF</li><li class="line" data-t="† Typical values are at VCC = 5 V, TA = 25°C.">† Typical values are at VCC = 5 V, TA = 25°C.</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 3 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V222</span><span class="fn">AFE4462YBGR__afe4462.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/AFE4462YBGR__afe4462.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 9 页 　<span class="tag t-warn">草稿：无电气参数表</span></div><div class="meta">全书有文本层，但未定位到带 MIN/TYP/MAX 列的参数表（本件多为封装 / 机械 / 卷带 / 免责声明资料）；EXCLUDED: 无标准参数表，无法建立 Gold（不进点选）</div></div><div class="body"></div></div><div class="card"><div class="head"><span class="sn">V271</span><span class="fn">DM3725CBC100__dm3725.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/DM3725CBC100__dm3725.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 283 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-amr">AMR = p117</span><span class="tag t-elc">ROC = p119/120/150</span><span class="tag t-elc">ELC = p117/119/120/121/122/123/124/126/127/134/135/136/137/138/139/150/151/154</span></div><div class="meta">核心 5 行置信度均 ≥0.85</div></div><div class="body"><div class="pane" data-sno="V271" data-fn="DM3725CBC100__dm3725.pdf" data-page="117" data-title="Absolute Maximum Ratings"><div class="cols"><div class="left"><a href="annotation_reports/V271/b3_AMR_p0117.png" target="_blank"><img src="annotation_reports/V271/b3_AMR_p0117.png" alt="V271 p117"></a><div class="cap">Absolute Maximum Ratings · 第 117 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">87 行</span></div><ol class="lines"><li class="line" data-t="3.1">3.1</li><li class="line" data-t="Absolute Maximum Ratings">Absolute Maximum Ratings</li><li class="line" data-t="Stresses beyond those listed as absolute maximum ratings may cause permanent damage to the device.">Stresses beyond those listed as absolute maximum ratings may cause permanent damage to the device.</li><li class="line" data-t="These are stress ratings only, and functional operation of the device at these or any other conditions">These are stress ratings only, and functional operation of the device at these or any other conditions</li><li class="line" data-t="beyond those listed under &quot;Recommended Operating Conditions&quot; is not implied. Exposure to absolute">beyond those listed under &quot;Recommended Operating Conditions&quot; is not implied. Exposure to absolute</li><li class="line" data-t="maximum rated conditions for extended periods may affect device reliability.">maximum rated conditions for extended periods may affect device reliability.</li><li class="line" data-t="Table 3-1. Absolute Maximum Rating over Junction Temperature Range">Table 3-1. Absolute Maximum Rating over Junction Temperature Range</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="vdd_mpu_iva">vdd_mpu_iva</li><li class="line" data-t="Supply voltage range for MPU / IVA domain">Supply voltage range for MPU / IVA domain</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="1.5">1.5</li><li class="line" data-t="vdd_core">vdd_core</li><li class="line" data-t="Supply voltage range for core domain">Supply voltage range for core domain</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="1.5">1.5</li><li class="line" data-t="vdda_wkup_bg_bb">vdda_wkup_bg_bb</li><li class="line" data-t="Supply voltage range for wake-up domain (internal">Supply voltage range for wake-up domain (internal</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="LDO)">LDO)</li><li class="line" data-t="vdda_dplls_dll">vdda_dplls_dll</li><li class="line" data-t="Supply voltage for MPU, IVA, Core DPLLs, and DLL">Supply voltage for MPU, IVA, Core DPLLs, and DLL</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="vdda_dpll_per">vdda_dpll_per</li><li class="line" data-t="Supply voltage for DPLLs (peripherals)">Supply voltage for DPLLs (peripherals)</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="vdds_sram">vdds_sram</li><li class="line" data-t="Supply voltage for SRAM LDOs">Supply voltage for SRAM LDOs</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="vdda_dac">vdda_dac</li><li class="line" data-t="Supply voltage for video buffers and DAC">Supply voltage for video buffers and DAC</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="vdds">vdds</li><li class="line" data-t="Supply voltage for 1.8-V I/O macros">Supply voltage for 1.8-V I/O macros</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="vdds_mem">vdds_mem</li><li class="line" data-t="Supply voltage for memory buffers">Supply voltage for memory buffers</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="vdds_mmc1">vdds_mmc1</li><li class="line" data-t="Supply voltage range for mmc1 dual voltage IOs">Supply voltage range for mmc1 dual voltage IOs</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="3.8">3.8</li><li class="line" data-t="vdds_x">vdds_x</li><li class="line" data-t="Supply voltage range for dual voltage GPIOs">Supply voltage range for dual voltage GPIOs</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="3.8">3.8</li><li class="line" data-t="JTAG(9)">JTAG(9)</li><li class="line" data-t="200">200</li><li class="line" data-t="CAM(6)">CAM(6)</li><li class="line" data-t="VESD">VESD</li><li class="line" data-t="ESD stress">ESD stress</li><li class="line" data-t="HBM (Human">HBM (Human</li><li class="line" data-t="400">400</li><li class="line" data-t="voltage(1)">voltage(1)</li><li class="line" data-t="Body Model)(2)">Body Model)(2)</li><li class="line" data-t="GPMC(8)">GPMC(8)</li><li class="line" data-t="500">500</li><li class="line" data-t="Other signals">Other signals</li><li class="line" data-t="1000">1000</li><li class="line" data-t="CDM (Charged Device Model)(3)">CDM (Charged Device Model)(3)</li><li class="line" data-t="250">250</li><li class="line" data-t="Current-pulse injection on each IO pin(5)">Current-pulse injection on each IO pin(5)</li><li class="line" data-t="IIOI">IIOI</li><li class="line" data-t="200">200</li><li class="line" data-t="mA">mA</li><li class="line" data-t="Iclamp">Iclamp</li><li class="line" data-t="Clamp current for an input or output">Clamp current for an input or output</li><li class="line" data-t="–20">–20</li><li class="line" data-t="20">20</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(4)">(4)</li><li class="line" data-t="TSTG">TSTG</li><li class="line" data-t="Storage temperature range">Storage temperature range</li><li class="line" data-t="–65">–65</li><li class="line" data-t="150">150</li><li class="line" data-t="°C">°C</li><li class="line" data-t="(1) Electrostatic discharge (ESD) to measure device sensitivity/immunity to damage caused by electrostatic discharges into the device.">(1) Electrostatic discharge (ESD) to measure device sensitivity/immunity to damage caused by electrostatic discharges into the device.</li></ol></div></div></div><div class="pane" data-sno="V271" data-fn="DM3725CBC100__dm3725.pdf" data-page="150" data-title="Recommended Operating Conditions"><div class="cols"><div class="left"><a href="annotation_reports/V271/b3_ROC_p0150.png" target="_blank"><img src="annotation_reports/V271/b3_ROC_p0150.png" alt="V271 p150"></a><div class="cap">Recommended Operating Conditions · 第 150 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">87 行</span></div><ol class="lines"><li class="line" data-t="5.4">5.4</li><li class="line" data-t="Electrical Specifications Over Recommended Operating Conditions">Electrical Specifications Over Recommended Operating Conditions</li><li class="line" data-t="NOTE">NOTE</li><li class="line" data-t="High-swing mode is the default mode. The low-swing mode is not compliant with the NTSC">High-swing mode is the default mode. The low-swing mode is not compliant with the NTSC</li><li class="line" data-t="and PAL video-standards. It shall be used only for backwards compatibility to AM/DM37x.">and PAL video-standards. It shall be used only for backwards compatibility to AM/DM37x.</li><li class="line" data-t="TVOUT DC High Swing Mode:">TVOUT DC High Swing Mode:</li><li class="line" data-t="ROUT1/2 = 2.7 kΩ (±1%)">ROUT1/2 = 2.7 kΩ (±1%)</li><li class="line" data-t="RSET = 4.7 kΩ (±1%)">RSET = 4.7 kΩ (±1%)</li><li class="line" data-t="RLOAD = 75 Ω (±5%)">RLOAD = 75 Ω (±5%)</li><li class="line" data-t="ZCABLE = 75 Ω (±5%)">ZCABLE = 75 Ω (±5%)</li><li class="line" data-t="TVOUT DC Low Swing Mode:">TVOUT DC Low Swing Mode:</li><li class="line" data-t="ROUT1/2 = 2.7 kΩ (±1%)">ROUT1/2 = 2.7 kΩ (±1%)</li><li class="line" data-t="RSET = 6.8 kΩ (±1%)">RSET = 6.8 kΩ (±1%)</li><li class="line" data-t="RLOAD = 75 Ω (±5%)">RLOAD = 75 Ω (±5%)</li><li class="line" data-t="ZCABLE = 75 Ω (±5%)">ZCABLE = 75 Ω (±5%)</li><li class="line" data-t="TVOUT AC High Swing Mode:">TVOUT AC High Swing Mode:</li><li class="line" data-t="ROUT1/2 = 2.7 kΩ (±1%)">ROUT1/2 = 2.7 kΩ (±1%)</li><li class="line" data-t="RSET = 4.7 kΩ (±1%)">RSET = 4.7 kΩ (±1%)</li><li class="line" data-t="RLOAD = 75 Ω (±5%)">RLOAD = 75 Ω (±5%)</li><li class="line" data-t="ZCABLE = 75 Ω (±5%)">ZCABLE = 75 Ω (±5%)</li><li class="line" data-t="CAC = 220 µF (±5%)">CAC = 220 µF (±5%)</li><li class="line" data-t="TVOUT AC Low Swing Mode:">TVOUT AC Low Swing Mode:</li><li class="line" data-t="ROUT1/2 = 2.7 kΩ (±1%)">ROUT1/2 = 2.7 kΩ (±1%)</li><li class="line" data-t="RSET = 6.8 kΩ (±1%)">RSET = 6.8 kΩ (±1%)</li><li class="line" data-t="RLOAD = 75 Ω (±5%)">RLOAD = 75 Ω (±5%)</li><li class="line" data-t="ZCABLE = 75 Ω (±5%)">ZCABLE = 75 Ω (±5%)</li><li class="line" data-t="CAC = 220 µF (±5%)">CAC = 220 µF (±5%)</li><li class="line" data-t="Table 5-1. DAC – Static Electrical Specifications(8)">Table 5-1. DAC – Static Electrical Specifications(8)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="CONDITIONS/ASSUMPTIONS">CONDITIONS/ASSUMPTIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="Resolution">Resolution</li><li class="line" data-t="10">10</li><li class="line" data-t="Bits">Bits</li><li class="line" data-t="DC ACCURACY">DC ACCURACY</li><li class="line" data-t="INL(1)">INL(1)</li><li class="line" data-t="Integral Non-Linearity (INL)">Integral Non-Linearity (INL)</li><li class="line" data-t="50 to 111 input code range">50 to 111 input code range</li><li class="line" data-t="–6">–6</li><li class="line" data-t="LSB">LSB</li><li class="line" data-t="Integral Non-Linearity (INL)">Integral Non-Linearity (INL)</li><li class="line" data-t="111 to 895 input code range">111 to 895 input code range</li><li class="line" data-t="–4">–4</li><li class="line" data-t="Signal video range">Signal video range</li><li class="line" data-t="Integral Non-Linearity (INL)">Integral Non-Linearity (INL)</li><li class="line" data-t="783 to 1007 input code range">783 to 1007 input code range</li><li class="line" data-t="–5">–5</li><li class="line" data-t="Synchronization pulse">Synchronization pulse</li><li class="line" data-t="DNL(2)">DNL(2)</li><li class="line" data-t="Differential nonlinearity">Differential nonlinearity</li><li class="line" data-t="111 to 895 input code range">111 to 895 input code range</li><li class="line" data-t="–2.5">–2.5</li><li class="line" data-t="2.5">2.5</li><li class="line" data-t="LSB">LSB</li><li class="line" data-t="ANALOG OUTPUT">ANALOG OUTPUT</li><li class="line" data-t="Output voltage">Output voltage</li><li class="line" data-t="0 to 1023 input">0 to 1023 input</li><li class="line" data-t="Low-swing mode">Low-swing mode</li><li class="line" data-t="0.70">0.70</li><li class="line" data-t="0.88">0.88</li><li class="line" data-t="1.00">1.00</li><li class="line" data-t="code range,">code range,</li><li class="line" data-t="High-swing mode">High-swing mode</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="1.5">1.5</li><li class="line" data-t="RLOAD = 75 Ω">RLOAD = 75 Ω</li><li class="line" data-t="Gain error">Gain error</li><li class="line" data-t="Low-swing mode">Low-swing mode</li><li class="line" data-t="–20">–20</li><li class="line" data-t="20">20</li><li class="line" data-t="% FS">% FS</li><li class="line" data-t="High-swing mode">High-swing mode</li><li class="line" data-t="–10">–10</li><li class="line" data-t="10">10</li><li class="line" data-t="RVOUT">RVOUT</li><li class="line" data-t="Output impedance">Output impedance</li><li class="line" data-t="67.5">67.5</li><li class="line" data-t="75.0">75.0</li><li class="line" data-t="82.5">82.5</li><li class="line" data-t="REFERENCE">REFERENCE</li><li class="line" data-t="VREF">VREF</li><li class="line" data-t="Internal Band Gap Voltage Reference">Internal Band Gap Voltage Reference</li><li class="line" data-t="0.55">0.55</li></ol></div></div></div><div class="pane" data-sno="V271" data-fn="DM3725CBC100__dm3725.pdf" data-page="123" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V271/b3_ELC_p0123.png" target="_blank"><img src="annotation_reports/V271/b3_ELC_p0123.png" alt="V271 p123"></a><div class="cap">Electrical Characteristics · 第 123 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">152 行</span></div><ol class="lines"><li class="line" data-t="Table 3-5. DC Electrical Characteristics (continued)">Table 3-5. DC Electrical Characteristics (continued)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="NOM">NOM</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="VHYS (1)">VHYS (1)</li><li class="line" data-t="Hysteresis voltage at an input">Hysteresis voltage at an input</li><li class="line" data-t="0.15">0.15</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage open-drain at 3-mA sink current">Low-level output voltage open-drain at 3-mA sink current</li><li class="line" data-t="0.2 * vdds">0.2 * vdds</li><li class="line" data-t="Input current at each I/O pin with an input voltage between">Input current at each I/O pin with an input voltage between</li><li class="line" data-t="–10">–10</li><li class="line" data-t="10">10</li><li class="line" data-t="μA">μA</li><li class="line" data-t="0.1 * vdds to 0.9 * vdds">0.1 * vdds to 0.9 * vdds</li><li class="line" data-t="CI">CI</li><li class="line" data-t="Capacitance for each I/O pin">Capacitance for each I/O pin</li><li class="line" data-t="10">10</li><li class="line" data-t="pF">pF</li><li class="line" data-t="tFOUT(5)">tFOUT(5)</li><li class="line" data-t="Output fall time from VIHmin to VILmax with a bus capacitance">Output fall time from VIHmin to VILmax with a bus capacitance</li><li class="line" data-t="20 + 0.1CB">20 + 0.1CB</li><li class="line" data-t="250">250</li><li class="line" data-t="ns">ns</li><li class="line" data-t="CB from 10 pF to 400 pF">CB from 10 pF to 400 pF</li><li class="line" data-t="tROUT(5)">tROUT(5)</li><li class="line" data-t="Output rise time with a capacitive load from 10 pF to 150 pF">Output rise time with a capacitive load from 10 pF to 150 pF</li><li class="line" data-t="20 + 0.1CB">20 + 0.1CB</li><li class="line" data-t="250">250</li><li class="line" data-t="ns">ns</li><li class="line" data-t="with internal pullup">with internal pullup</li><li class="line" data-t="High-Speed Mode">High-Speed Mode</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="High-level input voltage">High-level input voltage</li><li class="line" data-t="0.7 * vdds">0.7 * vdds</li><li class="line" data-t="vdds + 0.5">vdds + 0.5</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Low-level input voltage">Low-level input voltage</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="0.3 * vdds">0.3 * vdds</li><li class="line" data-t="VHYS (1)">VHYS (1)</li><li class="line" data-t="Hysteresis voltage at an input">Hysteresis voltage at an input</li><li class="line" data-t="0.15">0.15</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage open-drain at 3-mA sink current">Low-level output voltage open-drain at 3-mA sink current</li><li class="line" data-t="0.2 * vdds">0.2 * vdds</li><li class="line" data-t="Input current at each I/O pin with an input voltage between">Input current at each I/O pin with an input voltage between</li><li class="line" data-t="–10">–10</li><li class="line" data-t="10">10</li><li class="line" data-t="μA">μA</li><li class="line" data-t="0.1 * vdds to 0.9 * vdds">0.1 * vdds to 0.9 * vdds</li><li class="line" data-t="CI">CI</li><li class="line" data-t="Capacitance for each I/O pin">Capacitance for each I/O pin</li><li class="line" data-t="10">10</li><li class="line" data-t="pF">pF</li><li class="line" data-t="tFOUT(5)(6)">tFOUT(5)(6)</li><li class="line" data-t="Output fall time with a capacitive load from 10 pF to 100 pF">Output fall time with a capacitive load from 10 pF to 100 pF</li><li class="line" data-t="10">10</li><li class="line" data-t="40">40</li><li class="line" data-t="ns">ns</li><li class="line" data-t="at 3-mA sink current">at 3-mA sink current</li><li class="line" data-t="Output fall time with a capacitive load of 400 pF at 3-mA">Output fall time with a capacitive load of 400 pF at 3-mA</li><li class="line" data-t="20">20</li><li class="line" data-t="80">80</li><li class="line" data-t="ns">ns</li><li class="line" data-t="sink current">sink current</li><li class="line" data-t="tROUT(5)">tROUT(5)</li><li class="line" data-t="Output rise time with a capacitive load from 10 pF to 80 pF">Output rise time with a capacitive load from 10 pF to 80 pF</li><li class="line" data-t="10">10</li><li class="line" data-t="40">40</li><li class="line" data-t="ns">ns</li><li class="line" data-t="with internal pullup">with internal pullup</li><li class="line" data-t="Standard LVCMOS Mode">Standard LVCMOS Mode</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="High-level input voltage">High-level input voltage</li><li class="line" data-t="0.7 * vdds">0.7 * vdds</li><li class="line" data-t="vdds">vdds</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Low-level input voltage">Low-level input voltage</li><li class="line" data-t="–0.5">–0.5</li><li class="line" data-t="0.3 * vdds">0.3 * vdds</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="High-level output voltage at 4-mA sink current">High-level output voltage at 4-mA sink current</li><li class="line" data-t="vdds – 0.45">vdds – 0.45</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage at 4-mA sink current">Low-level output voltage at 4-mA sink current</li><li class="line" data-t="0.45">0.45</li><li class="line" data-t="CIN">CIN</li><li class="line" data-t="Input capacitance">Input capacitance</li><li class="line" data-t="1.15">1.15</li><li class="line" data-t="pF">pF</li><li class="line" data-t="tTIN (2)">tTIN (2)</li><li class="line" data-t="Input transition time (tRIN or tFIN evaluated between 10% and">Input transition time (tRIN or tFIN evaluated between 10% and</li><li class="line" data-t="10">10</li><li class="line" data-t="ns">ns</li><li class="line" data-t="90% at PAD)">90% at PAD)</li><li class="line" data-t="tTOUT">tTOUT</li><li class="line" data-t="Output transition time at 40-pF load (tROUT or tFOUT">Output transition time at 40-pF load (tROUT or tFOUT</li><li class="line" data-t="10">10</li><li class="line" data-t="ns">ns</li><li class="line" data-t="evaluated between 10% and 90% at PAD)">evaluated between 10% and 90% at PAD)</li><li class="line" data-t="MIPI D-PHY Interface">MIPI D-PHY Interface</li><li class="line" data-t="MIPI D-PHY Interface - GPI Mode (CBP Balls(19): AG19 / AH19 / AG18 / AH18 / K28 / L28 / K27 / AG17 / AH17)">MIPI D-PHY Interface - GPI Mode (CBP Balls(19): AG19 / AH19 / AG18 / AH18 / K28 / L28 / K27 / AG17 / AH17)</li><li class="line" data-t="0.65 * vdds_x(14)">0.65 * vdds_x(14)</li><li class="line" data-t="vdds_x + 0.3(14)">vdds_x + 0.3(14)</li><li class="line" data-t="VIH(7)">VIH(7)</li><li class="line" data-t="High-level input voltage">High-level input voltage</li><li class="line" data-t="VIL(8)">VIL(8)</li><li class="line" data-t="0.35 * vdds_x(14)">0.35 * vdds_x(14)</li><li class="line" data-t="Low-level input voltage">Low-level input voltage</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="VHYS (1)">VHYS (1)</li><li class="line" data-t="Hysteresis voltage at an input">Hysteresis voltage at an input</li><li class="line" data-t="0.15">0.15</li><li class="line" data-t="CIN">CIN</li><li class="line" data-t="Input capacitance">Input capacitance</li><li class="line" data-t="1.3">1.3</li><li class="line" data-t="pF">pF</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="tTIN">tTIN</li><li class="line" data-t="Input transition time (tRIN or tFIN evaluated between 10% and">Input transition time (tRIN or tFIN evaluated between 10% and</li><li class="line" data-t="10">10</li><li class="line" data-t="ns">ns</li><li class="line" data-t="90% at PAD)">90% at PAD)</li><li class="line" data-t="Other Balls">Other Balls</li><li class="line" data-t="Common to &quot;Other Balls&quot;">Common to &quot;Other Balls&quot;</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="High-level input voltage">High-level input voltage</li><li class="line" data-t="0.65 * vdds">0.65 * vdds</li><li class="line" data-t="vdds + 0.3">vdds + 0.3</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="Low-level input voltage">Low-level input voltage</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="0.35 * vdds">0.35 * vdds</li><li class="line" data-t="(1)">(1)</li><li class="line" data-t="VHYS">VHYS</li><li class="line" data-t="Hysteresis voltage at an input">Hysteresis voltage at an input</li><li class="line" data-t="0.15">0.15</li><li class="line" data-t="IOH = – X(17)">IOH = – X(17)</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="High-level output voltage, driver enabled,">High-level output voltage, driver enabled,</li><li class="line" data-t="vdds – 0.45">vdds – 0.45</li><li class="line" data-t="pullup or pulldown disabled">pullup or pulldown disabled</li><li class="line" data-t="mA">mA</li><li class="line" data-t="IOL = X(17) mA">IOL = X(17) mA</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage, driver enabled,">Low-level output voltage, driver enabled,</li><li class="line" data-t="0.45">0.45</li><li class="line" data-t="pullup or pulldown disabled">pullup or pulldown disabled</li><li class="line" data-t="Differences Between &quot;Other Balls&quot;">Differences Between &quot;Other Balls&quot;</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 19 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V256</span><span class="fn">BQ79652PAPRQ1.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/batch1000_v3/pdfs_flat/BQ79652PAPRQ1.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 216 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-amr">AMR = p8</span><span class="tag t-elc">ROC = p9</span><span class="tag t-elc">ELC = p9/10/11/12/13/14/15</span></div><div class="meta">核心 5 行置信度均 ≥0.85</div></div><div class="body"><div class="pane" data-sno="V256" data-fn="BQ79652PAPRQ1.pdf" data-page="8" data-title="Absolute Maximum Ratings"><div class="cols"><div class="left"><a href="annotation_reports/V256/b3_AMR_p0008.png" target="_blank"><img src="annotation_reports/V256/b3_AMR_p0008.png" alt="V256 p8"></a><div class="cap">Absolute Maximum Ratings · 第 8 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">86 行</span></div><ol class="lines"><li class="line" data-t="6.1 Absolute Maximum Ratings">6.1 Absolute Maximum Ratings</li><li class="line" data-t="over operating free-air temperature range (unless otherwise noted)(1)">over operating free-air temperature range (unless otherwise noted)(1)</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="BAT, VC* (except VC0), CB* (except CB0),">BAT, VC* (except VC0), CB* (except CB0),</li><li class="line" data-t="Input Voltage">Input Voltage</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="100">100</li><li class="line" data-t="NFAULT to AVSS (2) (3)">NFAULT to AVSS (2) (3)</li><li class="line" data-t="Input Voltage">Input Voltage</li><li class="line" data-t="CB0, VC0 to AVSS">CB0, VC0 to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="5.5">5.5</li><li class="line" data-t="SRP, SRN to AVSS">SRP, SRN to AVSS</li><li class="line" data-t="-0.3">-0.3</li><li class="line" data-t="2.1">2.1</li><li class="line" data-t="VCn to VCn-1, n = 1 to 16 (2)">VCn to VCn-1, n = 1 to 16 (2)</li><li class="line" data-t="–80">–80</li><li class="line" data-t="80">80</li><li class="line" data-t="CBn to CBn-1, n = 1 to 16 (3)">CBn to CBn-1, n = 1 to 16 (3)</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="16">16</li><li class="line" data-t="SRP to SRN">SRP to SRN</li><li class="line" data-t="-0.3">-0.3</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="LDOIN to AVSS">LDOIN to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="NPNB to AVSS">NPNB to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="10">10</li><li class="line" data-t="AVDD to AVSS">AVDD to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="5.5">5.5</li><li class="line" data-t="DVDD to DVSS">DVDD to DVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="1.98">1.98</li><li class="line" data-t="CVDD to CVSS">CVDD to CVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="TSREF to AVSS">TSREF to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="5.5">5.5</li><li class="line" data-t="REFHP to REFHM">REFHP to REFHM</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="5.5">5.5</li><li class="line" data-t="NEG5V to AVSS">NEG5V to AVSS</li><li class="line" data-t="–5.5">–5.5</li><li class="line" data-t="TX, RX to AVSS">TX, RX to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="COMHP, COMHN, COMLP, COMLN to CVSS">COMHP, COMHN, COMLP, COMLN to CVSS</li><li class="line" data-t="–20">–20</li><li class="line" data-t="20">20</li><li class="line" data-t="COMHP to COMHN, COMLP to COMLN">COMHP to COMHN, COMLP to COMLN</li><li class="line" data-t="–5.5">–5.5</li><li class="line" data-t="5.5">5.5</li><li class="line" data-t="GPIO* to AVSS">GPIO* to AVSS</li><li class="line" data-t="–0.3">–0.3</li><li class="line" data-t="5.5">5.5</li><li class="line" data-t="Max of 8 cell in balancing at 75oC ambient">Max of 8 cell in balancing at 75oC ambient</li><li class="line" data-t="CB* current">CB* current</li><li class="line" data-t="240">240</li><li class="line" data-t="mA">mA</li><li class="line" data-t="I/O current">I/O current</li><li class="line" data-t="GPIO*, RX, TX current">GPIO*, RX, TX current</li><li class="line" data-t="10">10</li><li class="line" data-t="mA">mA</li><li class="line" data-t="Device will not start OTP programming above">Device will not start OTP programming above</li><li class="line" data-t="TOTP_PROG">TOTP_PROG</li><li class="line" data-t="55">55</li><li class="line" data-t="°C">°C</li><li class="line" data-t="this temperature">this temperature</li><li class="line" data-t="TA">TA</li><li class="line" data-t="Ambient temperature">Ambient temperature</li><li class="line" data-t="–40">–40</li><li class="line" data-t="130">130</li><li class="line" data-t="°C">°C</li><li class="line" data-t="TJ">TJ</li><li class="line" data-t="Junction temperature">Junction temperature</li><li class="line" data-t="–40">–40</li><li class="line" data-t="150">150</li><li class="line" data-t="°C">°C</li><li class="line" data-t="Tstg">Tstg</li><li class="line" data-t="Storage temperature">Storage temperature</li><li class="line" data-t="–65">–65</li><li class="line" data-t="150">150</li><li class="line" data-t="°C">°C</li></ol></div></div></div><div class="pane" data-sno="V256" data-fn="BQ79652PAPRQ1.pdf" data-page="9" data-title="Recommended Operating Conditions"><div class="cols"><div class="left"><a href="annotation_reports/V256/b3_ROC_p0009.png" target="_blank"><img src="annotation_reports/V256/b3_ROC_p0009.png" alt="V256 p9"></a><div class="cap">Recommended Operating Conditions · 第 9 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">49 行</span></div><ol class="lines"><li class="line" data-t="6.3 Recommended Operating Conditions">6.3 Recommended Operating Conditions</li><li class="line" data-t="over operating free-air temperature range (unless otherwise noted)">over operating free-air temperature range (unless otherwise noted)</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="NOM">NOM</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="VBAT_RANG">VBAT_RANG</li><li class="line" data-t="Total module voltage, full functionality, no OTP programming">Total module voltage, full functionality, no OTP programming</li><li class="line" data-t="80">80</li><li class="line" data-t="VBAT_OTP_R">VBAT_OTP_R</li><li class="line" data-t="Total module voltage, full functionality, OTP programming allow">Total module voltage, full functionality, OTP programming allow</li><li class="line" data-t="11">11</li><li class="line" data-t="80">80</li><li class="line" data-t="ANGE">ANGE</li><li class="line" data-t="VCELL_RAN">VCELL_RAN</li><li class="line" data-t="VCn - VCn-1, where n = 2 to 16">VCn - VCn-1, where n = 2 to 16</li><li class="line" data-t="–1">–1</li><li class="line" data-t="GE">GE</li><li class="line" data-t="VC1 - VC0">VC1 - VC0</li><li class="line" data-t="VC0, CB0 to AVSS">VC0, CB0 to AVSS</li><li class="line" data-t="-0.3">-0.3</li><li class="line" data-t="VC1, VC2, CB1, CB2 to AVSS">VC1, VC2, CB1, CB2 to AVSS</li><li class="line" data-t="-0.3">-0.3</li><li class="line" data-t="80">80</li><li class="line" data-t="VCn, CBn to AVSS, where n = 3 to 16">VCn, CBn to AVSS, where n = 3 to 16</li><li class="line" data-t="80">80</li><li class="line" data-t="VCS_RANGE">VCS_RANGE</li><li class="line" data-t="Current sense range, VSRP - VSRN">Current sense range, VSRP - VSRN</li><li class="line" data-t="-100">-100</li><li class="line" data-t="100">100</li><li class="line" data-t="mV">mV</li><li class="line" data-t="VCB_RANGE">VCB_RANGE</li><li class="line" data-t="CBn - CBn-1, where n = 1 to 16">CBn - CBn-1, where n = 1 to 16</li><li class="line" data-t="VIO_RANGE">VIO_RANGE</li><li class="line" data-t="RX, TX, NFAULT">RX, TX, NFAULT</li><li class="line" data-t="CVDD">CVDD</li><li class="line" data-t="VGPIO_RAN">VGPIO_RAN</li><li class="line" data-t="GPIOn input, where n = 1 to 8">GPIOn input, where n = 1 to 8</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="4.8">4.8</li><li class="line" data-t="GE">GE</li><li class="line" data-t="IIO">IIO</li><li class="line" data-t="GPIOn, RX, TX, where n = 1 to 8">GPIOn, RX, TX, where n = 1 to 8</li><li class="line" data-t="mA">mA</li><li class="line" data-t="TA">TA</li><li class="line" data-t="Operation temperature">Operation temperature</li><li class="line" data-t="–40">–40</li><li class="line" data-t="125">125</li><li class="line" data-t="°C">°C</li></ol></div></div></div><div class="pane" data-sno="V256" data-fn="BQ79652PAPRQ1.pdf" data-page="13" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V256/b3_ELC_p0013.png" target="_blank"><img src="annotation_reports/V256/b3_ELC_p0013.png" alt="V256 p13"></a><div class="cap">Electrical Characteristics · 第 13 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">197 行</span></div><ol class="lines"><li class="line" data-t="6.5 Electrical Characteristics (continued)">6.5 Electrical Characteristics (continued)</li><li class="line" data-t="over operating -40℃ to 125℃ free-air temperature range, VBAT = 9V to 80V (unless otherwise noted)">over operating -40℃ to 125℃ free-air temperature range, VBAT = 9V to 80V (unless otherwise noted)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="2V&lt;VCELL&lt;4.5V; TA=25oC">2V&lt;VCELL&lt;4.5V; TA=25oC</li><li class="line" data-t="-7.1">-7.1</li><li class="line" data-t="6.1">6.1</li><li class="line" data-t="mV">mV</li><li class="line" data-t="2V&lt;VCELL&lt;4.5V; -20oC&lt;TA&lt;65oC">2V&lt;VCELL&lt;4.5V; -20oC&lt;TA&lt;65oC</li><li class="line" data-t="-7.8">-7.8</li><li class="line" data-t="6.6">6.6</li><li class="line" data-t="mV">mV</li><li class="line" data-t="Main - AUX measurement during">Main - AUX measurement during</li><li class="line" data-t="2V&lt;VCELL&lt;4.5V; -40oC&lt;TA&lt;105oC">2V&lt;VCELL&lt;4.5V; -40oC&lt;TA&lt;105oC</li><li class="line" data-t="-7.8">-7.8</li><li class="line" data-t="6.6">6.6</li><li class="line" data-t="mV">mV</li><li class="line" data-t="VCELL and OVDAC Reference">VCELL and OVDAC Reference</li><li class="line" data-t="V(MAIN-AUX)">V(MAIN-AUX)</li><li class="line" data-t="diagnostic. Same input voltage to both">diagnostic. Same input voltage to both</li><li class="line" data-t="2V&lt;VCELL&lt;4.5V; -40oC&lt;TA&lt;125oC">2V&lt;VCELL&lt;4.5V; -40oC&lt;TA&lt;125oC</li><li class="line" data-t="-7.8">-7.8</li><li class="line" data-t="6.7">6.7</li><li class="line" data-t="mV">mV</li><li class="line" data-t="ADC under same TA;">ADC under same TA;</li><li class="line" data-t="1V&lt;VCELL&lt; 5V; -40oC&lt;TA&lt;125oC">1V&lt;VCELL&lt; 5V; -40oC&lt;TA&lt;125oC</li><li class="line" data-t="-7.9">-7.9</li><li class="line" data-t="6.9">6.9</li><li class="line" data-t="mV">mV</li><li class="line" data-t="0V&lt;VCELL&lt; 5V; -40oC&lt;TA&lt;125oC">0V&lt;VCELL&lt; 5V; -40oC&lt;TA&lt;125oC</li><li class="line" data-t="-7.9">-7.9</li><li class="line" data-t="6.9">6.9</li><li class="line" data-t="mV">mV</li><li class="line" data-t="0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC">0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC</li><li class="line" data-t="-0.20">-0.20</li><li class="line" data-t="0.20">0.20</li><li class="line" data-t="VACC_MAIN_GPIO_RA">VACC_MAIN_GPIO_RA</li><li class="line" data-t="Measured GPIO from Main ADC/">Measured GPIO from Main ADC/</li><li class="line" data-t="0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC">0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC</li><li class="line" data-t="-0.20">-0.20</li><li class="line" data-t="0.20">0.20</li><li class="line" data-t="measured TSREF from Main ADC;">measured TSREF from Main ADC;</li><li class="line" data-t="TIO">TIO</li><li class="line" data-t="4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC">4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC</li><li class="line" data-t="-0.30">-0.30</li><li class="line" data-t="0.30">0.30</li><li class="line" data-t="0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC">0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC</li><li class="line" data-t="-0.20">-0.20</li><li class="line" data-t="0.20">0.20</li><li class="line" data-t="VACC_AUX_GPIO_RA">VACC_AUX_GPIO_RA</li><li class="line" data-t="Measured GPIO from AUX ADC/">Measured GPIO from AUX ADC/</li><li class="line" data-t="0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC">0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC</li><li class="line" data-t="-0.20">-0.20</li><li class="line" data-t="0.20">0.20</li><li class="line" data-t="measured TSREF from AUX ADC;">measured TSREF from AUX ADC;</li><li class="line" data-t="TIO">TIO</li><li class="line" data-t="4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC">4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC</li><li class="line" data-t="-0.30">-0.30</li><li class="line" data-t="0.30">0.30</li><li class="line" data-t="0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC">0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC</li><li class="line" data-t="-4.00">-4.00</li><li class="line" data-t="4.00">4.00</li><li class="line" data-t="mV">mV</li><li class="line" data-t="VACC_MAIN_GPIO_AB">VACC_MAIN_GPIO_AB</li><li class="line" data-t="Total channel accuracy for GPIO">Total channel accuracy for GPIO</li><li class="line" data-t="0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC">0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC</li><li class="line" data-t="-5.00">-5.00</li><li class="line" data-t="3.00">3.00</li><li class="line" data-t="mV">mV</li><li class="line" data-t="measurement (Main ADC);">measurement (Main ADC);</li><li class="line" data-t="4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC">4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC</li><li class="line" data-t="-4.00">-4.00</li><li class="line" data-t="4.00">4.00</li><li class="line" data-t="mV">mV</li><li class="line" data-t="0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC">0.08V&lt;VIN&lt;0.2V, 85oC&lt;TA&lt;125oC</li><li class="line" data-t="-6.00">-6.00</li><li class="line" data-t="6.00">6.00</li><li class="line" data-t="mV">mV</li><li class="line" data-t="VACC_AUX_GPIO_AB">VACC_AUX_GPIO_AB</li><li class="line" data-t="0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC">0.2V&lt;VIN&lt;4.6V, -40oC&lt;TA&lt;105oC</li><li class="line" data-t="Accuracy from AUX ADC on GPIO">Accuracy from AUX ADC on GPIO</li><li class="line" data-t="-6.00">-6.00</li><li class="line" data-t="6.00">6.00</li><li class="line" data-t="mV">mV</li><li class="line" data-t="4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC">4.6V&lt;VIN&lt;4.8V, -40oC&lt;TA&lt;-20oC</li><li class="line" data-t="-6.00">-6.00</li><li class="line" data-t="6.00">6.00</li><li class="line" data-t="mV">mV</li><li class="line" data-t="Total channel accuracy for (SRP-SRN)">Total channel accuracy for (SRP-SRN)</li><li class="line" data-t="VACC_MAIN_CS">VACC_MAIN_CS</li><li class="line" data-t="LPF_SR[2:0] = 0x00">LPF_SR[2:0] = 0x00</li><li class="line" data-t="-1.1">-1.1</li><li class="line" data-t="1.1">1.1</li><li class="line" data-t="mV">mV</li><li class="line" data-t="from Main ADC">from Main ADC</li><li class="line" data-t="AUX ADC measurement accuracy for">AUX ADC measurement accuracy for</li><li class="line" data-t="Vbat pack range: 32V to 72V, TA =">Vbat pack range: 32V to 72V, TA =</li><li class="line" data-t="VACC_AUX_BAT">VACC_AUX_BAT</li><li class="line" data-t="-225">-225</li><li class="line" data-t="135">135</li><li class="line" data-t="mV">mV</li><li class="line" data-t="-40oC to 125oC">-40oC to 125oC</li><li class="line" data-t="BAT pin">BAT pin</li><li class="line" data-t="VACC_AUX_REFL">VACC_AUX_REFL</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="1.092">1.092</li><li class="line" data-t="1.1">1.1</li><li class="line" data-t="1.106">1.106</li><li class="line" data-t="VACC_AUX_VBG2">VACC_AUX_VBG2</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="1.092">1.092</li><li class="line" data-t="1.1">1.1</li><li class="line" data-t="1.106">1.106</li><li class="line" data-t="VACC_AUX_VCM">VACC_AUX_VCM</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="2.400">2.400</li><li class="line" data-t="2.5">2.5</li><li class="line" data-t="2.550">2.550</li><li class="line" data-t="VACC_AUX_AVAO_RE">VACC_AUX_AVAO_RE</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="2.400">2.400</li><li class="line" data-t="2.47">2.47</li><li class="line" data-t="2.550">2.550</li><li class="line" data-t="VACC_AUX_AVDD_RE">VACC_AUX_AVDD_RE</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="2.400">2.400</li><li class="line" data-t="2.47">2.47</li><li class="line" data-t="2.550">2.550</li><li class="line" data-t="Setting at 4.475V; TA = -20oC to 65oC">Setting at 4.475V; TA = -20oC to 65oC</li><li class="line" data-t="VACC_AUX_OVDAC">VACC_AUX_OVDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="4.450">4.450</li><li class="line" data-t="4.500">4.500</li><li class="line" data-t="Setting at 4.475V; TA = -40oC to 105oC">Setting at 4.475V; TA = -40oC to 105oC</li><li class="line" data-t="VACC_AUX_OVDAC">VACC_AUX_OVDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="4.445">4.445</li><li class="line" data-t="4.500">4.500</li><li class="line" data-t="Setting at 4.475V; TA = -40oC to 125oC">Setting at 4.475V; TA = -40oC to 125oC</li><li class="line" data-t="VACC_AUX_OVDAC">VACC_AUX_OVDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="4.445">4.445</li><li class="line" data-t="4.500">4.500</li><li class="line" data-t="VACC_AUX_OVDAC">VACC_AUX_OVDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="Setting at 3.8V">Setting at 3.8V</li><li class="line" data-t="3.770">3.770</li><li class="line" data-t="3.825">3.825</li><li class="line" data-t="VACC_AUX_OVDAC">VACC_AUX_OVDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="Setting at 3V">Setting at 3V</li><li class="line" data-t="2.970">2.970</li><li class="line" data-t="3.030">3.030</li><li class="line" data-t="VACC_AUX_UVDAC">VACC_AUX_UVDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="Setting at 3.1V">Setting at 3.1V</li><li class="line" data-t="3.095">3.095</li><li class="line" data-t="3.1">3.1</li><li class="line" data-t="3.150">3.150</li><li class="line" data-t="VACC_AUX_VCBDONE">VACC_AUX_VCBDONE</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="Setting at 4V">Setting at 4V</li><li class="line" data-t="3.950">3.950</li><li class="line" data-t="4.050">4.050</li><li class="line" data-t="DAC">DAC</li><li class="line" data-t="VACC_AUX_OTDAC">VACC_AUX_OTDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="Setting at 39%">Setting at 39%</li><li class="line" data-t="1.900">1.900</li><li class="line" data-t="1.95">1.95</li><li class="line" data-t="2.000">2.000</li><li class="line" data-t="VACC_AUX_UTDAC">VACC_AUX_UTDAC</li><li class="line" data-t="AUX ADC measurement result">AUX ADC measurement result</li><li class="line" data-t="Setting at 80%">Setting at 80%</li><li class="line" data-t="3.950">3.950</li><li class="line" data-t="4.050">4.050</li><li class="line" data-t="VACC_MAIN_TSREF">VACC_MAIN_TSREF</li><li class="line" data-t="Main ADC measurement result">Main ADC measurement result</li><li class="line" data-t="4.975">4.975</li><li class="line" data-t="5.025">5.025</li><li class="line" data-t="VACC_MAIN__DIETEM">VACC_MAIN__DIETEM</li><li class="line" data-t="Total channel accuracy for Die Temp1">Total channel accuracy for Die Temp1</li><li class="line" data-t="measurement (+/-)">measurement (+/-)</li><li class="line" data-t="Total channel accuracy for Die Temp2">Total channel accuracy for Die Temp2</li><li class="line" data-t="VACC_AUX_DIETEMP">VACC_AUX_DIETEMP</li><li class="line" data-t="measurement (+/-)">measurement (+/-)</li><li class="line" data-t="Differential SRN/SRP input current">Differential SRN/SRP input current</li><li class="line" data-t="Apply 100mV differential acrsoss">Apply 100mV differential acrsoss</li><li class="line" data-t="ISRP_N_Diff">ISRP_N_Diff</li><li class="line" data-t="1.4">1.4</li><li class="line" data-t="µA">µA</li><li class="line" data-t="(CS and main ADC are on)">(CS and main ADC are on)</li><li class="line" data-t="SRP/SRN">SRP/SRN</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 19 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="card"><div class="head"><span class="sn">V244</span><span class="fn">AM1802BZWTD3__am1802.pdf</span>　<a href="file:///E:/workspace/IcPdfParser/data/pdfs/AM1802BZWTD3__am1802.pdf" target="_blank">在 PDF 中打开</a><div class="meta">共 185 页 　<span class="tag t-ok">草稿：好</span><span class="tag t-elc">ROC = p44/45/79/86/103/154</span><span class="tag t-elc">ELC = p47</span></div><div class="meta">核心 5 行置信度均 ≥0.85</div></div><div class="body"><div class="pane" data-sno="V244" data-fn="AM1802BZWTD3__am1802.pdf" data-page="44" data-title="Recommended Operating Conditions"><div class="cols"><div class="left"><a href="annotation_reports/V244/b3_ROC_p0044.png" target="_blank"><img src="annotation_reports/V244/b3_ROC_p0044.png" alt="V244 p44"></a><div class="cap">Recommended Operating Conditions · 第 44 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">164 行</span></div><ol class="lines"><li class="line" data-t="5.3">5.3</li><li class="line" data-t="Recommended Operating Conditions">Recommended Operating Conditions</li><li class="line" data-t="NAME">NAME</li><li class="line" data-t="DESCRIPTION">DESCRIPTION</li><li class="line" data-t="CONDITION">CONDITION</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="NOM">NOM</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="CVDD">CVDD</li><li class="line" data-t="Core Logic Supply Voltage (variable)">Core Logic Supply Voltage (variable)</li><li class="line" data-t="1.2V operating point">1.2V operating point</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="1.1V operating point">1.1V operating point</li><li class="line" data-t="1.05">1.05</li><li class="line" data-t="1.1">1.1</li><li class="line" data-t="1.16">1.16</li><li class="line" data-t="1.0V operating point">1.0V operating point</li><li class="line" data-t="0.95">0.95</li><li class="line" data-t="1.0">1.0</li><li class="line" data-t="1.05">1.05</li><li class="line" data-t="RVDD">RVDD</li><li class="line" data-t="Internal RAM Supply Voltage">Internal RAM Supply Voltage</li><li class="line" data-t="300 MHz versions">300 MHz versions</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="RTC_CVDD (1)">RTC_CVDD (1)</li><li class="line" data-t="RTC Core Logic Supply Voltage">RTC Core Logic Supply Voltage</li><li class="line" data-t="0.9">0.9</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="PLL0_VDDA">PLL0_VDDA</li><li class="line" data-t="PLL0 Supply Voltage">PLL0 Supply Voltage</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="PLL1_VDDA">PLL1_VDDA</li><li class="line" data-t="PLL1 Supply Voltage">PLL1 Supply Voltage</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="USB_CVDD">USB_CVDD</li><li class="line" data-t="USB0 Core Logic Supply Voltage">USB0 Core Logic Supply Voltage</li><li class="line" data-t="1.14">1.14</li><li class="line" data-t="1.2">1.2</li><li class="line" data-t="1.32">1.32</li><li class="line" data-t="USB0_VDDA18">USB0_VDDA18</li><li class="line" data-t="USB0 PHY Supply Voltage">USB0 PHY Supply Voltage</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="USB0_VDDA33">USB0_VDDA33</li><li class="line" data-t="USB0 PHY Supply Voltage">USB0 PHY Supply Voltage</li><li class="line" data-t="3.15">3.15</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="DVDD18(2)">DVDD18(2)</li><li class="line" data-t="Supply">Supply</li><li class="line" data-t="1.8V Logic Supply">1.8V Logic Supply</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="Voltage">Voltage</li><li class="line" data-t="DDR_DVDD18">DDR_DVDD18</li><li class="line" data-t="DDR2 PHY Supply Voltage">DDR2 PHY Supply Voltage</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="0.49*">0.49*</li><li class="line" data-t="0.5*">0.5*</li><li class="line" data-t="0.51*">0.51*</li><li class="line" data-t="DDR_VREF">DDR_VREF</li><li class="line" data-t="DDR2/mDDR reference voltage">DDR2/mDDR reference voltage</li><li class="line" data-t="DDR_DVDD18">DDR_DVDD18</li><li class="line" data-t="DDR_DVDD18">DDR_DVDD18</li><li class="line" data-t="DDR_DVDD18">DDR_DVDD18</li><li class="line" data-t="DDR2/mDDR impedance control,">DDR2/mDDR impedance control,</li><li class="line" data-t="DDR_ZP">DDR_ZP</li><li class="line" data-t="Vss">Vss</li><li class="line" data-t="connected via 50Ωresistor to Vss">connected via 50Ωresistor to Vss</li><li class="line" data-t="1.8V operating point">1.8V operating point</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="Power Group A Dual-voltage IO">Power Group A Dual-voltage IO</li><li class="line" data-t="DVDD3318_A">DVDD3318_A</li><li class="line" data-t="Supply Voltage">Supply Voltage</li><li class="line" data-t="3.3V operating point">3.3V operating point</li><li class="line" data-t="3.15">3.15</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="1.8V operating point">1.8V operating point</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="Power Group B Dual-voltage IO">Power Group B Dual-voltage IO</li><li class="line" data-t="DVDD3318_B">DVDD3318_B</li><li class="line" data-t="Supply Voltage">Supply Voltage</li><li class="line" data-t="3.3V operating point">3.3V operating point</li><li class="line" data-t="3.15">3.15</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="1.8V operating point">1.8V operating point</li><li class="line" data-t="1.71">1.71</li><li class="line" data-t="1.8">1.8</li><li class="line" data-t="1.89">1.89</li><li class="line" data-t="Power Group C Dual-voltage IO">Power Group C Dual-voltage IO</li><li class="line" data-t="DVDD3318_C">DVDD3318_C</li><li class="line" data-t="Supply Voltage">Supply Voltage</li><li class="line" data-t="3.3V operating point">3.3V operating point</li><li class="line" data-t="3.15">3.15</li><li class="line" data-t="3.3">3.3</li><li class="line" data-t="3.45">3.45</li><li class="line" data-t="Supply">Supply</li><li class="line" data-t="VSS">VSS</li><li class="line" data-t="Core Logic Digital Ground">Core Logic Digital Ground</li><li class="line" data-t="Ground">Ground</li><li class="line" data-t="PLL0_VSSA">PLL0_VSSA</li><li class="line" data-t="PLL0 Ground">PLL0 Ground</li><li class="line" data-t="PLL1_VSSA">PLL1_VSSA</li><li class="line" data-t="PLL1 Ground">PLL1 Ground</li><li class="line" data-t="OSCVSS(3)">OSCVSS(3)</li><li class="line" data-t="Oscillator Ground">Oscillator Ground</li><li class="line" data-t="RTC_VSS(3)">RTC_VSS(3)</li><li class="line" data-t="RTC Oscillator Ground">RTC Oscillator Ground</li><li class="line" data-t="USB0_VSSA">USB0_VSSA</li><li class="line" data-t="USB0 PHY Ground">USB0 PHY Ground</li><li class="line" data-t="USB0_VSSA33">USB0_VSSA33</li><li class="line" data-t="USB0 PHY Ground">USB0 PHY Ground</li><li class="line" data-t="Voltage">Voltage</li><li class="line" data-t="High-level input voltage, Dual-voltage I/O, 3.3V(4)">High-level input voltage, Dual-voltage I/O, 3.3V(4)</li><li class="line" data-t="VIH">VIH</li><li class="line" data-t="Input High">Input High</li><li class="line" data-t="High-level input voltage, Dual-voltage I/O, 1.8V (4)">High-level input voltage, Dual-voltage I/O, 1.8V (4)</li><li class="line" data-t="0.65*DVDD">0.65*DVDD</li><li class="line" data-t="High-level input voltage, RTC_XI">High-level input voltage, RTC_XI</li><li class="line" data-t="0.8*RTC_CVDD">0.8*RTC_CVDD</li><li class="line" data-t="High-level input voltage, OSCIN">High-level input voltage, OSCIN</li><li class="line" data-t="0.8*CVDD">0.8*CVDD</li><li class="line" data-t="Low-level input voltage, Dual-voltage I/O, 3.3V(4)">Low-level input voltage, Dual-voltage I/O, 3.3V(4)</li><li class="line" data-t="VIL">VIL</li><li class="line" data-t="0.8">0.8</li><li class="line" data-t="Voltage">Voltage</li><li class="line" data-t="Input Low">Input Low</li><li class="line" data-t="Low-level input voltage, Dual-voltage I/O, 1.8V (4)">Low-level input voltage, Dual-voltage I/O, 1.8V (4)</li><li class="line" data-t="0.35*DVDD">0.35*DVDD</li><li class="line" data-t="Low-level input voltage, RTC_XI">Low-level input voltage, RTC_XI</li><li class="line" data-t="0.2*RTC_CVDD">0.2*RTC_CVDD</li><li class="line" data-t="Low-level input voltage, OSCIN">Low-level input voltage, OSCIN</li><li class="line" data-t="0.2*CVDD">0.2*CVDD</li><li class="line" data-t="USB">USB</li><li class="line" data-t="USB0_VBUS">USB0_VBUS</li><li class="line" data-t="USB external charge pump input">USB external charge pump input</li><li class="line" data-t="5.25">5.25</li><li class="line" data-t="Transition">Transition</li><li class="line" data-t="Transition time, 10%-90%, All Inputs (unless otherwise">Transition time, 10%-90%, All Inputs (unless otherwise</li><li class="line" data-t="0.25P or 10 (5)">0.25P or 10 (5)</li><li class="line" data-t="ns">ns</li><li class="line" data-t="Time">Time</li><li class="line" data-t="specified in the electrical data sections)">specified in the electrical data sections)</li></ol></div></div></div><div class="pane" data-sno="V244" data-fn="AM1802BZWTD3__am1802.pdf" data-page="47" data-title="Electrical Characteristics"><div class="cols"><div class="left"><a href="annotation_reports/V244/b3_ELC_p0047.png" target="_blank"><img src="annotation_reports/V244/b3_ELC_p0047.png" alt="V244 p47"></a><div class="cap">Electrical Characteristics · 第 47 页（按表格边框裁剪）</div></div><div class="right"><div class="rh">点下面任意一行 → 自动填字段<span class="cnt">70 行</span></div><ol class="lines"><li class="line" data-t="5.5">5.5</li><li class="line" data-t="Electrical Characteristics Over Recommended Ranges of Supply Voltage and">Electrical Characteristics Over Recommended Ranges of Supply Voltage and</li><li class="line" data-t="Operating Junction Temperature (Unless Otherwise Noted)">Operating Junction Temperature (Unless Otherwise Noted)</li><li class="line" data-t="PARAMETER">PARAMETER</li><li class="line" data-t="TEST CONDITIONS">TEST CONDITIONS</li><li class="line" data-t="MIN">MIN</li><li class="line" data-t="TYP">TYP</li><li class="line" data-t="MAX">MAX</li><li class="line" data-t="UNIT">UNIT</li><li class="line" data-t="DVDD= 3.15V, IOH = -4 mA">DVDD= 3.15V, IOH = -4 mA</li><li class="line" data-t="2.4">2.4</li><li class="line" data-t="High-level output voltage">High-level output voltage</li><li class="line" data-t="(dual-voltage LVCMOS IOs at 3.3V)(1)">(dual-voltage LVCMOS IOs at 3.3V)(1)</li><li class="line" data-t="DVDD= 3.15V, IOH = -100 μA">DVDD= 3.15V, IOH = -100 μA</li><li class="line" data-t="2.95">2.95</li><li class="line" data-t="VOH">VOH</li><li class="line" data-t="High-level output voltage">High-level output voltage</li><li class="line" data-t="DVDD= 1.71V, IOH = -2 mA">DVDD= 1.71V, IOH = -2 mA</li><li class="line" data-t="DVDD-0.45">DVDD-0.45</li><li class="line" data-t="(dual-voltage LVCMOS IOs at 1.8V)(1)">(dual-voltage LVCMOS IOs at 1.8V)(1)</li><li class="line" data-t="DVDD= 3.15V, IOL = 4mA">DVDD= 3.15V, IOL = 4mA</li><li class="line" data-t="0.4">0.4</li><li class="line" data-t="Low-level output voltage">Low-level output voltage</li><li class="line" data-t="(dual-voltage LVCMOS I/Os at 3.3V)">(dual-voltage LVCMOS I/Os at 3.3V)</li><li class="line" data-t="DVDD= 3.15V, IOL = 100 μA">DVDD= 3.15V, IOL = 100 μA</li><li class="line" data-t="0.2">0.2</li><li class="line" data-t="VOL">VOL</li><li class="line" data-t="Low-level output voltage">Low-level output voltage</li><li class="line" data-t="DVDD= 1.71V, IOL = 2mA">DVDD= 1.71V, IOL = 2mA</li><li class="line" data-t="0.45">0.45</li><li class="line" data-t="(dual-voltage LVCMOS I/Os at 1.8V)">(dual-voltage LVCMOS I/Os at 1.8V)</li><li class="line" data-t="VI = VSS to DVDD without opposing">VI = VSS to DVDD without opposing</li><li class="line" data-t="±9">±9</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal resistor">internal resistor</li><li class="line" data-t="Input current(1)">Input current(1)</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="70">70</li><li class="line" data-t="310">310</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pullup resistor (3)">internal pullup resistor (3)</li><li class="line" data-t="(dual-voltage LVCMOS I/Os)">(dual-voltage LVCMOS I/Os)</li><li class="line" data-t="(2)">(2)</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="-75">-75</li><li class="line" data-t="-270">-270</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pulldown resistor (3)">internal pulldown resistor (3)</li><li class="line" data-t="VI = VSS to DVDD with opposing">VI = VSS to DVDD with opposing</li><li class="line" data-t="Input current (DDR2/mDDR I/Os)">Input current (DDR2/mDDR I/Os)</li><li class="line" data-t="-77">-77</li><li class="line" data-t="-286">-286</li><li class="line" data-t="μA">μA</li><li class="line" data-t="internal pulldown resistor (3)">internal pulldown resistor (3)</li><li class="line" data-t="High-level output current(1)">High-level output current(1)</li><li class="line" data-t="IOH">IOH</li><li class="line" data-t="-6">-6</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(dual-voltage LVCMOS I/Os)">(dual-voltage LVCMOS I/Os)</li><li class="line" data-t="Low-level output current(1)">Low-level output current(1)</li><li class="line" data-t="IOL">IOL</li><li class="line" data-t="mA">mA</li><li class="line" data-t="(dual-voltage LVCMOS I/Os)">(dual-voltage LVCMOS I/Os)</li><li class="line" data-t="Input capacitance (dual-voltage">Input capacitance (dual-voltage</li><li class="line" data-t="pF">pF</li><li class="line" data-t="LVCMOS)">LVCMOS)</li><li class="line" data-t="Capacitance">Capacitance</li><li class="line" data-t="Output capacitance (dual-voltage">Output capacitance (dual-voltage</li><li class="line" data-t="pF">pF</li><li class="line" data-t="LVCMOS)">LVCMOS)</li></ol></div></div></div><div class="dh">本件核心草稿 5 行（另有 11 行非核心未载入）；<span class="pill ok">绿 ≥0.85</span> <span class="pill low">红 &lt;0.85 = low_confidence</span></div></div></div><div class="work"><h2>标注编辑区　<span id="cnt">0</span></h2><div class="filter"><label>样本 <select id="fsample"></select></label><label><input type="checkbox" id="fnum"> 只看有数值的行</label><label><input type="checkbox" id="ftodo"> 只看未确认的行</label><button class="ghost" onclick="addBlank()">新增空行</button><button class="ghost" onclick="dropNoName()">删掉无参数名的行</button><button class="ghost" onclick="resetDraft()">恢复机器草稿</button><label class="imp">导入上次的 CSV <input type="file" id="fimp" accept=".csv"></label></div><div id="stat" class="stat"></div><table class="rows" id="tbl"><thead><tr><th>样本</th><th>页</th><th>符号</th><th>参数名</th><th>min</th><th>typ</th><th>max</th><th>单位</th><th>状态</th><th>草稿分</th><th></th></tr></thead><tbody id="tbody"></tbody></table><div class="bar"><button onclick="downloadCSV()">下载 CSV（UTF-8 带 BOM）</button><button onclick="copyOut()" class="dl">复制 CSV</button> <label style="font-size:12.5px;margin-left:8px"><input type="checkbox" id="dropEmpty" checked> 导出时丢掉无值行/无参数名行</label><span id="msg" class="msg"></span></div><textarea id="out" readonly></textarea></div></div><script>window.B3_EXPORT_NAME="Batch3_B3_ANNOTATED";
++/* Batch 2 圈选台前端。
++ *
++ * 设计要点（第二版）：
++ *   1) 编辑区**预载机器草稿**。第一版 `ROWS = []`，逼着人把整页文本重新点一遍，
++ *      结果 148 行里 59 行没数值也被签了 CONFIRMED —— 这是设计错误，已改。
++ *      现在人的动作是「删掉垃圾行 + 校对留下的 3~5 行」，而不是从零点选。
++ *   2) 点选文本行仍然保留，作为「草稿里漏了某个参数」时的补充手段，追加到末尾。
++ *   3) 导出前会拦：状态是 CONFIRMED 但 min/typ/max 全空的行不许悄悄混进去。
++ */
++const DRAFT = [{"sample_no": "V146", "file_name": "CY74FCT399ATSOCT__cy74fct399t.pdf", "evidence_page": "4", "table_title": "Electrical Characteristics", "symbol": "VIK", "parameter_name": "VCC = 4.75, IIN = -18 mA", "min_value": "", "typ_value": "-0.7", "max_value": "-1.2", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence", "reviewer": "", "confidence_score": "0.80"}, {"sample_no": "V146", "file_name": "CY74FCT399ATSOCT__cy74fct399t.pdf", "evidence_page": "4", "table_title": "Electrical Characteristics", "symbol": "VOH", "parameter_name": "VCC = 4.75, IOH = -32 mA", "min_value": "2", "typ_value": "", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence", "reviewer": "", "confidence_score": "0.80"}, {"sample_no": "V146", "file_name": "CY74FCT399ATSOCT__cy74fct399t.pdf", "evidence_page": "4", "table_title": "Electrical Characteristics", "symbol": "VOH", "parameter_name": "VCC = 4.75, IOH = -15 mA", "min_value": "2.4", "typ_value": "3.3", "max_value": "", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=0.90；VOH 有多组取值（疑不同温度等级或 VLM 误标），请确认 | low_confidence", "reviewer": "", "confidence_score": "0.80"}, {"sample_no": "V146", "file_name": "CY74FCT399ATSOCT__cy74fct399t.pdf", "evidence_page": "4", "table_title": "Electrical Characteristics", "symbol": "VOL", "parameter_name": "VCC = 4.75, IOL = 64 mA", "min_value": "", "typ_value": "0.3", "max_value": "0.55", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence", "reviewer": "", "confidence_score": "0.80"}, {"sample_no": "V146", "file_name": "CY74FCT399ATSOCT__cy74fct399t.pdf", "evidence_page": "4", "table_title": "Electrical Characteristics", "symbol": "II", "parameter_name": "VCC = 5.25 V, VIN = VCC", "min_value": "", "typ_value": "", "max_value": "5", "unit": "μA", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00 | low_confidence", "reviewer": "", "confidence_score": "0.80"}, {"sample_no": "V271", "file_name": "DM3725CBC100__dm3725.pdf", "evidence_page": "117", "table_title": "Absolute Maximum Ratings", "symbol": "vdd_mpu_iva", "parameter_name": "Supply voltage range for MPU / IVA domain", "min_value": "-0.5", "typ_value": "", "max_value": "1.5", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V271", "file_name": "DM3725CBC100__dm3725.pdf", "evidence_page": "117", "table_title": "Absolute Maximum Ratings", "symbol": "vdd_core", "parameter_name": "Supply voltage range for core domain", "min_value": "-0.5", "typ_value": "", "max_value": "1.5", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V271", "file_name": "DM3725CBC100__dm3725.pdf", "evidence_page": "117", "table_title": "Absolute Maximum Ratings", "symbol": "vdds_sram", "parameter_name": "Supply voltage for SRAM LDOs", "min_value": "-0.5", "typ_value": "", "max_value": "2.1", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V271", "file_name": "DM3725CBC100__dm3725.pdf", "evidence_page": "117", "table_title": "Absolute Maximum Ratings", "symbol": "vdda_dac", "parameter_name": "Supply voltage for video buffers and DAC", "min_value": "-0.5", "typ_value": "", "max_value": "2.1", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V271", "file_name": "DM3725CBC100__dm3725.pdf", "evidence_page": "117", "table_title": "Absolute Maximum Ratings", "symbol": "vdds", "parameter_name": "Supply voltage for 1.8-V I/O macros", "min_value": "-0.5", "typ_value": "", "max_value": "2.1", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V256", "file_name": "BQ79652PAPRQ1.pdf", "evidence_page": "13", "table_title": "Electrical Characteristics", "symbol": "V(MAIN-AUX)", "parameter_name": "Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;", "min_value": "-7.1", "typ_value": "", "max_value": "6.1", "unit": "mV", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.90"}, {"sample_no": "V256", "file_name": "BQ79652PAPRQ1.pdf", "evidence_page": "13", "table_title": "Electrical Characteristics", "symbol": "V(MAIN-AUX)", "parameter_name": "Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;", "min_value": "-7.8", "typ_value": "", "max_value": "6.6", "unit": "mV", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.90"}, {"sample_no": "V256", "file_name": "BQ79652PAPRQ1.pdf", "evidence_page": "13", "table_title": "Electrical Characteristics", "symbol": "V(MAIN-AUX)", "parameter_name": "Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;", "min_value": "-7.8", "typ_value": "", "max_value": "6.6", "unit": "mV", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.90"}, {"sample_no": "V256", "file_name": "BQ79652PAPRQ1.pdf", "evidence_page": "13", "table_title": "Electrical Characteristics", "symbol": "V(MAIN-AUX)", "parameter_name": "Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;", "min_value": "-7.8", "typ_value": "", "max_value": "6.7", "unit": "mV", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.90"}, {"sample_no": "V256", "file_name": "BQ79652PAPRQ1.pdf", "evidence_page": "13", "table_title": "Electrical Characteristics", "symbol": "V(MAIN-AUX)", "parameter_name": "Main - AUX measurement during VCELL and OVDAC Reference diagnostic. Same input voltage to both ADC under same TA;", "min_value": "-7.9", "typ_value": "", "max_value": "6.9", "unit": "mV", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；V(MAIN-AUX) 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.90"}, {"sample_no": "V244", "file_name": "AM1802BZWTD3__am1802.pdf", "evidence_page": "44", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Core Logic Supply Voltage (variable)", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V244", "file_name": "AM1802BZWTD3__am1802.pdf", "evidence_page": "44", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Core Logic Supply Voltage (variable)", "min_value": "1.05", "typ_value": "1.1", "max_value": "1.16", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V244", "file_name": "AM1802BZWTD3__am1802.pdf", "evidence_page": "44", "table_title": "Recommended Operating Conditions", "symbol": "CVDD", "parameter_name": "Core Logic Supply Voltage (variable)", "min_value": "0.95", "typ_value": "1.0", "max_value": "1.05", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00；CVDD 有多组取值（疑不同温度等级或 VLM 误标），请确认", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V244", "file_name": "AM1802BZWTD3__am1802.pdf", "evidence_page": "44", "table_title": "Recommended Operating Conditions", "symbol": "RVDD", "parameter_name": "Internal RAM Supply Voltage", "min_value": "1.14", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}, {"sample_no": "V244", "file_name": "AM1802BZWTD3__am1802.pdf", "evidence_page": "44", "table_title": "Recommended Operating Conditions", "symbol": "RTC_CVDD", "parameter_name": "RTC Core Logic Supply Voltage", "min_value": "0.9", "typ_value": "1.2", "max_value": "1.32", "unit": "V", "condition": "", "row_status": "DRAFT_AWAITING_HUMAN_CONFIRM", "notes": "VLM 草稿，须对左图核；vlm自报=1.00", "reviewer": "", "confidence_score": "0.95"}];
++const THRESH = 0.85;   // 由生成器注入，与 Python 侧的 THRESH 同源
++
++// 导出文件名按批次注入。Batch 2 老生成器不注入 window.B3_EXPORT_NAME，
++// 这里退回原来的默认名，保证它的行为一字不变；Batch 3 生成器按 --out-prefix
++// 注入，例如 Batch3_B2_ANNOTATED.csv，避免六件草稿都顶着 Batch2 的名字。
++const EXPORT_NAME = window.B3_EXPORT_NAME || "Batch2_ANNOTATED";
++
++const FIELDS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
++  "parameter_name", "min_value", "typ_value", "max_value", "unit", "condition",
++  "row_status", "notes", "reviewer", "confidence_score"];
++
++const STATUS = [
++  "DRAFT_AWAITING_HUMAN_CONFIRM",
++  "CONFIRMED",
++  "UNRESOLVED: 表格排版混乱，无法定位列",
++  "EXCLUDED: 文档内无标准参数表",
++  "EXCLUDED: 无 OCR 能力，无法建立 Gold"
++];
++
++// 单个单位记号。复合单位（V/µs、dBFS/Hz）由下面拼接，别一个个枚举，
++// 漏掉一个就有整行单位空着（Slew rate 的 V/µs 就是这么丢的）。
++const U1 = "(?:mV|µV|μV|kV|V|mA|µA|μA|nA|pA|A|kΩ|MΩ|Ω|ohm|°C|MHz|kHz|GHz|Hz"
++         + "|ns|µs|μs|ms|ps|s|pF|nF|µF|μF|uF|mW|W|%|dBFS|dBFs|dB)";
++const UNIT_RE = new RegExp("^" + U1 + "(?:\\/" + U1 + ")?$");
++
++// U+2212（数学减号）以及各种破折号/全角连字符。PDF 里负号几乎都是 U+2212，
++// 不先归一，`−65` 会被当成非数字串，`V_S− to V_S+` 里的分隔符也认不出来。
++const MINUS_CHARS = /[\u2212\u2010\u2011\u2012\u2013\u2014\u2015\uFF0D]/g;
++// 只认"像符号"的东西：全大写（VID / GND / IO）或带一段下标（V_IH）。
++const SYM_RE = /^[A-Z\u0394][A-Z0-9]{0,11}$|^[A-Z\u0394][A-Z0-9]{0,3}_[A-Za-z0-9]{1,3}$/;
++
++let ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
++
++function hasNum(r) {
++  return ["min_value", "typ_value", "max_value"].some(k => (r[k] || "").trim() !== "");
++}
++
++function parseLine(raw) {
++  // 点线引导符（`Package . . . . . 69`）里每个点都是独立 token，`\.{3,}` 匹配不到，
++  // 必须按"两个以上带空白的点"整体吃掉，否则参数名会拖一串点。
++  let s = raw.replace(MINUS_CHARS, "-").replace(/(?:\s*\.){2,}\s*/g, " ");
++  s = s.replace(/\s+/g, " ").trim();
++  const toks = s.split(" ").filter(t => t && !/^to$/i.test(t));
++
++  // 负号可能与数字被空格拆开（`- 65`），先合并，否则 min 丢掉符号变成 65。
++  const merged = [];
++  for (let i = 0; i < toks.length; i++) {
++    const t = toks[i];
++    if (/^[-+±]$/.test(t) && i + 1 < toks.length && /^\d/.test(toks[i + 1])) {
++      merged.push(t + toks[i + 1]);
++      i++;
++      continue;
++    }
++    merged.push(t);
++  }
++
++  const nums = [], units = [], rest = [];
++  for (const tk of merged) {
++    if (tk === "-") continue;                 // 孤立的连字符只是分隔符
++    if (/^\([^()]*\)$/.test(tk)) continue;    // `(320)` `(mV_p-p)` 是备选值/备注
++    const m = tk.match(/^([±+\-]?\d+(?:\.\d+)?)([A-Za-zµμΩ°%\/]*)$/);
++    if (m) {
++      nums.push(m[1]);
++      if (m[2]) units.push(m[2]);
++      continue;
++    }
++    if (UNIT_RE.test(tk)) { units.push(tk); continue; }
++    rest.push(tk);
++  }
++
++  // 首词像符号才摘出来。整行只剩符号时要允许 rest.length==1，
++  // 否则 `VID ±2.5 V` 会把符号当成参数名；但整行没有数字时不动，那多半是标题行。
++  let symbol = "";
++  if (nums.length > 0 && rest.length >= 1 && rest[0].length <= 12 && SYM_RE.test(rest[0])) {
++    symbol = rest.shift();
++  }
++
++  // 一个数都没解析出来的行不是参数行（表头、注释），参数名留空，
++  // 原文进 notes，免得把 `. . . . .` 这类垃圾灌进参数名列。
++  const name = nums.length ? rest.join(" ").replace(/[,;:]+$/, "").trim() : "";
++  let unit = units.length ? units[units.length - 1] : "";
++  unit = unit.replace(/\s*\([^)]*\)$/, "");
++  let mn = "", typ = "", mx = "";
++  if (nums.length === 1) mx = nums[0];
++  else if (nums.length === 2) { mn = nums[0]; mx = nums[1]; }
++  else if (nums.length >= 3) { mn = nums[0]; typ = nums[1]; mx = nums[2]; }
++  return {symbol, name, min: mn, typ, max: mx, unit, nums: nums.length};
++}
++
++function msg(t) {
++  document.getElementById("msg").textContent = t;
++}
++
++function addFromLine(li) {
++  const box = li.closest(".pane");
++  const p = parseLine(li.dataset.t);
++  // 这些手册的表格里，数字和标签**不在同一条基线**（标签 y=382.7，数字 y=375.7），
++  // 所以右侧必然出现"只有数字"的碎片行。点它只会造出一行没名字的垃圾，
++  // 这种行进不了 Gold（无法判断它是什么参数），直接拦掉，提示去表里填。
++  if (!p.name && !p.symbol) {
++    msg("这行只有数字/单位，没有参数名 —— 请在下方对应行直接填数值，"
++        + "或用「新增空行」自己写参数名。不要点它建行。");
++    li.classList.add("dead");
++    return;
++  }
++  ROWS.push({
++    sample_no: box.dataset.sno,
++    file_name: box.dataset.fn,
++    evidence_page: box.dataset.page,
++    table_title: box.dataset.title,
++    symbol: p.symbol,
++    parameter_name: p.name,
++    min_value: p.min, typ_value: p.typ, max_value: p.max,
++    unit: p.unit,
++    condition: "",
++    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
++    notes: "点选文本行生成，需与左图核对；原文：" + li.dataset.t.slice(0, 80),
++    reviewer: "",
++    confidence_score: "",
++    _src: "click"
++  });
++  render();
++  li.classList.add("picked");
++}
++
++function addBlank() {
++  const s = document.getElementById("fsample").value;
++  const sample = (s !== "*") ? s : (DRAFT[0] ? DRAFT[0].sample_no : "");
++  const base = DRAFT.filter(r => r.sample_no === sample)[0] || {};
++  ROWS.push({
++    sample_no: sample,
++    file_name: base.file_name || "",
++    evidence_page: base.evidence_page || "",
++    table_title: base.table_title || "",
++    symbol: "", parameter_name: "",
++    min_value: "", typ_value: "", max_value: "", unit: "", condition: "",
++    row_status: "DRAFT_AWAITING_HUMAN_CONFIRM",
++    notes: "人工新增",
++    reviewer: "", confidence_score: "", _src: "manual"
++  });
++  render();
++  msg("已在 " + sample + " 末尾新增一行，请填写参数名与数值");
++}
++
++function dropNoName() {
++  const before = ROWS.length;
++  ROWS = ROWS.filter(r => (r.parameter_name || "").trim() !== ""
++                       || (r.symbol || "").trim() !== "");
++  render();
++  msg("已删除 " + (before - ROWS.length) + " 行既没有参数名也没有符号的行");
++}
++
++function visible() {
++  const s = document.getElementById("fsample").value;
++  const onlyNum = document.getElementById("fnum").checked;
++  const onlyTodo = document.getElementById("ftodo").checked;
++  const out = [];
++  ROWS.forEach((r, i) => {
++    if (s !== "*" && r.sample_no !== s) return;
++    if (onlyNum && !hasNum(r)) return;
++    if (onlyTodo && r.row_status === "CONFIRMED") return;
++    out.push({r, i});
++  });
++  return out;
++}
++
++function cell(tr, opts) {
++  const td = document.createElement("td");
++  if (opts.text !== undefined) {
++    td.textContent = opts.text;
++    td.className = opts.cls || "";
++  } else {
++    const inp = document.createElement("input");
++    inp.value = opts.value || "";
++    inp.oninput = () => { opts.set(inp.value); refreshRowMeta(); };
++    td.appendChild(inp);
++    if (opts.num) td.className = "num";
++  }
++  tr.appendChild(td);
++  return td;
++}
++
++function render() {
++  const tb = document.getElementById("tbody");
++  tb.innerHTML = "";
++  const list = visible();
++  for (const {r, i} of list) {
++    const tr = document.createElement("tr");
++    const cf = parseFloat(r.confidence_score || "");
++    if (!isNaN(cf)) tr.className = cf >= THRESH ? "conf-ok" : "conf-low";
++    if (!hasNum(r)) tr.classList.add("empty-row");
++    if (r._src === "click") tr.classList.add("clicked");
++
++    cell(tr, {text: r.sample_no || "", cls: "sn"});
++    cell(tr, {text: r.evidence_page || "", cls: "num"});
++    cell(tr, {value: r.symbol, set: v => r.symbol = v});
++    cell(tr, {value: r.parameter_name, set: v => r.parameter_name = v});
++    cell(tr, {value: r.min_value, set: v => r.min_value = v, num: true});
++    cell(tr, {value: r.typ_value, set: v => r.typ_value = v, num: true});
++    cell(tr, {value: r.max_value, set: v => r.max_value = v, num: true});
++    cell(tr, {value: r.unit, set: v => r.unit = v});
++
++    const tdS = document.createElement("td");
++    const sel = document.createElement("select");
++    for (const v of STATUS) {
++      const o = document.createElement("option");
++      o.value = v; o.textContent = v;
++      if (v === r.row_status) o.selected = true;
++      sel.appendChild(o);
++    }
++    sel.onchange = () => { r.row_status = sel.value; refreshRowMeta(); };
++    tdS.appendChild(sel);
++    tr.appendChild(tdS);
++
++    cell(tr, {text: r.confidence_score || "-", cls: "num cf"});
++
++    const tdD = document.createElement("td");
++    const btn = document.createElement("button");
++    btn.textContent = "删";
++    btn.className = "mini";
++    btn.onclick = () => { ROWS.splice(i, 1); render(); };
++    tdD.appendChild(btn);
++    tr.appendChild(tdD);
++
++    tb.appendChild(tr);
++  }
++  document.getElementById("cnt").textContent =
++    list.length + " / " + ROWS.length;
++  refreshRowMeta();
++}
++
++function refreshRowMeta() {
++  const all = ROWS.length;
++  const num = ROWS.filter(hasNum).length;
++  const conf = ROWS.filter(r => r.row_status === "CONFIRMED").length;
++  const bad = ROWS.filter(r => r.row_status === "CONFIRMED" && !hasNum(r)).length;
++  const noName = ROWS.filter(r => !(r.parameter_name || "").trim()
++                                && !(r.symbol || "").trim()).length;
++  const bySample = {};
++  ROWS.forEach(r => {
++    bySample[r.sample_no] = bySample[r.sample_no] || {n: 0, k: 0};
++    bySample[r.sample_no].n++;
++    if (hasNum(r)) bySample[r.sample_no].k++;
++  });
++  const parts = Object.keys(bySample).sort().map(s =>
++    s + ":" + bySample[s].k + "/" + bySample[s].n);
++  let t = "共 " + all + " 行：" + num + " 行有数值，" + conf + " 行已确认";
++  if (bad) t += "，其中 " + bad + " 行确认了却没有数值（必须处理）";
++  if (noName) t += "；" + noName + " 行既无参数名也无符号（进不了 Gold，建议删）";
++  t += "　|　有数值/总数 " + parts.join("  ");
++  const el = document.getElementById("stat");
++  el.textContent = t;
++  el.className = (bad || noName) ? "stat bad" : "stat";
++}
++
++function q(v) {
++  v = (v === undefined || v === null) ? "" : String(v);
++  return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
++}
++
++function csvText() {
++  const dropEmpty = document.getElementById("dropEmpty").checked;
++  // 既没参数名也没符号的行进不了 Gold（读表的人无法判断它是什么参数），
++  // 勾了"丢空行"就一起丢掉，别让它悄悄混进分母。
++  const rows = ROWS.filter(r => !dropEmpty || (hasNum(r)
++      && ((r.parameter_name || "").trim() || (r.symbol || "").trim())));
++  const head = FIELDS.join(",");
++  const lines = rows.map(r => FIELDS.map(f => q(r[f])).join(","));
++  return {text: [head].concat(lines).join("\n"), n: rows.length};
++}
++
++function downloadCSV() {
++  const {text, n} = csvText();
++  // 前面加 U+FEFF（BOM）：Excel 看到 BOM 才按 UTF-8 解码，
++  // 否则 ° µ − 会被当成无法映射的字符显示成 ?。
++  const blob = new Blob(["\ufeff" + text], {type: "text/csv;charset=utf-8"});
++  const a = document.createElement("a");
++  a.href = URL.createObjectURL(blob);
++  a.download = EXPORT_NAME + ".csv";
++  document.body.appendChild(a);
++  a.click();
++  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
++  document.getElementById("msg").textContent =
++    "已下载 " + EXPORT_NAME + ".csv（" + n + " 行，UTF-8 带 BOM，Excel 直接打开不乱码）";
++}
++
++function copyOut() {
++  const ta = document.getElementById("out");
++  ta.value = csvText().text;
++  ta.select();
++  let ok = false;
++  try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
++  document.getElementById("msg").textContent = ok
++    ? "已复制到剪贴板，粘到 Excel 即可"
++    : "复制失败：请手动 Ctrl+A 全选文本框再 Ctrl+C";
++}
++
++function cleanEmpty() {
++  const s = document.getElementById("fsample").value;
++  const before = ROWS.length;
++  ROWS = ROWS.filter(r => (s !== "*" && r.sample_no !== s) || hasNum(r));
++  render();
++  document.getElementById("msg").textContent =
++    "已删除 " + (before - ROWS.length) + " 行无 min/typ/max 的空行";
++}
++
++function resetDraft() {
++  if (!confirm("放弃所有改动，恢复到机器草稿？")) return;
++  ROWS = DRAFT.map(r => Object.assign({}, r, {_src: "draft"}));
++  render();
++  msg("已恢复机器草稿");
++}
++
++/* ---- CSV 回导：换新版本页面时把上次的进度接回来，不用重做 ---- */
++function parseCSVText(text) {
++  text = text.replace(/^\ufeff/, "");
++  const rows = [];
++  let row = [], cur = "", inQ = false;
++  for (let i = 0; i < text.length; i++) {
++    const c = text[i];
++    if (inQ) {
++      if (c === '"') {
++        if (text[i + 1] === '"') { cur += '"'; i++; }
++        else inQ = false;
++      } else cur += c;
++    } else if (c === '"') inQ = true;
++    else if (c === ",") { row.push(cur); cur = ""; }
++    else if (c === "\n") { row.push(cur); rows.push(row); row = []; cur = ""; }
++    else if (c === "\r") { /* 丢掉 */ }
++    else cur += c;
++  }
++  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
++  return rows;
++}
++
++function importCSV(input) {
++  const f = input.files && input.files[0];
++  if (!f) return;
++  const r = new FileReader();
++  r.onload = () => {
++    try {
++      const table = parseCSVText(String(r.result));
++      if (table.length < 2) throw new Error("文件里没有数据行");
++      const head = table.shift().map(s => s.trim());
++      if (head[0] !== "sample_no") {
++        throw new Error("表头第一列不是 sample_no，可能不是这个页面导出的文件");
++      }
++      const objs = [];
++      for (const a of table) {
++        if (!a.length || !(a[0] || "").trim()) continue;
++        const o = {};
++        FIELDS.forEach(k => o[k] = "");
++        head.forEach((h, i) => {
++          if (FIELDS.indexOf(h) >= 0) o[h] = (a[i] || "").trim();
++        });
++        o._src = "import";
++        objs.push(o);
++      }
++      if (!objs.length) throw new Error("解析出 0 行");
++      ROWS = objs;
++      fillSamples();
++      document.getElementById("fsample").value = "*";
++      render();
++      msg("已导入 " + objs.length + " 行，可以接着改");
++    } catch (e) {
++      msg("导入失败：" + e.message);
++    } finally {
++      input.value = "";
++    }
++  };
++  r.readAsText(f, "utf-8");
++}
++
++function fillSamples() {
++  const sel = document.getElementById("fsample");
++  const keep = sel.value;
++  sel.innerHTML = "";
++  const seen = [];
++  ROWS.forEach(r => { if (seen.indexOf(r.sample_no) < 0) seen.push(r.sample_no); });
++  ["*"].concat(seen.sort()).forEach(s => {
++    const o = document.createElement("option");
++    o.value = s;
++    o.textContent = s === "*" ? "全部样本" : s;
++    sel.appendChild(o);
++  });
++  if (seen.indexOf(keep) >= 0 || keep === "*") sel.value = keep;
++}
++
++document.addEventListener("click", (e) => {
++  const li = e.target.closest("li.line");
++  if (li && !li.classList.contains("dead")) addFromLine(li);
++});
++
++document.addEventListener("DOMContentLoaded", () => {
++  fillSamples();
++  document.getElementById("fsample").value = "*";
++  ["fsample", "fnum", "ftodo"].forEach(id =>
++    document.getElementById(id).addEventListener("change", render));
++  document.getElementById("fimp").addEventListener("change", (e) => importCSV(e.target));
++  render();
++});
++</script></body></html>
+\ No newline at end of file
 diff --git a/gate6a-plan/batch3_review/INDEX.md b/gate6a-plan/batch3_review/INDEX.md
 index 18770af..f057c88 100644
 --- a/gate6a-plan/batch3_review/INDEX.md
@@ -302,10 +876,21 @@ index f571a53..a5c15cc 100644
  
      # low_confidence 标记：低于阈值的行在 notes 里打词，方便 Excel 筛。
 diff --git a/gate6a-plan/batch3_review/_sync_batch3_review.py b/gate6a-plan/batch3_review/_sync_batch3_review.py
-index b0252a0..931f7d3 100644
+index b0252a0..3bce1f1 100644
 --- a/gate6a-plan/batch3_review/_sync_batch3_review.py
 +++ b/gate6a-plan/batch3_review/_sync_batch3_review.py
-@@ -83,6 +83,10 @@ SYNC = [
+@@ -4,6 +4,10 @@
+ 为什么单独写一个同步脚本：手工 cp 最容易漏掉「删旧图」「重算校验」「ZIP 里
+ 也要带上新的 SHA256SUMS」这三步。之前 CRLF 把 sha256sum -c 全线搞挂过一次，
+ 这里全部用 LF、全部按磁盘实算、最后再做一遍自检，不靠记忆。
++
++顺序约束（第七轮补齐时踩到）：本脚本按审计目录现有文件打包，
++所以**本轮 *.diff 必须先在本目录生成、再跑同步**，否则 ZIP 会缺 diff
++而上一轮的 diff 反倒在包里，出现「同包内自洽性不一致」。
+ """
+ from __future__ import print_function
+ 
+@@ -83,6 +87,10 @@ SYNC = [
      "Batch3_B3_Viewer.html",            # B3 专属副本（与正式版同字节）
      "Batch3_B3_DRAFT.csv",
      "Batch3_BATCH_PLAN.csv",
