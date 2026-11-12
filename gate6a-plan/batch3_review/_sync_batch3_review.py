@@ -17,6 +17,15 @@ DST = Path(r"E:\workspace\github\stageA-audit-v28\gate6a-plan\batch3_review")
 
 # 源 → 审计包（相对路径）。INDEX.md 在审计包里直接改，不从工作区覆盖。
 SYNC = [
+    # B1 第二轮：表头归属、授权链、真源口径、最终复跑
+    "Batch3_B1_RESIGNED.csv",
+    "Batch3_B1_RESIGNED.xlsx",
+    "_make_b1_resigned.py",
+    "_build_batch3_b1_report.py",
+    "Batch3_B1_validation_report.txt",
+    "b1_validation_raw/b1_final_pdf_mode.txt",
+    "b1_validation_raw/b1_final_sidecar_mode.txt",
+    # B2：V003 重截 + PM 裁定的 condition
     "Batch3_B2_DRAFT.csv",
     "Batch3_B2_Viewer.html",
     "Batch3_V003_diagnosis.txt",

@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-"""把 B1 四份机检原始输出汇成一份可复核报告。
+"""把 B1 八份机检原始输出汇成一份可复核报告。
 
 原始输出固定在 b1_validation_raw/，报告里逐字贴出命令、输出、退出码。
 不重跑、不改写、不挑好看的贴 —— 签字版 ERROR=2 的那两份也在里面。
+B/D/F 段是三个历史版本各两份；G 段是最终定稿复跑的两份。
 """
 from __future__ import print_function
 
@@ -46,6 +47,19 @@ RESIGNED = [
      "b1_resigned_sidecar_mode.txt", 0),
 ]
 
+# Reviewer 第二轮修正（授权链 / 表头归属 / 过期备注）后的最终复跑
+FINAL = [
+    ("G.2 最终定稿 · PDF 模式（实算哈希）",
+     "python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
+     "--page-text page_text_batch3_b1.json "
+     "--provenance Batch3_B1_PDF_PROVENANCE.csv --pdf-dir <PDF>",
+     "b1_final_pdf_mode.txt", 0),
+    ("G.3 最终定稿 · 离线模式（sidecar）",
+     "env -u ICPDF_PDF_DIR python validate_annotation.py --csv Batch3_B1_RESIGNED.csv "
+     "--page-text page_text_batch3_b1.json --provenance Batch3_B1_PDF_PROVENANCE.csv",
+     "b1_final_sidecar_mode.txt", 0),
+]
+
 
 def main():
     L = []
@@ -54,10 +68,22 @@ def main():
     A("Batch 3 · B1 人工签字定稿 —— v1.6 验证器机检报告")
     A("=" * 78)
     A("")
-    A("真源：D:/Documents/Downloads/Batch2_ANNOTATED (1).xlsx（PM 指定只读 xlsx）")
+    A("真源：./Batch3_B1_RESIGNED.xlsx（本包内最终定稿，23 行 × 19 列；同名 .csv 逐格同源）")
+    A("      人工签字原件：./Batch3_B1_SIGNED.xlsx（PM 发来的 xlsx，23 行 × 15 列，仅作留痕）")
     A("      Excel 另存出的同名 .csv 是 GBK 编码 + Tab 分隔，属导出格式，不作为标注真源。")
     A("签字：reviewer=wuxiaoxian，23 行全部 CONFIRMED")
+    A("      物理行 8 / 20 / 22 另记 approved_by=wuxiaoxian、entered_by=WB_Agent（见 G 段）")
     A("草稿 30 行 → 人工点选后保留 23 行（删 7 行）。机检对象 = 定稿 23 行 / 6 样本。")
+    A("")
+    A("※ 仓库口径更正与致歉（2026-11-12）")
+    A("-" * 78)
+    A("  此前报告把两个不同仓库的 main 混写成一个，特此更正，并向 Reviewer 致歉：")
+    A("    CodeUp   icpdf-extractor    远端 main = 853a80d   （代码仓 / Gate 6A 工作区）")
+    A("    GitHub   stageA-audit-v28   远端 main = e3c9b64   （审计仓 / 本包所在仓）")
+    A("  本包全部送审内容都在 GitHub 审计仓的 feat/gate6a-batch3 分支；")
+    A("  两个远端 main 均未因 B1 / B2 修正发生任何改动。")
+    A("  另：CodeUp 代码仓的「本地」main 为 a11131a（24 行 v1.6），按约定未 push，")
+    A("  与上面的远端 main 853a80d 不是同一个指针，请勿混用。")
     A("")
     A("A. 验证器输入从哪来（不能让报告变绿就关检查）")
     A("-" * 78)
@@ -143,7 +169,53 @@ def main():
         A("-" * 78)
         A("[退出码 %d]" % code)
     A("")
-    A("最终结论：重签版 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
+    A("重签版结论：PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
+    A("（该版尚未包含 Reviewer 第二轮的授权链与表头修正，最终结论见 G 段。）")
+    A("")
+    A("G. Reviewer 第二轮修正与最终复跑（2026-11-12 08:08）")
+    A("=" * 78)
+    A("G.0  23 行 table_title 逐行复核（对六件 PDF 原件逐页取证）")
+    A("-" * 78)
+    A("  只发现 1 处错误：物理行 8 / V304 / p4 / IIK / -50 mA，")
+    A("  旧值 Electrical Characteristics 改为 Absolute Maximum Ratings。")
+    A("  依据：V304 p4 第 6.1 节 Absolute Maximum Ratings 表内第 27~31 行为")
+    A("        IIK / Control input clamp current / VIN < 0 / –50 / mA；")
+    A("        该页第 6.3 节 Recommended Operating Conditions 从第 82 行才开始。")
+    A("  其余 22 行归属正确。两处「看似可疑」的实证：")
+    A("    * V319 物理行 5 / p5 / IO / 20 mA 标 AMR —— p5 上半页是")
+    A("      「absolute maximum ratings over operating free-air temperature range」")
+    A("      （全小写点线式表），Output current, IO / 20 mA 正在该表内；")
+    A("      p5 下半页第 95 行才是 recommended operating conditions。AMR 正确，不改。")
+    A("    * V336 物理行 14~17 / p5 / 4 行标 Electrical Characteristics ——")
+    A("      p5 原文标题就是 Electrical Characteristics--DC Parameters，正确，不改。")
+    A("  V173 / V345 的 p4 都是 5.1 Absolute Maximum Ratings（5.3 ROC 在同页更靠后）；")
+    A("  V199 p1 是 Absolute Maximum Ratings；V319 p5 上半 AMR、下半 ROC，按行分别归属。")
+    A("  口径说明：PM 裁定「AMR 与 ROC 绝不能混、table_title 必须严格保留」针对的是")
+    A("  同一件里绝对最大额定值与推荐工作条件不得串表，不是把所有真实 ELC 表强行改名。")
+    A("  若 Reviewer 要求全表只允许这两个值，请明示，再按 PDF 原文逐行改。")
+    A("")
+    A("G.1  人工授权链字段与备注定稿")
+    A("-" * 78)
+    A("  新增 approved_by / entered_by 两列（CSV 与 XLSX 同源，共 19 列）。")
+    A("  reviewer=wuxiaoxian 全表保留；物理行 8 / 20 / 22 三行另有")
+    A("  approved_by=wuxiaoxian、entered_by=WB_Agent，把「批准人」与「代录入方」分开。")
+    A("  其余 20 行是人工直接在 Excel 里签字录入，无代录入环节，两列留空。")
+    A("  三行 notes 里「待人确认并重新签字」等过期表述已全部删除，统一为：")
+    A("    「人工已核对 PDF p4 原图并确认此修正。」")
+    A("  其余 20 行 notes 保持人工签字时的原始记录，未改动。")
+    A("  最终定稿由 _make_b1_resigned.py 一次产出，逐格断言 CSV == XLSX；")
+    A("  前序版本 SIGNED / CONFIRMED / SUGGESTED_FIX 全部保留留痕。")
+    for title, cmd, fn, code in FINAL:
+        A("")
+        A("### " + title)
+        A("$ " + cmd)
+        A("-" * 78)
+        A((RAW / fn).read_text(encoding="utf-8").rstrip())
+        A("-" * 78)
+        A("[退出码 %d]" % code)
+    A("")
+    A("最终结论：最终定稿 PDF / 离线双模式均 OK=23 / SUSPECT=0 / ERROR=0，退出码 0。")
+    A("新增两列与 table_title / notes 修正均未影响任何一条机检判据。")
     A("=" * 78)
 
     OUT.write_text("\n".join(L) + "\n", encoding="utf-8", newline="\n")

@@ -49,6 +49,11 @@ EXPORT_NAME = "Batch3_B2_ANNOTATED"
 # 减号家族：PDF 里 TJ 用的是 U+2013 EN DASH（–40），与验证器 MINUS 常量同源。
 MINUS = "-\u2212\u2013\u2014"
 
+# PM 2026-11-12 08:09 裁定追加的人工条件值。PDF 原文里没有 `VDD=1.8V` 这个字面串，
+# 所以不能混进「逐字可核」的断言里放水：登记成白名单，并规定必须能在
+# 同一页核到对应的模式标识，否则拒绝生成。值仍然不是机器自己编的。
+COND_OVERRIDES = {"VDD=1.8V": "1.8V Operation"}
+
 
 def norm(s):
     """把各种横杠统一成 ASCII 减号并折叠空白，专用于「原文能否找到」断言。"""
@@ -83,8 +88,9 @@ SPEC = [
     dict(page=106, title="Recommended Operating Conditions",
          symbol="VDDSHV5", name="Dual-voltage IO supply",
          mn="1.71", typ="1.8", mx="1.89", unit="V",
-         cond="1.8V Operation",
-         extra="同一符号另有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V 模式"),
+         cond="VDD=1.8V",
+         extra="PM 2026-11-12 08:09 裁定只取 1.8V，condition 标 VDD=1.8V 区分；"
+               "同页另有 3.3V Operation（3.135/3.3/3.465 V），原文模式标识 1.8V Operation"),
     dict(page=106, title="Recommended Operating Conditions",
          symbol="TJ", name="Operating junction temperature range",
          mn="-40", typ="", mx="125", unit="\u00b0C",
@@ -119,13 +125,20 @@ def assert_evidence(doc, spec):
     """
     pno = spec["page"]
     ptext = norm(doc.load_page(pno - 1).get_text("text"))
-    checks = [("参数名", spec["name"]), ("单位", spec["unit"]),
-              ("条件", spec["cond"])]
+    checks = [("参数名", spec["name"]), ("单位", spec["unit"])]
     for label, v in checks:
         if not v.strip():
             continue
         if norm(v) not in ptext:
             raise AssertionError("p%d 原文找不到%s %r，拒绝生成" % (pno, label, v))
+    cond = spec["cond"].strip()
+    if cond in COND_OVERRIDES:
+        anchor = COND_OVERRIDES[cond]
+        if norm(anchor) not in ptext:
+            raise AssertionError("p%d 原文找不到人工裁定条件 %r 的模式标识 %r，拒绝生成"
+                                 % (pno, cond, anchor))
+    elif cond and norm(cond) not in ptext:
+        raise AssertionError("p%d 原文找不到条件 %r，拒绝生成" % (pno, cond))
     for label, k in (("min", "mn"), ("typ", "typ"), ("max", "mx")):
         v = spec[k].strip()
         if v and norm(v) not in ptext:
@@ -273,6 +286,13 @@ def main():
     text = HTML.read_text(encoding="utf-8")
     n_card_before = text.count('<div class="card">')
     n_img_before = text.count('<img src="')
+    # 幂等：V003 卡片可能已是修好的 3 张图，不能写死「+2」。
+    i0 = text.find('class="sn">V003')
+    s0 = text.rfind('<div class="card">', 0, i0)
+    e0 = text.find('<div class="card">', i0)
+    if e0 < 0:
+        e0 = text.find('<div class="work">', i0)
+    n_img_v003_before = text[s0:e0].count('<img src="')
     note = ("已重定位：原 p14 为 Pin Attributes 术语解释页（无参数）；"
             "现按第 6 章 Specifications 给出 5 行文本层定向草稿，"
             "5 行均 low_confidence，请先核 NOM→TYP 映射与 1.8V/3.3V 条件归属")
@@ -284,7 +304,9 @@ def main():
                      new, flags=re.S)
     assert n == 1, "<script> 段数不是 1"
     assert new.count('<div class="card">') == n_card_before == 6, "卡片数变了"
-    assert new.count('<img src="') == n_img_before + 2, "图片引用数不对（1→3）"
+    assert new.count('<img src="') == \
+        n_img_before - n_img_v003_before + len(panes), \
+        "图片引用数不对（非 V003 图应不动，V003 换成 3 张）"
     # 注意：V320 也有 b3_ELC_p0014.png（另一个目录），断言必须限定 V003 路径，
     # 同时反向断言 V320 的图没被误伤。
     assert "annotation_reports/V003/b3_ELC_p0014.png" not in new, "V003 旧错页图还在引用"
@@ -394,18 +416,24 @@ def build_diag(npages, cand, panes, new_rows):
     L.append("  row_status 一律 DRAFT_AWAITING_HUMAN_CONFIRM，reviewer 为空；")
     L.append("  conf=0.60 < 阈值 0.85，5 行全部标 low_confidence，必须人工点选。")
     L.append("")
-    L.append("H. 仍需人工确认的点")
+    L.append("H. PM 2026-11-12 08:09 对四问的裁定与落地")
     L.append("-" * 62)
-    L.append("  1. ROC 表头是 MIN(1) / NOM / MAX(1)；把 NOM 放进 typ_value 是否合适，")
-    L.append("     必须由 Reviewer 定，机器不替人决定。")
-    L.append("  2. VDDSHV5 同页还有 3.3V Operation（3.135/3.3/3.465 V），本行只取 1.8V。")
-    L.append("  3. p101 的 VDD_CORE -0.3/1.05 V 是绝对最大额定值，")
-    L.append("     与 p105 的推荐工作条件 0.81/0.85/0.895 V 不是同一概念。")
-    L.append("  4. TJ 原文为 –40（U+2013），草稿按验证器 MINUS 规则写 -40。")
+    L.append("  1. NOM 放进 typ_value —— PM 裁定「完全正确」，保持原样。")
+    L.append("  2. VDDSHV5 只取 1.8V —— PM 裁定在 condition 加 VDD=1.8V 区分，已落地。")
+    L.append("     VDD=1.8V 是人工裁定值，PDF 原文没有这个字面串；生成器登记在")
+    L.append("     COND_OVERRIDES 中，强制要求同页原文能核到 1.8V Operation 才允许生成，")
+    L.append("     没有放松逐字段断言。同页另有 3.3V Operation（3.135/3.3/3.465 V），未取。")
+    L.append("  3. AMR 与 ROC 绝不能混 —— 5 行 table_title 严格为 4 行")
+    L.append("     Recommended Operating Conditions + 1 行 Absolute Maximum Ratings。")
+    L.append("  4. TJ 的 -40 归一化 —— PM 裁定没问题，保持原样。")
+    L.append("")
+    L.append("余下仍须人工点选：5 行全是 DRAFT_AWAITING_HUMAN_CONFIRM / low_confidence，")
+    L.append("草稿不是 Gold，机器没有替人确认任何一行。")
     L.append("")
     L.append("I. 产物变更")
     L.append("-" * 62)
-    L.append("  Batch3_B2_DRAFT.csv      V003 的 5 行替换（总行数不变，其余 25 行未动）")
+    L.append("  Batch3_B2_DRAFT.csv      V003 的 5 行替换（总行数不变，其余 25 行未动）；")
+    L.append("                           VDDSHV5 行 condition 按 PM 裁定改为 VDD=1.8V")
     L.append("  Batch3_B2_Viewer.html    V003 卡片重画 + <script> 按同一份 CSV 重建")
     L.append("  annotation_reports/V003/ 新增 3 张真表图，删除 1 张错页图")
     L.append("  _build_batch3_interactive.py  三道定位闸门")
