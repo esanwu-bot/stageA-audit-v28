@@ -1,0 +1,26 @@
+{
+  "schema": "lakehouse/eval-result/v1",
+  "run_id": "V101-20261112T231418Z-4ff6",
+  "source_sha256": "059d448c5a34a4b1f45f02038f5076b82633f372372a15c395940803dc7f3a2b",
+  "gold_version": "gold_v1.0.0",
+  "evaluator_version": "evaluator_v3_1to1 / schema 3.3",
+  "evaluator_fingerprint": "e1a3e4bd03068bca921e5570107c8cb4db2935ae2efeee4d9881bf0db4323ef0",
+  "sample_id": "V101",
+  "metrics": {
+    "gold_rows": 9,
+    "exact_rows": 0,
+    "symbol_gated_strict_hit": 3,
+    "condition_gated_strict_hit": 0,
+    "semantic_hit_rate": 0.0
+  },
+  "reason_counts": {
+    "condition_not_on_row:grouped_subheader": 3,
+    "symbol_not_on_row": 6
+  },
+  "global_reference": {
+    "semantic_hit_rows": 58,
+    "semantic_hit_rate": 0.5524,
+    "gold_rows": 105,
+    "note": "全库口径，仅供对照；本文件只对本 run 的这一件负责。"
+  }
+}

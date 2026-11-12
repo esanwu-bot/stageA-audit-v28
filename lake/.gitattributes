@@ -1,0 +1,5 @@
+# 字节保真：lake/ 下所有文件的 sha256 被写进了 run_manifest.json 与
+# GOLD_MANIFEST.json，如果 git 在 checkout 时做 LF -> CRLF 转换，
+# 哈希就会失配，_verify_lineage.py 会在一个干净 clone 上莫名其妙地失败。
+# 因此这里关掉一切文本转换，让 blob 字节 == 工作区字节。
+* -text

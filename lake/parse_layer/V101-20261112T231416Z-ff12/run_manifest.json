@@ -1,0 +1,79 @@
+{
+  "schema": "lakehouse/run-manifest/v1",
+  "run_id": "V101-20261112T231416Z-ff12",
+  "created_at": "2026-11-12T23:14:18+00:00",
+  "identity": {
+    "run_id": "V101-20261112T231416Z-ff12",
+    "role": "唯一执行身份。同一组可复现条件下重复执行，run_id 必须不同，且全部保留。"
+  },
+  "reproducibility": {
+    "reproducibility_key": "8a88bf9479cfcd2f6e344e19cfa46ee0ad48a8659ba17f8dfff2733d83c07194",
+    "role": "可复现条件。三元组相同即代表「同一输入 + 同一代码 + 同一配置」。",
+    "source_sha256": "059d448c5a34a4b1f45f02038f5076b82633f372372a15c395940803dc7f3a2b",
+    "parser_fingerprint": "7e70c1f801004c54667b062934efdce28fb5624f461da9bd1625d62872132dca",
+    "config_hash": "ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c"
+  },
+  "source_sha256": "059d448c5a34a4b1f45f02038f5076b82633f372372a15c395940803dc7f3a2b",
+  "parser_fingerprint": "7e70c1f801004c54667b062934efdce28fb5624f461da9bd1625d62872132dca",
+  "parser_fingerprint_scope": "src/icpdf/parser 下 27 个 .py 的合并 sha256（v2 postfix）",
+  "parser_commit": "bede1f581945331fa0f213a8be5d1171601639ae",
+  "parser_version": "0.1.0-phase1",
+  "config_hash": "ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c",
+  "config_snapshot": "config_snapshot.json",
+  "dependency_lock": "parse_layer/_dependency_lock.txt",
+  "dependency_lock_sha256": "a794a7c219a32ec20ad4d5a176608bac66681b904124135a313e4312cfb3776e",
+  "artifacts": [
+    {
+      "name": "document.json",
+      "sha256": "0c87243c8ae1e95bcc15d6e0e5b2138ec8804bb0cdf4286a218bb4df47d5e280",
+      "bytes": 1481,
+      "blob": "_blobs/0c87243c8ae1e95bcc15d6e0e5b2138ec8804bb0cdf4286a218bb4df47d5e280/document.json"
+    },
+    {
+      "name": "tables.json",
+      "sha256": "8460c39e23654bce62eac22cf5eff0f83d6491cd5627b4e0d965599f85b102b3",
+      "bytes": 973956,
+      "blob": "_blobs/8460c39e23654bce62eac22cf5eff0f83d6491cd5627b4e0d965599f85b102b3/tables.json"
+    },
+    {
+      "name": "candidates.json",
+      "sha256": "3dd79124cdbd386fd45e8ede0e3225ecf55dda2edcd4738b406e8c8fb75aa379",
+      "bytes": 1022972,
+      "blob": "_blobs/3dd79124cdbd386fd45e8ede0e3225ecf55dda2edcd4738b406e8c8fb75aa379/candidates.json"
+    },
+    {
+      "name": "boundary_decisions.json",
+      "sha256": "ef9e7ed434bbe496b798195d3596e485f6e9b534d76a4fc88386661bd0d37d2d",
+      "bytes": 229422,
+      "blob": "_blobs/ef9e7ed434bbe496b798195d3596e485f6e9b534d76a4fc88386661bd0d37d2d/boundary_decisions.json"
+    },
+    {
+      "name": "product.json",
+      "sha256": "946f16bdc40aa540f5a978e722c528b138fb7f35aa684000d34e42d90624ca6f",
+      "bytes": 278,
+      "blob": "_blobs/946f16bdc40aa540f5a978e722c528b138fb7f35aa684000d34e42d90624ca6f/product.json"
+    },
+    {
+      "name": "run_config.json",
+      "sha256": "d55b5e95a49fef600994ca5748d1c083e8247b7080a14e3b0a49a618094da397",
+      "bytes": 2568,
+      "blob": "_blobs/d55b5e95a49fef600994ca5748d1c083e8247b7080a14e3b0a49a618094da397/run_config.json"
+    },
+    {
+      "name": "pages/geometry.json",
+      "sha256": "8fc7483dfadb4662b12072c9d42d8c976e1bd2454a5ff93e0c2eb9334decb46b",
+      "bytes": 7596,
+      "blob": "_blobs/8fc7483dfadb4662b12072c9d42d8c976e1bd2454a5ff93e0c2eb9334decb46b/geometry.json"
+    },
+    {
+      "name": "text_blocks.json",
+      "sha256": "cd03e0108f8b8ca8afa015824f2dd4859a04bad594eb042be203f76abe617d34",
+      "bytes": 2413613,
+      "blob": "_blobs/cd03e0108f8b8ca8afa015824f2dd4859a04bad594eb042be203f76abe617d34/text_blocks.json"
+    }
+  ],
+  "candidates_parquet": "parse_layer/V101-20261112T231416Z-ff12/candidates.parquet",
+  "candidate_count": 1448,
+  "page_count": 21,
+  "table_count": 14
+}

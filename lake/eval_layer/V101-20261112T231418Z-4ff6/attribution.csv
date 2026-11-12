@@ -1,0 +1,10 @@
+gold_row_id,match_status,strict_hit,symbol_gated_strict_hit,condition_gated_strict_hit,semantic_hit_reason,error_category
+G001,严格命中,是,是,否,condition_not_on_row:grouped_subheader,完全一致
+G002,软命中,否,否,否,symbol_not_on_row,完全一致
+G003,软命中,否,否,否,symbol_not_on_row,完全一致
+G004,严格命中,是,是,否,condition_not_on_row:grouped_subheader,完全一致
+G005,软命中,否,否,否,symbol_not_on_row,完全一致
+G006,软命中,否,否,否,symbol_not_on_row,完全一致
+G007,严格命中,是,是,否,condition_not_on_row:grouped_subheader,完全一致
+G008,软命中,否,否,否,symbol_not_on_row,完全一致
+G009,软命中,否,否,否,symbol_not_on_row,完全一致

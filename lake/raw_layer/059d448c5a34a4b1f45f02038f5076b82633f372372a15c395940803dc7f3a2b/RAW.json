@@ -1,0 +1,9 @@
+{
+  "source_sha256": "059d448c5a34a4b1f45f02038f5076b82633f372372a15c395940803dc7f3a2b",
+  "file": "source.pdf",
+  "bytes": 1224626,
+  "immutable": true,
+  "policy": "以 SHA-256 为键内容寻址；文件权限 0o444；写入幂等（同键同字节）",
+  "first_seen": "2026-11-12T23:14:15+00:00",
+  "original_path": "runs/gate6a_replay_v2_postfix/per_sample/V101/source.pdf"
+}

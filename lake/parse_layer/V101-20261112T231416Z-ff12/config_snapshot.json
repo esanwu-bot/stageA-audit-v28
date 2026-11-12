@@ -1,0 +1,81 @@
+{
+  "requested_mpn": "CD74HCT574",
+  "dpi": 150.0,
+  "parser_config": {
+    "pdf": {
+      "render_dpi": 150,
+      "text_min_chars": 1
+    },
+    "tables": {
+      "cell_gap_pt": 8.0,
+      "row_gap_factor": 2.5,
+      "column_tolerance": 2,
+      "header_min_hits": 2,
+      "max_title_chars": 120,
+      "max_cell_chars": 80,
+      "min_numeric_cells": 2,
+      "rule_min_width_pt": 70.0,
+      "rule_min_height_pt": 15.0,
+      "alignment_min_rows": 3,
+      "merge_min_gap_pt": 2.0,
+      "merge_max_gap_pt": 24.0,
+      "merge_column_tol_pt": 2.5,
+      "merge_min_shared_columns": 2,
+      "merge_shared_ratio": 0.6,
+      "merge_extent_tol_pt": 3.0,
+      "merge_min_x_overlap_ratio": 0.6,
+      "visual_min_rule_span_pt": 4.0,
+      "visual_boundary_tol_pt": 2.5,
+      "visual_full_height_coverage": 0.85,
+      "logical_label_min_band_ratio": 0.6,
+      "logical_label_min_bands": 2,
+      "logical_subrule_promote_min_ratio": 0.5,
+      "logical_subrule_promote_min_bands": 2,
+      "logical_subrule_ambiguous_min_ratio": 0.25,
+      "logical_short_label_max_words": 2,
+      "logical_short_label_max_chars": 12
+    }
+  },
+  "parser_config_sha256": "ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c",
+  "table_params": {
+    "snapshot_version": "table-params/v2",
+    "params": {
+      "cell_gap_pt": 8.0,
+      "row_gap_factor": 2.5,
+      "column_tolerance": 2,
+      "header_min_hits": 2,
+      "max_title_chars": 120,
+      "max_cell_chars": 80,
+      "min_numeric_cells": 2,
+      "rule_min_width_pt": 70.0,
+      "rule_min_height_pt": 15.0,
+      "alignment_min_rows": 3,
+      "merge_min_gap_pt": 2.0,
+      "merge_max_gap_pt": 24.0,
+      "merge_column_tol_pt": 2.5,
+      "merge_min_shared_columns": 2,
+      "merge_shared_ratio": 0.6,
+      "merge_extent_tol_pt": 3.0,
+      "merge_min_x_overlap_ratio": 0.6,
+      "visual_min_rule_span_pt": 4.0,
+      "visual_boundary_tol_pt": 2.5,
+      "visual_full_height_coverage": 0.85,
+      "logical_label_min_band_ratio": 0.6,
+      "logical_label_min_bands": 2,
+      "logical_subrule_promote_min_ratio": 0.5,
+      "logical_subrule_promote_min_bands": 2,
+      "logical_subrule_ambiguous_min_ratio": 0.25,
+      "logical_short_label_max_words": 2,
+      "logical_short_label_max_chars": 12
+    }
+  },
+  "table_params_sha256": "ef234126223d93c5134069611c190b893d8f03b28b789b057a209b6845b49783",
+  "llm": {
+    "provider": "dashscope",
+    "model": "",
+    "timeout": "",
+    "api_key_present": false
+  },
+  "contract_version": "data-contract/v0.2",
+  "parser_version": "0.1.0-phase1"
+}

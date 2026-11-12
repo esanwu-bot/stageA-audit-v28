@@ -1,6 +1,6 @@
-# Gate 6A 审计证据包 v3
+# Gate 6A 审计证据包 v3 + Stage B 血缘 Demo
 
-> 本仓库此分支（`feat/gate6a-audit`）仅存放 Gate 6A 的**审计证据、口径说明与可复现脚本**。
+> 本仓库此分支（`feat/gate6a-audit`）仅存放**审计证据、口径说明与可复现脚本**。
 > **不含任何 `src/` 源码，不含 PDF，不含 Gold 数据文件，不含凭据。**
 
 本目录不是入口。请从 **审计索引** 开始读：
@@ -9,6 +9,9 @@
 
 - **[`workbench/gate6a_replay/audit/README.md`](workbench/gate6a_replay/audit/README.md)** — 文件索引、四个口径对照、104 的逐行拆解、五条需求的对应关系
 - **[`workbench/gate6a_replay/audit/eval_v3_1to1.md`](workbench/gate6a_replay/audit/eval_v3_1to1.md)** — v3 评估器相对 v2 改了什么、怎么证明改对了
+- **[`lake/README.md`](lake/README.md)** — Stage B 三层血缘（raw / parse / eval），单件 V101 的四个绑定与两重身份
+- **[`docs/New_Gate_受控灰度方案.md`](docs/New_Gate_受控灰度方案.md)** — 公网灰度前的限流、50 MB、180 秒强杀，以及 §8「明确没验证的事」
+- **[`docs/demo/README.md`](docs/demo/README.md)** — Ds Bit 工作台本地端到端截图（**来自 `127.0.0.1:8000`，不是服务器**）
 
 ## v3 改了什么
 
@@ -58,10 +61,10 @@ Reviewer 指出两处致命伤，本轮针对性修复，**Parser 未重跑**，
 
 ```bash
 cd workbench/gate6a_replay/audit && sha256sum -c SHA256SUMS.txt
-#   → 53 个文件全部 OK
+#   → 57 个文件全部 OK
 ```
 
-已实测：在 `core.autocrlf=true`（Windows 默认）下克隆本仓库后执行，53 / 53 通过。
+已实测：在 `core.autocrlf=true`（Windows 默认）下克隆本仓库后执行，57 / 57 通过。
 
 `audit/**` 与 `artifacts/**` 在 `.gitattributes` 里标为 `-text`，**禁止 git 转换行尾**。
 不加这一条，Windows 检出是 CRLF、Linux 是 LF，同一份产物的 sha256 就不同，
@@ -81,6 +84,41 @@ python workbench/gate6a_replay/_assert_v3_1to1.py
 #   → 全部 27 项断言通过
 ```
 
+## Stage B：三层血缘（`lake/`）
+
+单件 V101 从原始字节走到评估结论，每层可独立校验。本仓库收录**脚本 + 清单 + 评估输出**，
+按上面的约定**不收录** PDF 本体、`_blobs/`、`catalog.duckdb` 与 Gold 数据文件。
+
+| 绑定 | 值（V101） | 作用 |
+| --- | --- | --- |
+| `source_sha256` | `059d448c5a34a4b1f45f02038f5076b82633f372372a15c395940803dc7f3a2b` | 输入内容身份 |
+| `parser_fingerprint` | `7e70c1f801004c54667b062934efdce28fb5624f461da9bd1625d62872132dca` | 27 个 `.py` 合并哈希 |
+| `config_hash` | `ab9f12527767c7dffe670f4b49e516202f224902af996a73eb155aaa420d3d5c` | `configs/parser.yaml` 快照 |
+| `run_id` | `V101-20261112T231416Z-ff12` / `…231418Z-4ff6` | **执行身份**（两个） |
+
+前三个合起来是**可复现条件**（`reproducibility_key = 8a88bf9479cfcd2f…`，两条记录相同），
+`run_id` 是**执行身份**（两条不同）。`parse_runs` 表刻意只有 PRIMARY KEY、
+没有 UNIQUE 约束 —— 同条件重复执行必须全部保留，不能被数据库拒绝。
+
+为什么 `parser_fingerprint` 不用 commit SHA：那次复跑跑在「修复已写好但未提交」的工作树上
+（`dirty_files` 199 项），commit SHA 描述不了那份字节，27 文件合并哈希可以。
+
+`lake/.gitattributes` 同样是 `* -text`：这些文件的 sha256 被写进
+`run_manifest.json`（`dependency_lock_sha256`）与 `GOLD_MANIFEST.json`，
+一旦 git 转换行尾，干净 clone 上校验就会假失败。
+
+在本仓库里**能**做的：读 `run_manifest.json` 核对四个绑定、读 `eval.json` 看指标与
+Gold 版本、读 `attribution.csv` 看逐行归因（`gold_row_id` + 判定，**不含值**）。
+
+**不能**做的：直接跑 `lake/_verify_lineage.py`。它要实算 raw PDF 与 Gold 文件的哈希，
+而这两类文件按约定不在本仓库。脚本会明确报缺哪个输入，不做尽力而为。
+
+> V101 的 `semantic_hit_rate` 是 **0.00%**（9 行语义命中全为 0）。逐行原因在
+> `eval.json.reason_counts`：6 行 `symbol_not_on_row`、3 行
+> `condition_not_on_row:grouped_subheader`。这是真实结果，不是 bug：V101 正是当初用来
+> 暴露「符号不在命中行」的样本。全库口径 58 / 105 = 55.24% 记在 `eval.json` 的
+> `global_reference`。
+
 ## 目录
 
 ```
@@ -93,6 +131,23 @@ workbench/gate6a_replay/
 ├── _make_source_fingerprint.py # 源码指纹
 ├── audit/                  # 证据本体 + 三个版本的冻结评估器快照
 └── artifacts/              # v1 / v2 / v3 的逐行评估产物
+
+lake/
+├── .gitattributes          # 同上，sha256 已写进 manifest
+├── README.md               # 三层结构、四个绑定、三个反例
+├── _build_lake.py          # 建湖（raw 内容寻址 / blob 去重 / eval 绑定）
+├── _verify_lineage.py      # 跨层引用自洽校验（需完整工作区）
+├── _query_demo.py          # DuckDB 四条 SQL
+├── _negative_tests.py      # 三个反例
+├── _s3_connectivity_test.py    # 同一段 SQL 可切 --local / --s3
+├── _dependency_lock.txt    # 依赖锁（内网源已过滤）
+├── raw_layer/<sha256>/RAW.json # 只收录清单，不含 PDF 本体
+├── parse_layer/<run_id>/   # run_manifest + config_snapshot + candidates.parquet
+└── eval_layer/<run_id>/    # eval.json + attribution.csv（不含 Gold 值）
+
+docs/
+├── New_Gate_受控灰度方案.md  # 限流 / 50 MB / 180 秒强杀 + §8 未验证项
+└── demo/                   # Ds Bit 本地端到端截图（127.0.0.1:8000）
 ```
 
 补充：[`audit/pip_freeze.txt`](workbench/gate6a_replay/audit/pip_freeze.txt)（环境）、
