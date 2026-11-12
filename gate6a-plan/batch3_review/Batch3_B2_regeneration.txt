@@ -1,0 +1,35 @@
+=== 重跑 _make_b2_final.py（真实签名源 Fail-Closed）===
+PDF 溯源（按签字版 file_name 建硬链接，字节与语料原件一致）：
+  V038  ADC12QJ1600ALREP.pdf                   151 页  复用               sha256=183f4057e7c7cf49…
+  V320  DAC3482IRKDR__slas748f.pdf             106 页  复用               sha256=1eec88c866fe4e52…
+  V346  ADS54J40IRMPT.pdf                      117 页  复用               sha256=28cac987b60b12c2…
+  V242  ADS131B26-Q1.pdf                       253 页  复用               sha256=33708e2c19e5def0…
+  V003  AM2431BSDFHIALXR__am2431.pdf           282 页  复用               sha256=357aabed475f92b9…
+  V011  CD54HC123F3A__cd54hc123.pdf             24 页  复用               sha256=062aa4848f2f6eae…
+
+B2 最终定稿：30 行 / 6 样本 / 19 列
+  notes 全部为：人工已核对 PDF 原图并确认
+  V003 VDDSHV5 condition 保留：1.8V Operation（p106 原文断言通过）
+  按 PDF 原图回填符号 7 行（不再使用裁定码）：
+    行8   V320  DACVDD, DIGVDD, CLKVDD     → symbol='DACVDD, DIGVDD, CLKVDD'   condition='over operating free-air temperature range (unless otherwise noted)'
+    行9   V320  AVDD, PLLAVDD              → symbol='AVDD, PLLAVDD'            condition='over operating free-air temperature range (unless otherwise noted)'
+    行16  V242  APWR to AGND               → symbol='APWR to AGND'             condition=''
+    行17  V242  DPWR to DGND               → symbol='DPWR to DGND'             condition=''
+    行18  V242  AGND, AGNDy to DGND        → symbol='AGND, AGNDy to DGND'      condition=''
+    行19  V242  AVDD to AGND               → symbol='AVDD to AGND'             condition=''
+    行20  V242  IOVDD to DGND              → symbol='IOVDD to DGND'            condition=''
+  7 行逐字段原文断言通过；entered_by=WB_Agent
+  approved_by：按稳定 ID 从 Batch3_B2_FINAL_TO_SIGN.xlsx 继承 7 处 PM 补签，其余 23 行保持空白
+  其余 23 行原 15 列除 notes 外逐格未变；reviewer / row_status 未动
+
+复核命令：
+  python validate_annotation.py --csv Batch3_B2_FINAL.csv --page-text page_text_batch3_b2.json --provenance Batch3_B2_PDF_PROVENANCE.csv --pdf-dir b2_pdfs
+退出码：0
+
+=== 与封卷定稿逐格比对 ===
+xlsx 19列 x 31行 逐格一致： True
+CSV 字节一致： True
+PROVENANCE 字节一致： True
+approved_by 非空 7 行： [8, 9, 16, 17, 18, 19, 20]
+entered_by=WB_Agent 行： [8, 9, 16, 17, 18, 19, 20]
+授权链闭合： True

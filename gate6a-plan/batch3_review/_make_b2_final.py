@@ -37,8 +37,9 @@ Reviewer 指出这不是「源头没有符号」，用 ACCEPTED_SOURCE_HAS_NO_SY
 
 授权链（封卷状态）：这 7 行由 WB 按原文回填，entered_by=WB_Agent；
 PM 2026-11-12 10:05 授权并已在 Batch3_B2_FINAL_TO_SIGN.xlsx 的 7 个红格
-补签 approved_by=wuxiaoxian。本脚本重跑时会从现有 Batch3_B2_FINAL.xlsx
-读回这 7 处人工签名并原样保留，绝不代填、绝不自动补齐；
+补签 approved_by=wuxiaoxian。该 TO_SIGN 原件是**唯一签名源**：本脚本
+Fail-Closed 校验其存在、19 列表头、30 行数、稳定 ID 唯一、签名值合法，
+再按稳定 ID 把签名继承进定稿，绝不按行号、绝不代填、绝不自动补齐；
 其余 23 行保持空白。reviewer 仍是 PM 对整表的签字，
 human_adjudication 全部清空。
 
@@ -88,6 +89,21 @@ SIGNED_COPY = PREP / "Batch3_B2_SIGNED_original.xlsx"
 NOTES_BEFORE = PREP / "Batch3_B2_notes_before_cleanup.txt"
 OUT_SIDE = PREP / "page_text_batch3_b2.json"
 OUT_PROV = PREP / "Batch3_B2_PDF_PROVENANCE.csv"
+# 唯一签名源：PM 2026-11-12 10:03 在 7 个标红格正确补签的原件。
+# 旧版从「现有定稿」按行号读回 approved_by，属于 Fail-Open：
+# 源不明确、行号一变就会串签、表头/行数异常也不报错。现全部废弃。
+APPROVAL_SRC = PREP / "Batch3_B2_FINAL_TO_SIGN.xlsx"
+# PM 指定的五字段业务主键。实测 30 行里有 2 组重复：
+#   V011 p3 的 VIH（3 行）/ VIL（2 行），同一页同一符号不同电压档，
+#   五字段完全相同。7 个签名行本身唯一，但若只按五字段建映射，
+#   字典会静默覆盖重复键 —— 这正是另一种 Fail-Open。
+# 追加 4 个确定性数值/单位列消歧后 30 行 ID 全唯一。
+# 这些列是 PM 明确「绝不能改」的核心数值，不是行号：重排、增删空白行
+# 后仍能一一对应，符合「废弃按行号继承」的要求。
+STABLE_ID_FIELDS = (
+    "sample_no", "file_name", "evidence_page", "symbol", "parameter_name",
+    "min_value", "typ_value", "max_value", "unit",
+)
 
 ORIG_COLS = [
     "sample_no", "file_name", "evidence_page", "table_title", "symbol",
@@ -158,6 +174,73 @@ def sha(path):
     return h.hexdigest()
 
 
+def stable_id(r):
+    """稳定行 ID：PM 指定五字段 + 4 个确定性数值列，见 STABLE_ID_FIELDS 注释。"""
+    return "|".join(str(r.get(k, "") or "").strip() for k in STABLE_ID_FIELDS)
+
+
+def load_approval_map(path=None):
+    """Fail-Closed 读取唯一签名源，返回 {稳定ID: approved_by}。
+
+    以下任一情况直接报错退出，绝不「读不到就按无签名处理」：
+      源文件不存在 / 表头不是 19 列定稿结构 / 数据行数不是 30 /
+      稳定 ID 重复 / 出现非 PM 本人签名。
+    """
+    src = Path(path) if path is not None else APPROVAL_SRC
+    if not src.exists():
+        raise SystemExit("FAIL 找不到唯一签名源：%s" % src)
+    wb = openpyxl.load_workbook(str(src), data_only=True, read_only=True)
+    try:
+        vals = list(wb.active.values)
+    finally:
+        wb.close()
+    if not vals:
+        raise SystemExit("FAIL 签名源是空表：%s" % src)
+    hdr = [str(x or "").strip() for x in vals[0]]
+    if hdr != FINAL_COLS:
+        raise SystemExit("FAIL 签名源表头不符（应为 19 列定稿结构）：%s" % hdr)
+    data = [v for v in vals[1:]
+            if any(x is not None and str(x).strip() for x in v)]
+    if len(data) != 30:
+        raise SystemExit("FAIL 签名源数据行数异常：%d（应为 30）" % len(data))
+    out = {}
+    for v in data:
+        r = {k: cell(v[i]) for i, k in enumerate(hdr)}
+        sid = stable_id(r)
+        if sid in out:
+            raise SystemExit("FAIL 签名源出现重复稳定 ID：%s" % sid)
+        a = r["approved_by"]
+        if a and a != REVIEWER:
+            raise SystemExit("FAIL 签名源出现非 PM 本人签名：%r" % a)
+        out[sid] = a
+    return out
+
+
+def apply_approval(rows, approval_map):
+    """按稳定 ID 把 approved_by 从签名源继承到定稿，绝不按行号。
+
+    同时硬断言授权链：非空签名必须恰好落在 WB 代录入（entered_by）的
+    7 行上，且定稿与签名源的 ID 集合完全相等。任何错位直接退出。
+    """
+    seen, ids = set(), set()
+    for r in rows:
+        sid = stable_id(r)
+        if sid in seen:
+            raise SystemExit("FAIL 定稿出现重复稳定 ID：%s" % sid)
+        seen.add(sid)
+        if sid not in approval_map:
+            raise SystemExit("FAIL 定稿行在签名源中找不到对应稳定 ID：%s" % sid)
+        r["approved_by"] = approval_map[sid]
+    signed_ids = {k for k, a in approval_map.items() if a}
+    wb_ids = {stable_id(r) for r in rows
+              if r["entered_by"] == ENTERED_BY}
+    if len(signed_ids) != 7 or signed_ids != wb_ids:
+        raise SystemExit(
+            "FAIL 签名落点与 WB 代录入行不一致：签名 %d 个 / 代录入 %d 个"
+            % (len(signed_ids), len(wb_ids)))
+    return rows
+
+
 def read_signed_xlsx(path):
     ws = openpyxl.load_workbook(str(path), data_only=True).active
     vals = list(ws.values)
@@ -217,27 +300,8 @@ def main():
     if not PDF_DIR.is_dir():
         raise SystemExit("找不到 PDF 语料目录：%s" % PDF_DIR)
 
-    # 授权链保护：PM 已在定稿 xlsx 上补签 approved_by，重跑本脚本不得抹掉。
-    # 只认 19 列定稿结构；读不到就按「无签名」处理并在结尾如实提示。
-    approval = []
-    if OUT_XLSX.exists():
-        awb = openpyxl.load_workbook(str(OUT_XLSX), data_only=True,
-                                     read_only=True)
-        avals = list(awb.active.values)
-        ahdr = [str(x or "").strip() for x in avals[0]]
-        awb.close()
-        if ahdr == FINAL_COLS:
-            ai = ahdr.index("approved_by")
-            for v in avals[1:]:
-                if not any(x is not None and str(x).strip() for x in v):
-                    continue
-                approval.append(cell(v[ai]))
-        if approval and len(approval) != 30:
-            raise SystemExit("现有定稿 approved_by 行数异常：%d" % len(approval))
-    for v in approval:
-        assert v in ("", REVIEWER), \
-            "现有定稿 approved_by 出现非 PM 签名：%r" % v
-
+    # 签名不再从「现有定稿」按行号读回。唯一签名源是 TO_SIGN 原件，
+    # 且必须等 rows 把 7 行符号回填完、稳定 ID 成立后，才按 ID 匹配。
     signed = read_signed_xlsx(SRC_XLSX)
     assert len(signed) == 30, "签字版应为 30 行，实际 %d" % len(signed)
     assert all(r["row_status"] == "CONFIRMED" for r in signed)
@@ -271,7 +335,7 @@ def main():
     for i, s in enumerate(signed):
         r = {k: s[k] for k in ORIG_COLS}
         r["notes"] = FINAL_NOTE
-        r["approved_by"] = approval[i] if approval else ""
+        r["approved_by"] = ""     # 占位，稍后按稳定 ID 从唯一签名源继承
         r["entered_by"] = ""
         r["device_model"] = DEVICE_MODEL.get(s["sample_no"], "")
         r["human_adjudication"] = ""
@@ -287,6 +351,12 @@ def main():
         rows.append(r)
 
     assert len(backfilled) == 7, "符号回填应为 7 行，实际 %d" % len(backfilled)
+    # 按稳定 ID 继承 PM 签名（Fail-Closed，绝不按行号）。
+    approval_map = load_approval_map()
+    apply_approval(rows, approval_map)
+    assert len(approval_map) == 30, "签名源稳定 ID 数应为 30"
+    assert sum(1 for r in rows if r["approved_by"]) == 7, \
+        "定稿应恰好继承 7 处 PM 补签"
     assert all(r["symbol"].strip() for r in rows), "定稿里仍有空 symbol"
     assert not any(r["human_adjudication"] for r in rows), \
         "符号已回填，不应再留 ACCEPTED_SOURCE_HAS_NO_SYMBOL 裁定码"
@@ -453,9 +523,9 @@ def main():
         print("    行%-3d %-5s %-26s → symbol=%-26r condition=%r"
               % (lineno, sno, oldcond, sym, cond))
     print("  7 行逐字段原文断言通过；entered_by=WB_Agent")
-    n_ap = sum(1 for v in approval if v)
-    print("  approved_by：从现有定稿原样保留 %d 处 PM 补签，其余 %d 行保持空白"
-          % (n_ap, 30 - n_ap))
+    n_ap = sum(1 for r in rows if r["approved_by"])
+    print("  approved_by：按稳定 ID 从 %s 继承 %d 处 PM 补签，其余 %d 行保持空白"
+          % (APPROVAL_SRC.name, n_ap, 30 - n_ap))
     print("  其余 23 行原 15 列除 notes 外逐格未变；reviewer / row_status 未动")
     print("\n复核命令：")
     print("  python validate_annotation.py --csv %s --page-text %s "

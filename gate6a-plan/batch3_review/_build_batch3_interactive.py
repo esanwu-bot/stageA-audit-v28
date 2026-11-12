@@ -178,6 +178,25 @@ TITLE_LINE_RX = re.compile(
     r"|(?:electrical|dc\s+electrical|static|dc)\s+"
     r"(?:characteristics|specifications))"
     r"(?:\s*[-(].{0,40})?\s*$", re.I)
+# 老式 TI / Harris 手册把表题写成小写长句，例如 V146 p4：
+#   `electrical characteristics over recommended operating free-air
+#    temperature range (unless otherwise noted)`
+# find_headings3 用的是 X.HEADING（search 语义），本来就能命中这行并据此
+# 裁图；但文本层 title_anchor_lines 只认上面那条「整行就是标题词」的严格
+# 正则，两处口径不一致，导致 p4 有完整 MIN/TYP/MAX 表头却被整页拦掉。
+# 这里补的是**结构化**判据，不是放宽距离阈值：
+#   1. 必须以表题词「开头」（正文句子 `Stresses beyond ... Ratings ...`
+#      和 `For more information, see ... in Electrical Characteristics`
+#      都不是以表题词开头，天然排除）；
+#   2. 不含 REF_RX 的章节交叉引用词；
+#   3. 整行长度 <= 120 字符，且后续仍必须由 has_table_header 验证
+#      「完整表头结构紧邻标题、中间不夹数据行」。
+DESC_TITLE_RX = re.compile(
+    r"^\s*(?:\d+(?:\.\d+)*\s+)?"
+    r"(?:(?:absolute\s+)?maximum\s+ratings"
+    r"|recommended\s+operating\s+conditions"
+    r"|(?:electrical|dc\s+electrical|static|dc)\s+"
+    r"(?:characteristics|specifications))\b.{0,100}$", re.I)
 TITLE_MAX_GAP = 4
 DATA_ROW_RX = re.compile(r"[-+]?\d+\.\d+|[-+]\d+(?:\s|$)")
 BORDER_MARK_RX = re.compile(
@@ -187,6 +206,13 @@ BORDER_MARK_RX = re.compile(
 # AMR 区域却没有表头，页尾另有一个带完整表头的无关表格 —— 旧逻辑会
 # 因为那个无关表格把整页放进候选。现在要求边框表格与「独立标题 /
 # 续表标识」有空间关联，或表格本身落在页首（跨页续表的客观特征）。
+#
+# Reviewer 第六轮（本版）：`if y0 <= PAGE_TOP_MAX_PT: return True` 本身是
+# Fail-Open —— 页首的表格完全可能是一张无关表。已废弃这条绝对规则，
+# 页首表格现在必须拿出「上一页同结构 + 水平宽度对齐」的跨页续表证据。
+# V003 实测：p102 / p106 无本页锚点，但与上一页表格 x0/x1 差仅
+# 0.1/2.4pt 与 0.1/3.1pt 且表头数值列词一致；p118→p119 差 66/60pt，
+# 明显不是续表（p119 靠本页 Table 6-3 表题关联，不走页首分支）。
 CONT_RX = re.compile(r"\bcontinued\b|\(cont'?d\)|\bcont\.", re.I)
 # 真实手册的小节标题常写成「6.7.2 Fail-Safe Reset (FS RESET) Electrical
 # Characteristics」，整行不是纯标题词，但确实是独立成行的表标题。
@@ -200,53 +226,344 @@ SECTION_TITLE_RX = re.compile(
 #   p119 表格 y0=154.4、p117 y0=144.2、p109~115 y0=107.0、p106 y0=86.0。
 # Reviewer 反例里的无关表格在页底 y0=400，离页顶标题 328pt，仍被拦。
 TABLE_ANCHOR_MAX_PT = 200.0     # 表格顶端离上方标题/续表标识的最大垂直距离
-PAGE_TOP_MAX_PT = 160.0         # 无锚点时，表格须落在页首（跨页续表特征）
+PAGE_TOP_MAX_PT = 160.0         # 页首区间（仅用于区分「需要跨页证据」的表格）
+X_ALIGN_MAX_PT = 20.0           # 跨页续表与上一页表格左右边界/宽度的允许偏差
+# 实测：V003 p101→p102 差 0.8/2.4pt，p105→p106 差 0.1/3.1pt；
+# 反例的不对齐表格差 144/150pt。20pt 与正反例之间都隔着一个数量级，
+# 不是「放宽阈值蒙混」，判据还要同时满足列名指纹一致（见下）。
+# 独立成行的表题，如 `Table 6-3. VTM Die Temperature Sensor Characteristics`。
+# V003 p119 的首行是章节标题 `6.10 Temperature Sensor Characteristics`，
+# 不匹配 SECTION_TITLE_RX / TITLE_LINE_RX，只能靠表题做本页强关联。
+# 必须包含 characteristics / specifications / ratings / conditions /
+# parameters 之一，避免把 `Table 4-1 Pin Configuration` 之类无关表题算进来。
+TABLE_CAPTION_RX = re.compile(
+    r"^\s*table\s+\d+(?:[-.]\d+)*\.?\s+.{0,80}"
+    r"(?:characteristics|specifications|ratings|conditions|parameters)\b",
+    re.I)
+# 表头「列名指纹」：跨页续表不只比坐标，还要比列名结构。
+# 无关表格（PIN / MIN / MAX / UNIT）与真参数表的指纹重合度明显更低。
+FINGERPRINT_RX = re.compile(
+    r"\b(MIN|TYP|MAX|NOM|VALUE|UNIT|PARAMETER|DESCRIPTION|"
+    r"SUPPLY\s+NAME|TEST\s+CONDITIONS|SYMBOL|PIN)\b", re.I)
+MIN_FINGERPRINT_HITS = 3
+
+# —— 跨页污染隔离（PM 2026-11-12 定向修复）——
+# 根因：PyMuPDF 在同一 Document 上跨页调 find_tables() 会污染先前拿到的
+# Table 对象 —— 实测「先取 p101 的 Table、再对 p100 调 find_tables()」，
+# p101 的 t.extract() 会吐出 p100 的正文，p102 甚至变成全空行。
+# 三道硬隔离，任何一道不过就丢弃该表，绝不把脏数据带进指纹比对：
+#   1. find_tables(clip=page.rect)：检测范围锁死在本页矩形内；
+#   2. bbox 越界校验：表格四边必须落在 clip 内（1pt 容差），
+#      尤其 y0/y1 不得越出页高（PM 点名的 Y 轴越界）；
+#   3. 文本归属校验：表头词汇必须能在「本页」文本里核到，命中率低于
+#      阈值即判定为上一页正文串入，直接丢弃。
+# 再加一条结构约束：Table 对象绝不跨出 _page_table_signatures()，
+# 本页所有 extract 完成后才允许访问上一页，且 PageContext 用完即释放 page。
+TABLE_CLIP_PAD_PT = 1.0
+TABLE_TEXT_MIN_HIT = 0.50
 
 
-def _anchor_ys(page):
-    """页面里「独立标题行」或「带续表标识的标题行」的 y 坐标。
+def _anchor_classes(page):
+    """把页面行级锚点分成「强 / 弱」两类，返回 (strong_ys, weak_ys)。
+
+    强锚点（能证明表格归属）：带章节号的小节标题、独立表题、明确续表标识。
+    弱锚点：无章节号的纯标题行（如光秃秃的 `Absolute Maximum Ratings`）。
+    V003 十三页真表实测：所有本页锚点都是强锚点，没有一页靠弱锚点。
+    Reviewer 第六轮反例正是「页首无关表 + 一个纯 AMR 标题」，
+    所以弱锚点不能再给页首表格背书。
 
     从 get_text("dict") 取行级 bbox，才能判断表格是不是紧跟在标题下面；
     只看「页面任意位置出现过标题词」挡不住 Reviewer 的反例。
     """
-    ys = []
+    strong, weak = [], []
     try:
         data = page.get_text("dict")
     except Exception:
-        return ys
+        return strong, weak
     for block in data.get("blocks", []):
         for ln in block.get("lines", []):
             s = " ".join(" ".join(str(sp.get("text", ""))
                                   for sp in ln.get("spans", [])).split())
-            if not s:
+            if not s or REF_RX.search(s):
                 continue
             try:
                 y0 = float(ln["bbox"][1])
             except (KeyError, IndexError, TypeError, ValueError):
                 continue
-            if ((TITLE_LINE_RX.match(s) or SECTION_TITLE_RX.match(s))
-                    and not REF_RX.search(s)):
-                ys.append(y0)
-            elif CONT_RX.search(s) and KIND_TITLE_RX.search(s):
-                ys.append(y0)          # "Table 6-1 ... (continued)" 之类
-    return ys
+            if (SECTION_TITLE_RX.match(s) or TABLE_CAPTION_RX.match(s)
+                    or (CONT_RX.search(s) and KIND_TITLE_RX.search(s))):
+                strong.append(y0)
+            elif TITLE_LINE_RX.match(s):
+                weak.append(y0)
+    return strong, weak
 
 
-def _table_is_anchored(t, anchor_ys):
-    """边框表格必须与目标标题关联，或是页首的跨页续表。
+def _anchor_ys(page, strong_only=False):
+    """兼容旧契约：默认返回全部锚点 y；strong_only=True 只返回强锚点。"""
+    strong, weak = _anchor_classes(page)
+    return list(strong) if strong_only else strong + weak
 
-    V003 p106 实测既没有独立标题行、也没有 (continued) 字样，
-    只有表格顶端落在 y0=86.0 的页首位置。严格只认标题/续表标识会
-    把这张真表误杀，所以保留「页首 + 表头有效」这条等价证据。
-    页尾的无关表格（y 很大）既不满足页首，也离标题超过阈值。
+
+FINGERPRINT_MIN_SIM = 0.80      # 表头指纹相似度下限（Reviewer 第六轮口径）
+
+
+def _header_fingerprint(head):
+    """表头「结构化指纹」：把表头第一行的列名词向量化。
+
+    不用白名单正则，而是取完整词集合：去脚注 `(1)`、大写、只留字母词。
+    只用 head[0]，因为 head[1] 已经是数据行，掺进来会拉低同构表相似度。
+    实测 V003：p101/p102 同为 {MAX,MIN,PARAMETER,UNIT}（sim=1.00），
+    p105/p106、p108~p113 同理；合成无关表
+    {PIN,PARAMETER,DIRECTION,MIN,MAX,UNIT} 与真表 sim=0.67 < 0.80。
+    """
+    s = " ".join(str(c or "") for c in (head[0] if head else []))
+    s = re.sub(r"\([^)]*\)", " ", s.upper())
+    s = re.sub(r"[^A-Z ]+", " ", s)
+    return {w for w in s.split() if len(w) >= 2}
+
+
+def fingerprint_similarity(a, b):
+    """指纹相似度 = |A∩B| / max(|A|,|B|)；完全同构为 1.0。"""
+    sa, sb = set(a or ()), set(b or ())
+    if not sa or not sb:
+        return 0.0
+    return len(sa & sb) / float(max(len(sa), len(sb)))
+
+
+class TableSignature(object):
+    """Stage 2 产物：一张表的结构化签名（bbox + 数值列 + 列名指纹）。"""
+
+    def __init__(self, bbox, nums, fp, text_hit=0.0):
+        self.bbox = bbox
+        self.nums = nums
+        self.fp = fp
+        # 隔离 3 的实测命中率，留作回归证据（脏数据会被这一步丢弃）
+        self.text_hit = text_hit
+
+
+def _page_rect(page):
+    """本页矩形；合成 FakePage 没有 rect 时用标准 Letter 页兜底。"""
+    r = getattr(page, "rect", None)
+    if r is None:
+        return (0.0, 0.0, 612.0, 792.0)
+    if hasattr(r, "x0"):
+        return (float(r.x0), float(r.y0), float(r.x1), float(r.y1))
+    return (float(r[0]), float(r[1]), float(r[2]), float(r[3]))
+
+
+def _bbox_in_clip(bbox, clip, pad=TABLE_CLIP_PAD_PT):
+    """隔离 2：表格四边必须落在本页 clip 内，Y 轴越界即判脏数据。"""
+    try:
+        x0, y0, x1, y1 = (float(v) for v in bbox)
+    except (TypeError, ValueError):
+        return False
+    cx0, cy0, cx1, cy1 = clip
+    if not (x1 > x0 and y1 > y0):
+        return False
+    return (x0 >= cx0 - pad and y0 >= cy0 - pad and
+            x1 <= cx1 + pad and y1 <= cy1 + pad)
+
+
+def _header_words_in_page(head, page_text):
+    """隔离 3：表头词在本页文本里的命中率。
+
+    污染时 t.extract() 吐出的是上一页正文，词集合与本页几乎不重合，
+    命中率会塌到 0；正常表格的列名本来就在本页文本里，命中率接近 1。
+    只取 >=3 个字母的全大写词，避开单元格里的数字与脚注符号。
+    """
+    words = {w for row in head for c in row
+             for w in re.findall(r"[A-Z]{3,}", str(c or "").upper())}
+    if not words:
+        return 0.0
+    text = page_text or ""
+    return float(sum(1 for w in words if w in text)) / float(len(words))
+
+
+def _table_signature(t, clip, page_text):
+    """一次 extract 内把 bbox / 数值列 / 指纹全部读进内存，并做污染隔离。
+
+    Table 对象的生命周期只限本函数：返回的是纯值 TableSignature，
+    调用方再也拿不到可跨页复用的 t，从结构上杜绝「先取本页 Table、
+    再对上一页 find_tables()」这条污染路径。
     """
     try:
-        y0 = float(t.bbox[1])
-    except (AttributeError, IndexError, TypeError, ValueError):
-        return False
-    if y0 <= PAGE_TOP_MAX_PT:
-        return True
-    return any(0.0 <= y0 - y <= TABLE_ANCHOR_MAX_PT for y in anchor_ys)
+        bbox = tuple(float(x) for x in t.bbox)
+    except Exception:
+        return None
+    if not _bbox_in_clip(bbox, clip):
+        return None                       # 隔离 2：四边 / Y 轴越界
+    try:
+        head = t.extract()[:2]
+    except Exception:
+        return None
+    text_hit = _header_words_in_page(head, page_text)
+    if text_hit < TABLE_TEXT_MIN_HIT:
+        return None                       # 隔离 3：内容不属于本页
+    words = " ".join(str(c or "") for row in head for c in row).upper()
+    nums = {w for w in ("MIN", "TYP", "MAX", "NOM", "VALUE")
+            if re.search(r"\b%s\b" % w, words)}
+    if len(nums) < 2 or not BORDER_MARK_RX.search(words):
+        return None
+    return TableSignature(bbox, nums, _header_fingerprint(head), text_hit)
+
+
+def _page_table_signatures(page):
+    """Stage 2：一次 find_tables(clip=本页矩形) 后立即全部 extract 完。
+
+    页文本在 find_tables 之前一次读入内存；本页所有 Table 在本函数内
+    消费完毕，返回时不再持有任何 Table 对象。这样即使调用方随后访问
+    上一页，也不存在可被污染的活对象。
+    """
+    if page is None:
+        return []
+    clip = _page_rect(page)
+    try:
+        page_text = (page.get_text("text") or "").upper()
+    except Exception:
+        page_text = ""
+    try:
+        tables = page.find_tables(clip=fitz.Rect(*clip)).tables
+    except TypeError:
+        # 兼容不接受 clip 的旧版 PyMuPDF / 极简合成对象
+        tables = page.find_tables().tables
+    except Exception:
+        return []
+    out = []
+    for t in tables:
+        sig = _table_signature(t, clip, page_text)
+        if sig is not None:
+            out.append(sig)
+    return out
+
+
+def _prev_table_signatures(prev_page):
+    """兼容旧契约：上一页有效参数表头签名。"""
+    return _page_table_signatures(prev_page)
+
+
+def _page_title(page):
+    """Stage 1 页级分类，返回 (标题文本, y, 类别)。
+
+    类别取「本页最强证据」而不是第一行的类别：只要页面出现过带章节号
+    的小节标题 / 独立表题 / 续表标识，整页就归 STRONG，走本页正常提取；
+    只有全页没有任何独立标题才是 NONE，才有资格进入跨页指纹继承链。
+
+    V003 十三页真表实测：11 页 STRONG + 2 页 NONE（p102 / p106）。
+    """
+    try:
+        data = page.get_text("dict")
+    except Exception:
+        return None, None, "NONE"
+    weak = None
+    for block in data.get("blocks", []):
+        for ln in block.get("lines", []):
+            s = " ".join(" ".join(str(sp.get("text", ""))
+                                  for sp in ln.get("spans", [])).split())
+            if not s or REF_RX.search(s):
+                continue
+            try:
+                y = float(ln["bbox"][1])
+            except (KeyError, IndexError, TypeError, ValueError):
+                continue
+            if (SECTION_TITLE_RX.match(s) or TABLE_CAPTION_RX.match(s)
+                    or (CONT_RX.search(s) and KIND_TITLE_RX.search(s))):
+                return s, y, "STRONG"
+            if TITLE_LINE_RX.match(s) and weak is None:
+                weak = (s, y)
+    if weak is not None:
+        return weak[0], weak[1], "WEAK"
+    return None, None, "NONE"
+
+
+class PageContext(object):
+    """任务队列里的一页：Stage 1 页级分类 + Stage 2 表头结构（一次完成）。"""
+
+    def __init__(self, page, pno=0):
+        self.pno = pno
+        self.rect = _page_rect(page)
+        self.strong_ys, self.weak_ys = _anchor_classes(page)
+        self.page_title, self.title_y, self.title_class = _page_title(page)
+        self.signatures = []
+        self.inherited_title = None
+        self.links = []
+        self._page = page
+        self._extracted = False
+
+    def extract_tables(self):
+        """Stage 2 幂等：只做一次 find_tables，做完立刻释放 page 引用。
+
+        释放后本对象只剩纯值签名，后续访问上一页不可能污染本页的 Table。
+        """
+        if not self._extracted:
+            self.signatures = _page_table_signatures(self._page)
+            self._extracted = True
+            self._page = None
+        return self.signatures
+
+
+def _geom_close(a, b):
+    """辅助复核：左右边界与宽度偏差都 <= X_ALIGN_MAX_PT（同一版式）。"""
+    return (abs(a[0] - b[0]) <= X_ALIGN_MAX_PT and
+            abs(a[2] - b[2]) <= X_ALIGN_MAX_PT and
+            abs((a[2] - a[0]) - (b[2] - b[0])) <= X_ALIGN_MAX_PT)
+
+
+def link_context(cur, prev):
+    """Stage 3：按「页级分类」分流，返回 [(sig, allowed, reason, sim)]。
+
+    页级分流（PM 2026-11-12 指示，V003 13 页实测支撑）：
+      STRONG / WEAK（有本页独立标题，11 页）→ 本页正常提取，
+          完全不读取 prev，从源头掐断 find_tables() 跨页污染；
+      NONE（无本页标题，只有 p102 / p106 两页）→ 才进入跨页
+          指纹继承链，且必须同时满足：
+            a. 上一页有可继承的 Page_Title；
+            b. 表头指纹相似度 >= 0.80；
+            c. 左右边界与宽度几何对齐；
+            d. 表格落在页首区间（续表的客观特征）。
+      任一不满足 → Fail-Closed 拦截，不靠放宽阈值蒙混。
+    """
+    inherited = None
+    if cur.title_class == "NONE" and prev is not None:
+        inherited = prev.page_title or getattr(prev, "inherited_title", None)
+    cur.inherited_title = inherited
+    out = []
+    for sig in cur.signatures:
+        y0 = float(sig.bbox[1])
+
+        def near(ys):
+            return any(0.0 <= y0 - y <= TABLE_ANCHOR_MAX_PT for y in ys)
+
+        if cur.title_class == "STRONG":
+            if near(cur.strong_ys):
+                out.append((sig, True, "LOCAL_TITLE", 1.0))
+            else:
+                out.append((sig, False, "NO_LOCAL_STRONG_ANCHOR", 0.0))
+            continue
+        if cur.title_class == "WEAK":
+            if y0 > PAGE_TOP_MAX_PT and near(cur.weak_ys):
+                out.append((sig, True, "WEAK_LOCAL_TITLE", 1.0))
+            else:
+                out.append((sig, False, "WEAK_TITLE_PAGETOP_UNPROVEN", 0.0))
+            continue
+        # 只有 NONE 页允许走跨页继承
+        if y0 > PAGE_TOP_MAX_PT:
+            out.append((sig, False, "NO_TITLE_NOT_PAGETOP", 0.0))
+            continue
+        if prev is None or not inherited or not prev.signatures:
+            out.append((sig, False, "NO_INHERITED_CONTEXT", 0.0))
+            continue
+        sim = max(fingerprint_similarity(sig.fp, ps.fp)
+                  for ps in prev.signatures)
+        if sim < FINGERPRINT_MIN_SIM:
+            out.append((sig, False, "FINGERPRINT_MISMATCH", sim))
+            continue
+        if not any(_geom_close(sig.bbox, ps.bbox)
+                   for ps in prev.signatures):
+            out.append((sig, False, "GEOMETRY_MISMATCH", sim))
+            continue
+        out.append((sig, True, "INHERITED_TITLE_FINGERPRINT", sim))
+    cur.links = out
+    return out
 
 
 def title_anchor_lines(text):
@@ -257,8 +574,15 @@ def title_anchor_lines(text):
     （允许前导章节号和尾部短括注 / 破折号说明）。
     """
     lines = [" ".join(ln.split()) for ln in (text or "").splitlines()]
-    return [i for i, ln in enumerate(lines)
-            if ln and TITLE_LINE_RX.match(ln) and not REF_RX.search(ln)]
+    out = []
+    for i, ln in enumerate(lines):
+        if not ln or len(ln) > 120 or REF_RX.search(ln):
+            continue
+        # 严格短标题，或老式手册「描述型表题」（见 DESC_TITLE_RX 注释）。
+        # 两种都必须再经 has_table_header 验证紧邻的完整表头结构。
+        if TITLE_LINE_RX.match(ln) or DESC_TITLE_RX.match(ln):
+            out.append(i)
+    return out
 
 
 def _looks_like_data_row(line):
@@ -303,34 +627,51 @@ def has_table_header(text, title_positions=None, max_gap=TITLE_MAX_GAP):
     return False
 
 
-def _table_header_from_borders(page):
+def _auto_prev_page(page):
+    """调用方没显式给上一页时，真实 fitz Page 可自行从 parent 取。
+
+    FakePage 没有 parent → 返回 None → 无跨页证据 → 页首表格被拦截，
+    这正是 Fail-Closed 期望的行为，绝不靠猜。
+    """
+    doc = getattr(page, "parent", None)
+    if doc is None:
+        return None
+    try:
+        pno = int(page.number)
+    except (AttributeError, TypeError, ValueError):
+        return None
+    if pno <= 0:
+        return None
+    try:
+        return doc.load_page(pno - 1)
+    except Exception:
+        return None
+
+
+def _table_header_from_borders(page, prev_page=None):
     """有表格边框时，看表头区域单元格里有没有 >=2 个数值列词，且表格
-    与独立标题 / 续表标识存在空间关联（或是页首跨页续表）。
+    与独立标题 / 表题 / 续表标识存在空间关联，或有跨页续表证据。
 
     这是文本判据之外的第二条结构化证据。老手册的点线式 AMR 表没有边框，
     所以两条是「或」关系，不是「与」—— 不能把无边框的真表误杀。
     但「或」不等于「边框表头成立就无条件放行」：表格必须属于目标表。
+    第六轮起，页首表格不再凭 y 坐标放行，必须有上一页同结构且水平
+    对齐的表格签名（或本页强锚点）。
     """
-    try:
-        tables = page.find_tables().tables
-    except Exception:
+    # 三段任务队列的薄封装：本页 Stage 2 全部 extract 完并释放 page 引用。
+    cur = PageContext(page)
+    if not cur.extract_tables():
         return False
-    anchor_ys = _anchor_ys(page)
-    for t in tables:
-        try:
-            head = t.extract()[:2]
-        except Exception:
-            continue
-        words = " ".join(str(c or "") for row in head for c in row).upper()
-        nums = {w for w in ("MIN", "TYP", "MAX", "NOM", "VALUE")
-                if re.search(r"\b%s\b" % w, words)}
-        # 光有 MIN/MAX 不够：无关表格（PIN / MIN / MAX / UNIT）也有两列词。
-        # 真参数表的表头一定还有 PARAMETER / DESCRIPTION / SUPPLY NAME /
-        # TEST CONDITIONS 之一，这是把「无关表格」挡在候选页外的关键。
-        if (len(nums) >= 2 and BORDER_MARK_RX.search(words)
-                and _table_is_anchored(t, anchor_ys)):
-            return True
-    return False
+    # 页级分流：只有 NONE 页才加载上一页做指纹继承；STRONG / WEAK 页
+    # 连上一页都不打开，find_tables() 根本没有跨页污染的发生机会。
+    prev = None
+    if cur.title_class == "NONE":
+        if prev_page is None:
+            prev_page = _auto_prev_page(page)
+        if prev_page is not None:
+            prev = PageContext(prev_page)
+            prev.extract_tables()
+    return any(allowed for _, allowed, _, _ in link_context(cur, prev))
 
 
 def prescan3(doc, npages, max_pages=0):
@@ -356,10 +697,18 @@ def prescan3(doc, npages, max_pages=0):
             continue
         if len(NUMCOL_RX.findall(t)) < 2 or not KIND_TITLE_RX.search(t):
             continue
-        # 文本层表头必须锚在独立标题行附近；边框表头走独立判据，
-        # 这样 p106 那种「标题在上一页」的跨页续表仍能进候选页。
+        # 文本层表头必须锚在独立标题行附近；边框表头走独立判据。
+        # p102/p106 那种「标题在上一页」的跨页续表，现在靠显式传入的
+        # 上一页表格签名（同结构 + 水平对齐）证明身份，不再凭页首 y 坐标。
+        prev_page = None
+        if pno > 1:
+            try:
+                prev_page = doc.load_page(pno - 2)
+            except Exception:
+                prev_page = None
         anchors = title_anchor_lines(t)
-        if has_table_header(t, anchors) or _table_header_from_borders(page):
+        if (has_table_header(t, anchors)
+                or _table_header_from_borders(page, prev_page)):
             cand.append(pno)
     return cand
 
@@ -622,7 +971,7 @@ def one_sample(meta, args):
                       "span": sorted({n[0] for n in nav[kind]})})
 
     score_rows3(doc, rows)          # 必须在 close 之前，det_score 要读页文本
-    doc.close()
+    # doc 暂不 close：下面的 EXCLUDED 理由还要逐页探测文本层。
 
     # —— 只留核心 3~5 行 ——
     keep, drop, _ = pick_core(rows)
@@ -644,7 +993,26 @@ def one_sample(meta, args):
     nlines = sum(len(p["lines"]) for p in panes)
     nlow = sum(1 for r in keep if WARN in r.get("notes", ""))
     if not panes:
-        quality, note = "未定位", "全书未找到带 MIN/TYP/MAX 列的参数表，需人工翻查"
+        # 「没定位到表」不等于「可以出草稿」。把原因分成两类可审计结论，
+        # 让 PM 在圈选台里一眼看到该件该不该点选，而不是只看到「未定位」。
+        # 判据：datasheet 主体在前 12 页；连续 >=3 页无文本层 → 扫描图主体。
+        chars = [len(doc.load_page(i).get_text("text").strip())
+                 for i in range(npages)]
+        blank = sum(1 for n in chars if n == 0)
+        run = best = 0
+        for n in chars[:12]:
+            run = run + 1 if n == 0 else 0
+            best = max(best, run)
+        if best >= 3:
+            quality = "无文本层"
+            note = ("全书 %d/%d 页无文本层，前 12 页有连续 %d 页空白；"
+                    "EXCLUDED: 无 OCR 能力，无法建立 Gold（不进点选）"
+                    % (blank, npages, best))
+        else:
+            quality = "无电气参数表"
+            note = ("全书有文本层，但未定位到带 MIN/TYP/MAX 列的参数表"
+                    "（本件多为封装 / 机械 / 卷带 / 免责声明资料）；"
+                    "EXCLUDED: 无标准参数表，无法建立 Gold（不进点选）")
     elif nlines == 0:
         quality = "无文本层"
         note = "页面抓不到文字（纯图形/扫描），建议整件标 EXCLUDED"
@@ -664,6 +1032,7 @@ def one_sample(meta, args):
             "panes": panes, "rows": keep, "quality": quality, "note": note,
             "dropped": len(drop), "nlow": nlow,
             "stratum": meta.get("stratum_proposed", "")}
+    doc.close()
     return keep, card
 
 

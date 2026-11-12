@@ -195,11 +195,17 @@ class FakeTables(object):
 
 
 class FakePage(object):
-    """可控的文本层 + 边框表格；borders 元素可为 rows 或 (rows, bbox)。"""
+    """可控的文本层 + 边框表格；borders 元素可为 rows 或 (rows, bbox)。
+
+    新增 rect / last_clip：用来验证 find_tables(clip=本页矩形) 这道
+    跨页污染隔离确实生效，而不是只在真实 PDF 上「碰巧通过」。
+    """
 
     def __init__(self, lines, borders=()):
         self._lines = list(lines)
         self._text = "\n".join(lines)
+        self.rect = fitz.Rect(0.0, 0.0, 612.0, 792.0)
+        self.last_clip = None
         self._tables = []
         for spec in borders:
             if (isinstance(spec, tuple) and len(spec) == 2
@@ -218,18 +224,23 @@ class FakePage(object):
             return {"blocks": [{"lines": lines}]}
         return self._text
 
-    def find_tables(self):
+    def find_tables(self, clip=None):
+        self.last_clip = clip
         return FakeTables(self._tables)
 
 
 class FakeDoc(object):
-    def __init__(self, page):
-        self._page = page
-        self.page_count = 1
+    """单页或多页；多页用于验证跨页续表的上一页上下文证据。"""
+
+    def __init__(self, pages):
+        if not isinstance(pages, (list, tuple)):
+            pages = [pages]
+        self._pages = list(pages)
+        self.page_count = len(self._pages)
 
     def load_page(self, i):
-        assert i == 0
-        return self._page
+        assert 0 <= i < len(self._pages), "页号越界：%d" % i
+        return self._pages[i]
 
 
 def prescan_fake(lines, borders=()):
@@ -272,7 +283,8 @@ CASE_C_BORDER = [
 ]
 
 # e. V003 p106 实测形态：既无独立标题行，也没有 (continued) 字样，
-#    只有表格顶端落在页首 y0=86.0；靠「页首 + 真表头」这条等价证据保留。
+#    只有表格顶端落在页首 y0=86.0。第六轮起光靠 y 坐标不再放行，
+#    必须拿出「上一页同结构 + 水平宽度对齐」的跨页续表证据。
 CASE_E = [
     "Refer to the Recommended Operating Conditions for OTP eFuse Programming table.",
     "SUPPLY NAME", "DESCRIPTION", "MIN(1)", "NOM", "MAX(1)", "UNIT",
@@ -284,6 +296,54 @@ CASE_E_BORDER = [
       ["VDDSHV5", "Dual-voltage IO supply", "1.8V Operation",
        "1.71 1.8 1.89", "", "", "V"]],
      (56.0, 86.0, 550.0, 200.0)),
+]
+# 上一页（V003 p105 实测 x0=56.8 / x1=555.3），与 p106 差 0.8 / 5.3pt。
+PREV_E_LINES = [
+    "6.4 Recommended Operating Conditions",
+    "SUPPLY NAME", "DESCRIPTION", "MIN(1)", "NOM", "MAX(1)", "UNIT",
+    "VDD_CORE", "Core supply", "0.81", "0.85", "0.895", "V",
+]
+PREV_E_BORDER = [
+    ([["SUPPLY NAME", "DESCRIPTION", "MIN(1)", "NOM", "MAX(1)", "UNIT"],
+      ["VDD_CORE", "Core supply", "0.81", "0.85", "0.895", "V"]],
+     (56.8, 108.2, 555.3, 300.0)),
+]
+
+# h. Reviewer 第六轮反例：页首一张无关的「完整参数表」，页面上方有
+#    一个无章节号的纯 AMR 标题。旧逻辑 `y0<=160 → True` 会直接放行。
+CASE_H = [
+    "Absolute Maximum Ratings",
+    "over operating free-air temperature range",
+    "",
+    "Table 4-1 Pin Configuration",
+    "PIN", "PARAMETER", "MIN", "MAX", "UNIT",
+    "A1", "Pull-up", "1.0", "2.0", "V",
+]
+CASE_H_BORDER = [
+    ([["PIN", "PARAMETER", "MIN", "MAX", "UNIT"],
+      ["A1", "Pull-up", "1.0", "2.0", "V"]],
+     (56.0, 100.0, 550.0, 210.0)),
+]
+# 上一页表格同结构但水平宽度明显不对齐（x0 差 144pt / x1 差 150pt）。
+CASE_I_PREV_LINES = [
+    "6.1 Absolute Maximum Ratings",
+    "PARAMETER", "MIN", "MAX", "UNIT",
+    "VDD_CORE", "-0.3", "1.05", "V",
+]
+CASE_I_PREV_BORDER = [
+    ([["PARAMETER", "MIN", "MAX", "UNIT"], ["VDD_CORE", "-0.3", "1.05", "V"]],
+     (200.0, 108.0, 400.0, 300.0)),
+]
+
+# j. 弱锚点（无章节号纯标题）对非页首表格仍应有效，避免修得过紧。
+CASE_J = [
+    "Absolute Maximum Ratings",
+    "PARAMETER", "MIN", "MAX", "UNIT",
+    "VDD_CORE", "-0.3", "1.05", "V",
+]
+CASE_J_BORDER = [
+    ([["PARAMETER", "MIN", "MAX", "UNIT"], ["VDD_CORE", "-0.3", "1.05", "V"]],
+     (56.0, 230.0, 550.0, 330.0)),
 ]
 
 # f. Reviewer 第五轮反例：独立 AMR 标题 + AMR 区域无表头 + 页底无关表格带表头。
@@ -354,15 +414,55 @@ def _extreme_d_roc():
     assert I3.prescan3(FakeDoc(pg), 1) == [1], "真 ROC 表被误杀"
 
 
-@case("正向 页首跨页续表（无标题、无续表标识、有真表头）仍保留，防误杀 V003 p106")
+@case("正向第六轮 页首续表 + 上一页同结构且水平对齐 → 保留（V003 p102/p106 形态）")
 def _extreme_continuation():
     pg = FakePage(CASE_E, CASE_E_BORDER)
+    prev = FakePage(PREV_E_LINES, PREV_E_BORDER)
     txt = "\n".join(CASE_E)
     assert I3.title_anchor_lines(txt) == [], "续表不该有独立标题行"
     assert I3._anchor_ys(pg) == [], "p106 式页面确实没有标题/续表锚点"
     assert I3.has_table_header(txt, []) is False
-    assert I3._table_header_from_borders(pg) is True, "页首续表被误杀"
-    assert prescan_fake(CASE_E, CASE_E_BORDER) == [1]
+    # Fail-Closed：没有上一页证据时，页首表格绝不能凭 y 坐标放行
+    assert I3._table_header_from_borders(pg) is False, \
+        "页首表格没有跨页证据仍被放行，Fail-Open 未修复"
+    assert prescan_fake(CASE_E, CASE_E_BORDER) == [], \
+        "单页（无上一页）的页首表格不该进候选页"
+    # 有上一页证据时保留
+    assert I3._table_header_from_borders(pg, prev) is True, \
+        "真实跨页续表被误杀"
+    got = I3.prescan3(FakeDoc([prev, pg]), 2)
+    assert 2 in got, "跨页续表没进候选页：%s" % got
+
+
+@case("反向第六轮 页首无关完整参数表 + 页面上方 AMR 标题 → 拦截（旧逻辑会放行）")
+def _extreme_h():
+    pg = FakePage(CASE_H, CASE_H_BORDER)
+    assert I3._anchor_ys(pg, strong_only=True) == [], \
+        "无关表题 / 纯 AMR 标题不该被算成强锚点"
+    assert I3._anchor_ys(pg), "纯 AMR 标题应被识别为弱锚点"
+    assert I3._table_header_from_borders(pg) is False, \
+        "页首无关表格借 y0<=160 被误放行"
+    assert prescan_fake(CASE_H, CASE_H_BORDER) == [], "整页被误放行"
+
+
+@case("反向第六轮 页首表格 + 上一页同结构但水平宽度不对齐 → 拦截")
+def _extreme_i():
+    pg = FakePage(CASE_H, CASE_H_BORDER)
+    prev = FakePage(CASE_I_PREV_LINES, CASE_I_PREV_BORDER)
+    sig = I3._prev_table_signatures(prev)
+    assert len(sig) == 1, "上一页应有一个有效参数表头签名"
+    assert I3._table_header_from_borders(pg, prev) is False, \
+        "宽度不对齐的上一页表格被当成续表证据"
+    got = I3.prescan3(FakeDoc([prev, pg]), 2)
+    assert 2 not in got, "页首无关表借不对齐的上一页被误放行：%s" % got
+
+
+@case("正向第六轮 弱锚点（纯 AMR 标题）对非页首表格仍有效 → 保留，防过度收紧")
+def _extreme_j():
+    pg = FakePage(CASE_J, CASE_J_BORDER)
+    assert I3._anchor_ys(pg, strong_only=True) == [], "纯标题不是强锚点"
+    assert I3._table_header_from_borders(pg) is True, \
+        "非页首真表被过度收紧误杀"
 
 
 @case("反向第五轮 独立 AMR 标题 + AMR 区无表头 + 页底无关边框表 → 拦截")
@@ -384,6 +484,163 @@ def _extreme_g():
     assert I3._anchor_ys(pg), "续表标识行没被识别为空间锚点"
     assert I3._table_header_from_borders(pg) is True, "真 AMR 续表被误杀"
     assert prescan_fake(CASE_G, CASE_G_BORDER) == [1]
+
+
+# —— PM 2026-11-12 定向修复：find_tables() 跨页污染隔离 + 页级分流 ——
+STRONG_LINES = [
+    "6.1 Absolute Maximum Ratings",
+    "PARAMETER", "MIN", "MAX", "UNIT",
+    "VDD_CORE", "-0.3", "1.05", "V",
+]
+STRONG_BORDER = [
+    ([["PARAMETER", "MIN", "MAX", "UNIT"],
+      ["VDD_CORE", "-0.3", "1.05", "V"]],
+     (56.0, 230.0, 550.0, 330.0)),
+]
+DIRTY_ROWS = [["PREVIOUS PAGE BODY", "REVISION HISTORY"],
+              ["OLD TEXT", "UNRELATED"]]
+
+# 页首无关表（PIN / DIRECTION），与真参数表指纹重合度 3/7 = 0.43 < 0.80。
+CASE_K = [
+    "Refer to the Recommended Operating Conditions for the OTP table.",
+    "PIN", "PARAMETER", "DIRECTION", "MIN", "MAX", "UNIT",
+    "A1", "Input", "1.0", "2.0", "V",
+]
+CASE_K_BORDER = [
+    ([["PIN", "PARAMETER", "DIRECTION", "MIN", "MAX", "UNIT"],
+      ["A1", "Input", "1.0", "2.0", "V"]],
+     (56.0, 100.0, 550.0, 210.0)),
+]
+
+
+@case("定向修复 隔离1 find_tables 必须带 clip=本页矩形")
+def _iso_clip():
+    pg = FakePage(STRONG_LINES, STRONG_BORDER)
+    I3._page_table_signatures(pg)
+    assert pg.last_clip is not None, "find_tables 没收到 clip，隔离 1 未生效"
+    r = pg.last_clip
+    assert (float(r.x0), float(r.y0), float(r.x1), float(r.y1)) == \
+        (0.0, 0.0, 612.0, 792.0), "clip 不是本页矩形：%r" % (r,)
+
+
+@case("定向修复 隔离2 表格 bbox 越过页高（Y 轴越界）→ 判脏数据丢弃")
+def _iso_bbox():
+    clip = (0.0, 0.0, 612.0, 792.0)
+    assert I3._bbox_in_clip((56.0, 230.0, 550.0, 330.0), clip) is True
+    assert I3._bbox_in_clip((56.0, 700.0, 550.0, 900.0), clip) is False
+    pg = FakePage(STRONG_LINES,
+                  [([["PARAMETER", "MIN", "MAX", "UNIT"],
+                     ["VDD_CORE", "-0.3", "1.05", "V"]],
+                    (56.0, 700.0, 550.0, 900.0))])
+    assert I3._page_table_signatures(pg) == [], "Y 轴越界表格未被隔离"
+
+
+@case("定向修复 隔离3 extract 吐出上一页正文 → 文本归属校验丢弃")
+def _iso_text():
+    pg = FakePage(STRONG_LINES, [(DIRTY_ROWS, (56.0, 230.0, 550.0, 330.0))])
+    assert I3._header_words_in_page(
+        DIRTY_ROWS[:1], pg.get_text("text").upper()) < I3.TABLE_TEXT_MIN_HIT
+    assert I3._page_table_signatures(pg) == [], "上一页正文串入未被隔离"
+
+
+@case("定向修复 页级分流 STRONG 页完全不读取上一页（11 页走正常提取）")
+def _dispatch_strong():
+    class Boom(object):
+        def get_text(self, *a, **k):
+            raise AssertionError("STRONG 页不该访问上一页")
+
+        def find_tables(self, *a, **k):
+            raise AssertionError("STRONG 页不该对上一页调 find_tables")
+
+    pg = FakePage(STRONG_LINES, STRONG_BORDER)
+    assert I3._page_title(pg)[2] == "STRONG"
+    assert I3._table_header_from_borders(pg, Boom()) is True, \
+        "本页有独立强标题的真表被误杀"
+    assert prescan_fake(STRONG_LINES, STRONG_BORDER) == [1]
+
+
+@case("反向 页首表格表头指纹与上一页不匹配 → FINGERPRINT_MISMATCH 拦截")
+def _fingerprint_mismatch():
+    pg = FakePage(CASE_K, CASE_K_BORDER)
+    prev = FakePage(PREV_E_LINES, PREV_E_BORDER)
+    assert I3._page_title(pg)[2] == "NONE", "负例应是 NONE 页"
+    cur, pc = I3.PageContext(pg), I3.PageContext(prev)
+    cur.extract_tables()
+    pc.extract_tables()
+    assert len(cur.signatures) == 1, "页首表格应通过三道隔离"
+    links = I3.link_context(cur, pc)
+    assert links and all((not ok) and r == "FINGERPRINT_MISMATCH"
+                         for _, ok, r, _ in links), \
+        "指纹不匹配未拦住：%s" % ([(r, s) for _, ok, r, s in links],)
+    assert I3._table_header_from_borders(pg, prev) is False
+    got = I3.prescan3(FakeDoc([prev, pg]), 2)
+    assert 2 not in got, "指纹不匹配的页首表被误放行：%s" % got
+
+
+@case("反向 合成反例回归 页首无关完整参数表 + 上方 AMR 标题仍被拦截")
+def _reviewer_negative_still_blocked():
+    assert prescan_fake(CASE_H, CASE_H_BORDER) == []
+    assert I3._table_header_from_borders(
+        FakePage(CASE_H, CASE_H_BORDER)) is False
+
+
+# —— B3 V146：老式手册「描述型表题」的口径统一（结构化补判据，非放宽阈值）——
+V146_LINES = [
+    "CY74FCT399T",
+    "QUAD 2-INPUT REGISTER",
+    "4",
+    "electrical characteristics over recommended operating free-air temperature range (unless",
+    "otherwise noted)",
+    "PARAMETER", "TEST CONDITIONS", "MIN", "TYP", "MAX", "UNIT",
+    "VIK", "VCC = 4.75,", "-1.2", "-0.7", "V",
+]
+V146_PROSE = [
+    "Stresses beyond those listed under Absolute Maximum Ratings may cause permanent damage.",
+    "For more information, see the hysteresis values in Electrical Characteristics.",
+    "The MIN and MAX values are the limits of the operating range.",
+    "TYP and NOM are typical ratings, not MIN or MAX limits.",
+]
+V146_NOHDR = [
+    "electrical characteristics over recommended operating free-air temperature range",
+    "The MIN and MAX values are described in the text below.",
+    "Some unrelated prose without any column headers.",
+]
+
+
+@case("正向 B3 V146 描述型表题 + 紧邻完整表头 → 真表放行（修复误杀）")
+def _desc_title_positive():
+    txt = "\n".join(V146_LINES)
+    anchors = I3.title_anchor_lines(txt)
+    assert anchors == [3], "描述型表题未被识别：%s" % anchors
+    assert I3.has_table_header(txt, anchors) is True, \
+        "V146 式真表头被误杀"
+    assert prescan_fake(V146_LINES) == [1], "V146 真表页未进候选"
+
+
+@case("反向 B3 描述型表题 正文句子与章节交叉引用不得被当成表题")
+def _desc_title_prose():
+    assert I3.title_anchor_lines("\n".join(V146_PROSE)) == [], \
+        "正文句子 / 交叉引用被当成表题"
+    assert I3.has_table_header("\n".join(V146_PROSE), []) is False
+
+
+@case("反向 B3 描述型表题 + 无表头结构 → 仍拦截（不能靠新正则 Fail-Open）")
+def _desc_title_no_header():
+    txt = "\n".join(V146_NOHDR)
+    assert I3.title_anchor_lines(txt) == [0]
+    assert I3.has_table_header(txt, [0]) is False
+    assert prescan_fake(V146_NOHDR) == [], "无表头页被描述型表题放行"
+
+
+@case("反向 B3 描述型表题 + 远处无关表头（超过 TITLE_MAX_GAP）→ 拦截")
+def _desc_title_far_header():
+    lines = (["electrical characteristics over recommended operating "
+              "free-air temperature range"] + ["prose line %d" % i
+                                               for i in range(6)]
+             + ["PARAMETER", "MIN", "MAX", "UNIT", "A1", "1.0", "2.0", "V"])
+    assert I3.has_table_header("\n".join(lines), [0]) is False, \
+        "远处无关表头借描述型表题被放行"
+    assert prescan_fake(lines) == []
 
 
 def main():

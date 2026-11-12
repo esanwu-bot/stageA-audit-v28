@@ -639,8 +639,123 @@ PM 09:48 首次补签时，7 处 `wuxiaoxian` 落在数据行 `8/9/22/23/24/25/2
 `approved_by` 落点与报告 / INDEX 变更）。生成器底层代码本轮未改判据，
 第 10、13 节的累计补丁仍有效。
 
-### 14.5 尚未做的事
+### 14.5 尚未做的事（第六轮当时的状态）
 
 B3（6 件）、B4（5 件）、SCAN（3 件按 SOP 标 EXCLUDED）未生成；
 33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
 更新并 push。两仓 main 本轮未动。
+
+> 第 14.3 的「从现有定稿读回 `approved_by`」与第 14.4 的 `PASS=26` 都是
+> 第六轮封卷当时的真实状态。第七轮已分别替换为「唯一签名源 + 稳定 ID」
+> 与 39 例回归，见第 15 节。历史数字不回改，保留当时的 stdout 留痕。
+
+## 15. 第七轮：底层漏洞终极修复与真正的 B3 圈选台
+
+B1 / B2 已冻结，**本轮不改任何一行定稿数据**，只修生成器与签名保护逻辑，
+并重建 B3 圈选台。两仓 main 仍未动。
+
+### 15.1 根因：误杀真表不是阈值问题，是 `find_tables()` 跨页脏数据
+
+PyMuPDF 在同一 `Document` 上跨页调 `find_tables()` 会污染先前取到的
+`Table` 对象：实测「先取 p101 的 Table、再对 p100 调 `find_tables()`」，
+p101 的 `t.extract()` 会吐出 p100 的正文，p102 甚至变成全空行。此前
+合成页全绿但真实 PDF 误杀 8~11 页，判据建立在脏数据上，调距离阈值无效。
+
+三道硬隔离（任一不过即丢弃该表）：
+
+1. `find_tables(clip=本页矩形)` —— 检测范围锁死在本页；
+2. `bbox` 四边必须落在 clip 内（1pt 容差），**Y 轴越界即判脏数据**；
+3. 表头词必须能在「本页」`get_text("text")` 核到，命中率 < 0.50 判定为
+   上一页正文串入。污染时命中率塌到 0，正常表格接近 1。
+
+再加结构约束：`Table` 对象绝不跨出 `_page_table_signatures()`；本页全部
+extract 完成、`PageContext` 释放 `page` 引用后，才允许访问上一页。
+
+### 15.2 prescan3 三段式任务队列与页级分流
+
+`页级分类（Page_Title）` → `表头匹配（TableSignature / 指纹）` →
+`上下文关联（link_context）`。废弃 `if y0 <= PAGE_TOP_MAX_PT: return True`
+这条绝对放行规则。
+
+V003 全书 282 页、13 页真表的真实链路（原始 stdout：
+`Batch3_prescan3_v003_evidence.txt`）：
+
+| 分类 | 页数 | 放行链路 |
+| --- | --- | --- |
+| `STRONG`（本页有独立表题/章节号） | 11 页 | `LOCAL_TITLE`，**完全不读取上一页** |
+| `NONE`（无本页标题） | p102 / p106 | `INHERITED_TITLE_FINGERPRINT`，指纹相似度均 `1.00` |
+
+继承分支必须同时满足：上一页有可继承 `Page_Title`、指纹相似度 ≥ 0.80、
+左右边界/宽度几何对齐、表格落在页首区间。任一不满足即 Fail-Closed 拦截。
+回归硬断言「恰好 2 页走继承」，不是靠观察得出的结论。
+
+### 15.3 描述型表题口径统一（B3 V146 真误杀）
+
+V146（CY74FCT399T）p4 有完整 `MIN/TYP/MAX` 表，但表题写成小写长句
+`electrical characteristics over recommended operating free-air
+temperature range (unless otherwise noted)`。裁图层 `find_headings3` 用
+`X.HEADING`（search 语义）本就能命中，文本层 `title_anchor_lines` 却只认
+「整行就是标题词」的严格正则，两处口径不一致把整页拦掉。
+
+补 `DESC_TITLE_RX`：**必须以表题词开头**、不含章节交叉引用词、整行
+≤ 120 字符，且后续仍须由 `has_table_header` 验证「完整表头紧邻标题、
+中间不夹数据行」。这是结构化补判据，不是放宽阈值；新增 4 个正/反例，
+正文句子与「远处无关表头」仍被拦截。
+
+### 15.4 签名保护：Fail-Closed + 稳定 ID
+
+废弃「从现有定稿按行号读回 `approved_by`」。唯一签名源改为
+`Batch3_B2_FINAL_TO_SIGN.xlsx`；源文件不存在 / 19 列表头不符 /
+数据行数不是 30 / 稳定 ID 重复 / 非 PM 本人签名 / 签名落点与
+`entered_by=WB_Agent` 不一致，一律 `SystemExit`。
+
+**实测发现**：PM 指定的五字段
+`sample_no + file_name + evidence_page + symbol + parameter_name`
+在 30 行中并不唯一 —— V011 p3 的 `VIH` 有 3 行、`VIL` 有 2 行五字段
+完全相同（同一页同一符号不同电压档），字典会静默覆盖重复键，这本身
+就是另一种 Fail-Open。故追加 4 个 PM 明确「绝不能改」的确定性数值列
+`min_value / typ_value / max_value / unit` 消歧，30 行 ID 全唯一。
+这些是数据内容，不是行号：行顺序打乱后签名仍精确落位（回归场景 8）。
+
+重跑 `_make_b2_final.py`：退出码 0，定稿 19 列 × 31 行**逐格一致**，
+CSV / PROVENANCE 字节一致，7 处 `approved_by` 与代录入行
+`[8,9,16,17,18,19,20]` 精确对齐，授权链仍闭合
+（`Batch3_B2_regeneration.txt`）。
+
+### 15.5 真正的 B3 圈选台
+
+`Batch3_Viewer.html` 此前是 B1 旧型号（V319/V304/V173 等）的圈选台，
+属测试产物；已留痕为 `Batch3_B1_Viewer.html` / `Batch3_B1_DRAFT.csv`，
+并用真正的 B3 名单重建：
+
+`V328 V146 V222 V271 V256 V244`
+
+按同一套指纹逻辑裁图，9 张左图与 HTML 同包。真实 VLM 缓存逐一核对：
+
+| 样本 | 结果 | 说明 |
+| --- | --- | --- |
+| V271 / V256 / V244 | 各 5 行草稿 | 跨页表格类，VLM 真调用，裁图 p117/p13/p44 等 |
+| V146 | 5 行草稿 | 修复描述型表题后命中 p4；5 行全 `low_confidence`，需重点核对列对齐 |
+| V328 | `EXCLUDED` | 29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold |
+| V222 | `EXCLUDED` | 9 页全为封装/板图/卷带资料，`0.05 MIN/MAX` 是机械尺寸标注，无电气参数表 |
+
+`Batch3_DRAFT.csv` 20 行，全部为 `DRAFT_AWAITING_HUMAN_CONFIRM`，
+机器未替人确认任何一行。B1 旧型号、B2 型号在正式 HTML 中均为 0 残留。
+
+### 15.6 全绿回归（原始 stdout 均在包内）
+
+| 项目 | 结果 |
+| --- | --- |
+| `_test_core_order_and_header.py` | **`PASS=39, FAIL=0, SKIP=0`** |
+| `_test_b2_approval.py`（新增） | **`PASS=9, FAIL=0, SKIP=0`** |
+| `_selftest_validator_v2.py` | `PASS=31, FAIL=0, SKIP=0` |
+| `_verify_v003_candidates.py` | 13 页真表全中、p14 排除、无多余页；恰好 2 页走指纹继承 |
+| B2 v1.6 PDF / 离线双模式 | 均 `OK=30 / SUSPECT=0 / ERROR=0`，退出码 0 |
+| B2 定稿重跑 | 逐格一致、授权链闭合、冻结数据未改 |
+| B1 | 已冻结，本轮未改动 |
+
+### 15.7 尚未做的事
+
+B4（5 件：V077 V130 V290 V347 V041）、SCAN（3 件按 SOP 标 EXCLUDED）
+仍未生成；33 件全部标完且 Reviewer 终审放行后，才把 CodeUp 本地 main
+（`a11131a`）更新并 push。两仓 main 本轮仍未动。

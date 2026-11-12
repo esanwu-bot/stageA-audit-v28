@@ -71,8 +71,31 @@ SYNC = [
     "_sync_b2_approval.py",
     "_b2_approval_reset.py",
     "_b2_final_seal.py",
+    # 第七轮：跨页污染隔离 + 页级分流 + 签名 Fail-Closed + 真正的 B3 圈选台
+    "_test_b2_approval.py",
+    "Batch3_B2_approval_regression.txt",
+    "Batch3_B2_regeneration.txt",
+    "Batch3_B3_generation.txt",
+    "Batch3_Viewer.html",               # 正式交付：真正的 B3 六件
+    "Batch3_DRAFT.csv",
+    "Batch3_B1_Viewer.html",            # B1 旧圈选台留痕（不再冒充交付）
+    "Batch3_B1_DRAFT.csv",
+    "Batch3_B3_Viewer.html",            # B3 专属副本（与正式版同字节）
+    "Batch3_B3_DRAFT.csv",
+    "Batch3_BATCH_PLAN.csv",
+    # B3 圈选台左图依赖：9 张裁图必须与 HTML 同包，否则解压后看不到图
+    "annotation_reports/V146/b3_ELC_p0004.png",
+    "annotation_reports/V244/b3_ELC_p0047.png",
+    "annotation_reports/V244/b3_ROC_p0044.png",
+    "annotation_reports/V256/b3_AMR_p0008.png",
+    "annotation_reports/V256/b3_ELC_p0013.png",
+    "annotation_reports/V256/b3_ROC_p0009.png",
+    "annotation_reports/V271/b3_AMR_p0117.png",
+    "annotation_reports/V271/b3_ELC_p0123.png",
+    "annotation_reports/V271/b3_ROC_p0150.png",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
+B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
 EXCLUDE = {"SHA256SUMS.txt", "Batch3_review.zip"}
 
 
@@ -138,10 +161,14 @@ def main():
             p.unlink()
             print("  删除 %-58s （旧错页图）" % rel)
 
-    # 裁图数量回归：B1 15 张 + B2 16 张 = 31 张
+    # 裁图数量回归：B1 15 + B2 16 = 31 张，本轮新增 B3 9 张 = 40 张
     pngs = sorted(p for p in DST.rglob("b3_*.png") if p.is_file())
-    print("  裁图总数: %d（应为 31）" % len(pngs))
-    assert len(pngs) == 31, "裁图数量不对"
+    old = [p for p in pngs if p.parent.name not in B3_SNOS]
+    new = [p for p in pngs if p.parent.name in B3_SNOS]
+    print("  裁图总数: %d（B1/B2 %d 张 + B3 %d 张）"
+          % (len(pngs), len(old), len(new)))
+    assert len(old) == 31 and len(new) == 9, \
+        "裁图数量不对：历史 %d / B3 %d" % (len(old), len(new))
     assert not any("p0014.png" in p.name and "V003" in str(p) for p in pngs), \
         "V003 旧错页图还在审计包里"
 
