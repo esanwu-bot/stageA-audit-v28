@@ -27,9 +27,9 @@ Gate 6A · 33 件总清单（Batch 1–4 + SCAN + 诊断件）
 
 [B4]
   V041  CD4015BEE4__cd4015b.pdf            EXCLUDED     -    电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可
-  V077  AM1707DZKB4.pdf                    待签字          5    CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V
-  V130  CSD17505Q5A__csd17505q5a.pdf       待签字          5    5 行均非白名单参数（MOSFET 击穿/阈值/导通电阻/漏电/栅电荷），待 P
-  V290  DS9638CMX_NOPB__DS9638.pdf         待签字          4    VIL 两行按温度档绑定（0~70°C / −55~125°C）；II 条件待 
+  V077  AM1707DZKB4.pdf                    已定稿          5    CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V
+  V130  CSD17505Q5A__csd17505q5a.pdf       已定稿          5    5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
+  V290  DS9638CMX_NOPB__DS9638.pdf         已定稿          4    VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
   V347  8418501HA__84185D.pdf              EXCLUDED     -    版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后
 
 [DIAG]

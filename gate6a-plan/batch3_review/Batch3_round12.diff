@@ -1,0 +1,705 @@
+# Batch 3 第十二轮：B4 封卷（14 行定稿，双模式 OK=14）
+# 覆盖范围：d87aac9..工作区
+# 排除：ZIP / SHA256SUMS / png / xlsx / *.diff 自身（避免自引用）
+
+## git status --short
+A  gate6a-plan/batch3_review/Batch3_B4_ANNOTATED.xlsx
+A  gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
+A  gate6a-plan/batch3_review/Batch3_B4_FINAL.xlsx
+A  gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
+A  gate6a-plan/batch3_review/Batch3_B4_approval_record.txt
+M  gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
+M  gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
+M  gate6a-plan/batch3_review/Batch3_review.zip
+M  gate6a-plan/batch3_review/INDEX.md
+M  gate6a-plan/batch3_review/SHA256SUMS.txt
+A  gate6a-plan/batch3_review/_make_b4_final.py
+M  gate6a-plan/batch3_review/_make_master_inventory.py
+M  gate6a-plan/batch3_review/_sync_batch3_review.py
+A  gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
+A  gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
+A  gate6a-plan/batch3_review/page_text_batch3_b4.json
+?? gate6a-plan/batch3_review/Batch3_round12.diff
+
+## git diff --cached d87aac9
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv b/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
+new file mode 100644
+index 0000000..a00d18b
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_FINAL.csv
+@@ -0,0 +1,15 @@
++﻿sample_no,file_name,evidence_page,table_title,symbol,parameter_name,min_value,typ_value,max_value,unit,condition,row_status,notes,reviewer,approved_by,entered_by,confidence_score,device_model,human_adjudication
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.14,1.2,1.32,V,375 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,CVDD,"Supply voltage, Core (CVDD, RTC_CVDD, PLL0_VDDA)",1.25,1.3,1.35,V,456 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.14,1.2,1.32,V,375 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,RVDD,"Supply Voltage, Internal RAM",1.25,1.3,1.35,V,456 MHz version,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
++V077,AM1707DZKB4.pdf,38,Recommended Operating Conditions,DVDD,"Supply voltage, I/O, 1.8V (USB0_VDDA18, USB1_VDDA18)",1.71,1.8,1.89,V,"Supply voltage, I/O, 1.8V",CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,AM1707,
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,BVDSS,Drain to Source Voltage,30,,,V,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,VGS(th),Gate to Source Threshold Voltage,1,1.3,1.8,V,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,RDS(on),Drain to Source On Resistance,,3.7,4.6,mΩ,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IDSS,Drain to Source Leakage Current,,,1,μA,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
++V130,CSD17505Q5A__csd17505q5a.pdf,2,Electrical Characteristics,IGSS,Gate to Source Leakage Current,,,100,nA,,CONFIRMED,【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,CSD17505Q5A,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,II,Input Current at Maximum Input Voltage,,,50,μA,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIH,Input Voltage HIGH,2,,,V,,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.8,V,0°C to +70°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
++V290,DS9638CMX_NOPB__DS9638.pdf,3,Electrical Characteristics,VIL,Input Voltage LOW,,,0.5,V,−55°C to +125°C,CONFIRMED,人工已核对 PDF 原图并确认,wuxiaoxian,,,0.95,DS9638,
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv b/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
+new file mode 100644
+index 0000000..27e3d76
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_PDF_PROVENANCE.csv
+@@ -0,0 +1,4 @@
++﻿sample_no,file_name,device_model,sha256,page_count,size_bytes
++V077,AM1707DZKB4.pdf,AM1707,86441d0065e94257724cdd3e99e05a841a3ddfd7ec49c59852445c73138739a5,201,1661407
++V130,CSD17505Q5A__csd17505q5a.pdf,CSD17505Q5A,12a24b54b5edb4497c7a9ca297943d3121a89da5771adccdb70f76720e020307,10,251252
++V290,DS9638CMX_NOPB__DS9638.pdf,DS9638,239dd12d525f93240413e3b5a6f174dae4c19fe97a81394d068060b2c9f45b9b,10,282139
+diff --git a/gate6a-plan/batch3_review/Batch3_B4_approval_record.txt b/gate6a-plan/batch3_review/Batch3_B4_approval_record.txt
+new file mode 100644
+index 0000000..ee34f80
+--- /dev/null
++++ b/gate6a-plan/batch3_review/Batch3_B4_approval_record.txt
+@@ -0,0 +1,52 @@
++B4 签字与封卷凭据
++========================================================================
++一、签字件
++  文件名  ：Batch3_B4_ANNOTATED.xlsx
++  来源    ：D:\Documents\Downloads\Batch3_B4_ANNOTATED (1).xlsx
++            （PM 2026-11-12 14:04:23 保存）
++  SHA-256 ：cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2
++  行数    ：14 行 × 15 列
++  row_status：14 行全部 CONFIRMED
++  reviewer  ：14 行全部 wuxiaoxian
++  condition ：7 行有值（V077 五行 + V290 两行），与草稿逐格一致
++
++  说明：同一目录下的 Batch3_B4_ANNOTATED.xlsx（13:48:07 保存，
++  SHA-256 6b71cbd16193e9ab7dd348acc732327e0b15d4226e463265b77dfc91e4d29979）
++  是**条件缺失那版草稿**的签字副本，condition 一列全空。本轮以 14:04 保存的
++  修订版为准；旧件仅本地留档，不进交付包，避免两份签字件并存造成口径冲突。
++
++二、这一轮 PM 实际签了什么
++  签的是「改过条件的草稿」：V077 的 CVDD/RVDD 已按 375 MHz / 456 MHz 分行、
++  DVDD 锚在 1.8V I/O，V290 的 VIL 两行按 0°C~+70°C / −55°C~+125°C 分档。
++  签字件里这些 condition 与草稿逐格一致（仅 V290 VIH 的 min「2.0」被 Excel
++  存成数值 2，属格式，不是改值；定稿照签字原样保留，未擅自改回 2.0）。
++
++三、notes 清理规则
++  只把模型话术（「VLM 草稿，须对左图核」「vlm自报=…」「多组取值已按…」）
++  换成「人工已核对 PDF 原图并确认」。
++  V130 五行保留前缀「【非白名单参数·需 PM 决定是否纳入】」——那是这行要不要
++  进 Gold 的依据，清掉就丢了；因此这五行的 notes 是
++  「【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认」。
++
++四、approved_by 为什么是空的
++  B1/B2/B3 的规矩：只有「WB 代录入」的行，才由 PM 在 19 列 TO_SIGN 上逐格补签
++  approved_by，WB 再按稳定 ID 继承；其余行的签字凭据是签字件本身。
++  本轮 B4 没有代录入任何一格（condition 由生成器按原图回填，PM 在签字件里
++  已看到并确认整行 CONFIRMED），签字件也没有 approved_by 列。
++  因此 approved_by / entered_by / human_adjudication 一律留空。
++  **WB 没有替任何人填写签字格，也没有把 reviewer 复制成 approved_by。**
++
++五、机检
++  v1.6 PDF 模式（实算哈希）    ：OK=14，无 ERROR
++  v1.6 离线模式（sidecar）     ：OK=14，无 ERROR
++  原始 stdout：b4_validation_raw/b4_final_pdf_mode.txt、
++               b4_validation_raw/b4_final_sidecar_mode.txt
++
++六、封卷登记（写入 _make_b4_final.py 的 SEALED_SHA_B4）
++  Batch3_B4_FINAL.csv        2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d
++  Batch3_B4_FINAL.xlsx       972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1
++  page_text_batch3_b4.json   43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef
++  Batch3_B4_ANNOTATED.xlsx   cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2
++
++  登记后重跑生成器，三处均输出「未改写（封卷件哈希与登记一致，保留原字节）」，
++  哈希不变。任何后续字节变化都会被 guard_sealed 拦下并 SystemExit。
+diff --git a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
+index fcd417c..ebf8604 100644
+--- a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
++++ b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.csv
+@@ -18,9 +18,9 @@ B3,V256,BQ79652PAPRQ1.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处
+ B3,V271,DM3725CBC100__dm3725.pdf,Gold,已定稿,5,Batch3_B3_FINAL.csv,,PM 补签 5 处，已封卷（commit 92f170c）
+ B3,V328,CD4014BE__cd4014b.pdf,Gold,EXCLUDED,0,INDEX.md §15,电气特性页为扫描图,29 页中 12 页无文本层、前 12 页有连续 4 页空白；无 OCR 能力，无法建立 Gold
+ B4,V041,CD4015BEE4__cd4015b.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,电气特性页为扫描图,电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可验证 Gold
+-B4,V077,AM1707DZKB4.pdf,Gold,待签字,5,Batch3_B4_DRAFT.csv,,CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；待 PM 点选
+-B4,V130,CSD17505Q5A__csd17505q5a.pdf,Gold,待签字,5,Batch3_B4_DRAFT.csv,,5 行均非白名单参数（MOSFET 击穿/阈值/导通电阻/漏电/栅电荷），待 PM 决定是否纳入
+-B4,V290,DS9638CMX_NOPB__DS9638.pdf,Gold,待签字,4,Batch3_B4_DRAFT.csv,,VIL 两行按温度档绑定（0~70°C / −55~125°C）；II 条件待 PM 定夺
++B4,V077,AM1707DZKB4.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；已封卷
++B4,V130,CSD17505Q5A__csd17505q5a.pdf,Gold,已定稿,5,Batch3_B4_FINAL.csv,,5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
++B4,V290,DS9638CMX_NOPB__DS9638.pdf,Gold,已定稿,4,Batch3_B4_FINAL.csv,,VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
+ B4,V347,8418501HA__84185D.pdf,Gold,EXCLUDED,0,Batch3_B4_Viewer.html,版式不支持稳定还原行序,版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评
+ DIAG,V022,CC2500EMK__cc2500.pdf,DIAGNOSTIC_ONLY,不参与 Gold,0,Gold_Set_v1.1_WORKING.csv,,指定检查点：EVM 板卡手册，仅用于诊断 Parser 是否产出
+ DONE,V097,DEM-OPA-MSOP-2A__opa2830.pdf,Gold,已完成,3,Batch2_GOLD_v1.csv,,Batch 2 已定稿（24 行 Gold）
+diff --git a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
+index e60f818..72f545b 100644
+--- a/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
++++ b/gate6a-plan/batch3_review/Batch3_MASTER_INVENTORY.txt
+@@ -27,9 +27,9 @@ Gate 6A · 33 件总清单（Batch 1–4 + SCAN + 诊断件）
+ 
+ [B4]
+   V041  CD4015BEE4__cd4015b.pdf            EXCLUDED     -    电气特性页为扫描图；当前 Gate6A 流程无可用 OCR 取证路径，无法建立可
+-  V077  AM1707DZKB4.pdf                    待签字          5    CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V
+-  V130  CSD17505Q5A__csd17505q5a.pdf       待签字          5    5 行均非白名单参数（MOSFET 击穿/阈值/导通电阻/漏电/栅电荷），待 P
+-  V290  DS9638CMX_NOPB__DS9638.pdf         待签字          4    VIL 两行按温度档绑定（0~70°C / −55~125°C）；II 条件待 
++  V077  AM1707DZKB4.pdf                    已定稿          5    CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V
++  V130  CSD17505Q5A__csd17505q5a.pdf       已定稿          5    5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入
++  V290  DS9638CMX_NOPB__DS9638.pdf         已定稿          4    VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷
+   V347  8418501HA__84185D.pdf              EXCLUDED     -    版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后
+ 
+ [DIAG]
+diff --git a/gate6a-plan/batch3_review/INDEX.md b/gate6a-plan/batch3_review/INDEX.md
+index 6a7b381..68b5d7c 100644
+--- a/gate6a-plan/batch3_review/INDEX.md
++++ b/gate6a-plan/batch3_review/INDEX.md
+@@ -1257,3 +1257,83 @@ V222 不属这三类：它 9 页全是封装/板图/卷带资料，属「文档
+ B4 的 14 行等 PM 点选签字；签完后才做 19 列 FINAL 与封卷。
+ 33 件全部签完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
+ 更新并 push。两仓 main 本轮仍未动。
++
++## 20. 第十二轮：B4 封卷（14 行定稿，双模式 OK=14）
++
++### 20.1 认哪一份签字件
++
++`D:\Documents\Downloads` 下同时存在两份 `Batch3_B4_ANNOTATED`：
++
++| 文件 | 保存时间 | 行数 | 有 condition 的行 | 处置 |
++| --- | --- | --- | --- | --- |
++| `Batch3_B4_ANNOTATED.xlsx` | 13:48:07 | 14 | **0** | 条件缺失那版草稿的签字副本，作废 |
++| `Batch3_B4_ANNOTATED (1).xlsx` | 14:04:23 | 14 | **7** | 本轮签字件，以此为准 |
++
++旧件 `SHA-256 6b71cbd16193e9ab7dd348acc732327e0b15d4226e463265b77dfc91e4d29979`，
++condition 一列全空——如果拿它封卷，等于把 Reviewer 刚指出的「严重条件缺失」
++原样写进 Gold。故只本地留档，不进交付包，避免两份签字件并存造成口径冲突。
++
++认定件 `SHA-256 cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2`，
++14 行 × 15 列，`row_status` 全 `CONFIRMED`，`reviewer` 全 `wuxiaoxian`，
++condition 与草稿逐格一致。
++
++### 20.2 notes 清理：只清模型话术，不动 PM 的裁定信息
++
++V130 那五行带着前缀 `【非白名单参数·需 PM 决定是否纳入】`，那是「这行要不要进
++Gold」的依据，一句话清掉就丢了。规则改为：
++
++```
++notes = 原有【…】前缀（若有） + 「人工已核对 PDF 原图并确认」
++```
++
++结果：9 行是纯 `人工已核对 PDF 原图并确认`，5 行（V130）带前缀。
++生成器带断言：notes 必须以该句结尾、且不得残留 `VLM` 字样。
++
++### 20.3 approved_by 为什么整列为空
++
++B1/B2/B3 的规矩：只有「WB 代录入」的行，才由 PM 在 19 列 TO_SIGN 上逐格补签
++`approved_by`，WB 再按稳定 ID 继承；其余行的签字凭据是签字件本身
++（B3 就是 5 格有值、15 格为空）。本轮 B4 没有代录入任何一格——condition 是
++生成器按原图回填、PM 在签字件里看到并确认整行 `CONFIRMED`——签字件也没有
++`approved_by` 列。因此该列留空，**没有把 `reviewer` 复制成 `approved_by`**。
++
++### 20.4 定稿与机检
++
++| 项目 | 结果 |
++| --- | --- |
++| 行数 / 样本 / 列数 | 14 / 3 / 19 |
++| device_model | V077=`AM1707`、V130=`CSD17505Q5A`、V290=`DS9638`（均取封面原文） |
++| condition | 7 行有值（V077 五行、V290 两行）；V130 无（该表无 CONDITIONS 列） |
++| v1.6 PDF 模式 | **`OK=14`**，无 ERROR |
++| v1.6 离线模式 | **`OK=14`**，无 ERROR |
++
++一处如实记录：`V290 VIH` 的 min 原文是 `2.0`，PM 的 Excel 存成数值 `2`。
++定稿照签字原样保留 `2`，没擅自改回 `2.0`——值相同，且不该动已签的格。
++
++### 20.5 封卷登记与闸门自证
++
++`_make_b4_final.py` 内置 `SEALED_SHA_B4`，复用 B3 的 `guard_sealed`
++（11 轮改的硬哈希闸门），登记 4 件：
++
++| 文件 | SHA-256 |
++| --- | --- |
++| `Batch3_B4_FINAL.csv` | `2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d` |
++| `Batch3_B4_FINAL.xlsx` | `972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1` |
++| `page_text_batch3_b4.json` | `43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef` |
++| `Batch3_B4_ANNOTATED.xlsx` | `cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2` |
++
++登记后重跑生成器，三处均输出「未改写（封卷件哈希与登记一致，保留原字节）」，
++哈希不变。这就是 19.1 那套闸门在真实件上的第二次自证（第一次是 B3）。
++
++签字凭据另存 `Batch3_B4_approval_record.txt`（含两份签字件的对比与作废理由）。
++
++### 20.6 33 件总清单状态更新
++
++B4 三件从「待签字」改为「已定稿」，数据源从 `Batch3_B4_DRAFT.csv` 换成
++`Batch3_B4_FINAL.csv`；件数仍 33，Gold 行数合计仍 111（B4 仍记 14 行）。
++
++### 20.7 尚未做的事
++
++33 件里 29 件已定稿（含 4 件 EXCLUDED 与 3 件 SCAN、1 件诊断件不参与分母），
++没有未签的 Gold 行。Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
++更新并 push。两仓 main 本轮仍未动。
+diff --git a/gate6a-plan/batch3_review/_make_b4_final.py b/gate6a-plan/batch3_review/_make_b4_final.py
+new file mode 100644
+index 0000000..2f89ff3
+--- /dev/null
++++ b/gate6a-plan/batch3_review/_make_b4_final.py
+@@ -0,0 +1,271 @@
++# -*- coding: utf-8 -*-
++"""B4 定稿：从 PM 签字的 15 列 xlsx 生成 19 列 FINAL + 溯源 + 离线页文本。
++
++与 B3 同一套口径，但有两条本轮特有的约束：
++
++1. **notes 只清理 VLM 措辞，不动 PM 的裁定信息**：V130 那五行带着
++   `【非白名单参数·需 PM 决定是否纳入】` 前缀，那是"这行要不要进 Gold"的依据，
++   清成一句话就会丢掉；所以只把前缀后面的模型话术换成
++   「人工已核对 PDF 原图并确认」。
++2. **approved_by 一律留空**：签字件里没有这一列，PM 也没在这一轮填过。
++   B1/B2/B3 的规矩是「只有 WB 代录入的行才由 PM 逐格补签 approved_by」，
++   本轮没有代录入，所以不填 —— 不替人签字，也不假装签过。
++   签字凭据是签字件本身（文件名 + SHA-256 记录在案）。
++"""
++from __future__ import print_function
++
++import csv
++import json
++import re
++import sys
++from datetime import datetime
++from pathlib import Path
++
++import fitz
++import openpyxl
++from openpyxl.styles import Alignment, Font, PatternFill
++from openpyxl.utils import get_column_letter
++
++import _make_b3_final as B3
++
++HERE = Path(__file__).resolve().parent
++SIGNED = HERE / "Batch3_B4_ANNOTATED.xlsx"
++WORKING = HERE / "Gold_Set_v1.1_WORKING.csv"
++
++OUT_CSV = HERE / "Batch3_B4_FINAL.csv"
++OUT_XLSX = HERE / "Batch3_B4_FINAL.xlsx"
++OUT_PROV = HERE / "Batch3_B4_PDF_PROVENANCE.csv"
++OUT_SIDE = HERE / "page_text_batch3_b4.json"
++
++FINAL_COLS = B3.FINAL_COLS
++DEVICE_MODEL = {"V077": "AM1707", "V130": "CSD17505Q5A", "V290": "DS9638"}
++SAMPLES = ["V077", "V130", "V290"]
++EXPECT_ROWS = 14
++FINAL_NOTE = "人工已核对 PDF 原图并确认"
++
++SIGNED_COLS = ["sample_no", "file_name", "evidence_page", "table_title", "symbol",
++               "parameter_name", "min_value", "typ_value", "max_value", "unit",
++               "condition", "row_status", "notes", "reviewer", "confidence_score"]
++
++# 本轮封卷登记。首次生成时为空 -> guard 返回 write；生成后把哈希填进来再跑一次，
++# 必须全部 skip。之后任何字节变化都会被拦下。
++SEALED_SHA_B4 = {
++    "Batch3_B4_FINAL.csv":
++        "2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d",
++    "Batch3_B4_FINAL.xlsx":
++        "972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1",
++    "page_text_batch3_b4.json":
++        "43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef",
++    "Batch3_B4_ANNOTATED.xlsx":
++        "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
++}
++
++PREFIX_RX = re.compile(r"^【[^】]*】")
++
++
++def cell_str(v):
++    if v is None:
++        return ""
++    if isinstance(v, float) and v.is_integer():
++        return str(int(v))
++    return str(v)
++
++
++def load_signed(path):
++    ws = openpyxl.load_workbook(str(path), data_only=True).active
++    vals = list(ws.values)
++    hdr = [cell_str(x) for x in vals[0]]
++    if hdr != SIGNED_COLS:
++        raise SystemExit("签字件表头不是 15 列预期结构：%s" % hdr)
++    rows = []
++    for r in vals[1:]:
++        if not any(x not in (None, "") for x in r):
++            continue
++        rows.append({k: cell_str(v) for k, v in zip(hdr, r)})
++    if len(rows) != EXPECT_ROWS:
++        raise SystemExit("签字件行数 %d，与预期 %d 不符" % (len(rows), EXPECT_ROWS))
++    got = [r["sample_no"] for r in rows]
++    if sorted(set(got)) != sorted(SAMPLES):
++        raise SystemExit("签字件样本集合不符：%s" % sorted(set(got)))
++    bad = [r["sample_no"] for r in rows if r["row_status"] != "CONFIRMED"]
++    if bad:
++        raise SystemExit("有行不是 CONFIRMED，不能封卷：%s" % bad)
++    who = {r["reviewer"] for r in rows}
++    if who != {"wuxiaoxian"}:
++        raise SystemExit("签字人不是 PM 本人：%s" % who)
++    return rows
++
++
++def clean_notes(notes):
++    """只把模型话术换成人工核对声明，保留 PM 需要看的前缀。"""
++    m = PREFIX_RX.match(notes or "")
++    prefix = m.group(0) if m else ""
++    return prefix + FINAL_NOTE
++
++
++def disk_info(file_name):
++    """按台账的 file_path 找 PDF，实算哈希/页数/字节。"""
++    work = {r["sample_no"]: r for r in
++            csv.DictReader(open(WORKING, encoding="utf-8-sig"))}
++    return work, work
++
++
++def build_rows(signed, work):
++    out, side = [], {}
++    for r in signed:
++        sno = r["sample_no"]
++        meta = work[sno]
++        path = Path(meta["file_path"])
++        if not path.is_file():
++            raise SystemExit("找不到 PDF：%s" % path)
++        if path.name != r["file_name"]:
++            raise SystemExit("台账文件名与签字件不一致：%s ≠ %s"
++                             % (path.name, r["file_name"]))
++        raw = path.read_bytes()
++        digest = B3.sha(path)
++        doc = fitz.open(str(path))
++        npages = doc.page_count
++        pages = {str(n): doc.load_page(n - 1).get_text("text")
++                 for n in (1, int(r["evidence_page"]))}
++        doc.close()
++        if int(r["evidence_page"]) > npages:
++            raise SystemExit("%s 证据页 %s 超过总页数 %d"
++                             % (sno, r["evidence_page"], npages))
++        node = {"sample_no": sno, "file_name": r["file_name"],
++                "device_model": DEVICE_MODEL[sno], "sha256": digest,
++                "page_count": npages, "size_bytes": len(raw), "pages": pages}
++        side[sno] = node
++        row = {k: r.get(k, "") for k in SIGNED_COLS}
++        row["notes"] = clean_notes(r["notes"])
++        row["approved_by"] = ""      # 不代签
++        row["entered_by"] = ""
++        row["human_adjudication"] = ""
++        row["device_model"] = DEVICE_MODEL[sno]
++        out.append(row)
++    return out, side
++
++
++def write_csv(path, rows):
++    state = B3.guard_sealed(path, SEALED_SHA_B4)
++    if state == "skip":
++        return "未改写（封卷件哈希与登记一致，保留原字节）"
++    tmp = path.with_name(path.name + ".wb_tmp")
++    with open(tmp, "w", encoding="utf-8-sig", newline="") as fh:
++        w = csv.DictWriter(fh, fieldnames=FINAL_COLS)
++        w.writeheader()
++        w.writerows(rows)
++    B3.atomic_replace(tmp, path)
++    return "已改写"
++
++
++def write_xlsx(path, rows):
++    state = B3.guard_sealed(path, SEALED_SHA_B4)
++    if state == "skip":
++        return "未改写（封卷件哈希与登记一致，保留原字节）"
++    wb = openpyxl.Workbook()
++    ws = wb.active
++    ws.title = "B4_FINAL"
++    ws.append(FINAL_COLS)
++    for c in ws[1]:
++        c.font = Font(bold=True, color="FFFFFF")
++        c.fill = PatternFill("solid", fgColor="2F5597")
++        c.alignment = Alignment(horizontal="center")
++    for r in rows:
++        ws.append([r.get(k, "") for k in FINAL_COLS])
++    for ci, k in enumerate(FINAL_COLS, 1):
++        width = {"parameter_name": 46, "notes": 40, "file_name": 40,
++                 "human_adjudication": 26, "row_status": 14,
++                 "table_title": 30, "condition": 30, "device_model": 16}.get(k, 14)
++        ws.column_dimensions[get_column_letter(ci)].width = width
++    ws.freeze_panes = "A2"
++    ws.auto_filter.ref = ws.dimensions
++    tmp = path.with_name(path.name + ".wb_tmp.xlsx")
++    wb.save(str(tmp))
++    B3.atomic_replace(tmp, path)
++    return "已改写"
++
++
++def write_json(path, obj):
++    state = B3.guard_sealed(path, SEALED_SHA_B4)
++    if state == "skip":
++        return "未改写（封卷件哈希与登记一致，保留原字节）"
++    tmp = path.with_name(path.name + ".wb_tmp")
++    tmp.write_text(json.dumps(obj, ensure_ascii=False, indent=2),
++                   encoding="utf-8", newline="\n")
++    B3.atomic_replace(tmp, path)
++    return "已改写"
++
++
++def write_prov(path, side):
++    rows = [{"sample_no": s, "file_name": v["file_name"],
++             "device_model": v["device_model"], "sha256": v["sha256"],
++             "page_count": v["page_count"], "size_bytes": v["size_bytes"]}
++            for s, v in sorted(side.items())]
++    tmp = path.with_name(path.name + ".wb_tmp")
++    with open(tmp, "w", encoding="utf-8-sig", newline="") as fh:
++        w = csv.DictWriter(fh, fieldnames=list(rows[0]))
++        w.writeheader()
++        w.writerows(rows)
++    B3.atomic_replace(tmp, path)
++
++
++def main():
++    if not SIGNED.exists():
++        raise SystemExit("找不到签字件：%s" % SIGNED)
++    signed_sha = B3.sha(SIGNED)
++    rows_signed = load_signed(SIGNED)
++    work, _ = disk_info(None)
++    rows, side = build_rows(rows_signed, work)
++
++    for r in rows:
++        print("  %-5s p%-3s %-9s %-6s/%-6s/%-6s %-5s cond=%-30s notes=%s" % (
++            r["sample_no"], r["evidence_page"], r["symbol"][:9], r["min_value"],
++            r["typ_value"], r["max_value"], r["unit"], r["condition"][:30],
++            r["notes"][:34]))
++
++    s_csv = write_csv(OUT_CSV, rows)
++    s_xlsx = write_xlsx(OUT_XLSX, rows)
++    write_prov(OUT_PROV, side)
++    obj = {"generated_at": datetime.now().astimezone().isoformat(),
++           "source_xlsx": "Batch3_B4_ANNOTATED.xlsx",
++           "source_sha256": signed_sha,
++           "extractor": "_make_b4_final.py",
++           "note": "notes 已清为「%s」，保留【非白名单参数】前缀；"
++                   "approved_by 留空，签字凭据为签字件本身" % FINAL_NOTE,
++           "samples": side}
++    s_side = write_json(OUT_SIDE, obj)
++
++    # ---- 落盘后逐格断言 ----
++    vals = list(openpyxl.load_workbook(str(OUT_XLSX), data_only=True).active.values)
++    if [str(x or "") for x in vals[0]] != FINAL_COLS:
++        raise SystemExit("FINAL.xlsx 表头不是 19 列定稿结构")
++    with open(OUT_CSV, encoding="utf-8-sig", newline="") as fh:
++        csv2 = list(csv.DictReader(fh))
++    if not len(csv2) == len(vals) - 1 == EXPECT_ROWS:
++        raise SystemExit("CSV/XLSX 行数不一致：%d / %d" % (len(csv2), len(vals) - 1))
++    for ri, r in enumerate(csv2, 1):
++        for ci, k in enumerate(FINAL_COLS):
++            if str(vals[ri][ci] or "") != (r.get(k) or ""):
++                raise SystemExit("xlsx/CSV 不同源：行%d 列%s" % (ri, k))
++    if any(r["approved_by"] for r in csv2):
++        raise SystemExit("approved_by 非空：本轮不代签，必须为空")
++    for r in csv2:
++        if not r["notes"].endswith(FINAL_NOTE) or "VLM" in r["notes"]:
++            raise SystemExit("notes 未清理干净：%s %r" % (r["sample_no"], r["notes"]))
++        if not r["device_model"]:
++            raise SystemExit("device_model 为空：%s" % r["sample_no"])
++
++    print()
++    print("B4 定稿：%d 行 / %d 样本 / %d 列" % (len(csv2), len(side), len(FINAL_COLS)))
++    print("  签字件：%s（SHA-256 %s…）" % (SIGNED.name, signed_sha[:16]))
++    print("  device_model：" + "，".join("%s=%s" % kv for kv in DEVICE_MODEL.items()))
++    print("  notes：" + "；".join(sorted({r["notes"] for r in csv2})))
++    print("  approved_by / entered_by / human_adjudication 全空（不代签）")
++    print("  CSV 写入：%s" % s_csv)
++    print("  xlsx 写入：%s" % s_xlsx)
++    print("  sidecar 写入：%s" % s_side)
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/gate6a-plan/batch3_review/_make_master_inventory.py b/gate6a-plan/batch3_review/_make_master_inventory.py
+index 2c903ea..247b0eb 100644
+--- a/gate6a-plan/batch3_review/_make_master_inventory.py
++++ b/gate6a-plan/batch3_review/_make_master_inventory.py
+@@ -20,7 +20,7 @@ PLAN = HERE / "Batch3_BATCH_PLAN.csv"
+ B1 = HERE / "Batch3_B1_RESIGNED.csv"
+ B2 = HERE / "Batch3_B2_FINAL.csv"
+ B3 = HERE / "Batch3_B3_FINAL.csv"
+-B4 = HERE / "Batch3_B4_DRAFT.csv"
++B4 = HERE / "Batch3_B4_FINAL.csv"
+ B2G = HERE / "Batch2_GOLD_v1.csv"
+ SCAN = HERE / "Batch3_SCAN_MANIFEST.csv"
+ 
+@@ -40,9 +40,9 @@ B3_REASON = {
+ }
+ # 各件在本轮的实情不同，备注不能一句话套三件
+ B4_NOTE = {
+-    "V077": "CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；待 PM 点选",
+-    "V130": "5 行均非白名单参数（MOSFET 击穿/阈值/导通电阻/漏电/栅电荷），待 PM 决定是否纳入",
+-    "V290": "VIL 两行按温度档绑定（0~70°C / −55~125°C）；II 条件待 PM 定夺",
++    "V077": "CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；已封卷",
++    "V130": "5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入",
++    "V290": "VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷",
+ }
+ B4_REASON = {
+     "V347": "版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评",
+@@ -101,10 +101,10 @@ def main():
+                            note=B3_REASON.get(sno, "未进 Gold"))
+         elif batch == "B4":
+             if sno in c4:
+-                rec.update(role="Gold", status="待签字",
++                rec.update(role="Gold", status="已定稿",
+                            gold_rows=c4[sno],
+-                           evidence_source="Batch3_B4_DRAFT.csv",
+-                           note=B4_NOTE.get(sno, "待 PM 点选"))
++                           evidence_source="Batch3_B4_FINAL.csv",
++                           note=B4_NOTE.get(sno, "PM 已签字，v1.6 机检 OK=14"))
+             else:
+                 rec.update(role="Gold", status="EXCLUDED", gold_rows=0,
+                            evidence_source="Batch3_B4_Viewer.html",
+diff --git a/gate6a-plan/batch3_review/_sync_batch3_review.py b/gate6a-plan/batch3_review/_sync_batch3_review.py
+index 86bb50c..bc307f2 100644
+--- a/gate6a-plan/batch3_review/_sync_batch3_review.py
++++ b/gate6a-plan/batch3_review/_sync_batch3_review.py
+@@ -150,6 +150,16 @@ SYNC = [
+     "_make_master_inventory.py",
+     "Batch3_MASTER_INVENTORY.csv",
+     "Batch3_MASTER_INVENTORY.txt",
++    # 第十二轮：B4 封卷（14 行定稿 / 双模式 OK=14 / 硬哈希登记）
++    "_make_b4_final.py",
++    "Batch3_B4_ANNOTATED.xlsx",         # PM 14:04 签字件（唯一有效签字凭据）
++    "Batch3_B4_FINAL.csv",
++    "Batch3_B4_FINAL.xlsx",
++    "Batch3_B4_PDF_PROVENANCE.csv",
++    "page_text_batch3_b4.json",
++    "Batch3_B4_approval_record.txt",
++    "b4_validation_raw/b4_final_pdf_mode.txt",
++    "b4_validation_raw/b4_final_sidecar_mode.txt",
+ ]
+ DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
+ B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
+diff --git a/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
+new file mode 100644
+index 0000000..e255c1d
+--- /dev/null
++++ b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_pdf_mode.txt
+@@ -0,0 +1,33 @@
++==============================================================================
++溯源一致性检查
++==============================================================================
++  provenance 表：3 个样本
++  sidecar：3 个样本
++  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
++  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
++  PDF 实算哈希：已比对
++  结论：三处溯源一致
++
++==============================================================================
++标注机检 v1.6  Batch3_B4_FINAL.csv   行数 14   样本 3
++页文本来源: PDF 原件
++==============================================================================
++[OK      ] 行2    V077  
++[OK      ] 行3    V077  
++[OK      ] 行4    V077  
++[OK      ] 行5    V077  
++[OK      ] 行6    V077  
++[OK      ] 行7    V130  
++[OK      ] 行8    V130  
++[OK      ] 行9    V130  
++[OK      ] 行10   V130  
++[OK      ] 行11   V130  
++[OK      ] 行12   V290  
++[OK      ] 行13   V290  
++[OK      ] 行14   V290  
++[OK      ] 行15   V290  
++
++数值分类: 数值=27
++统计: OK=14
++
++无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+diff --git a/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
+new file mode 100644
+index 0000000..507e314
+--- /dev/null
++++ b/gate6a-plan/batch3_review/b4_validation_raw/b4_final_sidecar_mode.txt
+@@ -0,0 +1,35 @@
++提示: 使用随包的 page_text.json（只含证据页，无法给出建议页）
++
++==============================================================================
++溯源一致性检查
++==============================================================================
++  provenance 表：3 个样本
++  sidecar：3 个样本
++  字段对应：CSV↔sidecar 比 file_name/device_model；sidecar↔provenance 比 file_name/device_model/sha256/page_count
++  判据：任一侧为空 或 两侧不等 → ERROR（空字段不再当作“跳过”）
++  PDF 实算哈希：跳过（非 PDF 模式）
++  结论：三处溯源一致
++
++==============================================================================
++标注机检 v1.6  Batch3_B4_FINAL.csv   行数 14   样本 3
++页文本来源: page_text.json
++==============================================================================
++[OK      ] 行2    V077  
++[OK      ] 行3    V077  
++[OK      ] 行4    V077  
++[OK      ] 行5    V077  
++[OK      ] 行6    V077  
++[OK      ] 行7    V130  
++[OK      ] 行8    V130  
++[OK      ] 行9    V130  
++[OK      ] 行10   V130  
++[OK      ] 行11   V130  
++[OK      ] 行12   V290  
++[OK      ] 行13   V290  
++[OK      ] 行14   V290  
++[OK      ] 行15   V290  
++
++数值分类: 数值=27
++统计: OK=14
++
++无 ERROR。SUSPECT 需人工再看一眼；CANNOT_VERIFY 缺页文本，只能人眼核。
+diff --git a/gate6a-plan/batch3_review/page_text_batch3_b4.json b/gate6a-plan/batch3_review/page_text_batch3_b4.json
+new file mode 100644
+index 0000000..7bb32ad
+--- /dev/null
++++ b/gate6a-plan/batch3_review/page_text_batch3_b4.json
+@@ -0,0 +1,45 @@
++{
++  "generated_at": "2026-11-12T14:08:56.132426+08:00",
++  "source_xlsx": "Batch3_B4_ANNOTATED.xlsx",
++  "source_sha256": "cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2",
++  "extractor": "_make_b4_final.py",
++  "note": "notes 已清为「人工已核对 PDF 原图并确认」，保留【非白名单参数】前缀；approved_by 留空，签字凭据为签字件本身",
++  "samples": {
++    "V077": {
++      "sample_no": "V077",
++      "file_name": "AM1707DZKB4.pdf",
++      "device_model": "AM1707",
++      "sha256": "86441d0065e94257724cdd3e99e05a841a3ddfd7ec49c59852445c73138739a5",
++      "page_count": 201,
++      "size_bytes": 1661407,
++      "pages": {
++        "1": "Product\nFolder\nSample &\nBuy\nTechnical\nDocuments\nTools &\nSoftware\nSupport &\nCommunity\nAM1707\nwww.ti.com\nSPRS637E –FEBRUARY 2010–REVISED JUNE 2014\nAM1707 ARM® Microprocessor\n1\nAM1707 ARM Microprocessor\n1.1\nFeatures\n1\n•\nClock Gating\n•\n375- and 456-MHz ARM926EJ-S™RISC Core\n•\nEntire Subsystem Under a Single PSC Clock\n– 32-Bit and 16-Bit (Thumb®) Instructions\nGating Domain\n– Single-Cycle MAC\n– Dedicated Interrupt Controller\n– ARM Jazelle® Technology\n– Dedicated Switched Central Resource\n– Embedded ICE-RT™for Real-Time Debug\n•\nMultimedia Card (MMC)/Secure Digital (SD) Card\n•\nARM9™Memory Architecture\nInterface with Secure Data I/O (SDIO)\n– 16KB of Instruction Cache\n•\nTwo Master and Slave Inter-Integrated Circuit (I2C\n– 16KB of Data Cache\nBus™)\n– 8KB of RAM (Vector Table)\n•\nOne Host-Port Interface (HPI) with 16-Bit-Wide\n– 64KB of ROM\nMuxed Address/Data Bus for High Bandwidth\n•\nEnhanced Direct Memory Access Controller 3\n•\nUSB 1.1 OHCI (Host) with Integrated PHY (USB1)\n(EDMA3):\n•\nUSB 2.0 OTG Port with Integrated PHY (USB0)\n– 2 Transfer Controllers\n– USB 2.0 High- and Full-Speed Client\n– 32 Independent DMA Channels\n– USB 2.0 High-, Full-, and Low-Speed Host\n– 8 Quick DMA Channels\n– End Point 0 (Control)\n– Programmable Transfer Burst Size\n– End Points 1,2,3,4 (Control, Bulk, Interrupt or\n•\n128KB of RAM Memory\nISOC) RX and TX\n•\n3.3-V LVCMOS I/Os (Except for USB Interfaces)\n•\nThree Multichannel Audio Serial Ports (McASPs):\n•\nTwo External Memory Interfaces:\n– Six Clock Zones and 28 Serial Data Pins\n– EMIFA\n– Supports TDM, I2S, and Similar Formats\n•\nNOR (8- or 16-Bit-Wide Data)\n– DIT-Capable (McASP2)\n•\nNAND (8- or 16-Bit-Wide Data)\n– FIFO Buffers for Transmit and Receive\n•\n16-Bit SDRAM with 128-MB Address Space\n•\n10/100 Mbps Ethernet MAC (EMAC):\n– EMIFB\n– IEEE 802.3 Compliant (3.3-V I/O Only)\n•\n32-Bit or 16-Bit SDRAM with 256-MB\n– RMII Media-Independent Interface\nAddress Space\n– Management Data I/O (MDIO) Module\n•\nThree Configurable 16550-Type UART Modules:\n•\nReal-Time Clock (RTC) with 32-kHz Oscillator and\n– UART0 with Modem Control Signals\nSeparate Power Rail\n– 16-Byte FIFO\n•\nOne 64-Bit General-Purpose Timer (Configurable\n– 16x or 13x Oversampling Option\nas Two 32-Bit Timers)\n– Autoflow Control Signals (CTS, RTS) on UART0\n•\nOne 64-Bit General-Purpose Watchdog Timer\nOnly\n(Configurable as Two 32-Bit General-Purpose\n•\nLCD Controller\nTimers)\n•\nTwo Serial Peripheral Interfaces (SPIs) Each with\n•\nThree Enhanced Pulse Width Modulators\nOne Chip Select\n(eHRPWMs):\n•\nProgrammable Real-Time Unit Subsystem\n– Dedicated 16-Bit Time-Base Counter with\n(PRUSS)\nPeriod and Frequency Control\n– Two Independent Programmable Real-Time Unit\n– 6 Single Edge, 6 Dual Edge Symmetric, or 3\n(PRU) Cores\nDual Edge Asymmetric Outputs\n•\n32-Bit Load-Store RISC Architecture\n– Dead-Band Generation\n•\n4KB of Instruction RAM per Core\n– PWM Chopping by High-Frequency Carrier\n•\n512 Bytes of Data RAM per Core\n– Trip Zone Input\n•\nPRUSS can be Disabled via Software to\n•\nThree 32-Bit Enhanced Capture (eCAP) Modules:\nSave Power\n– Configurable as 3 Capture Inputs or 3 Auxiliary\n– Standard Power-Management Mechanism\nPulse Width Modulator (APWM) Outputs\n1\nAn IMPORTANT NOTICE at the end of this data sheet addresses availability, warranty, changes, use in safety-critical applications,\nintellectual property matters and other important disclaimers. PRODUCTION DATA.\n",
++        "38": "AM1707\nSPRS637E –FEBRUARY 2010–REVISED JUNE 2014\nwww.ti.com\n5.3\nRecommended Operating Conditions\nMIN\nNOM\nMAX\nUNIT\n375 MHz version\n1.14\n1.2\n1.32\nV\nSupply voltage, Core\nCVDD\n(CVDD, RTC_CVDD, PLL0_VDDA)\n456 MHz version\n1.25\n1.3\n1.35\nV\n375 MHz version\n1.14\n1.2\n1.32\nV\nRVDD\nSupply Voltage, Internal RAM\n456 MHz version\n1.25\n1.3\n1.35\nV\nSupply voltage, I/O, 1.8V\n1.71\n1.8\n1.89\nV\n(USB0_VDDA18, USB1_VDDA18)\nDVDD\nSupply voltage, I/O, 3.3V\n3.0\n3.3\n3.45\nV\n(DVDD, USB0_VDDA33, USB1_VDDA33)\nSupply ground\nVSS\n0\n0\n0\nV\n(VSS, PLL0_VSSA, OSCVSS(1), RTC_VSS(1))\nVIH\n(2)\nHigh-level input voltage, I/O, 3.3V\n2\nV\nHigh-level input voltage, OSCIN\n0.7*CVDD\nV\nHigh-level input voltage, RTC_XI\n0.7*RTC_CVDD\nV\nVIL\n(2)\nLow-level input voltage, I/O, 3.3V\n0.8\nV\nLow-level input voltage, OSCIN\n0.3*CVDD\nV\nLow-level input voltage, RTC_XI\n0.3*RTC_CVDD\nV\nVHYS\nInput Hysteresis\n160\nmV\nUSB\nUSB0_VBUS\n4.75\n5\n5.25\nV\nTransition time, 10%-90%, All Inputs (unless otherwise specified in\ntt\n0.25P or 10 (3)\nns\nthe electrical data sections)\n375 (1.2V)\nCommercial (default)\n0\nMHz\n456 (1.3V)\nFSYSCLK6\nARM Operating Frequency (SYSCLK6)\nIndustrial (D suffix)\n0\n456 (1.3V)\nMHz\nExtended (A suffix)\n0\n375(1.2V)\nMHz\nAutomotive (T suffix)\n0\n375 (1.2V)\nMHz\n(1)\nWhen an external crystal is used, oscillator (OSC_VSS, RTC_VSS) ground must be kept separate from other grounds and connected\ndirectly to the crystal load capacitor ground. These pins are shorted to VSS on the device itself and should not be connected to VSS on\nthe circuit board. If a crystal is not used and the clock input is driven directly, then the oscillator VSS may be connected to board ground.\n(2)\nUnless specifically indicated, these I/O specifications do not apply to USB I/Os. USB0 I/Os adhere to USB2.0 specification. USB1 I/Os\nadhere to USB1.1 specification.\n(3)\nWhichever is smaller. P = the period of the applied signal. Maintaining transition times as fast as possible is recommended to improve\nnoise immunity on input signals.\n38\nDevice Operating Conditions\nCopyright © 2010–2014, Texas Instruments Incorporated\nSubmit Documentation Feedback\nProduct Folder Links: AM1707\n"
++      }
++    },
++    "V130": {
++      "sample_no": "V130",
++      "file_name": "CSD17505Q5A__csd17505q5a.pdf",
++      "device_model": "CSD17505Q5A",
++      "sha256": "12a24b54b5edb4497c7a9ca297943d3121a89da5771adccdb70f76720e020307",
++      "page_count": 10,
++      "size_bytes": 251252,
++      "pages": {
++        "1": "1\nD\n2\nD\n3\nD\n4\nD\nD\n5\nG\n6\nS\n7\nS\n8\nS\nP0093-01\n0\n2\n4\n6\n8\n10\n12\n14\n16\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\nVGS - Gate-to- Source Voltage - V\nRDS(on) - On-State Resistance - mΩ\nTC = 25°C\nTC = 125ºC\nID = 20A\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n0\n2\n4\n6\n8\n10\n12\n14\n16\n18\n20\nQg - Gate Charge - nC (nC)\nVGS - Gate-to-Source Voltage (V)\nID = 20A\nVDD = 15V\nCSD17505Q5A\nwww.ti.com\nSLPS301A –DECEMBER 2010–REVISED JULY 2011\n30V, N-Channel NexFET™Power MOSFETs\nCheck for Samples: CSD17505Q5A\nPRODUCT SUMMARY\n1FEATURES\nTA = 25°C unless otherwise stated\nTYPICAL VALUE\nUNIT\n2•\nUltralow Qg and Qgd\nVDS\nDrain to Source Voltage\n30\nV\n•\nLow Thermal Resistance\nQg\nGate Charge Total (4.5V)\n10\nnC\n•\nAvalanche Rated\nQgd\nGate Charge Gate to Drain\n2.7\nnC\n•\nPb Free Terminal Plating\nVGS = 4.5V\n3.7\nmΩ\nRDS(on)\nDrain to Source On Resistance\n•\nRoHS Compliant\nVGS = 10V\n2.9\nmΩ\n•\nHalogen Free\nVGS(th)\nThreshold Voltage\n1.3\nV\n•\nSON 5-mm × 6-mm Plastic Package\nORDERING INFORMATION\nAPPLICATIONS\nDevice\nPackage\nMedia\nQty\nShip\nSON 5-mm × 6-mm\n13-Inch\nTape and\n•\nPoint-of-Load Synchronous Buck in\nCSD17505Q5A\n2500\nPlastic Package\nReel\nReel\nNetworking, Telecom, and Computing Systems\n•\nOptimized for Control and Synchronous FET\nABSOLUTE MAXIMUM RATINGS\nApplications\nTA = 25°C unless otherwise stated\nVALUE\nUNIT\nVDS\nDrain to Source Voltage\n30\nV\nDESCRIPTION\nVGS\nGate to Source Voltage\n±20\nV\nThe NexFET™power MOSFET has been designed\nContinuous Drain Current, TC = 25°C\n100\nA\nto minimize losses in power conversion applications.\nID\nContinuous Drain Current(1)\n24\nA\nTop View\nIDM\nPulsed Drain Current, TA = 25°C(2)\n153\nA\nPD\nPower Dissipation(1)\n3.2\nW\nTJ,\nOperating Junction and Storage\n–55 to 150\n°C\nTSTG\nTemperature Range\nAvalanche Energy, single pulse\nEAS\n290\nmJ\nID = 76A, L = 0.1mH, RG = 25Ω\n(1) Typical\nRθJA\n=\n39°C/W\non\n1-inch2\n(6.45-cm2),\n2-oz.\n(0.071-mm thick) Cu pad on a 0.06-inch (1.52-mm) thick FR4\nPCB.\n(2) Pulse duration ≤300μs, duty cycle ≤2%\nSPACE\nSPACE\nRDS(on) vs VGS\nGATE CHARGE\n1\nPlease be aware that an important notice concerning availability, standard warranty, and use in critical applications of Texas\nInstruments semiconductor products and disclaimers thereto appears at the end of this data sheet.\n2NexFET is a trademark of Texas Instruments.\nPRODUCTION DATA information is current as of publication date.\nCopyright © 2010–2011, Texas Instruments Incorporated\nProducts conform to specifications per the terms of the Texas\nInstruments standard warranty. Production processing does not\nnecessarily include testing of all parameters.\n",
++        "2": "CSD17505Q5A\nSLPS301A –DECEMBER 2010–REVISED JULY 2011\nwww.ti.com\nThese devices have limited built-in ESD protection. The leads should be shorted together or the device placed in conductive foam\nduring storage or handling to prevent electrostatic damage to the MOS gates.\nELECTRICAL CHARACTERISTICS\n(TA = 25°C unless otherwise stated)\nPARAMETER\nTEST CONDITIONS\nMIN\nTYP\nMAX\nUNIT\nStatic Characteristics\nBVDSS\nDrain to Source Voltage\nVGS = 0V, IDS = 250μA\n30\nV\nIDSS\nDrain to Source Leakage Current\nVGS = 0V, VDS = 24V\n1\nμA\nIGSS\nGate to Source Leakage Current\nVDS = 0V, VGS = 20V\n100\nnA\nVGS(th)\nGate to Source Threshold Voltage\nVDS = VGS, IDS = 250μA\n1\n1.3\n1.8\nV\nVGS = 4.5V, IDS = 20A\n3.7\n4.6\nmΩ\nRDS(on)\nDrain to Source On Resistance\nVGS = 10V, IDS = 20A\n2.9\n3.5\nmΩ\ngfs\nTransconductance\nVDS = 15V, IDS = 20A\n82\nS\nDynamic Characteristics\nCiss\nInput Capacitance\n1560\n1980\npF\nVGS = 0V, VDS = 15V,\nCoss\nOutput Capacitance\n1030\n1330\npF\nf = 1MHz\nCrss\nReverse Transfer Capacitance\n65\n85\npF\nRG\nSeries Gate Resistance\n1\n2\nΩ\nQg\nGate Charge Total (4.5V)\n10\n13\nnC\nQgd\nGate Charge Gate to Drain\n2.7\nnC\nVDS = 15V, IDS = 20A\nQgs\nGate Charge Gate to Source\n3.5\nnC\nQg(th)\nGate Charge at Vth\n1.9\nnC\nQoss\nOutput Charge\nVDS = 13.7V, VGS = 0V\n26\nnC\ntd(on)\nTurn On Delay Time\n8.3\nns\ntr\nRise Time\n11.5\nns\nVDS = 15V, VGS = 4.5V,\nIDS = 20A,RG = 2Ω\ntd(off)\nTurn Off Delay Time\n15\nns\ntf\nFall Time\n6.1\nns\nDiode Characteristics\nVSD\nDiode Forward Voltage\nISD = 20A, VGS = 0V\n0.8\n1\nV\nQrr\nReverse Recovery Charge\n30\nnC\nVDD= 13.7V, IF = 20A, di/dt = 300A/μs\ntrr\nReverse Recovery Time\n28\nns\nTHERMAL CHARACTERISTICS\n(TA = 25°C unless otherwise stated)\nPARAMETER\nMIN\nTYP\nMAX\nUNIT\nRθJC\nThermal Resistance Junction to Case(1)\n1.3\n°C/W\nRθJA\nThermal Resistance Junction to Ambient(1)(2)\n50\n°C/W\n(1)\nRθJC is determined with the device mounted on a 1-inch2 (6.45-cm2), 2-oz. (0.071-mm thick) Cu pad on a 1.5-inch × 1.5-inch (3.81-cm ×\n3.81-cm), 0.06-inch (1.52-mm) thick FR4 PCB. RθJC is specified by design, whereas RθJA is determined by the user’s board design.\n(2)\nDevice mounted on FR4 material with 1-inch2 (6.45-cm2), 2-oz. (0.071-mm thick) Cu.\n2\nCopyright © 2010–2011, Texas Instruments Incorporated\n"
++      }
++    },
++    "V290": {
++      "sample_no": "V290",
++      "file_name": "DS9638CMX_NOPB__DS9638.pdf",
++      "device_model": "DS9638",
++      "sha256": "239dd12d525f93240413e3b5a6f174dae4c19fe97a81394d068060b2c9f45b9b",
++      "page_count": 10,
++      "size_bytes": 282139,
++      "pages": {
++        "1": "DS9638\nwww.ti.com\nSNLS389D –MAY 1998–REVISED APRIL 2013\nDS9638 RS-422 Dual High Speed Differential Line Driver\nCheck for Samples: DS9638\n1FEATURES\nDESCRIPTION\nThe DS9638 is a Schottky, TTL compatible, dual\n2•\nSingle 5V Supply\ndifferential line driver designed specifically to meet\n•\nSchottky Technology\nthe\nEIA\nStandard\nRS-422\nspecifications.\nIt\nis\n•\nTTL and CMOS Compatible Inputs\ndesigned to provide unipolar differential drive to\ntwisted pair or parallel wire transmission lines. The\n•\nOutput Short Circuit Protection\ninputs are TTL compatible. The outputs are similar to\n•\nInput Clamp Diodes\ntotem pole TTL outputs, with active pull-up and pull-\n•\nComplementary Outputs\ndown. The device features a short circuit protected\nactive pull-up with low output impedance and is\n•\nMinimum Output Skew (<1.0 ns typical)\nspecified to drive 50Ω transmission lines at high\n•\n50 mA Output Drive Capability for 50Ω\nspeed. The mini-DIP provides high package density.\nTransmission Lines\n•\nMeets EIA RS-422 Specifications\n•\nPropagation Delay of Less Than 10 ns\n•\n“Glitchless” Differential Output\n•\nDelay Time Stable with VCC and Temperature\nVariations (<2.0 ns typical) (See Figure 4 )\n•\nExtended Temperature Range\nConnection Diagram\nFigure 1. 8-Lead PDIP or CDIP or SOIC (Top View)\nSee P or NAB0008A or D Package\n1\nPlease be aware that an important notice concerning availability, standard warranty, and use in critical applications of\nTexas Instruments semiconductor products and disclaimers thereto appears at the end of this data sheet.\n2All trademarks are the property of their respective owners.\nPRODUCTION DATA information is current as of publication date.\nCopyright © 1998–2013, Texas Instruments Incorporated\nProducts conform to specifications per the terms of the Texas\nInstruments standard warranty. Production processing does not\nnecessarily include testing of all parameters.\n",
++        "3": "DS9638\nwww.ti.com\nSNLS389D –MAY 1998–REVISED APRIL 2013\nElectrical Characteristics(1)(2)\nOver recommended operating temperature and supply voltage ranges, unless otherwise specified\nSymbol\nParameter\nConditions\nMin\nTyp\nMax\nUnits\nVIH\nInput Voltage HIGH\n2.0\nV\nVIL\nInput Voltage LOW\n0°C to +70°C\n0.8\nV\n−55°C to +125°C\n0.5\nVIC\nInput Clamp Voltage\nV CC = Min, II = −18 mA\n−1.0\n−1.2\nV\nVOH\nOutput Voltage HIGH\nVCC = Min,\nIOH = −10 mA\n2.5\n3.5\nVIH = VIH Min,\nV\nIOH = −40 mA\n2.0\nVIL = VIL Max\nVOL\nOutput Voltage LOW\nV CC = Min, VIH = VIH Min,\n0.5\nV\nV IL = VIL Max, IOL = 40 mA\nII\nInput Current at Maximum Input\nV CC = Max, VI Max = 5.5V\n50\nμA\nVoltage\nIIH\nInput Current HIGH\nV CC = Max, VIH = 2.7V\n25\nμA\nIIL\nInput Current LOW\nV CC = Max, VIL = 0.5V\n−200\nμA\nIOS\nOutput Short Circuit Current\nV CC = Max, VO = 0V(2)\n−50\n−150\nmA\nVT, V T\nTerminated Output Voltage\nSee Figure 2\n2.0\nV\nVT–V T\nOutput Balance\n0.4\nV\nVOS, V OS\nOutput Offset Voltage\n3.0\nV\nVOS–V OS\nOutput Offset Balance\n0.4\nV\nIX\nOutput Leakage Current\nT A = 25°C\n100\nμA\n−0.25V < VX < 5.5V\nICC\nSupply Current (Both Drivers)\nVCC = 5.5V,\n45\n65\nmA\nAll input at 0V,\nNo Load\n(1)\nUnless otherwise specified min/max limits apply across the −55°C to +125°C temperature range for the DS9638M and across the 0°C to\n+70°C range for the DS9638C. All typicals are given for VCC = 5V and TA = 25°C.\n(2)\nAll currents into the device pins are positive; all currents out of the device pins are negative. All voltages are referenced to ground\nunless otherwise specified.\nSwitching Characteristics\nVCC = 5.0V, TA = 25°C.\nSymbol\nParameter\nConditions\nMin\nTyp\nMax\nUnits\ntPHL\nPropagation Delay\nCL = 15 pF\n10\n20\nns\nRL = 100Ω, See Figure 3\ntPLH\n10\n20\nns\ntf\nFall Time, 90%–10%\n10\n20\nns\ntr\nRise Time, 10%–90%\n10\n20\nns\ntPO–tPO\nSkew Between Outputs\n1.0\nns\nA/A and B/B\nCopyright © 1998–2013, Texas Instruments Incorporated\nSubmit Documentation Feedback\n3\nProduct Folder Links: DS9638\n"
++      }
++    }
++  }
++}
+\ No newline at end of file

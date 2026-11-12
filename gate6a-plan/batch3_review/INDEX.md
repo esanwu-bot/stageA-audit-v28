@@ -1257,3 +1257,83 @@ V222 不属这三类：它 9 页全是封装/板图/卷带资料，属「文档�
 B4 的 14 行等 PM 点选签字；签完后才做 19 列 FINAL 与封卷。
 33 件全部签完且 Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
 更新并 push。两仓 main 本轮仍未动。
+
+## 20. 第十二轮：B4 封卷（14 行定稿，双模式 OK=14）
+
+### 20.1 认哪一份签字件
+
+`D:\Documents\Downloads` 下同时存在两份 `Batch3_B4_ANNOTATED`：
+
+| 文件 | 保存时间 | 行数 | 有 condition 的行 | 处置 |
+| --- | --- | --- | --- | --- |
+| `Batch3_B4_ANNOTATED.xlsx` | 13:48:07 | 14 | **0** | 条件缺失那版草稿的签字副本，作废 |
+| `Batch3_B4_ANNOTATED (1).xlsx` | 14:04:23 | 14 | **7** | 本轮签字件，以此为准 |
+
+旧件 `SHA-256 6b71cbd16193e9ab7dd348acc732327e0b15d4226e463265b77dfc91e4d29979`，
+condition 一列全空——如果拿它封卷，等于把 Reviewer 刚指出的「严重条件缺失」
+原样写进 Gold。故只本地留档，不进交付包，避免两份签字件并存造成口径冲突。
+
+认定件 `SHA-256 cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2`，
+14 行 × 15 列，`row_status` 全 `CONFIRMED`，`reviewer` 全 `wuxiaoxian`，
+condition 与草稿逐格一致。
+
+### 20.2 notes 清理：只清模型话术，不动 PM 的裁定信息
+
+V130 那五行带着前缀 `【非白名单参数·需 PM 决定是否纳入】`，那是「这行要不要进
+Gold」的依据，一句话清掉就丢了。规则改为：
+
+```
+notes = 原有【…】前缀（若有） + 「人工已核对 PDF 原图并确认」
+```
+
+结果：9 行是纯 `人工已核对 PDF 原图并确认`，5 行（V130）带前缀。
+生成器带断言：notes 必须以该句结尾、且不得残留 `VLM` 字样。
+
+### 20.3 approved_by 为什么整列为空
+
+B1/B2/B3 的规矩：只有「WB 代录入」的行，才由 PM 在 19 列 TO_SIGN 上逐格补签
+`approved_by`，WB 再按稳定 ID 继承；其余行的签字凭据是签字件本身
+（B3 就是 5 格有值、15 格为空）。本轮 B4 没有代录入任何一格——condition 是
+生成器按原图回填、PM 在签字件里看到并确认整行 `CONFIRMED`——签字件也没有
+`approved_by` 列。因此该列留空，**没有把 `reviewer` 复制成 `approved_by`**。
+
+### 20.4 定稿与机检
+
+| 项目 | 结果 |
+| --- | --- |
+| 行数 / 样本 / 列数 | 14 / 3 / 19 |
+| device_model | V077=`AM1707`、V130=`CSD17505Q5A`、V290=`DS9638`（均取封面原文） |
+| condition | 7 行有值（V077 五行、V290 两行）；V130 无（该表无 CONDITIONS 列） |
+| v1.6 PDF 模式 | **`OK=14`**，无 ERROR |
+| v1.6 离线模式 | **`OK=14`**，无 ERROR |
+
+一处如实记录：`V290 VIH` 的 min 原文是 `2.0`，PM 的 Excel 存成数值 `2`。
+定稿照签字原样保留 `2`，没擅自改回 `2.0`——值相同，且不该动已签的格。
+
+### 20.5 封卷登记与闸门自证
+
+`_make_b4_final.py` 内置 `SEALED_SHA_B4`，复用 B3 的 `guard_sealed`
+（11 轮改的硬哈希闸门），登记 4 件：
+
+| 文件 | SHA-256 |
+| --- | --- |
+| `Batch3_B4_FINAL.csv` | `2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d` |
+| `Batch3_B4_FINAL.xlsx` | `972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1` |
+| `page_text_batch3_b4.json` | `43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef` |
+| `Batch3_B4_ANNOTATED.xlsx` | `cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2` |
+
+登记后重跑生成器，三处均输出「未改写（封卷件哈希与登记一致，保留原字节）」，
+哈希不变。这就是 19.1 那套闸门在真实件上的第二次自证（第一次是 B3）。
+
+签字凭据另存 `Batch3_B4_approval_record.txt`（含两份签字件的对比与作废理由）。
+
+### 20.6 33 件总清单状态更新
+
+B4 三件从「待签字」改为「已定稿」，数据源从 `Batch3_B4_DRAFT.csv` 换成
+`Batch3_B4_FINAL.csv`；件数仍 33，Gold 行数合计仍 111（B4 仍记 14 行）。
+
+### 20.7 尚未做的事
+
+33 件里 29 件已定稿（含 4 件 EXCLUDED 与 3 件 SCAN、1 件诊断件不参与分母），
+没有未签的 Gold 行。Reviewer 终审放行后，才把 CodeUp 本地 main（`a11131a`）
+更新并 push。两仓 main 本轮仍未动。

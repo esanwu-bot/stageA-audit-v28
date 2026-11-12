@@ -1,0 +1,52 @@
+B4 签字与封卷凭据
+========================================================================
+一、签字件
+  文件名  ：Batch3_B4_ANNOTATED.xlsx
+  来源    ：D:\Documents\Downloads\Batch3_B4_ANNOTATED (1).xlsx
+            （PM 2026-11-12 14:04:23 保存）
+  SHA-256 ：cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2
+  行数    ：14 行 × 15 列
+  row_status：14 行全部 CONFIRMED
+  reviewer  ：14 行全部 wuxiaoxian
+  condition ：7 行有值（V077 五行 + V290 两行），与草稿逐格一致
+
+  说明：同一目录下的 Batch3_B4_ANNOTATED.xlsx（13:48:07 保存，
+  SHA-256 6b71cbd16193e9ab7dd348acc732327e0b15d4226e463265b77dfc91e4d29979）
+  是**条件缺失那版草稿**的签字副本，condition 一列全空。本轮以 14:04 保存的
+  修订版为准；旧件仅本地留档，不进交付包，避免两份签字件并存造成口径冲突。
+
+二、这一轮 PM 实际签了什么
+  签的是「改过条件的草稿」：V077 的 CVDD/RVDD 已按 375 MHz / 456 MHz 分行、
+  DVDD 锚在 1.8V I/O，V290 的 VIL 两行按 0°C~+70°C / −55°C~+125°C 分档。
+  签字件里这些 condition 与草稿逐格一致（仅 V290 VIH 的 min「2.0」被 Excel
+  存成数值 2，属格式，不是改值；定稿照签字原样保留，未擅自改回 2.0）。
+
+三、notes 清理规则
+  只把模型话术（「VLM 草稿，须对左图核」「vlm自报=…」「多组取值已按…」）
+  换成「人工已核对 PDF 原图并确认」。
+  V130 五行保留前缀「【非白名单参数·需 PM 决定是否纳入】」——那是这行要不要
+  进 Gold 的依据，清掉就丢了；因此这五行的 notes 是
+  「【非白名单参数·需 PM 决定是否纳入】人工已核对 PDF 原图并确认」。
+
+四、approved_by 为什么是空的
+  B1/B2/B3 的规矩：只有「WB 代录入」的行，才由 PM 在 19 列 TO_SIGN 上逐格补签
+  approved_by，WB 再按稳定 ID 继承；其余行的签字凭据是签字件本身。
+  本轮 B4 没有代录入任何一格（condition 由生成器按原图回填，PM 在签字件里
+  已看到并确认整行 CONFIRMED），签字件也没有 approved_by 列。
+  因此 approved_by / entered_by / human_adjudication 一律留空。
+  **WB 没有替任何人填写签字格，也没有把 reviewer 复制成 approved_by。**
+
+五、机检
+  v1.6 PDF 模式（实算哈希）    ：OK=14，无 ERROR
+  v1.6 离线模式（sidecar）     ：OK=14，无 ERROR
+  原始 stdout：b4_validation_raw/b4_final_pdf_mode.txt、
+               b4_validation_raw/b4_final_sidecar_mode.txt
+
+六、封卷登记（写入 _make_b4_final.py 的 SEALED_SHA_B4）
+  Batch3_B4_FINAL.csv        2db19c9753f053dda83f4a110fc7099e55797fb22738c3f91b66e03c5c0f551d
+  Batch3_B4_FINAL.xlsx       972b23f79408da8a568409204db7f25f2ee595e08ef3fc8b602a6cfb6aea86c1
+  page_text_batch3_b4.json   43e42b3c831b2fcf1df5bb94eb0ca4332937e5af84d6976d671f981315f59aef
+  Batch3_B4_ANNOTATED.xlsx   cc1b2ae030ee93cecce22e42a9edbbd8888aa514b67c7573d7ca111427cbc7b2
+
+  登记后重跑生成器，三处均输出「未改写（封卷件哈希与登记一致，保留原字节）」，
+  哈希不变。任何后续字节变化都会被 guard_sealed 拦下并 SystemExit。

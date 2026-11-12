@@ -20,7 +20,7 @@ PLAN = HERE / "Batch3_BATCH_PLAN.csv"
 B1 = HERE / "Batch3_B1_RESIGNED.csv"
 B2 = HERE / "Batch3_B2_FINAL.csv"
 B3 = HERE / "Batch3_B3_FINAL.csv"
-B4 = HERE / "Batch3_B4_DRAFT.csv"
+B4 = HERE / "Batch3_B4_FINAL.csv"
 B2G = HERE / "Batch2_GOLD_v1.csv"
 SCAN = HERE / "Batch3_SCAN_MANIFEST.csv"
 
@@ -40,9 +40,9 @@ B3_REASON = {
 }
 # 各件在本轮的实情不同，备注不能一句话套三件
 B4_NOTE = {
-    "V077": "CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；待 PM 点选",
-    "V130": "5 行均非白名单参数（MOSFET 击穿/阈值/导通电阻/漏电/栅电荷），待 PM 决定是否纳入",
-    "V290": "VIL 两行按温度档绑定（0~70°C / −55~125°C）；II 条件待 PM 定夺",
+    "V077": "CVDD/RVDD 按 375·456 MHz 分行绑定，DVDD 锚 1.8V I/O；已封卷",
+    "V130": "5 行均非白名单参数（击穿/阈值/导通电阻/漏电/栅电荷），PM 已确认纳入",
+    "V290": "VIL 两行按温度档绑定（0~70°C / −55~125°C）；已封卷",
 }
 B4_REASON = {
     "V347": "版式不支持稳定还原行序，当前流程无法建立可验证 Gold；需 SMD 专用规则后重评",
@@ -101,10 +101,10 @@ def main():
                            note=B3_REASON.get(sno, "未进 Gold"))
         elif batch == "B4":
             if sno in c4:
-                rec.update(role="Gold", status="待签字",
+                rec.update(role="Gold", status="已定稿",
                            gold_rows=c4[sno],
-                           evidence_source="Batch3_B4_DRAFT.csv",
-                           note=B4_NOTE.get(sno, "待 PM 点选"))
+                           evidence_source="Batch3_B4_FINAL.csv",
+                           note=B4_NOTE.get(sno, "PM 已签字，v1.6 机检 OK=14"))
             else:
                 rec.update(role="Gold", status="EXCLUDED", gold_rows=0,
                            evidence_source="Batch3_B4_Viewer.html",

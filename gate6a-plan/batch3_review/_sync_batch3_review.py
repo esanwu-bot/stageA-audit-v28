@@ -150,6 +150,16 @@ SYNC = [
     "_make_master_inventory.py",
     "Batch3_MASTER_INVENTORY.csv",
     "Batch3_MASTER_INVENTORY.txt",
+    # 第十二轮：B4 封卷（14 行定稿 / 双模式 OK=14 / 硬哈希登记）
+    "_make_b4_final.py",
+    "Batch3_B4_ANNOTATED.xlsx",         # PM 14:04 签字件（唯一有效签字凭据）
+    "Batch3_B4_FINAL.csv",
+    "Batch3_B4_FINAL.xlsx",
+    "Batch3_B4_PDF_PROVENANCE.csv",
+    "page_text_batch3_b4.json",
+    "Batch3_B4_approval_record.txt",
+    "b4_validation_raw/b4_final_pdf_mode.txt",
+    "b4_validation_raw/b4_final_sidecar_mode.txt",
 ]
 DROP = ["annotation_reports/V003/b3_ELC_p0014.png"]   # 旧错页图，留着会误导
 B3_SNOS = {"V146", "V222", "V244", "V256", "V271", "V328"}
